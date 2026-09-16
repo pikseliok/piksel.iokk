@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>πksel.iok — Tapılmadı</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    width:100%;height:100%;min-height:100vh;
+    background:#BDD7FF;
+    font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .card{
+    max-width:420px;width:100%;text-align:center;
+    background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(189,215,255,.55) 45%,rgba(136,168,211,.45) 100%);
+    border:1px solid rgba(0,30,111,.28);
+    border-radius:28px;
+    padding:38px 26px;
+    box-shadow:0 10px 26px rgba(0,30,111,.18);
+    animation:pop .5s cubic-bezier(.25,1,.5,1);
+  }
+  @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .pi{font-size:56px;font-weight:800;color:#001E6F;line-height:1;animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,66%{transform:scale(1);}83%{transform:scale(.94);}100%{transform:scale(1);}}
+  .code{font-size:20px;font-weight:800;color:#001E6F;margin-top:10px;letter-spacing:2px;}
+  .msg{font-size:14px;color:#001E6F;margin-top:10px;line-height:1.6;opacity:.9;}
+  a.btn{
+    display:inline-block;margin-top:20px;
+    background:linear-gradient(120deg,#001E6F,#102B75);
+    color:#BDD7FF;font-weight:700;font-size:13px;
+    padding:12px 22px;border-radius:14px;text-decoration:none;
+    transition:transform .3s ease;
+  }
+  a.btn:active{transform:scale(.94);}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="pi">π</div>
+    <div class="code">404 — Səhifə tapılmadı</div>
+    <div class="msg">Axtardığınız pəncərə mövcud deyil ya da köçürülüb.<br>İntellektuallar üçün hərşey — amma bu səhifə istisna.</div>
+    <a class="btn" href="index.html">Ana səhifəyə qayıt</a>
+  </div>
+</body>
+</html>

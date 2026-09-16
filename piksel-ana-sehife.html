@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>πksel.iok</title>
+<style>
+  :root{
+    --bg:#BDD7FF;
+    --navy:#001E6F;
+    --navy2:#102B75;
+    --mid:#88A8D3;
+    --accent:#79B8FF;
+    --text-on-light:#001E6F;
+    --text-on-dark:#BDD7FF;
+    --card-grad:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(189,215,255,.55) 45%,rgba(136,168,211,.45) 100%);
+    --card-border:rgba(0,30,111,.28);
+    --tr:.3s cubic-bezier(.25,1,.5,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    width:100%;
+    background:var(--bg);
+    font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--text-on-light);
+    transition:background var(--tr),color var(--tr);
+    overflow-x:hidden;
+  }
+
+  body.dark{
+    --bg:#081335;
+    --card-grad:linear-gradient(135deg,rgba(16,43,117,.55) 0%,rgba(0,30,111,.55) 45%,rgba(8,19,53,.6) 100%);
+    --card-border:rgba(121,184,255,.25);
+    --text-on-light:#BDD7FF;
+  }
+
+  h1,h2,h3,.brand-title,.quick-title,.stat-title{
+    font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    font-weight:800;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  /* =========================================================
+     TOP BAR — hamburger (left) + dark mode (right)
+  ========================================================= */
+  .topbar{
+    position:sticky;top:0;left:0;right:0;z-index:200;
+    height:56px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;
+    background:linear-gradient(120deg,var(--navy),var(--navy2));
+  }
+
+  .icon-btn{
+    width:40px;height:40px;border:0;border-radius:14px;
+    background:rgba(189,215,255,.12);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:transform .3s ease, background .3s ease;
+  }
+  .icon-btn:active{transform:scale(.88);}
+
+  .hamburger-line{
+    display:block;width:20px;height:2px;background:var(--text-on-dark);
+    position:relative;
+    transition:transform .3s ease;
+  }
+  .hamburger-line::before,.hamburger-line::after{
+    content:"";position:absolute;left:0;width:20px;height:2px;background:var(--text-on-dark);
+    transition:transform .3s ease, top .3s ease;
+  }
+  .hamburger-line::before{top:-6px;}
+  .hamburger-line::after{top:6px;}
+
+  .theme-icon{font-size:18px;transition:transform .3s ease;}
+
+  /* =========================================================
+     SIDE MENU
+  ========================================================= */
+  .menu-overlay{
+    position:fixed;inset:0;background:rgba(0,10,40,0);
+    backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+    pointer-events:none;z-index:150;
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  .menu-overlay.open{
+    background:rgba(0,10,40,.45);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    pointer-events:auto;
+  }
+
+  .side-menu{
+    position:fixed;top:0;left:0;bottom:0;
+    width:250px;max-width:78vw;
+    background:linear-gradient(160deg,var(--navy),var(--navy2) 80%);
+    transform:translateX(-105%);
+    transition:transform .35s cubic-bezier(.25,1,.5,1);
+    z-index:151;
+    padding:70px 18px 18px;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .side-menu.open{transform:translateX(0);}
+
+  .side-menu a{
+    padding:12px 10px;border-radius:12px;
+    color:var(--text-on-dark);font-weight:700;font-size:14px;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .side-menu a:active{transform:scale(.97);}
+  .side-menu a.current{background:rgba(189,215,255,.16);}
+
+  /* =========================================================
+     HERO BANNER
+  ========================================================= */
+  .hero-banner{width:100%;line-height:0;cursor:pointer;}
+  .hero-banner img{
+    width:100%;height:auto;display:block;
+    animation:heroPulse 3s ease-in-out infinite;
+  }
+  @keyframes heroPulse{0%,66%{transform:scale(1);}83%{transform:scale(.97);}100%{transform:scale(1);}}
+
+  /* =========================================================
+     CAROUSEL — restored full animation from reference
+  ========================================================= */
+  .page{width:100%;max-width:900px;margin:0 auto;}
+
+  .carousel-wrapper{
+    position:relative;width:100%;height:380px;
+    display:flex;justify-content:center;align-items:center;
+    perspective:1000px;overflow:visible;
+    margin-top:14px;padding-bottom:22px;
+  }
+  .carousel-container{
+    position:relative;width:100%;height:100%;
+    display:flex;justify-content:center;align-items:center;
+    transform-style:preserve-3d;
+  }
+  .carousel-item{
+    position:absolute;width:260px;height:260px;border-radius:22px;
+    cursor:pointer;display:flex;justify-content:center;align-items:center;
+    user-select:none;
+    transition:transform .5s cubic-bezier(.25,1,.5,1),opacity .5s ease,filter .5s ease;
+    opacity:0;pointer-events:none;
+  }
+  .carousel-item img{
+    width:100%;height:100%;object-fit:contain;border-radius:18px;
+    pointer-events:none;transition:transform .5s cubic-bezier(.25,1,.5,1);
+  }
+  .carousel-item.left{transform:translateX(-190px) translateZ(0) scale(.7);opacity:.6;z-index:2;filter:grayscale(20%);pointer-events:auto;}
+  .carousel-item.center{transform:translateX(0) translateZ(100px) scale(1.25);opacity:1;z-index:3;filter:drop-shadow(0 12px 18px rgba(0,30,111,.3));pointer-events:auto;}
+  .carousel-item.right{transform:translateX(190px) translateZ(0) scale(.7);opacity:.6;z-index:2;filter:grayscale(20%);pointer-events:auto;}
+  .carousel-item.hidden-card{transform:translateX(0) translateZ(-100px) scale(.4);opacity:0;z-index:0;pointer-events:none;}
+  .carousel-item.pressed.center{transform:translateX(0) translateZ(100px) scale(1.15);}
+  .carousel-item.pressed.left{transform:translateX(-190px) translateZ(0) scale(.62);}
+  .carousel-item.pressed.right{transform:translateX(190px) translateZ(0) scale(.62);}
+
+  .nav-btn{
+    position:absolute;top:45%;transform:translateY(-50%);
+    width:44px;height:44px;
+    background:linear-gradient(135deg,var(--navy),var(--navy2));
+    border:2px solid var(--text-on-dark);border-radius:50%;
+    color:#fff;display:flex;justify-content:center;align-items:center;
+    cursor:pointer;z-index:10;box-shadow:0 4px 12px rgba(0,30,111,.4);
+    transition:transform .25s ease, background .25s ease;
+  }
+  .nav-btn:hover{transform:translateY(-50%) scale(1.1);}
+  .nav-btn:active{transform:translateY(-50%) scale(.9);}
+  .nav-btn.prev{left:8px;}
+  .nav-btn.next{right:8px;}
+  .pixel-arrow{width:16px;height:16px;fill:#fff;image-rendering:pixelated;}
+
+  .dots-container{position:absolute;bottom:0;display:flex;gap:8px;z-index:10;}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(0,30,111,.28);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.active{background:var(--navy);transform:scale(1.3);}
+
+  /* =========================================================
+     QUICK LINKS
+  ========================================================= */
+  .quick-section{padding:18px 16px 8px;}
+  .quick-title{font-size:26px;color:var(--text-on-light);margin-bottom:16px;}
+
+  .quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  @media(max-width:1024px){.quick-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:640px){.quick-grid{grid-template-columns:repeat(2,1fr);}}
+
+  .quick-item{
+    aspect-ratio:1/1;
+    border-radius:20px;
+    background:var(--card-grad);
+    border:1px solid var(--card-border);
+    box-shadow:0 6px 16px rgba(0,30,111,.15);
+    display:flex;align-items:center;justify-content:center;
+    padding:14px;
+    cursor:pointer;
+    opacity:0;transform:translateY(34px);
+    transition:transform .5s cubic-bezier(.25,1,.5,1), box-shadow .3s ease;
+  }
+  .quick-item.revealed{
+    animation:quickFadeUp .6s cubic-bezier(.25,1,.5,1) forwards;
+  }
+  @keyframes quickFadeUp{from{opacity:0;transform:translateY(34px);}to{opacity:1;transform:translateY(0);}}
+  .quick-item img{width:100%;height:100%;object-fit:contain;pointer-events:none;}
+  .quick-item.pressed{transform:scale(.9);transition:transform .3s ease;}
+
+  /* =========================================================
+     STATS
+  ========================================================= */
+  .stats-section{padding:26px 16px 6px;}
+  .stats-title{font-size:20px;margin-bottom:12px;}
+  .stats-grid{
+    display:flex;flex-wrap:wrap;gap:10px;
+  }
+  .stat-card{
+    flex:1 1 150px;min-width:130px;
+    background:var(--card-grad);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:10px 12px;
+    box-shadow:0 4px 12px rgba(0,30,111,.12);
+    transition:transform .25s ease;
+  }
+  .stat-card:hover{transform:translateY(-3px);}
+  .stat-label{font-size:11.5px;font-weight:700;color:var(--text-on-light);opacity:.85;}
+  .stat-value{font-size:20px;font-weight:800;color:var(--text-on-light);margin-top:2px;}
+
+  /* =========================================================
+     FOOTER
+  ========================================================= */
+  footer{
+    margin-top:26px;
+    background:var(--navy);
+    color:#BDD7FF;
+    text-align:center;
+    padding:22px 14px 26px;
+    font-size:12px;
+    line-height:1.7;
+  }
+  footer .tagline{font-weight:800;font-size:14px;white-space:nowrap;}
+  footer a{font-weight:700;text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="icon-btn" id="menuBtn" aria-label="Menyu">
+    <span class="hamburger-line"></span>
+  </button>
+  <button class="icon-btn" id="themeBtn" aria-label="Rejim">
+    <span class="theme-icon" id="themeIcon">🌙</span>
+  </button>
+</div>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<nav class="side-menu" id="sideMenu">
+  <a href="index.html" class="current">Ana səhifə</a>
+  <a href="paketler.html">Sual paketləri</a>
+  <a href="muellif.html">Müəlliflər</a>
+  <a href="breynrinq.html">Breyn Rinq</a>
+  <a href="taymer.html">NHN taymer</a>
+  <a href="elaqe.html">Bizimlə əlaqə</a>
+  <a href="elanlar.html">Elanlar</a>
+</nav>
+
+<div class="hero-banner" id="heroBanner">
+  <img src="https://cdn.phototourl.com/free/2026-09-13-b850b085-79ed-4fb0-8166-a0548846b953.png" alt="πksel.iok">
+</div>
+
+<div class="page">
+
+  <div class="carousel-wrapper" id="carouselWrapper">
+    <button class="nav-btn prev" onclick="movePrev()" aria-label="Əvvəlki">
+      <svg class="pixel-arrow" viewBox="0 0 8 8"><path d="M4 1h1v1H4z M3 2h1v1H3z M2 3h1v1H2z M1 4h1v1H1z M2 5h1v1H2z M3 6h1v1H3z M4 7h1v1H4z"/></svg>
+    </button>
+    <div class="carousel-container" id="carouselContainer"></div>
+    <button class="nav-btn next" onclick="moveNext()" aria-label="Növbəti">
+      <svg class="pixel-arrow" viewBox="0 0 8 8"><path d="M3 1h1v1H3z M4 2h1v1H4z M5 3h1v1H5z M6 4h1v1H6z M5 5h1v1H5z M4 6h1v1H4z M3 7h1v1H3z"/></svg>
+    </button>
+    <div class="dots-container" id="dotsContainer"></div>
+  </div>
+
+  <div class="quick-section">
+    <div class="quick-title">Sürətli keçidlər</div>
+    <div class="quick-grid" id="quickGrid"></div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-title">Statistika</div>
+    <div class="stats-grid" id="statsGrid"></div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="tagline">İntellektuallar üçün hərşey...</div>
+  <div>© πksel intellektual oyunlar klubu</div>
+  <div>
+    <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener">πksel intellektual oyunlar klubu</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener">@Onur Əlizadə</a>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   MENU
+========================================================= */
+const menuBtn = document.getElementById('menuBtn');
+const menuOverlay = document.getElementById('menuOverlay');
+const sideMenu = document.getElementById('sideMenu');
+let menuOpen = false;
+
+menuBtn.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  sideMenu.classList.toggle('open', menuOpen);
+  menuOverlay.classList.toggle('open', menuOpen);
+});
+menuOverlay.addEventListener('click', () => {
+  menuOpen = false;
+  sideMenu.classList.remove('open');
+  menuOverlay.classList.remove('open');
+});
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+const themeBtn = document.getElementById('themeBtn');
+const themeIcon = document.getElementById('themeIcon');
+
+function applyTheme(dark){
+  document.body.classList.toggle('dark', dark);
+  themeIcon.textContent = dark ? '☀️' : '🌙';
+  try{ localStorage.setItem('piksel-theme', dark ? 'dark' : 'light'); }catch(e){}
+}
+let savedDark = false;
+try{ savedDark = localStorage.getItem('piksel-theme') === 'dark'; }catch(e){}
+applyTheme(savedDark);
+
+themeBtn.addEventListener('click', () => {
+  themeIcon.style.transform = 'scale(0)';
+  setTimeout(() => {
+    applyTheme(!document.body.classList.contains('dark'));
+    themeIcon.style.transform = 'scale(1)';
+  }, 150);
+});
+
+/* =========================================================
+   HERO LINK
+========================================================= */
+document.getElementById('heroBanner').addEventListener('click', function () {
+  window.open('https://www.instagram.com/piksel.iok?stkn=cDd6bHhzM2VpaHU0', '_blank');
+});
+
+/* =========================================================
+   CAROUSEL DATA — Paket 1st, Müəlliflər 2nd (per spec)
+========================================================= */
+const slideData = [
+  { img:"https://lh3.googleusercontent.com/d/1A6PXoxb_tiAq6aw1KVJdXR1vwCOdSsLk", link:"paketler.html", alt:"Sual paketləri" },
+  { img:"https://lh3.googleusercontent.com/d/1mO2owRgvZsL6-8zNeOj5tdvK1_6tj5-n", link:"muellif.html", alt:"Müəlliflər" },
+  { img:"https://cdn.phototourl.com/free/2026-09-13-068316a8-ce46-4a88-841b-b8085bbf567d.png", link:"breynrinq.html", alt:"Breyn Rinq" },
+  { img:"https://cdn.phototourl.com/free/2026-09-04-ab776095-fc12-4524-883d-d4d2d1e2f3b0.png", link:"taymer.html", alt:"NHN Taymer" },
+  { img:"https://lh3.googleusercontent.com/d/1WWC8Th2Wzk8AYrQmjeWicSyOtezuUxu-", link:"elaqe.html", alt:"Bizimlə Əlaqə" },
+  { img:"https://cdn.phototourl.com/free/2026-09-06-a12d1a67-c59a-4fc9-9cca-46acc2017d24.png", link:"elanlar.html", alt:"Elanlar" }
+];
+
+const TOTAL = slideData.length;
+let currentIndex = 1;
+
+const carouselContainer = document.getElementById('carouselContainer');
+const dotsContainer = document.getElementById('dotsContainer');
+
+slideData.forEach((s, i) => {
+  const item = document.createElement('div');
+  item.className = 'carousel-item';
+  item.onclick = () => handleCardClick(i);
+  item.innerHTML = `<img src="${s.img}" alt="${s.alt}">`;
+  carouselContainer.appendChild(item);
+
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.onclick = () => jumpTo(i);
+  dotsContainer.appendChild(dot);
+});
+
+const items = document.querySelectorAll('.carousel-item');
+const dots = document.querySelectorAll('.dot');
+let autoRotateTimer = null;
+
+function updateCarousel(){
+  items.forEach((item, index) => {
+    item.className = 'carousel-item';
+    if (index === currentIndex) item.classList.add('center');
+    else if (index === (currentIndex - 1 + TOTAL) % TOTAL) item.classList.add('left');
+    else if (index === (currentIndex + 1) % TOTAL) item.classList.add('right');
+    else item.classList.add('hidden-card');
+  });
+  dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
+}
+function moveNext(){ currentIndex = (currentIndex + 1) % TOTAL; updateCarousel(); }
+function movePrev(){ currentIndex = (currentIndex - 1 + TOTAL) % TOTAL; updateCarousel(); }
+function jumpTo(index){ currentIndex = index; updateCarousel(); }
+
+function handleCardClick(index){
+  const item = items[index];
+  item.classList.remove('pressed');
+  void item.offsetWidth;
+  item.classList.add('pressed');
+  setTimeout(() => item.classList.remove('pressed'), 400);
+
+  if (index === currentIndex){
+    setTimeout(() => { window.location.href = slideData[index].link; }, 400);
+  } else {
+    setTimeout(() => { currentIndex = index; updateCarousel(); }, 400);
+  }
+}
+
+function startAutoRotate(){ stopAutoRotate(); autoRotateTimer = setInterval(moveNext, 3500); }
+function stopAutoRotate(){ if (autoRotateTimer){ clearInterval(autoRotateTimer); autoRotateTimer = null; } }
+
+const wrapper = document.getElementById('carouselWrapper');
+wrapper.addEventListener('mouseenter', stopAutoRotate);
+wrapper.addEventListener('mouseleave', startAutoRotate);
+
+updateCarousel();
+startAutoRotate();
+
+/* =========================================================
+   QUICK LINKS — same-tab navigation, scroll-reveal once
+========================================================= */
+const quickData = [
+  { img:"https://cdn.phototourl.com/free/2026-09-13-927b580e-9209-474a-b917-62b7f631b664.png", link:"paketler.html", alt:"Sual paketləri" },
+  { img:"https://cdn.phototourl.com/free/2026-09-14-3b51002b-196a-4d5d-a21c-58b11963de82.png", link:"muellif.html", alt:"Müəlliflər" },
+  { img:"https://cdn.phototourl.com/free/2026-09-14-1960bcf3-97c8-43ad-bc08-efe52bce9c21.png", link:"breynrinq.html", alt:"Breyn Rinq" },
+  { img:"https://cdn.phototourl.com/free/2026-09-14-756fc5fd-b0c1-459a-972a-522e816fdc19.png", link:"taymer.html", alt:"NHN Taymer" },
+  { img:"https://cdn.phototourl.com/free/2026-09-14-cc7ee7a1-8a17-4848-b931-545012a68381.png", link:"elaqe.html", alt:"Əlaqə" },
+  { img:"https://cdn.phototourl.com/free/2026-09-14-03035248-cc3e-4e9c-99d6-551ef18e2288.png", link:"elanlar.html", alt:"Elanlar" }
+];
+
+const quickGrid = document.getElementById('quickGrid');
+quickData.forEach(q => {
+  const el = document.createElement('div');
+  el.className = 'quick-item';
+  el.innerHTML = `<img src="${q.img}" alt="${q.alt}">`;
+  el.addEventListener('click', function(){
+    this.classList.add('pressed');
+    setTimeout(() => { window.location.href = q.link; }, 500);
+  });
+  quickGrid.appendChild(el);
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.quick-item').forEach(el => revealObserver.observe(el));
+
+/* =========================================================
+   STATISTICS — edit these numbers manually until the admin
+   panel auto-generates them from the packages list
+========================================================= */
+const SITE_STATS = [
+  { label:"Paketlər (hamısı)", value:0 },
+  { label:"Nə? Harada? Nə Zaman?", value:0 },
+  { label:"Xəmsə", value:0 },
+  { label:"Breyn Rinq", value:0 },
+  { label:"Fərdi oyun", value:0 },
+  { label:"Müəllif sayı", value:0 }
+];
+
+const statsGrid = document.getElementById('statsGrid');
+SITE_STATS.forEach(s => {
+  const el = document.createElement('div');
+  el.className = 'stat-card';
+  el.innerHTML = `<div class="stat-label">${s.label}</div><div class="stat-value">${s.value}</div>`;
+  statsGrid.appendChild(el);
+});
+</script>
+
+</body>
+</html>
