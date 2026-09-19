@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="az">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>πksel.iok</title>
+<script>try{document.documentElement.classList.toggle('dark',localStorage.getItem('piksel-theme')==='dark');}catch(e){}</script>
 <style>
   :root{
     --bg:#BDD7FF;
@@ -29,7 +30,7 @@
     overflow-x:hidden;
   }
 
-  body.dark{
+  html.dark{
     --bg:#081335;
     --card-grad:linear-gradient(135deg,rgba(16,43,117,.55) 0%,rgba(0,30,111,.55) 45%,rgba(8,19,53,.6) 100%);
     --card-border:rgba(121,184,255,.25);
@@ -123,7 +124,7 @@
   @keyframes heroPulse{0%,66%{transform:scale(1);}83%{transform:scale(.97);}100%{transform:scale(1);}}
 
   /* =========================================================
-     CAROUSEL — restored full animation from reference
+     CAROUSEL
   ========================================================= */
   .page{width:100%;max-width:900px;margin:0 auto;}
 
@@ -218,7 +219,7 @@
     display:flex;flex-wrap:wrap;gap:10px;
   }
   .stat-card{
-    flex:1 1 150px;min-width:130px;
+    flex:1 1 0;min-width:0;
     background:var(--card-grad);
     border:1px solid var(--card-border);
     border-radius:16px;
@@ -227,8 +228,8 @@
     transition:transform .25s ease;
   }
   .stat-card:hover{transform:translateY(-3px);}
-  .stat-label{font-size:11.5px;font-weight:700;color:var(--text-on-light);opacity:.85;}
-  .stat-value{font-size:20px;font-weight:800;color:var(--text-on-light);margin-top:2px;}
+  .stat-label{font-size:10.5px;font-weight:700;color:var(--text-on-light);opacity:.85;}
+  .stat-value{font-size:17px;font-weight:800;color:var(--text-on-light);margin-top:2px;}
 
   /* =========================================================
      FOOTER
@@ -244,9 +245,123 @@
   }
   footer .tagline{font-weight:800;font-size:14px;white-space:nowrap;}
   footer a{font-weight:700;text-decoration:underline;}
+
+
+  /* =========================================================
+     πKSEL VISUAL SYSTEM — subtle premium layer
+  ========================================================= */
+  body{
+    position:relative;
+    isolation:isolate;
+    background:var(--bg);
+    background-image:radial-gradient(circle at 12% 8%,rgba(121,184,255,.16),transparent 30%),radial-gradient(circle at 88% 55%,rgba(0,30,111,.08),transparent 34%);
+    background-size:140% 140%,140% 140%;
+    animation:ambientDrift 20s ease-in-out infinite alternate;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    opacity:.20;
+    background-image:linear-gradient(90deg,transparent 49%,rgba(255,255,255,.035) 50%,transparent 51%),linear-gradient(0deg,transparent 49%,rgba(255,255,255,.025) 50%,transparent 51%);
+    background-size:46px 46px;
+    mask-image:linear-gradient(to bottom,black,transparent 75%);
+  }
+  @keyframes ambientDrift{
+    0%{background-position:0% 0%,100% 100%;}
+    100%{background-position:35% 18%,65% 82%;}
+  }
+  .quick-item,.stat-card{
+    position:relative;
+    overflow:hidden;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 8px 22px rgba(0,30,111,.13),inset 0 1px 0 rgba(255,255,255,.32);
+  }
+  .quick-item::before,.stat-card::before,.carousel-item::after{
+    content:"";position:absolute;pointer-events:none;
+    width:90px;height:180%;top:-40%;left:-130px;
+    transform:rotate(20deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+    opacity:0;
+  }
+  .quick-item::after,.stat-card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(circle at 20% 10%,rgba(255,255,255,.20),transparent 30%);
+    opacity:.55;
+  }
+  .quick-item.revealed:nth-child(2){animation-delay:.06s}.quick-item.revealed:nth-child(3){animation-delay:.12s}.quick-item.revealed:nth-child(4){animation-delay:.18s}.quick-item.revealed:nth-child(5){animation-delay:.24s}.quick-item.revealed:nth-child(6){animation-delay:.30s}
+  .quick-item:hover,.stat-card:hover{
+    box-shadow:0 12px 28px rgba(0,30,111,.18),inset 0 1px 0 rgba(255,255,255,.38);
+  }
+  .quick-item:hover::before,.stat-card:hover::before{
+    animation:softShine 1.1s ease forwards;
+  }
+  @keyframes softShine{
+    0%{left:-130px;opacity:0}
+    15%{opacity:1}
+    100%{left:135%;opacity:0}
+  }
+  .carousel-item.center{
+    filter:drop-shadow(0 15px 24px rgba(0,30,111,.28));
+  }
+  .carousel-item.center::after{opacity:.35;animation:carouselShine 5.8s ease-in-out infinite;z-index:4}
+  @keyframes carouselShine{
+    0%,65%{left:-130px;opacity:0}
+    73%{opacity:.7}
+    82%{left:135%;opacity:0}
+    100%{left:135%;opacity:0}
+  }
+  .nav-btn,.icon-btn{
+    box-shadow:0 6px 16px rgba(0,30,111,.25),inset 0 1px 0 rgba(255,255,255,.16);
+  }
+  .side-menu{
+    box-shadow:12px 0 35px rgba(0,10,40,.25);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  }
+  footer{
+    box-shadow:0 -8px 30px rgba(0,30,111,.12);
+  }
+  @media(max-width:640px){
+    .stats-grid{gap:7px}
+    .stat-card{padding:7px 7px;border-radius:14px}
+    .stat-label{font-size:9.5px}
+    .stat-value{font-size:16px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  }
+
+  /* =========================================================
+     MOBİL KARUSEL ÖLÇÜSÜ — telefonlar üçün kiçildildi
+  ========================================================= */
+  @media(max-width:640px){
+    .carousel-wrapper{height:250px;margin-top:10px;padding-bottom:18px;}
+    .carousel-item{width:170px;height:170px;border-radius:18px;}
+    .carousel-item img{border-radius:15px;}
+    .carousel-item.left{transform:translateX(-120px) translateZ(0) scale(.66);}
+    .carousel-item.center{transform:translateX(0) translateZ(80px) scale(1.12);}
+    .carousel-item.right{transform:translateX(120px) translateZ(0) scale(.66);}
+    .carousel-item.pressed.center{transform:translateX(0) translateZ(80px) scale(1.02);}
+    .carousel-item.pressed.left{transform:translateX(-120px) translateZ(0) scale(.58);}
+    .carousel-item.pressed.right{transform:translateX(120px) translateZ(0) scale(.58);}
+    .nav-btn{width:36px;height:36px;}
+    .nav-btn.prev{left:2px;}
+    .nav-btn.next{right:2px;}
+    .pixel-arrow{width:13px;height:13px;}
+    .dots-container{gap:6px;}
+    .dot{width:8px;height:8px;}
+  }
+  @media(max-width:380px){
+    .carousel-wrapper{height:205px;}
+    .carousel-item{width:140px;height:140px;}
+    .carousel-item.left{transform:translateX(-100px) translateZ(0) scale(.66);}
+    .carousel-item.right{transform:translateX(100px) translateZ(0) scale(.66);}
+    .carousel-item.pressed.left{transform:translateX(-100px) translateZ(0) scale(.58);}
+    .carousel-item.pressed.right{transform:translateX(100px) translateZ(0) scale(.58);}
+  }
+
 </style>
 </head>
-<body>
+  <body>
 
 <div class="topbar">
   <button class="icon-btn" id="menuBtn" aria-label="Menyu">
@@ -328,13 +443,13 @@ menuOverlay.addEventListener('click', () => {
 });
 
 /* =========================================================
-   DARK MODE
+   DARK MODE — bütün səhifələr üçün ortaq 'piksel-theme' açarı
 ========================================================= */
 const themeBtn = document.getElementById('themeBtn');
 const themeIcon = document.getElementById('themeIcon');
 
 function applyTheme(dark){
-  document.body.classList.toggle('dark', dark);
+  document.documentElement.classList.toggle('dark', dark);
   themeIcon.textContent = dark ? '☀️' : '🌙';
   try{ localStorage.setItem('piksel-theme', dark ? 'dark' : 'light'); }catch(e){}
 }
@@ -345,7 +460,7 @@ applyTheme(savedDark);
 themeBtn.addEventListener('click', () => {
   themeIcon.style.transform = 'scale(0)';
   setTimeout(() => {
-    applyTheme(!document.body.classList.contains('dark'));
+    applyTheme(!document.documentElement.classList.contains('dark'));
     themeIcon.style.transform = 'scale(1)';
   }, 150);
 });
@@ -358,7 +473,7 @@ document.getElementById('heroBanner').addEventListener('click', function () {
 });
 
 /* =========================================================
-   CAROUSEL DATA — Paket 1st, Müəlliflər 2nd (per spec)
+   CAROUSEL DATA
 ========================================================= */
 const slideData = [
   { img:"https://lh3.googleusercontent.com/d/1A6PXoxb_tiAq6aw1KVJdXR1vwCOdSsLk", link:"paketler.html", alt:"Sual paketləri" },
@@ -431,7 +546,7 @@ updateCarousel();
 startAutoRotate();
 
 /* =========================================================
-   QUICK LINKS — same-tab navigation, scroll-reveal once
+   QUICK LINKS
 ========================================================= */
 const quickData = [
   { img:"https://cdn.phototourl.com/free/2026-09-13-927b580e-9209-474a-b917-62b7f631b664.png", link:"paketler.html", alt:"Sual paketləri" },
@@ -466,11 +581,10 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.quick-item').forEach(el => revealObserver.observe(el));
 
 /* =========================================================
-   STATISTICS — edit these numbers manually until the admin
-   panel auto-generates them from the packages list
+   STATISTICS
 ========================================================= */
 const SITE_STATS = [
-  { label:"Paketlər (hamısı)", value:0 },
+  { label:"Paketlər", value:0 },
   { label:"Nə? Harada? Nə Zaman?", value:0 },
   { label:"Xəmsə", value:0 },
   { label:"Breyn Rinq", value:0 },
@@ -485,6 +599,24 @@ SITE_STATS.forEach(s => {
   el.innerHTML = `<div class="stat-label">${s.label}</div><div class="stat-value">${s.value}</div>`;
   statsGrid.appendChild(el);
 });
+
+
+  /* =========================================================
+     SUBTLE DESKTOP MAGNETIC EFFECT
+  ========================================================= */
+  if (window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.quick-item,.stat-card,.nav-btn,.icon-btn').forEach(el=>{
+      el.addEventListener('pointermove',e=>{
+        const r=el.getBoundingClientRect();
+        const x=(e.clientX-r.left-r.width/2)/r.width;
+        const y=(e.clientY-r.top-r.height/2)/r.height;
+        const max=el.classList.contains('quick-item')?3:2;
+        el.style.transform=`translate(${x*max}px,${y*max}px)`;
+      });
+      el.addEventListener('pointerleave',()=>{el.style.transform='';});
+    });
+  }
+
 </script>
 
 </body>
