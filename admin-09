@@ -1,0 +1,2656 @@
+  <!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>πksel.iok — Admin</title>
+<script>
+/* =========================================================
+   GİRİŞ QAPISI — yalnız .../admin09 ünvanı ilə açılır
+========================================================= */
+
+(function(){
+
+  var path = location.pathname.replace(/\/+$/,"");
+
+  var isFile = location.protocol === "file:";
+
+  var allowed =
+    /\/admin09$/i.test(path) ||
+    (isFile && /admin09\.html$/i.test(path));
+
+  if(!allowed){
+
+    document.documentElement.className = "gate-off";
+
+    location.replace("index.html");
+
+  }
+
+})();
+
+try{
+  document.documentElement.classList.toggle(
+    "dark",
+    localStorage.getItem("piksel-theme") === "dark"
+  );
+}catch(e){}
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+html.gate-off{visibility:hidden}
+
+:root{
+  --bg:#BDD7FF;
+  --navy:#001E6F;
+  --navy2:#102B75;
+  --mid:#88A8D3;
+  --accent:#79B8FF;
+  --white:#fff;
+  --text:#001E6F;
+  --card1:rgba(255,255,255,.48);
+  --card2:rgba(240,244,255,.70);
+  --border:rgba(255,255,255,.65);
+  --shadow:0 12px 35px rgba(0,30,111,.13);
+  --danger:#c62828;
+  --success:#197044;
+}
+
+html,body{
+  min-height:100%;
+  font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,255,255,.5),transparent 28%),
+    radial-gradient(circle at 90% 80%,rgba(121,184,255,.35),transparent 30%),
+    var(--bg);
+}
+
+body{
+  padding:0 0 50px;
+  overflow-x:hidden;
+}
+
+html.dark{
+  --bg:#081335;
+  --text:#BDD7FF;
+  --card1:rgba(13,35,91,.70);
+  --card2:rgba(10,29,73,.88);
+  --border:rgba(121,184,255,.20);
+  --shadow:0 14px 40px rgba(0,0,0,.32);
+}
+
+body:before,
+body:after{
+  content:"";
+  position:fixed;
+  width:5px;
+  height:5px;
+  border-radius:1px;
+  background:rgba(0,30,111,.15);
+  pointer-events:none;
+  animation:pixelFloat 7s ease-in-out infinite;
+}
+
+body:before{left:8%;top:25%}
+body:after{right:12%;top:70%;animation-delay:3s}
+
+@keyframes pixelFloat{
+  0%,100%{opacity:0;transform:translateY(0)}
+  35%,65%{opacity:.5}
+  50%{transform:translateY(-12px)}
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.hidden{display:none!important}
+
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.login-card{
+  width:min(430px,100%);
+  padding:30px;
+  border-radius:28px;
+  background:linear-gradient(145deg,var(--card1),var(--card2));
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+  animation:rise .6s ease;
+}
+
+.logo{
+  text-align:center;
+  font-size:30px;
+  font-weight:900;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+
+html.dark .logo{color:#BDD7FF}
+
+.subtitle{
+  text-align:center;
+  opacity:.7;
+  margin-bottom:26px;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-weight:750;
+  font-size:13px;
+  margin:0 0 7px 4px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid rgba(0,30,111,.15);
+  background:rgba(255,255,255,.7);
+  color:#001E6F;
+  border-radius:14px;
+  padding:13px 14px;
+  outline:none;
+  transition:.2s;
+}
+
+html.dark .field input,
+html.dark .field textarea,
+html.dark .field select{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(121,184,255,.2);
+  color:#BDD7FF;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:#79B8FF;
+  box-shadow:0 0 0 4px rgba(121,184,255,.16);
+}
+
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.primary{
+  width:100%;
+  padding:14px;
+  border-radius:15px;
+  color:#fff;
+  background:linear-gradient(135deg,#001E6F,#1450B8);
+  font-weight:800;
+  box-shadow:0 8px 20px rgba(0,30,111,.2);
+  transition:.2s;
+}
+
+.primary:active{transform:scale(.98)}
+
+.error{
+  color:#b42323;
+  font-size:13px;
+  text-align:center;
+  margin-top:12px;
+  min-height:18px;
+}
+
+#adminApp{
+  min-height:100vh;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  color:#BDD7FF;
+  background:linear-gradient(135deg,#001E6F,#102B75);
+  box-shadow:0 7px 25px rgba(0,0,0,.16);
+}
+
+.brand{
+  font-weight:900;
+  font-size:20px;
+}
+
+.brand span{
+  display:block;
+  font-size:10px;
+  opacity:.65;
+  letter-spacing:1.4px;
+  margin-top:-2px;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:rgba(255,255,255,.10);
+  color:#BDD7FF;
+  font-size:17px;
+}
+
+.layout{
+  width:min(1180px,100%);
+  margin:auto;
+  padding:20px 14px;
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:18px;
+}
+
+.sidebar{
+  position:sticky;
+  top:80px;
+  height:max-content;
+  padding:12px;
+  border-radius:22px;
+  background:linear-gradient(145deg,var(--card1),var(--card2));
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(16px);
+}
+
+.nav-btn{
+  width:100%;
+  text-align:left;
+  padding:13px 14px;
+  margin-bottom:7px;
+  border-radius:13px;
+  background:transparent;
+  color:var(--text);
+  font-weight:750;
+  transition:.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:linear-gradient(135deg,#001E6F,#1450B8);
+  color:#fff;
+  transform:translateX(2px);
+}
+
+.content{
+  min-width:0;
+}
+
+.section{
+  display:none;
+  animation:rise .35s ease;
+}
+
+.section.active{
+  display:block;
+}
+
+.page-title{
+  font-size:27px;
+  font-weight:900;
+  margin:3px 0 5px;
+}
+
+.page-desc{
+  opacity:.68;
+  margin-bottom:18px;
+  font-size:14px;
+}
+
+.card{
+  background:linear-gradient(145deg,var(--card1),var(--card2));
+  border:1px solid var(--border);
+  border-radius:21px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(16px);
+  padding:17px;
+  margin-bottom:14px;
+}
+
+.card h3{
+  margin-bottom:13px;
+  font-size:17px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.full{grid-column:1/-1}
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-bottom:14px;
+}
+
+.btn{
+  padding:11px 15px;
+  border-radius:13px;
+  background:rgba(255,255,255,.52);
+  color:var(--text);
+  font-weight:750;
+  border:1px solid var(--border);
+  transition:.2s;
+}
+
+html.dark .btn{background:rgba(255,255,255,.06)}
+
+.btn.primary-small{
+  color:#fff;
+  background:linear-gradient(135deg,#001E6F,#1450B8);
+}
+
+.btn.danger{
+  color:#fff;
+  background:#a92323;
+}
+
+.btn.success{
+  color:#fff;
+  background:#197044;
+}
+
+.btn:active{transform:scale(.97)}
+
+.package-card,
+.author-card,
+.announcement-card{
+  position:relative;
+  overflow:hidden;
+  padding:15px;
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--card1),var(--card2));
+  border:1px solid var(--border);
+  box-shadow:0 8px 25px rgba(0,30,111,.08);
+  margin-bottom:10px;
+}
+
+.item-row{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.package-icon,
+.author-icon{
+  flex:0 0 52px;
+  width:52px;
+  height:52px;
+  border-radius:15px;
+  object-fit:cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#001E6F,#2676D9);
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+}
+
+.item-info{
+  min-width:0;
+  flex:1;
+}
+
+.item-info strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:3px;
+}
+
+.item-info small{
+  display:block;
+  opacity:.62;
+}
+
+.item-actions{
+  display:flex;
+  gap:6px;
+}
+
+.mini-btn{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:rgba(255,255,255,.48);
+  color:var(--text);
+}
+
+html.dark .mini-btn{background:rgba(255,255,255,.07)}
+
+.mini-btn.danger{color:#b52222}
+
+.format-box{
+  margin-top:12px;
+  padding:14px;
+  border-radius:17px;
+  background:rgba(121,184,255,.09);
+  border:1px solid rgba(121,184,255,.16);
+}
+
+.format-title{
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.round-card{
+  padding:14px;
+  margin:10px 0;
+  border-radius:17px;
+  background:rgba(255,255,255,.22);
+  border:1px solid var(--border);
+}
+
+html.dark .round-card{
+  background:rgba(255,255,255,.035);
+}
+
+.round-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.round-head strong{
+  font-size:15px;
+}
+
+.question-card{
+  padding:13px;
+  border-radius:15px;
+  background:rgba(255,255,255,.35);
+  border:1px solid var(--border);
+  margin-top:8px;
+}
+
+html.dark .question-card{
+  background:rgba(255,255,255,.035);
+}
+
+.question-number{
+  font-weight:900;
+  font-size:13px;
+  margin-bottom:8px;
+  opacity:.7;
+}
+
+.topic-frame{
+  padding:15px;
+  border-radius:19px;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,rgba(195,212,240,.30),rgba(240,244,255,.20));
+  margin:10px 0;
+}
+
+html.dark .topic-frame{
+  background:rgba(121,184,255,.045);
+}
+
+.topic-name{
+  font-weight:900;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.photo-preview{
+  width:100%;
+  max-width:180px;
+  aspect-ratio:1;
+  border-radius:17px;
+  object-fit:cover;
+  display:none;
+  margin-top:9px;
+}
+
+.upload-label{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:90px;
+  border-radius:16px;
+  border:1px dashed rgba(0,30,111,.28);
+  background:rgba(255,255,255,.24);
+  cursor:pointer;
+  text-align:center;
+  padding:15px;
+  font-weight:750;
+}
+
+html.dark .upload-label{
+  border-color:rgba(121,184,255,.25);
+}
+
+.upload-label input{display:none}
+
+.status{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:99px;
+  font-size:11px;
+  font-weight:850;
+}
+
+.status.draft{
+  background:rgba(220,150,0,.13);
+  color:#8a5a00;
+}
+
+.status.published{
+  background:rgba(25,112,68,.13);
+  color:#197044;
+}
+
+.status.archived{
+  background:rgba(150,40,40,.13);
+  color:#a42323;
+}
+
+.notice{
+  padding:11px 13px;
+  border-radius:13px;
+  background:rgba(121,184,255,.12);
+  font-size:13px;
+  margin-bottom:13px;
+}
+
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  opacity:.55;
+}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:rgba(0,15,55,.55);
+  backdrop-filter:blur(7px);
+}
+
+.modal-bg.show{display:flex}
+
+.modal{
+  width:min(450px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:23px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  box-shadow:0 25px 70px rgba(0,0,0,.3);
+  padding:20px;
+}
+
+.modal h3{
+  margin-bottom:10px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:15px;
+}
+
+.save-bar{
+  position:sticky;
+  bottom:10px;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:10px 13px;
+  border-radius:16px;
+  background:rgba(0,30,111,.94);
+  color:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  margin-top:15px;
+}
+
+.save-state{
+  font-size:12px;
+  opacity:.8;
+}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:800px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:7px;
+  }
+
+  .nav-btn{
+    flex:0 0 auto;
+    width:auto;
+    margin:0;
+    white-space:nowrap;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{grid-column:auto}
+
+  .page-title{font-size:24px}
+}
+
+@media(max-width:480px){
+  .login-card{padding:22px}
+  .topbar{padding:0 11px}
+  .brand{font-size:18px}
+  .layout{padding:13px 9px}
+  .card{padding:14px}
+  .item-actions{flex-direction:column}
+  .save-bar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="logo">πksel.iok</div>
+    <div class="subtitle">ADMIN PANEL</div>
+
+    <div class="field">
+      <label>İstifadəçi adı</label>
+      <input id="loginUsername" autocomplete="username">
+    </div>
+
+    <div class="field">
+      <label>Parol</label>
+      <input id="loginPassword" type="password" autocomplete="current-password">
+    </div>
+
+    <div class="field">
+      <label>Admin kodu</label>
+      <input id="loginCode" type="password" inputmode="numeric">
+    </div>
+
+    <button class="primary" onclick="login()">Daxil ol</button>
+    <div id="loginError" class="error"></div>
+  </div>
+</div>
+
+
+<!-- ADMIN -->
+<div id="adminApp" class="hidden">
+
+  <header class="topbar">
+    <div class="brand">
+      πksel.iok
+      <span>ADMIN PANEL</span>
+    </div>
+
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">◐</button>
+      <button class="icon-btn" onclick="logout()">↪</button>
+    </div>
+  </header>
+
+
+  <div class="layout">
+
+    <aside class="sidebar">
+
+      <button class="nav-btn active" data-section="packages">
+        📦 Paketlər
+      </button>
+
+      <button class="nav-btn" data-section="authors">
+        👤 Müəlliflər
+      </button>
+
+      <button class="nav-btn" data-section="announcements">
+        📢 Elanlar
+      </button>
+
+      <button class="nav-btn" onclick="logout()">
+        🚪 Çıxış
+      </button>
+
+    </aside>
+
+
+    <main class="content">
+
+      <!-- PACKAGES -->
+      <section id="packages" class="section active">
+
+        <div class="page-title">Paketlər</div>
+        <div class="page-desc">
+          Paketləri əlavə et, redaktə et, yayımla və arxivlə.
+        </div>
+
+        <div class="toolbar">
+          <button class="btn primary-small" onclick="newPackage()">
+            + Paket əlavə et
+          </button>
+        </div>
+
+        <div id="packageList"></div>
+
+      </section>
+
+
+      <!-- PACKAGE EDITOR -->
+      <section id="packageEditor" class="section">
+
+        <div class="page-title" id="packageEditorTitle">
+          Yeni paket
+        </div>
+
+        <div class="page-desc">
+          Paket məlumatlarını doldur.
+        </div>
+
+        <div class="card">
+
+          <h3>Əsas məlumatlar</h3>
+
+          <div class="grid">
+
+            <div class="field full">
+              <label>Paket adı — böyük başlıq</label>
+              <input id="p_name">
+            </div>
+
+            <div class="field">
+              <label>Təşkilatçı</label>
+              <input id="p_organizer">
+            </div>
+
+            <div class="field">
+              <label>Redaktor(lar)</label>
+              <input id="p_editors" placeholder="Ad Soyad">
+            </div>
+
+            <div class="field">
+              <label>Müəllif(lər)</label>
+              <input id="p_authors"
+                     list="authorSuggestions"
+                     oninput="authorSuggest()"
+                     placeholder="Müəllif adı yaz">
+              <datalist id="authorSuggestions"></datalist>
+            </div>
+
+            <div class="field">
+              <label>Oynanıldığı tarix</label>
+              <input id="p_played" type="date">
+            </div>
+
+            <div class="field">
+              <label>Əlavə olunma tarixi</label>
+              <input id="p_added" type="date" readonly>
+            </div>
+
+            <div class="field full">
+              <label>Oyun formatı</label>
+              <select id="p_format" onchange="changeFormat()">
+                <option value="">Seç</option>
+                <option value="nhn">Nə? Harada? Nə Zaman?</option>
+                <option value="brain">Breyn Rinq</option>
+                <option value="xemse">Xəmsə</option>
+                <option value="ferdi">Fərdi oyun</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>Paket ikonu</label>
+              <label class="upload-label">
+                📷 Qalereyadan şəkil seç
+                <input id="p_image" type="file" accept="image/*" onchange="previewPackageImage(event)">
+              </label>
+              <img id="packageImagePreview" class="photo-preview">
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="formatBuilder"></div>
+
+        <div class="save-bar">
+          <div>
+            <div id="saveStatus">Qaralama hazır deyil</div>
+            <div class="save-state" id="autoSaveState">Autosave aktivdir</div>
+          </div>
+
+          <div style="display:flex;gap:7px">
+            <button class="btn" onclick="saveDraft()">Qaralama</button>
+            <button class="btn success" onclick="publishPackage()">Yayımla</button>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- AUTHORS -->
+      <section id="authors" class="section">
+
+        <div class="page-title">Müəlliflər</div>
+
+        <div class="page-desc">
+          Müəllifləri əlavə et və hansı paketlərə aid olduqlarını idarə et.
+        </div>
+
+        <div class="toolbar">
+          <button class="btn primary-small" onclick="newAuthor()">
+            + Müəllif əlavə et
+          </button>
+        </div>
+
+        <div id="authorList"></div>
+
+      </section>
+
+
+      <!-- ANNOUNCEMENTS -->
+      <section id="announcements" class="section">
+
+        <div class="page-title">Elanlar</div>
+
+        <div class="page-desc">
+          Yarış elanları və canlı geri sayım.
+        </div>
+
+        <div class="toolbar">
+          <button class="btn primary-small" onclick="newAnnouncement()">
+            + Elan əlavə et
+          </button>
+        </div>
+
+        <div id="announcementList"></div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+
+<!-- CONFIRM MODAL -->
+<div id="modalBg" class="modal-bg">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div id="modalText"></div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Ləğv et</button>
+      <button class="btn danger" id="modalConfirm">Təsdiq et</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* =========================================================
+   πksel.iok ADMIN
+   =========================================================
+   IMPORTANT:
+   Bu login məlumatlarını real public sistemdə JavaScript-də
+   saxlamaq təhlükəsiz deyil.
+
+   Bu hissə panelin ilkin işlək frontend prototipidir.
+   Yekun deploy zamanı authentication server tərəfinə keçiriləcək.
+   ========================================================= */
+
+const DEMO_AUTH = {
+  username: "pikseladminberde09",
+  password: "p1ksel_09%100on",
+  code: "12348765"
+};
+
+const STORAGE = {
+  packages:"piksel_admin_packages",
+  authors:"piksel_admin_authors",
+  announcements:"piksel_admin_announcements",
+  draft:"piksel_admin_draft"
+};
+
+let editingPackageId=null;
+let editingAuthorId=null;
+let editingAnnouncementId=null;
+let autosaveTimer=null;
+
+let packages = load(STORAGE.packages,[]);
+let authors = load(STORAGE.authors,[]);
+let announcements = load(STORAGE.announcements,[]);
+
+
+/* =========================
+   TEMA — ortaq 'piksel-theme' açarı
+========================= */
+
+function toggleTheme(){
+
+  const dark = document.documentElement.classList.toggle("dark");
+
+  try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(e){}
+}
+
+document.getElementById("themeBtn").textContent =
+  document.documentElement.classList.contains("dark") ? "☀️" : "🌙";
+
+
+/* =========================
+   BASIC
+========================= */
+
+function load(key,fallback){
+  try{
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  }catch(e){
+    return fallback;
+  }
+}
+
+function save(key,data){
+  localStorage.setItem(key,JSON.stringify(data));
+}
+
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
+
+function today(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function escapeHTML(value=""){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================
+   SAYTDA OLAN HAZIR PAKETLƏR
+   (paketler.html ilə eyni id-lər — ilk açılışda panelə düşür)
+========================= */
+
+const SITE_PACKAGES = [
+
+  {
+    id:"diamonds-ferdi-2",
+    name:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I Tur',
+    format:"ferdi",
+    played:"2026-09-13",
+    added:"2026-09-13",
+    organizer:"",
+    editors:"",
+    authors:"",
+    image:"",
+    structure:{format:"ferdi"},
+    status:"published"
+  },
+
+  {
+    id:"whatsapp",
+    name:'"πksel.iok" WhatsApp paketi',
+    format:"nhn",
+    played:"2026-09-11",
+    added:"2026-09-11",
+    organizer:"",
+    editors:"",
+    authors:"",
+    image:"",
+    structure:{format:"nhn"},
+    status:"published"
+  },
+
+  {
+    id:"amazon",
+    name:'"Amazon" kuboku',
+    format:"brain",
+    played:"2026-09-05",
+    added:"2026-09-05",
+    organizer:"",
+    editors:"",
+    authors:"",
+    image:"",
+    structure:{format:"brain"},
+    status:"published"
+  },
+
+  {
+    id:"moonopoly",
+    name:'"Moonopoly" turniri',
+    format:"xemse",
+    played:"2026-09-04",
+    added:"2026-09-04",
+    organizer:"",
+    editors:"",
+    authors:"",
+    image:"",
+    structure:{format:"xemse"},
+    status:"published"
+  },
+
+  {
+    id:"vesper",
+    name:'"Vesper" kuboku - Məktəblilərarası',
+    format:"nhn",
+    played:"2026-06-03",
+    added:"2026-09-03",
+    organizer:"İntellektual Gənclərin Həmrəylik Klubu",
+    editors:"Nəhmətli Adil",
+    authors:"Kərimli Kərim, Hüseynli Qabil, Yusifov Zeynal, Səmədov İslam, Nəhmətli Turqut",
+    image:"",
+    structure:{format:"nhn"},
+    status:"published"
+  }
+
+];
+
+
+/* Panel ilk dəfə açılanda saytdakı paketlər siyahıya əlavə olunur,
+   beləliklə hamısını redaktə etmək mümkün olur. */
+
+function seedSitePackages(){
+
+  const existing = new Set(packages.map(p=>p.id));
+
+  let changed=false;
+
+  SITE_PACKAGES.forEach(p=>{
+
+    if(!existing.has(p.id)){
+
+      packages.push(
+        Object.assign({},p,{updatedAt:new Date().toISOString()})
+      );
+
+      changed=true;
+    }
+
+  });
+
+  if(changed){
+    save(STORAGE.packages,packages);
+  }
+
+}
+
+seedSitePackages();
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+  const u=document.getElementById("loginUsername").value.trim();
+  const p=document.getElementById("loginPassword").value;
+  const c=document.getElementById("loginCode").value;
+
+  if(
+    u===DEMO_AUTH.username &&
+    p===DEMO_AUTH.password &&
+    c===DEMO_AUTH.code
+  ){
+    sessionStorage.setItem("piksel_admin_session","1");
+
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("adminApp").classList.remove("hidden");
+
+    renderAll();
+  }else{
+    document.getElementById("loginError").textContent=
+      "İstifadəçi adı, parol və ya admin kodu yanlışdır.";
+  }
+}
+
+function logout(){
+  sessionStorage.removeItem("piksel_admin_session");
+  location.reload();
+}
+
+function checkSession(){
+
+  if(sessionStorage.getItem("piksel_admin_session")==="1"){
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("adminApp").classList.remove("hidden");
+    renderAll();
+  }
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+document.querySelectorAll(".nav-btn[data-section]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+
+    document.querySelectorAll(".nav-btn").forEach(x=>{
+      x.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+
+    document.querySelectorAll(".section").forEach(s=>{
+      s.classList.remove("active");
+    });
+
+    document.getElementById(btn.dataset.section).classList.add("active");
+  });
+});
+
+
+function openSection(id){
+
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(x=>{
+    x.classList.remove("active");
+  });
+
+  const nav=document.querySelector(`.nav-btn[data-section="${id}"]`);
+
+  if(nav)nav.classList.add("active");
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderAll(){
+  renderPackages();
+  renderAuthors();
+  renderAnnouncements();
+  fillAuthorSuggestions();
+}
+
+function renderPackages(){
+
+  const el=document.getElementById("packageList");
+
+  if(!packages.length){
+    el.innerHTML='<div class="card empty">Hələ paket əlavə edilməyib.</div>';
+    return;
+  }
+
+  el.innerHTML=packages.map(p=>`
+
+    <div class="package-card">
+
+      <div class="item-row">
+
+        ${
+          p.image
+          ? `<img class="package-icon" src="${p.image}">`
+          : `<div class="package-icon">${initials(p.name)}</div>`
+        }
+
+        <div class="item-info">
+
+          <strong>${escapeHTML(p.name)}</strong>
+
+          <small>
+            ${escapeHTML(formatName(p.format))}
+          </small>
+
+          <small>
+            ${p.status==="published"
+              ? '<span class="status published">Yayımlanıb</span>'
+              : p.status==="archived"
+              ? '<span class="status archived">Arxiv</span>'
+              : '<span class="status draft">Qaralama</span>'
+            }
+          </small>
+
+        </div>
+
+        <div class="item-actions">
+
+          ${
+            p.status==="archived"
+            ? `<button class="mini-btn" onclick="restorePackage('${p.id}')">↩</button>`
+            : `<button class="mini-btn" onclick="editPackage('${p.id}')">✎</button>
+               <button class="mini-btn danger" onclick="archivePackage('${p.id}')">🗑</button>`
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `).join("");
+}
+
+function formatName(format){
+
+  return {
+    nhn:"Nə? Harada? Nə Zaman?",
+    brain:"Breyn Rinq",
+    xemse:"Xəmsə",
+    ferdi:"Fərdi oyun"
+  }[format] || "";
+}
+
+function initials(name=""){
+
+  const parts=name.trim().split(/\s+/).filter(Boolean);
+
+  if(!parts.length)return "π";
+
+  return parts
+    .slice(0,2)
+    .map(x=>x.charAt(0).toLocaleUpperCase("az-AZ"))
+    .join("");
+}
+
+
+/* =========================
+   PACKAGE
+========================= */
+
+function newPackage(){
+
+  editingPackageId=null;
+
+  document.getElementById("packageEditorTitle").textContent="Yeni paket";
+
+  clearPackageForm();
+
+  document.getElementById("p_added").value=today();
+
+  document.getElementById("formatBuilder").innerHTML="";
+
+  openSection("packageEditor");
+}
+
+function clearPackageForm(){
+
+  [
+    "p_name",
+    "p_organizer",
+    "p_editors",
+    "p_authors",
+    "p_played",
+    "p_added"
+  ].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+
+  document.getElementById("p_format").value="";
+  document.getElementById("packageImagePreview").style.display="none";
+  document.getElementById("packageImagePreview").src="";
+  document.getElementById("p_image").value="";
+}
+
+function editPackage(id){
+
+  const p=packages.find(x=>x.id===id);
+
+  if(!p)return;
+
+  editingPackageId=id;
+
+  document.getElementById("packageEditorTitle").textContent="Paketi redaktə et";
+
+  document.getElementById("p_name").value=p.name||"";
+  document.getElementById("p_organizer").value=p.organizer||"";
+  document.getElementById("p_editors").value=p.editors||"";
+  document.getElementById("p_authors").value=p.authors||"";
+  document.getElementById("p_played").value=p.played||"";
+  document.getElementById("p_added").value=p.added||today();
+  document.getElementById("p_format").value=p.format||"";
+
+  if(p.image){
+    const preview=document.getElementById("packageImagePreview");
+    preview.src=p.image;
+    preview.style.display="block";
+  }
+
+  changeFormat(p.structure);
+
+  openSection("packageEditor");
+}
+
+
+/* =========================
+   FORMAT BUILDER
+========================= */
+
+function changeFormat(existing=null){
+
+  const format=document.getElementById("p_format").value;
+  const builder=document.getElementById("formatBuilder");
+
+  if(!format){
+    builder.innerHTML="";
+    return;
+  }
+
+  if(existing && existing.questions){
+    builder.innerHTML=buildExistingStructure(format,existing);
+    return;
+  }
+
+  if(format==="nhn"){
+    builder.innerHTML=`
+      <div class="card">
+        <h3>Nə? Harada? Nə Zaman?</h3>
+
+        <div class="field">
+          <label>Tur sayı</label>
+          <input id="nhn_round_count" type="number" min="1" value="1">
+        </div>
+
+        <div id="nhnRounds"></div>
+
+        <button class="btn primary-small" onclick="buildNHNRounds()">
+          Turları yarat
+        </button>
+      </div>
+    `;
+    buildNHNRounds();
+  }
+
+  if(format==="brain"){
+    builder.innerHTML=`
+      <div class="card">
+        <h3>Breyn Rinq</h3>
+
+        <div class="field">
+          <label>Tur sayı</label>
+          <input id="brain_round_count" type="number" min="1" value="1">
+        </div>
+
+        <div id="brainRounds"></div>
+
+        <button class="btn primary-small" onclick="buildBrainRounds()">
+          Turları yarat
+        </button>
+      </div>
+    `;
+    buildBrainRounds();
+  }
+
+  if(format==="xemse"){
+    builder.innerHTML=`
+      <div class="card">
+        <h3>Xəmsə</h3>
+
+        <div class="field">
+          <label>Tur sayı</label>
+          <input id="xemse_round_count" type="number" min="1" value="1">
+        </div>
+
+        <div id="xemseRounds"></div>
+
+        <button class="btn primary-small" onclick="buildXemseRounds()">
+          Turları yarat
+        </button>
+      </div>
+    `;
+    buildXemseRounds();
+  }
+
+  if(format==="ferdi"){
+    builder.innerHTML=`
+      <div class="card">
+        <h3>Fərdi oyun</h3>
+
+        <div class="field">
+          <label>Tur sayı</label>
+          <input id="ferdi_round_count" type="number" min="1" value="1">
+        </div>
+
+        <div id="ferdiRounds"></div>
+
+        <button class="btn primary-small" onclick="buildFerdiRounds()">
+          Turları yarat
+        </button>
+      </div>
+    `;
+    buildFerdiRounds();
+  }
+}
+
+
+/* =========================
+   NHN
+========================= */
+
+function buildNHNRounds(){
+
+  const count=Math.max(
+    1,
+    Number(document.getElementById("nhn_round_count").value||1)
+  );
+
+  let html="";
+
+  for(let r=1;r<=count;r++){
+
+    html+=`
+      <div class="round-card">
+
+        <div class="round-head">
+          <strong>${r}. Tur</strong>
+        </div>
+
+        <div class="field">
+          <label>Sual sayı</label>
+          <input
+            class="nhn-count"
+            data-round="${r}"
+            type="number"
+            min="1"
+            value="1"
+            onchange="buildNHNQuestions(${r})">
+        </div>
+
+        <div id="nhnQuestions${r}"></div>
+
+      </div>
+    `;
+  }
+
+  document.getElementById("nhnRounds").innerHTML=html;
+
+  for(let r=1;r<=count;r++){
+    buildNHNQuestions(r);
+  }
+}
+
+function buildNHNQuestions(round){
+
+  const count=Number(
+    document.querySelector(`.nhn-count[data-round="${round}"]`).value||1
+  );
+
+  let html="";
+
+  for(let q=1;q<=count;q++){
+
+    html+=questionHTML(
+      `nhn_${round}_${q}`,
+      q
+    );
+  }
+
+  document.getElementById(`nhnQuestions${round}`).innerHTML=html;
+}
+
+
+/* =========================
+   BRAIN RING
+========================= */
+
+function buildBrainRounds(){
+
+  const count=Math.max(
+    1,
+    Number(document.getElementById("brain_round_count").value||1)
+  );
+
+  let html="";
+
+  for(let r=1;r<=count;r++){
+
+    html+=`
+      <div class="round-card">
+
+        <div class="round-head">
+          <strong>${r}. Tur</strong>
+        </div>
+
+        <div class="field">
+          <label>Döyüş sayı</label>
+          <input
+            class="brain-count"
+            data-round="${r}"
+            type="number"
+            min="1"
+            value="1"
+            onchange="buildBrainBattles(${r})">
+        </div>
+
+        <div id="brainBattles${r}"></div>
+
+      </div>
+    `;
+  }
+
+  document.getElementById("brainRounds").innerHTML=html;
+
+  for(let r=1;r<=count;r++){
+    buildBrainBattles(r);
+  }
+}
+
+function buildBrainBattles(round){
+
+  const count=Number(
+    document.querySelector(`.brain-count[data-round="${round}"]`).value||1
+  );
+
+  let html="";
+
+  for(let b=1;b<=count;b++){
+
+    html+=`
+      <div class="format-box">
+
+        <div class="format-title">
+          ${b}. Döyüş
+        </div>
+
+        <div class="field">
+          <label>Sual sayı</label>
+          <input
+            class="battle-count"
+            data-round="${round}"
+            data-battle="${b}"
+            type="number"
+            min="1"
+            value="1"
+            onchange="buildBattleQuestions(${round},${b})">
+        </div>
+
+        <div id="battleQuestions${round}_${b}"></div>
+
+      </div>
+    `;
+  }
+
+  document.getElementById(`brainBattles${round}`).innerHTML=html;
+
+  for(let b=1;b<=count;b++){
+    buildBattleQuestions(round,b);
+  }
+}
+
+function buildBattleQuestions(round,battle){
+
+  const input=document.querySelector(
+    `.battle-count[data-round="${round}"][data-battle="${battle}"]`
+  );
+
+  const count=Number(input.value||1);
+
+  let html="";
+
+  for(let q=1;q<=count;q++){
+    html+=questionHTML(
+      `brain_${round}_${battle}_${q}`,
+      q
+    );
+  }
+
+  document.getElementById(
+    `battleQuestions${round}_${battle}`
+  ).innerHTML=html;
+}
+
+
+/* =========================
+   XƏMSƏ
+========================= */
+
+function buildXemseRounds(){
+
+  const count=Math.max(
+    1,
+    Number(document.getElementById("xemse_round_count").value||1)
+  );
+
+  let html="";
+
+  for(let r=1;r<=count;r++){
+
+    html+=`
+      <div class="round-card">
+
+        <div class="round-head">
+          <strong>${r}. Tur</strong>
+        </div>
+
+        ${xemseRound("Bəlli raund",r)}
+        ${xemseRound("Şərtli raund",r)}
+        ${xemseRound("Sirli raund",r)}
+        ${xemseRound("Fərdi raund",r)}
+
+      </div>
+    `;
+  }
+
+  document.getElementById("xemseRounds").innerHTML=html;
+}
+
+function xemseRound(type,round){
+
+  let frames="";
+
+  for(let f=1;f<=5;f++){
+
+    frames+=topicFrameHTML(
+      `xemse_${round}_${type}_${f}`,
+      f
+    );
+  }
+
+  return `
+    <div class="format-box">
+
+      <div class="format-title">${type}</div>
+
+      ${frames}
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   FƏRDİ
+========================= */
+
+function buildFerdiRounds(){
+
+  const count=Math.max(
+    1,
+    Number(document.getElementById("ferdi_round_count").value||1)
+  );
+
+  let html="";
+
+  for(let r=1;r<=count;r++){
+
+    html+=`
+      <div class="round-card">
+
+        <div class="round-head">
+          <strong>${r}. Tur</strong>
+        </div>
+
+        ${[
+          1,2,3,4,5
+        ].map(f=>topicFrameHTML(`ferdi_${r}_${f}`,f)).join("")}
+
+      </div>
+    `;
+  }
+
+  document.getElementById("ferdiRounds").innerHTML=html;
+}
+
+
+/* =========================
+   QUESTION HTML
+========================= */
+
+function questionHTML(id,num){
+
+  return `
+    <div class="question-card">
+
+      <div class="question-number">
+        Sual ${num}
+      </div>
+
+      <div class="field">
+        <label>Sual</label>
+        <textarea data-q="${id}" data-field="question"></textarea>
+      </div>
+
+      <div class="grid">
+
+        <div class="field">
+          <label>Cavab</label>
+          <textarea data-q="${id}" data-field="answer"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Sayılma meyarı</label>
+          <textarea data-q="${id}" data-field="criteria"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Şərh</label>
+          <textarea data-q="${id}" data-field="comment"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Mənbə</label>
+          <textarea data-q="${id}" data-field="source"></textarea>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   TOPIC FRAME
+========================= */
+
+function topicFrameHTML(id,num){
+
+  return `
+    <div class="topic-frame">
+
+      <div class="topic-name">
+        ${num}. Mövzu çərçivəsi
+      </div>
+
+      <div class="field">
+        <label>Mövzu adı</label>
+        <input data-topic="${id}" data-field="topic">
+      </div>
+
+      ${[1,2,3,4,5].map(q=>questionHTML(`${id}_${q}`,q)).join("")}
+
+      <div class="field">
+        <label>Çərçivənin müəllifi</label>
+        <input
+          data-topic-author="${id}"
+          placeholder="Ad Soyad">
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   EXISTING STRUCTURE
+========================= */
+
+function buildExistingStructure(format,structure){
+
+  /*
+    Mövcud strukturun sualları yenidən qurulur.
+    Redaktə zamanı məlumatlar itməsin deyə
+    yalnız mövcud sual mətnləri göstərilir.
+  */
+
+  const q = structure.questions || {};
+
+  const questionKeys = Object.keys(q).sort();
+
+  let html="";
+
+  questionKeys.forEach((key,index)=>{
+
+    const item=q[key];
+
+    html+=`
+
+      <div class="question-card">
+
+        <div class="question-number">
+          ${key}
+        </div>
+
+        <div class="field">
+          <label>Sual</label>
+          <textarea data-q="${key}" data-field="question">${escapeHTML(item.question||"")}</textarea>
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>Cavab</label>
+            <textarea data-q="${key}" data-field="answer">${escapeHTML(item.answer||"")}</textarea>
+          </div>
+
+          <div class="field">
+            <label>Sayılma meyarı</label>
+            <textarea data-q="${key}" data-field="criteria">${escapeHTML(item.criteria||"")}</textarea>
+          </div>
+
+          <div class="field">
+            <label>Şərh</label>
+            <textarea data-q="${key}" data-field="comment">${escapeHTML(item.comment||"")}</textarea>
+          </div>
+
+          <div class="field">
+            <label>Mənbə</label>
+            <textarea data-q="${key}" data-field="source">${escapeHTML(item.source||"")}</textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  if(!html){
+
+    html=`
+      <div class="notice">
+        Bu paketdə sual strukturu qeyd olunmayıb.
+        Yeni tur yaradaraq sualları əlavə edə bilərsən.
+      </div>
+    `;
+
+  }
+
+  return `
+    <div class="card">
+      <h3>Mövcud suallar</h3>
+      ${html}
+    </div>
+  `;
+}
+
+
+/* =========================
+   COLLECT PACKAGE
+========================= */
+
+function collectPackage(){
+
+  const format=document.getElementById("p_format").value;
+
+  return {
+    id:editingPackageId || uid(),
+
+    name:document.getElementById("p_name").value.trim(),
+
+    organizer:document.getElementById("p_organizer").value.trim(),
+
+    editors:document.getElementById("p_editors").value.trim(),
+
+    authors:document.getElementById("p_authors").value.trim(),
+
+    played:document.getElementById("p_played").value,
+
+    added:document.getElementById("p_added").value || today(),
+
+    format,
+
+    image:document.getElementById("packageImagePreview").src || "",
+
+    structure:collectStructure(format),
+
+    status:
+      editingPackageId
+      ? (packages.find(x=>x.id===editingPackageId)?.status || "draft")
+      : "draft",
+
+    updatedAt:new Date().toISOString()
+  };
+}
+
+function collectStructure(format){
+
+  const data={
+    format
+  };
+
+  document.querySelectorAll("[data-q]").forEach(el=>{
+
+    const id=el.dataset.q;
+
+    if(!data.questions)data.questions={};
+
+    if(!data.questions[id]){
+      data.questions[id]={};
+    }
+
+    const value=el.value.trim();
+
+    if(value){
+      data.questions[id][el.dataset.field]=value;
+    }
+  });
+
+  document.querySelectorAll("[data-topic]").forEach(el=>{
+
+    const id=el.dataset.topic;
+
+    if(!data.topics)data.topics={};
+
+    if(!data.topics[id]){
+      data.topics[id]={};
+    }
+
+    const value=el.value.trim();
+
+    if(value){
+      data.topics[id][el.dataset.field]=value;
+    }
+  });
+
+  document.querySelectorAll("[data-topic-author]").forEach(el=>{
+
+    const id=el.dataset.topicAuthor;
+    const value=el.value.trim();
+
+    if(value){
+
+      if(!data.topics)data.topics={};
+
+      if(!data.topics[id]){
+        data.topics[id]={};
+      }
+
+      data.topics[id].author=value;
+    }
+  });
+
+  return data;
+}
+
+
+/* =========================
+   SAVE DRAFT
+========================= */
+
+function saveDraft(){
+
+  const p=collectPackage();
+
+  if(!p.name){
+    alert("Paket adını yaz.");
+    return;
+  }
+
+  p.status="draft";
+
+  const index=packages.findIndex(x=>x.id===p.id);
+
+  if(index>=0){
+    packages[index]=p;
+  }else{
+    packages.push(p);
+  }
+
+  save(STORAGE.packages,packages);
+
+  editingPackageId=p.id;
+
+  document.getElementById("saveStatus").textContent=
+    "Qaralama saxlanıldı • "+new Date().toLocaleTimeString("az-AZ");
+
+  renderPackages();
+}
+
+function publishPackage(){
+
+  const p=collectPackage();
+
+  if(!p.name){
+    alert("Paket adını yaz.");
+    return;
+  }
+
+  confirmModal(
+    "Paketi yayımla",
+    "Bu paket public saytda yayımlansın?",
+    ()=>{
+      p.status="published";
+
+      const index=packages.findIndex(x=>x.id===p.id);
+
+      if(index>=0){
+        packages[index]=p;
+      }else{
+        packages.push(p);
+      }
+
+      save(STORAGE.packages,packages);
+
+      editingPackageId=p.id;
+
+      document.getElementById("saveStatus").textContent=
+        "Paket yayımlandı • "+new Date().toLocaleTimeString("az-AZ");
+
+      renderPackages();
+    }
+  );
+}
+
+
+/* =========================
+   AUTOSAVE
+========================= */
+
+function startAutosave(){
+
+  clearInterval(autosaveTimer);
+
+  autosaveTimer=setInterval(()=>{
+
+    if(
+      document.getElementById("packageEditor").classList.contains("active")
+    ){
+
+      const name=document.getElementById("p_name").value.trim();
+
+      if(name){
+
+        const p=collectPackage();
+
+        p.status="draft";
+
+        const index=packages.findIndex(x=>x.id===p.id);
+
+        if(index>=0){
+          packages[index]=p;
+        }else{
+          packages.push(p);
+        }
+
+        save(STORAGE.packages,packages);
+
+        editingPackageId=p.id;
+
+        document.getElementById("autoSaveState").textContent=
+          "Qaralama avtomatik saxlanıldı • "+
+          new Date().toLocaleTimeString("az-AZ");
+      }
+
+    }
+
+  },120000);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+function previewPackageImage(event){
+
+  const file=event.target.files[0];
+
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=e=>{
+
+    const img=document.getElementById("packageImagePreview");
+
+    img.src=e.target.result;
+    img.style.display="block";
+
+  };
+
+  reader.readAsDataURL(file);
+}
+
+
+/* =========================
+   ARCHIVE
+========================= */
+
+function archivePackage(id){
+
+  confirmModal(
+    "Paketi arxivlə",
+    "Paket public saytdan çıxarılacaq və arxivə göndəriləcək.",
+    ()=>{
+
+      const p=packages.find(x=>x.id===id);
+
+      if(!p)return;
+
+      p.status="archived";
+      p.archivedAt=new Date().toISOString();
+
+      save(STORAGE.packages,packages);
+
+      renderPackages();
+    }
+  );
+}
+
+function restorePackage(id){
+
+  const p=packages.find(x=>x.id===id);
+
+  if(!p)return;
+
+  const archived=new Date(p.archivedAt);
+  const now=new Date();
+
+  const days=(now-archived)/(1000*60*60*24);
+
+  if(days>14){
+    alert("Bu paketin 14 günlük bərpa müddəti bitib.");
+    return;
+  }
+
+  p.status="draft";
+  delete p.archivedAt;
+
+  save(STORAGE.packages,packages);
+
+  renderPackages();
+}
+
+
+/* =========================
+   AUTHORS
+========================= */
+
+function newAuthor(){
+
+  editingAuthorId=null;
+
+  openAuthorModal();
+}
+
+function openAuthorModal(author=null){
+
+  const name=prompt(
+    author
+    ? "Müəllif adını redaktə et:"
+    : "Müəllifin ad və soyadını yaz:",
+    author?.name || ""
+  );
+
+  if(name===null)return;
+
+  const clean=name.trim();
+
+  if(!clean)return;
+
+  if(author){
+
+    author.name=clean;
+
+  }else{
+
+    authors.push({
+      id:uid(),
+      name:clean,
+      packages:[]
+    });
+
+  }
+
+  save(STORAGE.authors,authors);
+
+  renderAuthors();
+  fillAuthorSuggestions();
+}
+
+function renderAuthors(){
+
+  const el=document.getElementById("authorList");
+
+  if(!authors.length){
+    el.innerHTML='<div class="card empty">Hələ müəllif əlavə edilməyib.</div>';
+    return;
+  }
+
+  el.innerHTML=authors.map(a=>{
+
+    const authorPackages=packages.filter(p=>
+      String(p.authors||"")
+        .split(",")
+        .map(x=>x.trim())
+        .includes(a.name)
+    );
+
+    const count=authorPackages.length;
+
+    return `
+
+      <div class="author-card">
+
+        <div class="item-row">
+
+          <div class="author-icon">
+            ${escapeHTML(initials(a.name))}
+          </div>
+
+          <div class="item-info">
+
+            <strong>${escapeHTML(a.name)}</strong>
+
+            <small>${count} paket</small>
+
+          </div>
+
+          <div class="item-actions">
+
+            <button class="mini-btn"
+              onclick="openAuthorPackages('${a.id}')">
+              →
+            </button>
+
+            <button class="mini-btn"
+              onclick="openAuthorModal(${JSON.stringify(a).replaceAll('"','&quot;')})">
+              ✎
+            </button>
+
+            <button class="mini-btn danger"
+              onclick="deleteAuthor('${a.id}')">
+              🗑
+            </button>
+
+          </div>
+
+        </div>
+
+        <div id="authorPackages_${a.id}" class="hidden"
+             style="margin-top:12px">
+
+          ${
+            authorPackages.length
+            ? authorPackages.map(p=>`
+                <div class="package-card"
+                     onclick="editPackage('${p.id}')"
+                     style="cursor:pointer">
+                  <div class="item-row">
+                    <div class="package-icon">
+                      ${escapeHTML(initials(p.name))}
+                    </div>
+                    <div class="item-info">
+                      <strong>${escapeHTML(p.name)}</strong>
+                      <small>${escapeHTML(formatName(p.format))}</small>
+                    </div>
+                  </div>
+                </div>
+              `).join("")
+            : '<div class="empty">Bu müəllifə aid paket yoxdur.</div>'
+          }
+
+        </div>
+
+      </div>
+
+    `;
+  }).join("");
+}
+
+function openAuthorPackages(id){
+
+  const box=document.getElementById("authorPackages_"+id);
+
+  if(box)box.classList.toggle("hidden");
+}
+
+function deleteAuthor(id){
+
+  const author=authors.find(x=>x.id===id);
+
+  if(!author)return;
+
+  confirmModal(
+    "Müəllifi sil",
+    `"${author.name}" müəllifi silinsin?`,
+    ()=>{
+
+      authors=authors.filter(x=>x.id!==id);
+
+      save(STORAGE.authors,authors);
+
+      renderAuthors();
+      fillAuthorSuggestions();
+    }
+  );
+}
+
+function fillAuthorSuggestions(){
+
+  const list=document.getElementById("authorSuggestions");
+
+  list.innerHTML=authors
+    .map(a=>`<option value="${escapeHTML(a.name)}"></option>`)
+    .join("");
+}
+
+function authorSuggest(){
+
+  const value=document.getElementById("p_authors").value.trim();
+
+  if(!value)return;
+
+  /*
+    Mövcud müəllif avtomatik təklif olunur.
+    Yeni addımda backend-ə bağlandıqda
+    mövcud deyilsə avtomatik yaradılacaq.
+  */
+}
+
+
+/* =========================
+   ANNOUNCEMENTS
+========================= */
+
+function newAnnouncement(){
+
+  const title=prompt("Yarış adı:");
+
+  if(title===null || !title.trim())return;
+
+  const date=prompt(
+    "Yarış tarixi və saatı:\nMəsələn: 2026-09-20T13:00"
+  );
+
+  if(!date)return;
+
+  const place=prompt("Yarış məkanı (boş qala bilər):","");
+
+  const organizer=prompt("Yarış təşkilatçısı:","");
+
+  const authorsText=prompt("Müəlliflər:","");
+
+  const link=prompt("Dəvət linki:","");
+
+  const image=prompt(
+    "Yarış afişasının şəkil məlumatı:\n\nİlkin versiyada şəkil üçün URL daxil edə bilərsən."
+  );
+
+  const start=new Date(date);
+
+  if(isNaN(start.getTime())){
+    alert("Tarix formatı yanlışdır.");
+    return;
+  }
+
+  const expiresAt=new Date(
+    start.getTime()+2*60*60*1000
+  ).toISOString();
+
+  announcements.push({
+    id:uid(),
+    title:title.trim(),
+    place:(place||"").trim(),
+    date:start.toISOString(),
+    organizer:(organizer||"").trim(),
+    authors:(authorsText||"").trim(),
+    inviteLink:(link||"").trim(),
+    image:(image||"").trim(),
+    expiresAt,
+    createdAt:new Date().toISOString()
+  });
+
+  save(STORAGE.announcements,announcements);
+
+  renderAnnouncements();
+}
+
+function renderAnnouncements(){
+
+  const el=document.getElementById("announcementList");
+
+  cleanupExpiredAnnouncements();
+
+  if(!announcements.length){
+    el.innerHTML='<div class="card empty">Aktiv elan yoxdur.</div>';
+    return;
+  }
+
+  el.innerHTML=announcements.map(a=>`
+
+    <div class="announcement-card">
+
+      ${
+        a.image
+        ? `<img src="${escapeHTML(a.image)}"
+                style="width:100%;max-height:220px;object-fit:cover;border-radius:15px;margin-bottom:12px">`
+        : ""
+      }
+
+      <strong style="font-size:17px">
+        ${escapeHTML(a.title)}
+      </strong>
+
+      <div style="margin-top:9px;line-height:1.8;font-size:13px">
+
+        ${
+          a.place
+          ? `📍 ${escapeHTML(a.place)}<br>`
+          : ""
+        }
+
+        📅 ${new Date(a.date).toLocaleString("az-AZ")}
+
+        ${
+          a.organizer
+          ? `<br>🏢 ${escapeHTML(a.organizer)}`
+          : ""
+        }
+
+        ${
+          a.authors
+          ? `<br>✍ ${escapeHTML(a.authors)}`
+          : ""
+        }
+
+      </div>
+
+      <div
+        id="countdown_${a.id}"
+        style="margin-top:12px;font-weight:900">
+      </div>
+
+      <div class="toolbar" style="margin-top:12px;margin-bottom:0">
+
+        ${
+          a.inviteLink
+          ? `<button class="btn"
+               onclick="window.open('${escapeHTML(a.inviteLink)}','_blank')">
+               Dəvət linki
+             </button>`
+          : ""
+        }
+
+        <button class="btn danger"
+          onclick="deleteAnnouncement('${a.id}')">
+          Sil
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+  updateCountdowns();
+}
+
+function updateCountdowns(){
+
+  announcements.forEach(a=>{
+
+    const el=document.getElementById("countdown_"+a.id);
+
+    if(!el)return;
+
+    const target=new Date(a.date).getTime();
+    const now=Date.now();
+
+    const diff=target-now;
+
+    if(diff<=0){
+
+      const untilDelete=new Date(a.expiresAt).getTime()-now;
+
+      if(untilDelete<=0){
+
+        cleanupExpiredAnnouncements();
+        return;
+      }
+
+      el.textContent="Yarış başladı";
+      return;
+    }
+
+    const days=Math.floor(diff/86400000);
+    const hours=Math.floor((diff%86400000)/3600000);
+    const mins=Math.floor((diff%3600000)/60000);
+    const secs=Math.floor((diff%60000)/1000);
+
+    el.textContent=
+      `Başlamasına ${days} gün ${hours} saat ${mins} dəqiqə ${secs} saniyə`;
+  });
+}
+
+setInterval(updateCountdowns,1000);
+
+function cleanupExpiredAnnouncements(){
+
+  const now=Date.now();
+
+  announcements=announcements.filter(a=>{
+    return new Date(a.expiresAt).getTime()>now;
+  });
+
+  save(STORAGE.announcements,announcements);
+}
+
+function deleteAnnouncement(id){
+
+  confirmModal(
+    "Elanı sil",
+    "Bu elan tamamilə silinsin?",
+    ()=>{
+
+      announcements=announcements.filter(x=>x.id!==id);
+
+      save(STORAGE.announcements,announcements);
+
+      renderAnnouncements();
+    }
+  );
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+function confirmModal(title,text,callback){
+
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalText").textContent=text;
+
+  document.getElementById("modalBg").classList.add("show");
+
+  document.getElementById("modalConfirm").onclick=()=>{
+
+    closeModal();
+    callback();
+
+  };
+}
+
+function closeModal(){
+  document.getElementById("modalBg").classList.remove("show");
+}
+
+
+/* =========================
+   14 DAY ARCHIVE CLEANUP
+========================= */
+
+function cleanupArchivedPackages(){
+
+  const now=Date.now();
+
+  const before=packages.length;
+
+  packages=packages.filter(p=>{
+
+    if(p.status!=="archived")return true;
+
+    if(!p.archivedAt)return true;
+
+    const age=
+      (now-new Date(p.archivedAt).getTime())/
+      (1000*60*60*24);
+
+    return age<=14;
+  });
+
+  if(before!==packages.length){
+    save(STORAGE.packages,packages);
+  }
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+cleanupArchivedPackages();
+cleanupExpiredAnnouncements();
+
+startAutosave();
+checkSession();
+
+</script>
+
+</body>
+</html>
