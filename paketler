@@ -1,0 +1,1933 @@
+  <!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script>try{document.documentElement.classList.toggle('dark',localStorage.getItem('piksel-theme')==='dark');}catch(e){}</script>
+
+<title>πksel.iok — Paketlər</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:transparent;
+}
+
+body{
+  color:#001e6f;
+  overflow-x:hidden;
+}
+
+
+/* =========================================
+   ƏSAS
+========================================= */
+
+#app{
+  width:100%;
+  padding:7px 6px 42px;
+}
+
+.container{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+}
+
+
+/* =========================================
+   YAVAŞ FON HƏRƏKƏTİ
+========================================= */
+
+.background-glow{
+  position:fixed;
+  inset:-30%;
+  z-index:-2;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(121,184,255,.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(13,56,168,.08),
+      transparent 30%
+    );
+
+  animation:
+    backgroundMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundMove{
+
+  0%{
+    transform:translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  50%{
+    transform:translate3d(2%, 2%, 0) scale(1.03);
+  }
+
+  100%{
+    transform:translate3d(-1%, 1%, 0) scale(1.01);
+  }
+
+}
+
+
+/* =========================================
+   PIXEL MİKRO ELEMENTLƏR
+========================================= */
+
+.pixel{
+  position:fixed;
+  width:4px;
+  height:4px;
+
+  background:#3f91ff;
+  border-radius:1px;
+
+  opacity:0;
+
+  pointer-events:none;
+  z-index:-1;
+
+  animation:
+    pixelFade 9s ease-in-out infinite;
+}
+
+.pixel.p1{
+  left:8%;
+  top:25%;
+  animation-delay:1s;
+}
+
+.pixel.p2{
+  left:91%;
+  top:38%;
+  animation-delay:4s;
+}
+
+.pixel.p3{
+  left:17%;
+  top:78%;
+  animation-delay:6s;
+}
+
+.pixel.p4{
+  left:84%;
+  top:82%;
+  animation-delay:2s;
+}
+
+@keyframes pixelFade{
+
+  0%,100%{
+    opacity:0;
+    transform:translateY(5px);
+  }
+
+  40%,60%{
+    opacity:.18;
+    transform:translateY(0);
+  }
+
+}
+
+
+/* =========================================
+   AXTARIŞ
+========================================= */
+
+.search-card{
+  width:100%;
+
+  padding:6px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(185,210,244,.88),
+      rgba(226,237,253,.84)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  box-shadow:
+    0 5px 18px rgba(13,56,168,.09),
+    inset 0 1px 0 rgba(255,255,255,.65);
+
+  position:relative;
+  overflow:hidden;
+}
+
+.search-card::after{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-100%;
+
+  width:50%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.18),
+      transparent
+    );
+
+  transform:skewX(-18deg);
+
+  animation:
+    searchShine 12s ease-in-out infinite;
+
+  pointer-events:none;
+}
+
+@keyframes searchShine{
+
+  0%,75%{
+    left:-100%;
+    opacity:0;
+  }
+
+  82%{
+    opacity:1;
+  }
+
+  92%,100%{
+    left:150%;
+    opacity:0;
+  }
+
+}
+
+.search-box{
+  width:100%;
+  height:48px;
+
+  border:0;
+  outline:none;
+
+  border-radius:14px;
+
+  padding:
+    0 15px 0 47px;
+
+  background:
+    rgba(255,255,255,.62);
+
+  color:#07369e;
+
+  font-size:15px;
+  font-weight:500;
+
+  box-shadow:
+    inset 0 1px 3px rgba(13,56,168,.05);
+
+  transition:
+    background .25s ease,
+    box-shadow .25s ease,
+    transform .2s ease;
+}
+
+.search-box::placeholder{
+  color:#4771b7;
+}
+
+.search-box:focus{
+  background:rgba(255,255,255,.82);
+
+  box-shadow:
+    0 0 0 2px rgba(13,56,168,.09);
+
+  transform:translateY(-1px);
+}
+
+
+/* custom magnifying glass */
+
+.search-icon{
+  position:absolute;
+
+  left:22px;
+  top:20px;
+
+  width:17px;
+  height:17px;
+
+  border:
+    2px solid #1748b1;
+
+  border-radius:50%;
+
+  pointer-events:none;
+}
+
+.search-icon::after{
+  content:"";
+
+  position:absolute;
+
+  width:7px;
+  height:2px;
+
+  background:#1748b1;
+
+  right:-5px;
+  bottom:-2px;
+
+  transform:
+    rotate(45deg);
+
+  border-radius:2px;
+}
+
+
+/* =========================================
+   FİLTRLƏR
+========================================= */
+
+.filters-card{
+
+  width:100%;
+
+  display:flex;
+
+  gap:7px;
+
+  flex-wrap:wrap;
+
+  padding:2px;
+
+}
+
+.filter{
+
+  flex:1 1 calc(50% - 4px);
+
+  min-height:42px;
+
+  position:relative;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.filter input{
+  position:absolute;
+
+  opacity:0;
+  pointer-events:none;
+}
+
+.filter-content{
+
+  width:100%;
+  height:100%;
+
+  min-height:42px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  text-align:center;
+
+  padding:7px 10px;
+
+  border-radius:14px;
+
+  border:
+    1px solid rgba(13,56,168,.13);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(215,228,247,.78),
+      rgba(240,245,253,.76)
+    );
+
+  color:#1746ad;
+
+  font-size:12px;
+  font-weight:700;
+
+  line-height:1.2;
+
+  box-shadow:
+    0 3px 9px rgba(13,56,168,.05);
+
+  transition:
+    transform .18s ease,
+    background .25s ease,
+    color .25s ease,
+    box-shadow .25s ease;
+}
+
+.filter:active .filter-content{
+  transform:scale(.97);
+}
+
+.filter input:checked + .filter-content{
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0d38a8,
+      #174bc4
+    );
+
+  border-color:#0d38a8;
+
+  box-shadow:
+    0 5px 13px rgba(13,56,168,.16);
+
+}
+
+
+/* =========================================
+   PAKET SAYĞACI
+========================================= */
+
+.result-info{
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:
+    1px 3px;
+
+  min-height:25px;
+
+  color:#1746ad;
+
+  font-size:12px;
+  font-weight:600;
+
+}
+
+.result-count{
+  font-weight:800;
+}
+
+
+/* =========================================
+   PAKETLƏR
+========================================= */
+
+.packages-list{
+
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+
+}
+
+
+/* =========================================
+   PAKET KARTI
+========================================= */
+
+.package-card{
+
+  width:100%;
+  min-height:92px;
+
+  display:flex;
+  align-items:center;
+
+  gap:13px;
+
+  padding:10px 12px;
+
+  text-decoration:none;
+
+  color:inherit;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(195,212,240,.96),
+      rgba(225,235,250,.94) 48%,
+      rgba(240,244,255,.91)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.84);
+
+  box-shadow:
+    0 5px 18px rgba(13,56,168,.09),
+    inset 0 1px 0 rgba(255,255,255,.6);
+
+  position:relative;
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  transition:
+    transform .24s cubic-bezier(.25,1,.5,1),
+    box-shadow .25s ease,
+    border-color .25s ease;
+
+  -webkit-tap-highlight-color:transparent;
+
+  opacity:0;
+  transform:translateY(10px);
+}
+
+.package-card.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.package-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-110%;
+
+  width:50%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.18),
+      transparent
+    );
+
+  transform:skewX(-18deg);
+
+  transition:left .8s ease;
+
+  pointer-events:none;
+}
+
+.package-card:hover::after{
+  left:150%;
+}
+
+.package-card:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 9px 25px rgba(13,56,168,.13),
+    inset 0 1px 0 rgba(255,255,255,.65);
+
+  border-color:
+    rgba(255,255,255,.98);
+
+}
+
+
+/* =========================================
+   PAKET LOGOSU
+========================================= */
+
+.package-logo{
+
+  width:70px;
+  height:70px;
+
+  flex:0 0 70px;
+
+  border-radius:17px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0d38a8,
+      #2360d2
+    );
+
+  border:
+    1px solid rgba(255,255,255,.45);
+
+  box-shadow:
+    0 5px 13px rgba(13,56,168,.17);
+
+  color:#fff;
+
+  font-size:19px;
+  font-weight:850;
+
+  letter-spacing:-.5px;
+
+  position:relative;
+
+}
+
+.package-logo::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.18),
+      transparent 48%
+    );
+
+}
+
+.package-logo img{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:block;
+
+  position:relative;
+  z-index:1;
+
+}
+
+.logo-text{
+  position:relative;
+  z-index:1;
+}
+
+
+/* =========================================
+   PAKET MƏLUMATI
+========================================= */
+
+.package-info{
+
+  min-width:0;
+  flex:1;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+
+  gap:4px;
+
+}
+
+.package-title{
+
+  font-size:18px;
+
+  line-height:1.28;
+
+  font-weight:800;
+
+  color:#0b3297;
+
+  word-break:break-word;
+
+}
+
+.package-meta{
+
+  display:flex;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:5px;
+
+  color:#315cae;
+
+  font-size:12px;
+
+  line-height:1.35;
+
+}
+
+.package-type{
+  font-weight:800;
+}
+
+.meta-dot{
+  opacity:.5;
+}
+
+.package-date{
+  font-weight:500;
+}
+
+
+/* =========================================
+   AXTARIŞ VURĞUSU
+========================================= */
+
+.search-highlight{
+
+  display:inline;
+
+  padding:
+    1px 4px;
+
+  border:
+    1px solid #1748b1;
+
+  border-radius:6px;
+
+  background:
+    rgba(121,184,255,.18);
+
+  color:#062e8d;
+
+  font-weight:850;
+
+}
+
+
+/* =========================================
+   BOŞ NƏTİCƏ
+========================================= */
+
+.empty-state{
+
+  width:100%;
+
+  padding:25px 15px;
+
+  text-align:center;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(205,220,243,.85),
+      rgba(240,245,253,.8)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.8);
+
+  color:#315cae;
+
+  font-size:13px;
+
+  line-height:1.5;
+
+  box-shadow:
+    0 4px 14px rgba(13,56,168,.06);
+
+}
+
+.empty-title{
+  font-size:15px;
+  font-weight:800;
+  color:#123f9f;
+  margin-bottom:4px;
+}
+
+
+/* =========================================
+   DESKTOP MAGNETIC HOVER
+========================================= */
+
+@media(min-width:700px){
+
+  .package-card{
+    will-change:transform;
+  }
+
+  .filters-card{
+    flex-wrap:nowrap;
+  }
+
+  .filter{
+    flex:1;
+  }
+
+}
+
+
+/* =========================================
+   MOBİL
+========================================= */
+
+@media(max-width:480px){
+
+  #app{
+    padding:
+      6px
+      5px
+      35px;
+  }
+
+  .container{
+    gap:11px;
+  }
+
+  .search-card{
+    padding:5px;
+    border-radius:17px;
+  }
+
+  .search-box{
+    height:46px;
+    font-size:14px;
+
+    padding-left:45px;
+  }
+
+  .search-icon{
+    left:20px;
+    top:19px;
+  }
+
+  .filters-card{
+    gap:6px;
+  }
+
+  .filter{
+    flex-basis:calc(50% - 3px);
+  }
+
+  .filter-content{
+    min-height:40px;
+    padding:6px 7px;
+    font-size:11px;
+    border-radius:13px;
+  }
+
+  .result-info{
+    font-size:11px;
+    padding:0 2px;
+  }
+
+  .packages-list{
+    gap:9px;
+  }
+
+  .package-card{
+
+    min-height:78px;
+
+    padding:
+      8px
+      9px;
+
+    gap:10px;
+
+    border-radius:18px;
+  }
+
+  .package-logo{
+
+    width:58px;
+    height:58px;
+
+    flex-basis:58px;
+
+    border-radius:15px;
+
+    font-size:16px;
+  }
+
+  .package-title{
+    font-size:15px;
+    line-height:1.28;
+  }
+
+  .package-meta{
+    font-size:10.5px;
+    gap:4px;
+  }
+
+}
+
+
+/* =========================================
+   TABLET / DESKTOP
+========================================= */
+
+@media(min-width:700px){
+
+  #app{
+    padding:
+      10px
+      12px
+      50px;
+  }
+
+  .container{
+    gap:15px;
+  }
+
+  .search-box{
+    height:50px;
+    font-size:15px;
+  }
+
+  .package-card{
+    min-height:96px;
+    padding:11px 14px;
+  }
+
+  .package-logo{
+    width:70px;
+    height:70px;
+    flex-basis:70px;
+  }
+
+  .package-title{
+    font-size:19px;
+  }
+
+  .package-meta{
+    font-size:12px;
+  }
+
+}
+
+
+/* =========================================
+   TEMA DÜYMƏSİ (sağ üstdə, kiçik)
+========================================= */
+
+.theme-toggle{
+  position:fixed;
+
+  top:12px;
+  right:12px;
+
+  z-index:300;
+
+  width:42px;
+  height:42px;
+
+  border:0;
+  border-radius:14px;
+
+  background:
+    linear-gradient(135deg,#0d38a8,#2360d2);
+
+  color:#fff;
+
+  font-size:18px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 6px 16px rgba(13,56,168,.25);
+
+  transition:transform .25s ease;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.theme-toggle:active{
+  transform:scale(.9);
+}
+
+
+/* =========================================
+   DARK MODE — ortaq 'piksel-theme' açarı ilə
+========================================= */
+
+html.dark body{
+  color:#bdd7ff;
+}
+
+html.dark .background-glow{
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(55,120,220,.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(20,65,150,.13),
+      transparent 30%
+    );
+}
+
+html.dark .search-card{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(20,43,91,.94),
+      rgba(10,27,65,.92)
+    );
+
+  border-color:
+    rgba(121,184,255,.15);
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.2);
+}
+
+html.dark .search-box{
+
+  background:
+    rgba(19,42,87,.75);
+
+  color:#bdd7ff;
+}
+
+html.dark .search-box::placeholder{
+  color:#7fa9df;
+}
+
+html.dark .search-box:focus{
+  background:
+    rgba(24,49,98,.88);
+}
+
+html.dark .search-icon{
+  border-color:#8ebfff;
+}
+
+html.dark .search-icon::after{
+  background:#8ebfff;
+}
+
+html.dark .filter-content{
+
+  background:
+    rgba(22,45,91,.75);
+
+  color:#a9ceff;
+
+  border-color:
+    rgba(121,184,255,.14);
+}
+
+html.dark .filter input:checked + .filter-content{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #174bc4,
+      #0d38a8
+    );
+}
+
+html.dark .result-info{
+  color:#9fc6ff;
+}
+
+html.dark .package-card{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(20,43,91,.96),
+      rgba(12,30,70,.94) 50%,
+      rgba(8,21,51,.95)
+    );
+
+  border-color:
+    rgba(121,184,255,.14);
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+html.dark .package-title{
+  color:#a5ceff;
+}
+
+html.dark .package-meta{
+  color:#88b3eb;
+}
+
+html.dark .search-highlight{
+  color:#bdd7ff;
+  border-color:#6faeff;
+  background:rgba(55,125,220,.18);
+}
+
+html.dark .empty-state{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(20,43,91,.94),
+      rgba(10,27,65,.92)
+    );
+
+  border-color:
+    rgba(121,184,255,.14);
+
+  color:#8fb8eb;
+}
+
+html.dark .empty-title{
+  color:#a5ceff;
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+
+}
+</style>
+</head>
+  <body>
+
+<button class="theme-toggle" id="themeBtn" aria-label="Rejim">
+  <span id="themeIcon">🌙</span>
+</button>
+
+<div class="background-glow"></div>
+
+<div class="pixel p1"></div>
+<div class="pixel p2"></div>
+<div class="pixel p3"></div>
+<div class="pixel p4"></div>
+
+
+<div id="app">
+
+  <div class="container">
+
+
+    <!-- ================================
+         AXTARIŞ
+    ================================= -->
+
+    <div class="search-card">
+
+      <div class="search-icon"></div>
+
+      <input
+        id="searchInput"
+        class="search-box"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Paket axtar..."
+        oninput="filterPackages()"
+      >
+
+    </div>
+
+
+    <!-- ================================
+         FORMAT FİLTRLƏRİ
+    ================================= -->
+
+    <div class="filters-card">
+
+      <label class="filter">
+
+        <input
+          type="checkbox"
+          value="NHN"
+          checked
+          onchange="filterPackages()"
+        >
+
+        <div class="filter-content">
+          Nə? Harada? Nə Zaman?
+        </div>
+
+      </label>
+
+
+      <label class="filter">
+
+        <input
+          type="checkbox"
+          value="XƏMSƏ"
+          checked
+          onchange="filterPackages()"
+        >
+
+        <div class="filter-content">
+          Xəmsə
+        </div>
+
+      </label>
+
+
+      <label class="filter">
+
+        <input
+          type="checkbox"
+          value="BREYN RİNQ"
+          checked
+          onchange="filterPackages()"
+        >
+
+        <div class="filter-content">
+          Breyn Rinq
+        </div>
+
+      </label>
+
+
+      <label class="filter">
+
+        <input
+          type="checkbox"
+          value="FƏRDİ"
+          checked
+          onchange="filterPackages()"
+        >
+
+        <div class="filter-content">
+          Fərdi
+        </div>
+
+      </label>
+
+    </div>
+
+
+    <!-- ================================
+         SAYĞAC
+    ================================= -->
+
+    <div class="result-info">
+
+      <span>
+        Paketlər
+      </span>
+
+      <span
+        class="result-count"
+        id="resultCount"
+      >
+        5
+      </span>
+
+    </div>
+
+
+    <!-- ================================
+         PAKETLƏR
+    ================================= -->
+
+    <div
+      class="packages-list"
+      id="packagesList"
+    ></div>
+
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   TEMA — ortaq 'piksel-theme' açarı (bütün səhifələr üçün)
+===================================================== */
+
+const themeBtn = document.getElementById("themeBtn");
+const themeIcon = document.getElementById("themeIcon");
+
+function applyTheme(dark){
+  document.documentElement.classList.toggle("dark", dark);
+  themeIcon.textContent = dark ? "☀️" : "🌙";
+  try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(e){}
+}
+
+applyTheme(document.documentElement.classList.contains("dark"));
+
+themeBtn.addEventListener("click", ()=>{
+  themeIcon.style.transform = "scale(0)";
+  setTimeout(()=>{
+    applyTheme(!document.documentElement.classList.contains("dark"));
+    themeIcon.style.transform = "scale(1)";
+  },150);
+});
+
+
+/* =====================================================
+   PAKET MƏLUMATLARI
+=====================================================
+
+   Burada iki mənbə birləşir:
+   1) Saytda hazır olan paketlər (defaultPackages)
+   2) Admin paneldə "Yayımla" edilmiş paketlər
+      (localStorage → piksel_admin_packages, yalnız
+       status === "published" olanlar)
+
+===================================================== */
+
+const defaultPackages = [
+
+  {
+    id:"diamonds-ferdi-2",
+    title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I Tur',
+    type:"FƏRDİ",
+    typeLabel:"Fərdi",
+    date:"13.09.2026",
+    icon:"D",
+    image:"",
+    url:"paket.html"
+  },
+
+
+  {
+    id:"whatsapp",
+    title:'"πksel.iok" WhatsApp paketi',
+    type:"NHN",
+    typeLabel:"Nə? Harada? Nə Zaman?",
+    date:"11.09.2026",
+    icon:"π",
+    image:"",
+    url:"paket.html"
+  },
+
+
+  {
+    id:"amazon",
+    title:'"Amazon" kuboku',
+    type:"BREYN RİNQ",
+    typeLabel:"Breyn Rinq",
+    date:"05.09.2026",
+    icon:"A",
+    image:"",
+    url:"paket.html"
+  },
+
+
+  {
+    id:"moonopoly",
+    title:'"Moonopoly" turniri',
+    type:"XƏMSƏ",
+    typeLabel:"Xəmsə",
+    date:"04.09.2026",
+    icon:"M",
+    image:"",
+    url:"paket.html"
+  },
+
+
+  {
+    id:"vesper",
+    title:'"Vesper" kuboku - Məktəblilərarası',
+    type:"NHN",
+    typeLabel:"Nə? Harada? Nə Zaman?",
+    date:"03.06.2026",
+    icon:"V",
+    image:"",
+    url:"paket.html"
+  }
+
+];
+
+
+/* Admin panel format kodları → sayt format etiketləri */
+
+const FORMAT_MAP = {
+  nhn:{ type:"NHN", label:"Nə? Harada? Nə Zaman?" },
+  brain:{ type:"BREYN RİNQ", label:"Breyn Rinq" },
+  xemse:{ type:"XƏMSƏ", label:"Xəmsə" },
+  ferdi:{ type:"FƏRDİ", label:"Fərdi oyun" }
+};
+
+
+function initials(name){
+
+  const parts = String(name||"").trim().split(/\s+/).filter(Boolean);
+
+  if(!parts.length) return "π";
+
+  return parts.slice(0,2)
+    .map(x=>x.charAt(0).toLocaleUpperCase("az-AZ"))
+    .join("");
+}
+
+
+function formatDate(value){
+
+  if(!value) return "";
+
+  const m = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+  if(m) return `${m[3]}.${m[2]}.${m[1]}`;
+
+  return String(value);
+}
+
+
+function loadAdminPackages(){
+
+  try{
+
+    const raw =
+      JSON.parse(
+        localStorage.getItem("piksel_admin_packages")
+      ) || [];
+
+    return raw
+      .filter(p => p && p.status === "published" && p.name)
+      .map(p => {
+
+        const fmt = FORMAT_MAP[p.format] || { type:"", label:"" };
+
+        return {
+          id:p.id,
+          title:p.name,
+          type:fmt.type,
+          typeLabel:fmt.label,
+          date:formatDate(p.played || p.added),
+          icon:initials(p.name),
+          image:p.image || "",
+          url:"paket.html"
+        };
+
+      });
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+/* Eyni id-li paket təkrarlanmasın: admin paketi default-u əvəz edir */
+
+function mergePackages(){
+
+  const admin = loadAdminPackages();
+
+  const adminIds = admin.map(p=>p.id);
+
+  const base = defaultPackages.filter(
+    p => !adminIds.includes(p.id)
+  );
+
+  return base.concat(admin);
+
+}
+
+
+const packages = mergePackages();
+
+
+/* =====================================================
+   ELEMENTLƏR
+===================================================== */
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const packagesList =
+  document.getElementById("packagesList");
+
+const resultCount =
+  document.getElementById("resultCount");
+
+
+/* =====================================================
+   SEÇİLMİŞ FİLTRLƏR
+===================================================== */
+
+function getSelectedTypes(){
+
+  return Array.from(
+    document.querySelectorAll(
+      '.filter input:checked'
+    )
+  ).map(
+    input => input.value
+  );
+
+}
+
+
+/* =====================================================
+   MƏTNİ HTML-DƏ TƏHLÜKƏSİZ GÖSTƏR
+===================================================== */
+
+function escapeHTML(text){
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   AXTARIŞDA TAPILAN HİSSƏNİ VURĞULA
+===================================================== */
+
+function highlightText(text,query){
+
+  const safeText =
+    escapeHTML(text);
+
+  if(!query || query.length < 3){
+    return safeText;
+  }
+
+  const safeQuery =
+    escapeHTML(query);
+
+  const regex =
+    new RegExp(
+      "(" +
+      safeQuery.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      ) +
+      ")",
+      "gi"
+    );
+
+  return safeText.replace(
+    regex,
+    '<span class="search-highlight">$1</span>'
+  );
+
+}
+
+
+/* =====================================================
+   PAKET KARTI
+===================================================== */
+
+function createPackageCard(pkg,query){
+
+  const card =
+    document.createElement("a");
+
+  card.className =
+    "package-card";
+
+  card.href =
+    pkg.url || "paket.html";
+
+
+  const titleHTML =
+    highlightText(
+      pkg.title,
+      query
+    );
+
+
+  let logoHTML;
+
+
+  if(pkg.image){
+
+    logoHTML = `
+      <img
+        src="${escapeHTML(pkg.image)}"
+        alt=""
+      >
+    `;
+
+  }else{
+
+    logoHTML = `
+      <span class="logo-text">
+        ${escapeHTML(pkg.icon || "π")}
+      </span>
+    `;
+
+  }
+
+
+  card.innerHTML = `
+
+    <div class="package-logo">
+      ${logoHTML}
+    </div>
+
+
+    <div class="package-info">
+
+      <div class="package-title">
+        ${titleHTML}
+      </div>
+
+      <div class="package-meta">
+
+        <span class="package-type">
+          ${escapeHTML(pkg.typeLabel)}
+        </span>
+
+        <span class="meta-dot">
+          •
+        </span>
+
+        <span class="package-date">
+          ${escapeHTML(pkg.date)}
+        </span>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  return card;
+
+}
+
+
+/* =====================================================
+   PAKETLƏRİ GÖSTƏR
+===================================================== */
+
+function renderPackages(list,query){
+
+  packagesList.innerHTML = "";
+
+
+  if(list.length === 0){
+
+    packagesList.innerHTML = `
+
+      <div class="empty-state">
+
+        <div class="empty-title">
+          Paket tapılmadı
+        </div>
+
+        Axtarış sözünü və ya seçilmiş
+        oyun formatlarını dəyişin.
+
+      </div>
+
+    `;
+
+    resultCount.textContent = "0";
+
+    return;
+
+  }
+
+
+  resultCount.textContent =
+    list.length;
+
+
+  list.forEach(
+    (pkg,index)=>{
+
+      const card =
+        createPackageCard(
+          pkg,
+          query
+        );
+
+
+      packagesList.appendChild(card);
+
+
+      setTimeout(()=>{
+
+        requestAnimationFrame(()=>{
+
+          card.classList.add(
+            "visible"
+          );
+
+        });
+
+      },Math.min(index*45,300));
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ƏSAS FİLTRLƏMƏ
+===================================================== */
+
+function filterPackages(){
+
+  const rawQuery =
+    searchInput.value.trim();
+
+  const query =
+    rawQuery.toLocaleLowerCase(
+      "az-AZ"
+    );
+
+
+  const selectedTypes =
+    getSelectedTypes();
+
+
+  let filtered =
+    packages.filter(pkg=>{
+
+      /* format */
+
+      if(
+        !selectedTypes.includes(
+          pkg.type
+        )
+      ){
+
+        return false;
+
+      }
+
+
+      /* axtarış */
+
+      if(
+        query.length >= 3
+      ){
+
+        const title =
+          pkg.title.toLocaleLowerCase(
+            "az-AZ"
+          );
+
+
+        if(
+          !title.includes(query)
+        ){
+
+          return false;
+
+        }
+
+      }
+
+
+      return true;
+
+    });
+
+
+  /*
+    3 hərfdən az yazılıbsa
+    bütün uyğun paketləri göstər.
+  */
+
+  renderPackages(
+    filtered,
+    rawQuery.length >= 3
+      ? rawQuery
+      : ""
+  );
+
+}
+
+
+/* =====================================================
+   MAQNİTİK HOVER
+   YALNIZ DESKTOP
+===================================================== */
+
+function enableMagneticEffect(){
+
+  if(
+    window.matchMedia(
+      "(max-width:699px)"
+    ).matches
+  ){
+
+    return;
+
+  }
+
+
+  document.addEventListener(
+    "mousemove",
+    function(e){
+
+      const card =
+        e.target.closest(
+          ".package-card"
+        );
+
+
+      if(!card){
+        return;
+      }
+
+
+      const rect =
+        card.getBoundingClientRect();
+
+
+      const x =
+        e.clientX -
+        (rect.left + rect.width/2);
+
+      const y =
+        e.clientY -
+        (rect.top + rect.height/2);
+
+
+      const moveX =
+        Math.max(
+          -3,
+          Math.min(
+            3,
+            x / 35
+          )
+        );
+
+
+      const moveY =
+        Math.max(
+          -3,
+          Math.min(
+            3,
+            y / 35
+          )
+        );
+
+
+      card.style.transform =
+        `translate(${moveX}px,${moveY}px)`;
+
+    }
+  );
+
+
+  document.addEventListener(
+    "mouseout",
+    function(e){
+
+      const card =
+        e.target.closest(
+          ".package-card"
+        );
+
+
+      if(!card){
+        return;
+      }
+
+
+      if(
+        e.relatedTarget &&
+        card.contains(
+          e.relatedTarget
+        )
+      ){
+
+        return;
+      }
+
+
+      card.style.transform =
+        "translate(0,0)";
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ENTER / SUBMIT DAVRANIŞI
+===================================================== */
+
+searchInput.addEventListener(
+  "keydown",
+  function(e){
+
+    if(e.key==="Escape"){
+
+      searchInput.value="";
+
+      filterPackages();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   İLK YÜKLƏNMƏ
+===================================================== */
+
+filterPackages();
+
+enableMagneticEffect();
+
+</script>
+
+</body>
+</html>
