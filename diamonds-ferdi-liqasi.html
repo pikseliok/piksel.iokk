@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>πksel.iok - Diamonds Fərdi Oyun Liqası</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+
+  --mode-bg-light:
+    linear-gradient(
+      135deg,
+      #9DC3FF 0%,
+      #8DB8F5 50%,
+      #9DC3FF 100%
+    );
+
+  --mode-bg-dark:
+    linear-gradient(
+      135deg,
+      #00072C 0%,
+      #001044 50%,
+      #00072C 100%
+    );
+
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:"Poppins",sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,
+body{
+  width:100%;
+  height:auto;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--ink);
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;
+}
+
+body.dark{
+  background:var(--dark-bg);
+  color:var(--dark-ink);
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button{
+  font:inherit;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(95vw,820px);
+  margin:0 auto;
+  padding:12px 0 0;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.top-nav{
+  height:60px;
+  width:100%;
+  border-radius:40px;
+  padding:0 14px 0 26px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  position:relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--deep) 0%,
+      var(--bright) 50%,
+      var(--deep) 100%
+    );
+
+  box-shadow:0 10px 28px rgba(0,20,100,.08);
+
+  transition:
+    background var(--transition),
+    box-shadow var(--transition);
+}
+
+.dark .top-nav{
+  background:
+    linear-gradient(
+      135deg,
+      var(--dark-light) 0%,
+      var(--dark-bright) 50%,
+      var(--dark-light) 100%
+    );
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:58px;
+  height:100%;
+}
+
+.nav-link{
+  position:relative;
+
+  color:var(--ink);
+
+  font-size:20px;
+  font-weight:500;
+
+  white-space:nowrap;
+
+  transition:
+    transform .25s ease,
+    opacity .25s ease;
+}
+
+.dark .nav-link{
+  color:var(--dark-ink);
+}
+
+.nav-link:hover{
+  transform:translateY(-1px);
+}
+
+.nav-link.active::after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:-7px;
+
+  height:2px;
+
+  border-radius:2px;
+
+  background:currentColor;
+
+  opacity:.9;
+}
+
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-toggle{
+  position:absolute;
+
+  right:10px;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  width:44px;
+  height:44px;
+
+  border:0;
+  border-radius:50%;
+
+  cursor:pointer;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--deep);
+
+  background:rgba(157,195,255,.98);
+
+  transition:
+    transform .3s ease,
+    background var(--transition),
+    color var(--transition);
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.dark .theme-toggle{
+  background:var(--dark-bg);
+  color:var(--dark-light);
+}
+
+.theme-toggle:hover{
+  transform:translateY(-50%) scale(1.08);
+}
+
+.theme-toggle:active{
+  transform:translateY(-50%) scale(.95);
+}
+
+.theme-icon{
+  width:25px;
+  height:25px;
+  display:block;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main-container{
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:16px;
+
+  position:relative;
+
+  margin-top:18px;
+
+  padding-bottom:56px;
+}
+
+.blur-content{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+
+  transition:
+    filter .5s cubic-bezier(.25,1,.5,1);
+
+  will-change:filter;
+}
+
+body.img-zoomed .blur-content{
+  filter:blur(8px);
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.info-card,
+.tours-card,
+.q-card{
+  width:100%;
+
+  border-radius:28px;
+
+  padding:24px 26px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--deep) 0%,
+      var(--bright) 49%,
+      var(--deep) 100%
+    );
+
+  color:var(--ink);
+
+  box-shadow:0 10px 25px rgba(0,20,110,.09);
+
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+
+  transition:
+    background var(--transition),
+    color var(--transition),
+    box-shadow .3s ease,
+    transform .3s ease;
+}
+
+.dark .info-card,
+.dark .tours-card,
+.dark .q-card{
+  background:
+    linear-gradient(
+      135deg,
+      var(--dark-light) 0%,
+      var(--dark-bright) 49%,
+      var(--dark-light) 100%
+    );
+
+  color:var(--dark-ink);
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.game-title{
+  font-size:30px;
+  font-weight:700;
+
+  color:var(--ink);
+
+  line-height:1.15;
+
+  letter-spacing:-.7px;
+
+  margin-bottom:16px;
+}
+
+.dark .game-title{
+  color:var(--dark-ink);
+}
+
+.info-row{
+  font-size:14px;
+
+  color:var(--ink);
+
+  line-height:1.6;
+
+  margin-bottom:5px;
+}
+
+.dark .info-row{
+  color:var(--dark-ink);
+}
+
+.info-row:last-child{
+  margin-bottom:0;
+}
+
+.info-label{
+  font-weight:700;
+}
+
+.info-val{
+  font-weight:400;
+}
+
+
+/* =========================================================
+   TUR BUTTONS
+========================================================= */
+
+.tour-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.tour-btn{
+  width:100%;
+
+  background:rgba(255,255,255,.14);
+
+  color:var(--ink);
+
+  border:1px solid rgba(255,255,255,.22);
+
+  padding:12px 16px;
+
+  border-radius:16px;
+
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  text-align:left;
+
+  transition:
+    background .35s ease,
+    color .35s ease,
+    border .35s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.dark .tour-btn{
+  color:var(--dark-ink);
+
+  border:1px solid rgba(0,7,44,.16);
+
+  background:rgba(0,7,44,.10);
+}
+
+.tour-btn.active{
+  background:var(--mode-bg-light);
+
+  color:var(--deep);
+
+  border-color:transparent;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(0,30,111,.08),
+    0 5px 14px rgba(0,20,100,.08);
+}
+
+.dark .tour-btn.active{
+  background:var(--mode-bg-dark);
+
+  color:var(--dark-light);
+
+  border-color:rgba(157,195,255,.12);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(157,195,255,.08),
+    0 5px 14px rgba(0,0,0,.16);
+}
+
+.tour-btn:active{
+  transform:scale(.985);
+}
+
+
+/* =========================================================
+   GLOBAL ANSWER BUTTON
+========================================================= */
+
+.global-toggle-btn{
+  width:100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--deep) 0%,
+      var(--bright) 50%,
+      var(--deep) 100%
+    );
+
+  color:var(--ink);
+
+  border:none;
+
+  padding:14px 16px;
+
+  border-radius:20px;
+
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  text-align:center;
+
+  box-shadow:0 10px 22px rgba(0,20,110,.10);
+
+  transition:
+    background var(--transition),
+    color var(--transition),
+    transform .25s ease,
+    box-shadow .25s ease;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.dark .global-toggle-btn{
+  background:
+    linear-gradient(
+      135deg,
+      var(--dark-light) 0%,
+      var(--dark-bright) 50%,
+      var(--dark-light) 100%
+    );
+
+  color:var(--dark-ink);
+}
+
+.global-toggle-btn:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(0,20,110,.16);
+}
+
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+.questions-container{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.round-title{
+  font-size:22px;
+  font-weight:700;
+
+  color:var(--ink);
+
+  line-height:1.2;
+
+  margin:2px 0 4px;
+}
+
+.dark .round-title{
+  color:var(--dark-ink);
+}
+
+.topic-title{
+  font-size:18px;
+  font-weight:700;
+
+  color:var(--ink);
+
+  line-height:1.25;
+
+  letter-spacing:-.3px;
+
+  margin-bottom:16px;
+}
+
+.dark .topic-title{
+  color:var(--dark-ink);
+}
+
+.q-item{
+  margin-bottom:16px;
+
+  padding-bottom:16px;
+
+  border-bottom:1px solid rgba(255,255,255,.22);
+}
+
+.dark .q-item{
+  border-bottom:1px solid rgba(0,7,44,.18);
+}
+
+.q-item:last-child{
+  margin-bottom:0;
+  padding-bottom:0;
+  border-bottom:none;
+}
+
+.q-text{
+  font-size:14px;
+
+  font-weight:500;
+
+  color:var(--ink);
+
+  line-height:1.55;
+
+  margin-bottom:14px;
+}
+
+.dark .q-text{
+  color:var(--dark-ink);
+}
+
+.q-text b{
+  font-weight:700;
+}
+
+
+/* =========================================================
+   ANSWER SHOW/HIDE BUTTON
+========================================================= */
+
+.toggle-btn{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  background:var(--mode-bg-light);
+
+  color:var(--deep);
+
+  border:none;
+
+  padding:8px 16px;
+
+  border-radius:999px;
+
+  font-size:13px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    background .35s ease,
+    color .35s ease,
+    transform .2s ease,
+    box-shadow .25s ease;
+}
+
+.dark .toggle-btn{
+  background:var(--mode-bg-dark);
+
+  color:var(--dark-light);
+}
+
+.toggle-btn:hover{
+  transform:translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(0,20,100,.12);
+}
+
+.dark .toggle-btn:hover{
+  box-shadow:
+    0 5px 14px rgba(0,0,0,.18);
+}
+
+.arrow-icon{
+  width:10px;
+  height:10px;
+
+  fill:currentColor;
+
+  transition:transform .3s ease;
+}
+
+
+/* =========================================================
+   ANSWER PANEL
+========================================================= */
+
+.ans-panel{
+  max-height:0;
+
+  overflow:hidden;
+
+  opacity:0;
+
+  transition:
+    max-height .35s cubic-bezier(0,1,0,1),
+    opacity .25s ease,
+    margin-top .25s ease;
+
+  margin-top:0;
+
+  border-top:1px solid rgba(255,255,255,.22);
+}
+
+.dark .ans-panel{
+  border-top:1px solid rgba(0,7,44,.18);
+}
+
+.q-item.active .ans-panel{
+  max-height:3000px;
+
+  opacity:1;
+
+  margin-top:12px;
+
+  padding-top:12px;
+}
+
+.q-item.active .arrow-icon{
+  transform:rotate(180deg);
+}
+
+.ans-row{
+  font-size:14px;
+
+  font-weight:500;
+
+  color:var(--ink);
+
+  line-height:1.55;
+
+  margin-bottom:7px;
+}
+
+.dark .ans-row{
+  color:var(--dark-ink);
+}
+
+.ans-row:last-child{
+  margin-bottom:0;
+}
+
+.ans-label{
+  font-weight:700;
+}
+
+.dark .ans-label{
+  color:var(--dark-ink);
+}
+
+.ans-row a{
+  color:var(--ink);
+
+  text-decoration:underline;
+
+  word-break:break-all;
+}
+
+.dark .ans-row a{
+  color:var(--dark-ink);
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+.author-row{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+}
+
+.copy-btn{
+  flex:0 0 auto;
+
+  width:32px;
+  height:32px;
+
+  border-radius:50%;
+
+  border:none;
+
+  cursor:pointer;
+
+  display:grid;
+
+  place-items:center;
+
+  background:rgba(255,255,255,.16);
+
+  color:var(--ink);
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .2s ease;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.dark .copy-btn{
+  background:rgba(0,7,44,.12);
+
+  color:var(--dark-ink);
+}
+
+.copy-btn:hover{
+  transform:translateY(-1px);
+
+  background:rgba(255,255,255,.28);
+}
+
+.dark .copy-btn:hover{
+  background:rgba(0,7,44,.2);
+}
+
+.copy-btn.copied{
+  background:var(--mode-bg-light);
+
+  color:var(--deep);
+}
+
+.dark .copy-btn.copied{
+  background:var(--mode-bg-dark);
+
+  color:var(--dark-light);
+}
+
+.copy-icon{
+  width:16px;
+  height:16px;
+
+  display:block;
+}
+
+.copy-icon .check-path{
+  display:none;
+}
+
+.copy-btn.copied .copy-icon .clip-path{
+  display:none;
+}
+
+.copy-btn.copied .copy-icon .check-path{
+  display:block;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  width:100%;
+
+  background:
+    linear-gradient(
+      100deg,
+      var(--deep) 0%,
+      var(--bright) 50%,
+      var(--deep) 100%
+    );
+
+  color:var(--ink);
+
+  min-height:170px;
+
+  padding:27px 20px 24px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:9px;
+
+  text-align:center;
+
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.dark footer{
+  background:
+    linear-gradient(
+      164deg,
+      var(--dark-light) 0%,
+      var(--dark-bright) 50%,
+      var(--dark-light) 100%
+    );
+
+  color:var(--dark-ink);
+}
+
+.footer-line{
+  font-size:15px;
+
+  line-height:1.45;
+
+  font-weight:500;
+}
+
+.footer-link{
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+}
+
+.footer-link:hover{
+  opacity:.72;
+
+  transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.q-item:focus-visible,
+.nav-link:focus-visible,
+.theme-toggle:focus-visible,
+.footer-link:focus-visible{
+  outline:3px solid currentColor;
+
+  outline-offset:4px;
+}
+
+@media (prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+
+    scroll-behavior:auto !important;
+
+    animation-duration:.01ms !important;
+
+    animation-iteration-count:1 !important;
+
+    transition-duration:.01ms !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:700px){
+
+  .page{
+    width:calc(100vw - 44px);
+
+    padding-top:11px;
+  }
+
+  .top-nav{
+    height:52px;
+
+    padding-left:18px;
+    padding-right:60px;
+  }
+
+  .nav-links{
+    gap:34px;
+  }
+
+  .nav-link{
+    font-size:15px;
+  }
+
+  .theme-toggle{
+    width:39px;
+    height:39px;
+
+    right:8px;
+  }
+
+  .theme-icon{
+    width:22px;
+    height:22px;
+  }
+
+  .info-card,
+  .tours-card,
+  .q-card{
+    border-radius:22px;
+
+    padding:18px 18px;
+  }
+
+  .game-title{
+    font-size:22px;
+  }
+
+  .round-title{
+    font-size:19px;
+  }
+
+  .topic-title{
+    font-size:16px;
+  }
+
+  footer{
+    min-height:185px;
+
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .footer-line{
+    font-size:14px;
+  }
+}
+
+
+@media (max-width:420px){
+
+  .page{
+    width:calc(100vw - 36px);
+  }
+
+  .nav-links{
+    gap:25px;
+  }
+
+  .nav-link{
+    font-size:13px;
+  }
+
+  .top-nav{
+    height:48px;
+  }
+
+  .theme-toggle{
+    width:36px;
+    height:36px;
+
+    right:6px;
+  }
+
+  .theme-icon{
+    width:20px;
+    height:20px;
+  }
+
+  .game-title{
+    font-size:20px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
+
+  <nav class="top-nav" aria-label="Əsas naviqasiya">
+
+    <div class="nav-links">
+
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link active" href="packages.html">Sual Paketləri</a>
+
+    </div>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Gecə rejiminə keç">
+
+      <svg
+        id="themeIcon"
+        class="theme-icon"
+        viewBox="0 0 32 32"
+        aria-hidden="true">
+      </svg>
+
+    </button>
+
+  </nav>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <div class="main-container" id="mainContainer">
+
+    <div class="blur-content">
+
+      <!-- INFO CARD -->
+      <div class="info-card">
+
+        <div class="game-title">
+          "Diamonds" Fərdi Oyun Liqası II Mövsüm - I tur
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Təşkilatçı:</span>
+          <span class="info-val">"Diamonds Are Forever" komandası</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Redaktor:</span>
+          <span class="info-val">Əlizadə Rüfət</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Müəllif(lər):</span>
+          <span class="info-val">Əlizadə Rüfət, Şentürk Serkan, Rzalı Üsyan</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Oynanıldığı tarix:</span>
+          <span class="info-val">05.08.2026</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Əlavə edildiyi tarix:</span>
+          <span class="info-val">13.09.2026</span>
+        </div>
+
+      </div>
+
+      <!-- TOUR SEÇİMİ -->
+      <div class="tours-card">
+        <div class="game-title" style="margin-bottom:14px;">Tur seçimi</div>
+        <div class="tour-buttons" id="tourButtons"></div>
+      </div>
+
+      <!-- GLOBAL ANSWER -->
+      <button
+        class="global-toggle-btn"
+        id="globalToggleBtn"
+        onclick="toggleAllAnswers()">
+        Bütün cavabları göstər
+      </button>
+
+      <!-- QUESTIONS -->
+      <div class="questions-container" id="questionsContainer"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================== -->
+
+<footer>
+
+  <div class="footer-line">
+    İntellektuallar üçün hər şey...
+  </div>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/piksel.iok"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/onurelzh"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   SUAL MƏLUMATLARI (dəyişməz saxlanılıb)
+========================================================= */
+
+const A = (q,a,c="") => ({q,a,c});
+
+const toursData = [
+
+/* =========================================================
+   SEÇİM TURU
+========================================================= */
+{
+ name:"Seçim turu",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Təmiz",
+   author:"Üsyan Rzalı",
+   questions:[
+    A('Family guy serialının bir epizodunda ailənin xadiməçisi bu idman növü üzrə qızıl medal qazanır','Körlinq'),
+    A('Ebola virusunun müsəlman əhali arasında daha sürətlə yayılma səbəblərindən biri kimi BU dəfn adəti göstərilirdi.','ölü yuma'),
+    A('1919-cu il Boston bəkməz daşqını zamanı milyonlarla litrlik bəkməz küçələrə yayılmışdı. Olduqca qatı və yapışqan mayeni şəhərdən təmizləmək üçün BU peşə sahiblərinin köməyinə ehtiyac olmuşdu','yanğınsöndürənlər'),
+    A('Luffa qabaqkimilər fəsiləsinə aid bol lifli bir bitkidir. Siz isə luffanın plastikin ixtirasından əvvəl nə kimi istifadə edildiyini yazın','Süngər'),
+    A('Ötən əsrin ilk yarısında, amerikalı bir jurnalist müsahibə götürdüyü şəxsə ölkənin iqtisadiyyatı, böyük böhran və dövlət siyasəti haqqında suallar versə də yalnız məişət mövzularında geri cavab ala bilirdi. Siz isə jurnalistin müsahibə götürdüyü şəxsin heç olmasa soyadını yazın','Herbert Huver','1930-cu illərdə bir jurnalist heyəti təcili olaraq Ağ Evin sahibi, ABŞ Prezidenti Herbert Hoover ilə müsahibə təşkil etməyə çalışırdı. Telefon zəngi və ya görüş təşkil olunarkən adların oxşarlığı səbəbindən Prezident Hoover əvəzinə məşhur "The Hoover Company" (tozsoran istehsalçısı) Herbert Hoover ilə əlaqə saxlamışdılar.')
+   ]
+  },
+  {
+   name:"Heyvanlar ətrafında",
+   author:"Serkan Şentürk",
+   questions:[
+    A('"Google" şirkəti 2013-cü ildə axtarış sistemini daha dəqiq və sürətli etmək üçün yaratdığı alqoritmə bu quşun adını vermişdi.','Kolibri (hummingbird)'),
+    A('"Google" 2018-ci ildə Çin üçün xüsusi axtarış sistemi yaratmağa qərar vermiş və axtarış sisteminə kod adı kimi bu həşəratın adını vermişdi.','Dragonfly (cırcırama)'),
+    A('ALFA eyni hərflə başlayan iki sözdür. "The Boys" serialında dəniz canlıları ilə ünsiyyət qurmağı bacaran superqəhrəman onlardan biri ilə gizli münasibət yaşadığını gizlətməyə çalışsa da, personajlardan biri ALFA haqqında danışmağın vaxtının gəldiyini deyir. Alfanı yazın','Otaqdakı osminoq','Serialda Deep adlı superqəhrəman osminoqla gizli eşq macərası yaşayır. Məlumdur ki, otaqdakı fil ifadəsi hamı tərəfindən bilinən, amma gizli qalan bir şeyi bildirir.'),
+    A('Alfa birinci növ təyini söz birləşməsidir. Yaponiyada yerləşən Okunoşima adasında İkinci Dünya müharibəsi zamanı zəhərli qazlarla bağlı müxtəlif eksprementlər aparılırdı. Müharibədən sonra adadakı ALFA-ları görmək üçün adaya gələn bir çox turist ölkənin geri qalanından xeyli fərqlənən mühitə şahidlik edirlər. ALFA-nı yazın','ağ dovşan','Okunoşima adasında zəhərli qazlarla bağlı təcrübələrdə xeyli ağ laboratoriya dovşanı istifadə olunub. Müharibədən sonra həmin dovşanlar təbiətə düşüb və çoxalıblar. Hazırda ada Dovşanlar adası kimi tanınır. Bir çox turistə adanın bu xüsusiyyətini görmək maraqlı gəlir və ağ dovşanların dalınca adaya gəlirlər və daha öncə görmədikləri bir yeri görürlər, adanın gizli tarixini öyrənirlər. Sualda ağ dovşanın dalınca getmək ifadəsinə allüziya var idi.'),
+    A('Alfa ilə əvəz olunan qarşılıqlı samitlərlə başlayan iki sözdür. Ogüst Forel bəzi böcək növləri üzərində olan araşdırmalarına görə tanınan alimdir. Forel yaşadığı evə rəsmi olaraq ALFA ləqəbini vermişdi. Alfanı yazın','Qarışqa koloniyası')
+   ]
+  },
+  {
+   name:"Buraxılmış sözlər və ya hərflər",
+   author:"Serkan Şentürk",
+   questions:[
+    A('Melburn şəhəri 1880-ci illərdə Avstraliyanın ən böyük şəhərlərindən biri olsa da, 1890-cı illərə qədər şəhərdə kanalizasiya sistemi inşa edilməmişdi. Bu səbəbdən həmin dövrdə şəhər Melburn kimi tanınırdı. Əvvəlki cümlədə buraxılmış bir hərfi tapın','S','Şəhərdə kanalizasiya sistemi olmadığı üçün şəhər zibil və çirkab problemindən əziyyət çəkirdi. Üfunət bürüyən şəhəri bildirmək üçün şəhəri zarafatla Smelburn adlandırmışdılar.\nMənbə: https://www.abc.net.au/news/2021-11-26/werribee-sewage-farm-treatment-plant-heritage-register/100651320'),
+    A('Hadisələri Yaponiyada cərəyan edən bir manqanın həddən çox ümidsiz olan personajı qarşılaşdığı bir qadının gözəlliyindən o qədər təsirlənir ki, ona intihar təklifi edir. Əvvəlki cümlədə buraxılmış bir sözü tapın','İkiqat','Sayılma meyarı: ikili, cütlük - yapon dilində "ikiqat intihar" mənasına gələn şincu sözü də sayılır.\n\nŞərh: Personaj qadına aşiq olur və ona birlikdə intihar etməyi təklif edir. Yaponiya, ümidsizlik və sualın 2-ci sual olması kömək edə bilərdi. İkiqat intiharı adətən sevgili cütlüklər edir.\nMənbə: "Sayonara Zetsubo Sensei", 3-cü fəsil'),
+    A('Norveçin Lonqyirbyen qəsəbəsində ilboyu şaxta müşahidə olunduğu üçün qəsəbə rəhbərliyi qəsəbədə ölməyi qadağan edib. Təsadüfi deyil ki, qəsəbədə qocalar yoxdur. Əvvəlki mətndə buraxılmış bir söz var, həmin sözü tapın','evi','Lonqyirbyen qəsəbəsində ölmək qadağandır, bu səbəbdən qəsəbədə qocalar evinin fəaliyyət göstərməsinə icazə verilmir.'),
+    A('Kinematoqraf Jan Peinleve bir müsahibəsində demişdi ki, kişilərlə qadınlar arasında bərabərliyə inanır. Təsadüfi deyil ki, o, 1931-ci dəniz haqqında film çəkən ilk şəxs olmuşdur. Əvvəlki cümlədə buraxılmış sözü tapın','atları','Dəniz atlarında dişilər yumurtlayır, daha sonra yumurtaları erkəklərə ötürür və erkəklər yumurtalara nəzarət edir. Peinleve bundan xeyli təsirlənmişdi və bunu kişi-qadın bərabərliyi üçün ideal nümunə hesab etmişdi. O, sualtında çəkilmiş, eyni zamanda dəniz atlarını qeydə alan ilk film olan "Dəniz atı" filmini çəkmişdir.\nMənbə: https://flashbak.com/art-meets-science-the-seahorse-lhippocampe-ou-cheval-marin-by-jean-painleve-1935-479850/'),
+    A('Conas Henvey XVIII əsrin İngiltərəsindəki tabuya qarşı gələrək küçədə çətirlə gəzən ilk kişi olmuş, hətta buna görə onların hücumuna məruz qalmışdır. Əvvəlki cümlədə bir sözdə buraxılmış hərfləri bərpa edərək sözü tam formada tapın','faytonçuların','Həmin dövrdə çətir gəzdirmək qadınlara aid edilirdi və kişi hərəkəti sayılmırdı. Buna görə kişilər Londondakı yağışlara rəğmən islanmağa üstünlük verirdilər. Conas Henveyin çətirdən istifadə etməsi faytonçuları qəzəbləndirmişdi, çünki bir çox insan yağışdan qorunmaq üçün faytondan istifadə edirdi və onlar çətirin populyarlaşmasının gəlirlərinin azaldacağından narahat idilər.\nMənbə: https://en.wikipedia.org/wiki/Jonas_Hanway')
+   ]
+  },
+  {
+   name:'Jül Vernin "İyirmi min lye su altında" romanı',
+   author:"Üsyan Rzalı",
+   questions:[
+    A('Naitilusu ilk görüb xəbər verənə pul mükafatı vəd edilmişdi. Buna görə də gəmidəki hər kəs diqqətlə dənizin hər tərəfini müşahidə edirdi. Bu zaman gəminin hansı mifik varlığa bənzədildiyini tapın','Arqos','Arqos yunan mifologiyasında çox gözlü nəhəngin adıdır.'),
+    A('Natiluis gəmisi vulkanik olaraq olduqca aktiv olan Aralıq dənizində olarkən personaj 8-ci ilə 9-cunun hələ də buraların hakimiyyəti uğrunda mübarizə apardığını qeyd edir. 8-ci və 9-cunu yazın','Neptun və Pluton','Neptun dəniz allahı Pluton isə Vulkanlar allahıdır, cənab Arronaks bu iki qüvvənin hələ də burda dənizi öz təbiət qüvvələrinə tabe etmək istədiyini deyir. 8-ci və 9-cu sözləri də sizə kömək olmalı idi belə ki neptun 8-ci pluton isə 9-cu planetlərdir.'),
+    A('Sonor samitlə başlayan sözlə cavab verin. Seylon açıqlarında ikən dənizdə gəzintiyə çıxan personaj nələri dənizin göz yaşları və ya qatılaşmış bir şeh damlasına bənzədir?','Mirvari'),
+    A('Aylarla dəniz məhsulları ilə qidalanmış və quru mənbəli ən təməl qidalardan belə məhrum qalmış personaj bir okeaniya adasına çatdıqda rast gəldiyi Bunu özü ilə gəmisinə qədər Naitulus gəmisinə aparmaq qərarına gəlir. Nəyi?','Çörək ağacı','Natilusda sadəcə dəniz mənbəli qidalardan istifadə edilirdi bu səbəbdən ən təməl qidalardan olan çörəyi belə yeyə bilmirdilər, çörək ağacı bişirildikdə undan hazırlanmış çörəkdən fərqlənməyən meyvələrə sahibdir. Bitkinin vətəni olan okeaniyada onları tapan mahir dənizçi Ned olduqca sevinir.'),
+    A('Alfa eyni iki hərflə başlayan iki sözdür. Tayfadan birinin ölümü nəticəsində dənizin dibində çıxılan səyahətdə çoxlu sayda daşlaşmış ağaclara bənzər dəniz canlılarından bəhs olunur. Kitabın bu fəsli Alfa adını daşıyır. Alfanı yazın','Mərcan məzarlığı','Onlar dənizin dibinə ölü tayfanı dəfn etmək üçün enmişdilər, ölənin qəbri mərcanlarla örtülür və bu mərcanlar zamanla böyüyərək görkəmli bir görünümə sahib olur.')
+   ]
+  },
+  {
+   name:"Beşinci mövzu",
+   author:"Üsyan Rzalı",
+   questions:[
+    A('Bunlar 1930-cu illərdə paralel parkinq zamanı köməklik göstərməsi üçün ixtira olunmuşdu.','5-ci təkər'),
+    A('Bir videoda Bunu təsvir edə bilmək üçün "teatrın tavanı" metaforundan istifadə olunur. Nəyi?','5-ci divarın qırılması','4-cü divarın qırılması termini səhnədəki personajlarla izləyicini ayıran xəyali bir divarın aşılması ilə bağlıdır. Videoda artıq bunu da aşmaqdan bəhs edir və teatrın tavanının dağılması bənzətməsi işlədilir.'),
+    A('İnsanlığı gözləyən ən böyük problemlərdən biri haqqında danışılan məqalədə ənənəvi siyahıya əlavə olaraq idarəsiz əhali artımı da daxil olunub. Məqalənin adını və ya əlavə olununı deyin','Məhşərin 5-ci atlısı (5-ci atlı)'),
+    A('Bir məqalədə qeyd edilir əgər Nyu-York Tayms istifadəçilər üzərində Bunda olan marağı saxlamaq istəyirsə müəyyən dəyişikliklər etməlidir. Çünki databazada məhdudluq var. Bunun nə olduğunu yazın','Wordle oyunu','Wordle oyunu 5 hərfli sözlərin tapılması oyunudur. Oyun günlükdür və bu sözlərin sayı məhdud olduğundan bir yerdən sonra ya təkrara girməli ya da yeni sözlər daxil etməli olacaqlar.'),
+    A('Ermənistan Apostelik kilsəsində Müqəddəs Keghard adlı bir nizə nümayiş olunur. Siz isə həmin nizə ilə nə edildiyinə inanıldığını maksimal dəqiqliklə yazın','İsa Məsihə 5-ci müqəddəs yaranın açılması')
+   ]
+  }
+  ]
+ }
+ ]
+},
+
+/* =========================================================
+   I TUR
+========================================================= */
+{
+ name:"I Tur",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Qustavlar",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Onun dizayn etdiyi bir-birlərinin çiyinlərini tutan 3 çılpaq kişi hər il öz yeni sahibini tapır. Onun kim olduğunu deyin','Qustav Vigeland','Qustav Vigeland Nobel üzrə Sülh mükafatı medalının dizayneridir.'),
+    A('[Aparıcı üçün qeyd: şərh mütləq oxunmalıdır.] BU ingilis bəstəkar dostlarına yazdığı şəxsi məktublarında və gündəlik qeydlərində tanışlarının doğum tarixlərini toplayaraq onların xarakter xəritələrini düzəldirdi.','Qustav Holts','İngilis bəstəkar astrologiya həddindən çox maraqlanırdı. Ən məşhur əsəri olan "Planetlər suitasını" bəstələyərkən də astronomiya yox məhz astrologiyadan ilhanlanmışdı.'),
+    A('Ehtimal olunur ki, Onlar Parisin 8-ci dairəsində, Miromesnil küçəsi 77 ünvanında elə Qustav Kaybotun özünə məxsus emalatxanada işləyirdilər. Onların kim olduğunu deyin','Parket yonanlar (təmizləyənlər, parket işçiləri və s. cavabda döşəmə və parket olan mənaca uyğun cavab)'),
+    A('10 ilə yaxın bank müdiri işləyən Vyana doğumlu bu yazıçı bank işlərini spiritualizmə əsasən idarə etməsi şayiələri ilə təqsirləndirilərək həbs edilmişdi. Onun kim olduğunu deyin','Qustav Meyrink','Okkulist olan və fövqəltəbii güclərə həddindən artıq inanan yazıçı Meyrink hətta bank işini də belə idarə edirdi. Həbsdən çıxdıqdan sonra mistisizm mövzusunda məşhur "Qolem" əsərini yazmışdı.'),
+    A('Qustav Holstun "Planetlər" süitasında hansı planeti kənarda saxladığını deyin.','Yer','Əvvəlki sualda bildirdiyimiz kimi Holst hissələrin adlarını astronomiyaya deyil, astrologiyaya əsaslanaraq qoymuşdu (məsələn: Mars — Müharibə gətirən, Yupiter — Şənlik gətirən). Yer planeti isə klassik qoroskop baxımından astroloji simvol sayılmadığı üçün daxil edilməmişdi. Qeyd: Pluton həmin dövrdə kəşf edilməmişdi. Əsər 1914–1916-cı illər arasında bəstələnib. Pluton planeti isə yalnız 1930-cu ildə kəşf edib.')
+   ]
+  },
+  {
+   name:"Dondurma",
+   author:"Serkan Şentürk",
+   questions:[
+    A('"Blue Moon" ABŞ-də yaradılmış, açıq mavi rəngdə olan dondurma növüdür. Bəs bu dondurma Belçikada hansı adla populyarlaşıb?','Smurf Ice','Sayılma meyarı: Şirinlər dondurması, Smurf dondurması, Smurfs.\n\nŞərh: "Şirinlər" 1958-ci ildə yaradılmış məşhur Belçika komiksidir. Təsadüfi deyil ki, göy rəngli bu dondurma da Belçikada bu adla məşhurlaşıb.'),
+    A('1950-ci illərdə ABŞ embarqosundan sonra o, Kanadaya nümayəndə göndərmiş və ölkəsinə 28 konteyner dondurma gətizdirilməsini əmr etmişdir.','Fidel Kastro','Kastro süd məhsullarına olan düşkünlüyünə görə tanınır. Xüsusilə, dondurmanı çox sevən Kastro ABŞ-nin Kubaya tətbiq etdiyi embarqodan sonra dondurmalarını Kanadadan gətizdirməyə başlamışdır.'),
+    A('Knyaz Pükler dondurması ilk dəfə Prussiyada ixtira olunsa da, orijinal reseptinə püstə, vanilya və albalı daxil olduğu üçün bu ölkə ilə assosiasiya olunmağa başlamışdır.','İtaliya','Bu dondurma daha çox Neapol dondurması kimi tanınır və resepti İtaliya bayrağının rənglərini xatırladır, lakin əslində Prussiyada ixtira olunub.'),
+    A('1946-cı ildə Bört və İrv insanların ayın hər bir günündə fərqli bir dondurma çeşidi yeməli olduğunu düşünmüşdülər. Siz isə Bört və İrvin hər ikisinin soyadını deyin.','Baskin və Robbins','Söhbət dünyanın ən böyük dondurma mağazası şəbəkəsi olan "Baskin-Robbins" şirkətindən gedirdi. Şirkətin əsas devizi "31 dad"dır, bu da ayın günlərinin sayına uyğundur.'),
+    A('ABŞ-də ixtira olunmuş sarımsaqlı dondurma çeşidi bu şəhərdə keçirilən festivallarda tez-tez yeyilən təamlardan biridir.','Gilroy','Kaliforniyanın Gilroy şəhəri "Dünyanın sarımsaq paytaxtı" kimi tanınır, burada tez-tez sarımsaq festivalları keçirilir.')
+   ]
+  },
+  {
+   name:"Qurbağa",
+   author:"Serkan Şentürk",
+   questions:[
+    A('Saitləri eyni sözlə deyin. Qurbağaların elmi adı olan "Anura" yunan dilindən belə tərcümə olunur.','quyruqsuz','"A-" yunan dilində neqativ şəkilçidir.'),
+    A('Onun 1983-cü ildə tamamladığı və 10 heyvan portretindən ibarət olan "Təhlükə altındakı növlər" adlı pop-art seriyasına Payn Barrens ağac qurbağasının portreti də daxildir.','Endi Uorhol','Uorhol pop-art üslubunda yaratdığı seriyada heyvanları məşhur şəxslər kimi təsvir edərək diqqət çəkməyə çalışmışdı.'),
+    A('Eyni iki hərflə başlayan iki sözlə cavab verin. Hansı ifadə haqqında vikipediya məqaləsində biz Mağara alleqoriyası məqaləsinə keçidi də görə bilərik?','Quyudakı qurbağa','Quyudakı qurbağa ifadəsi məhdud biliklərə sahib axmaq insanları bildirmək üçün işlədilən ifadədir.'),
+    A('Letonun Apollon və Artemidanı doğduqdan sonra ona su içməsinə mane olan kəndiləri qurbağaya çevirməsi bu yazıçının məşhur əsərində yer alan süjetlərdən biridir.','Ovid','Ovidin ən məşhur əsəri "Metamarfoz"dur və yunan-Roma mifologiyasındakı insanları qurbağa çevirmə hekayəsi bu əsərdə də yer alıb.'),
+    A('1979-cu ildə magizoologiya sahəsində fəaliyyətinə görə Merlin Ordeni ilə təltif olunmuş ONA Şokolad Qurbağa Kartı da həsr edilmişdir.','Nyut Skamender','Harri Potter dünyasının ən məşhur magizooloqu olan Nyut Skamenderın adı da amfibiyalarla bağlıdır.')
+   ]
+  },
+  {
+   name:"Soyuq",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('O gediş yolunda aylarla ölümcül şəraitdə mübarizə aparsa da çatanda o qədər məyus olmuşdu ki, qayıdanda eyni mübarizəni apara bilməmiş və donaraq ölmüşdü','Robert Skot','Cənub qütbünü kəşf etməyə gedən o Norveç bayrağını görmüş və qayıdarkən ölmüşdü.'),
+    A('Soyuq iqlimi ilə seçilən Kanadanın Kalqari Universiteti tələbələrinə iki günlük Alfa tikmək kursu təklif edir. Alfanı deyin','İqlu'),
+    A('Alfa yunan mənşəli bir sözdür. 1970-ci illərdə Kaliforniyada ilk ALFA mərkəzlərindən biri iflas etmiş və maye azot almağa pulları çatmadığı üçün 9 nəfərin bədəni çürümüşdü. Alfanı deyin','Krionika','Krionika, ölümcül xəstəlikdən və ya qocalıqdan vəfat etmiş insanların cəsədlərin çox aşağı temperaturda dondurularaq saxlanılmasıdır.'),
+    A('Cavab maksimal dəqiqliklə tələb olunur. Kotsit (koçit) gölü 4 hissədən ibarətdir; Qohumlarına xəyanət edənlər, Vətəninə xəyanət edənlər, dostlarına xəyanət edənlər və yaradana xəyanət edənlər. Koçit gölünün harada yerləşdiyini deyin.','Cəhənnəmin 9-cu qatı (Dantenin Cəhənnəmin 9-cu qatı, ilahi komediyada cəhənnəmin 9-cu qatı və s. cavabda cəhənnəm və 9-cu qat olmaqla)','Dantenin Cəhənnəmin 9-cu qatı soyuq buzlaqlar ibarətdir orada yerləşən koçit gölü də tamamilə buzdan ibarətdir və günahkarlar buza batırılır.'),
+    A('O, 15 yaşında buzda yıxıldıqdan sonra qabırğası sınmış, ömürlük yatağa düçar olduqdan sonra isə dini həyat yoluna başlamışdı.','Müqəddəs Lidvina','Müqəddəs Lidvina konkisürmənin (buzustu sürüşmə və s.) himayədarı hesab olunur.')
+   ]
+  },
+  {
+   name:"Qolf",
+   author:"Serkan Şentürk",
+   questions:[
+    A('O, 2020-ci il Avropa çempionatına vəsiqə qazandıqdan sonra qələbəni "Uels. Qolf. Madrid" şüarı ilə qeyd etmişdir.','Qaret Beyl','Uelsli futbolçu Qaret Beyl qolfla da məşğul olur. Deyilənə qədər "Real Madrid" karyerasında zədələrindən biri qolf oynarkən baş verib.'),
+    A('Maraqlıdır ki, Lixtenşteyn, Lüksemburq və Sinqapurda da bu idman növü üzrə federasiyalar fəaliyyət göstərir.','Miniqolf','Cırtdan ölkələrin verilməsi ipucu idi.'),
+    A('1962-ci ildə tamamlanmış "Qolf topu" rəsm əsərinin müəllifi bu amerikalı sənətçidir.','Roy Lixtenşteyn','Onun ən məşhur əsərlərindən biri "Topla qız"dır (1961).'),
+    A('Artur Klarkın bu romanında bəşəri problemlərindən azad olmuş yetkinlər vaxtlarının çoxunu qolf oynamaqla keçirirlər.','Uşaqlığın sonu','Romanda Overlord adlı varlıqlar insanların bütün problemlərinə son qoyurlar, son hissələrdə isə artıq uşaqlar doğulmur. Bu səbəbdən yetkinlər vaxtının çoxunu qolf oynamaqla keçirirlər.'),
+    A('Sıra sayından istifadə edib cavab verin. Qolf meydançasının yaxınlığında yerləşən və oyunçuların oyun bitdikdən sonra getdikləri restoranları bildirmək üçün bu slenqdən istifadə olunur.','19-cu dəlik','Qolf oyunu 18 dəlikdən ibarətdir. Qolf mədəniyyətdə oyunçuların oyundan sonra getdikləri restoran və ya kafe 19-cu dəlik adlandırılır.')
+   ]
+  }
+  ]
+ }
+ ]
+},
+
+/* =========================================================
+   II TUR
+========================================================= */
+{
+ name:"II tur",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Səyyahlar",
+   author:"Üsyan Rzalı, Rüfət Əlizadə",
+   questions:[
+    A('Möhtəşəm Qetsbi romanında personaj iki yarımadanın əsas quruya birləşdikləri yastı yerlərdən bəhs edərkən Onun adını xatırlayır.','Kolumb','Romanda kolumb yumurtasına bənzətmə edilir.'),
+    A('Səyahəti zamanı Ceyms Kuk, yerli xalq tərəfindən dəniz tanrılarına hörmət və okeana təşəkkür məqsədilə edilən bir rituala şahid olmuşdu. Həmin ritualın hazırda necə adlandırıldığını deyin','Sörfinq'),
+    A('Ferdinand Magellan Dünya ətrafında səyahəti zamanı kapitanını itaətsizliyə görə Müqəddəs Julian limanında edam etdirmişdi. Maraqlıdır ki, eyni limanda 58 il sonra o da eyni səbəbdən kapitanlarından birini edam etdirmişdi. Kim?','Frensis Dreyk'),
+    A('O 1887-ci ildə xarici aləmlə əlaqəsi kəsilən Emin Paşa adlı alman səyyahını xilas etmək üçün yenidən Afrikaya qayıtmışdı. Onun kim olduğunu deyin','Henri Morqan Stenli','Daha əvvəl məşhur səyyah Livinqstonu axtarışa çıxan və tapan Stenli sonralar Emin paşanı da tapmışdı.'),
+    A('Onun haqqında yazılan bir bioqrafiya kitabının adında dözümlülük sözünü görmək olar. Kimin?','Ernest Şeklton','Qəribə təsadüfdür ki onun ailə mottosunda da "dözümlülük" sözünün sinonimi var. Ernest Şeklton dözümlülük adlı gəmisi ilə antarktiyaya səfəri zamanı orda qalan Kapitan belə demək olarsa çətinliklərə dözümlülük göstərmiş və ekspedisiyanın bütün üzvlərini sağ salamat saxlamağı bacarmışdır.')
+   ]
+  },
+  {
+   name:"1937-ci ildə dünyasını dəyişənlər",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Onun fikrinə görə, hər bir insan dünyaya aciz və köməksiz gəldiyi üçün təbii bir natamamlıq hissi ilə doğulur. İnsanın bütün həyatı və motivasiyası bu natamamlıq hissini kompensasiya etməkdir. Onun kim olduğunu deyin.','Alfred Adler','A.Adler Natamamlıq kompleksinin əsasını qoyub.'),
+    A('Mariya Elettra xatirələrində yazır ki, atası həddindən çox səyahət edən biri olsa 1931-ci ildə aylarla Romada qalmış və hər gün Vatikana gedərək Papa XI Piy ilə görüşürdü. Siz isə Mariya Elettranın atasının kim olduğunu deyin','Qulyelmo Markoni','Markoni 1931-ci ildə Vatikan radiosunu qurmağa getmişdi. Eyni zamanda Markonin məşhur gəmisinin adı da Elettra idi və qızına da bu adı vermişdi.'),
+    A('O dəniz canlılarından dəhşətli dərəcədə qorxurdu, təsadüfi deyil ki, onun yaratdığı qorxu canlılarının əksəriyyəti də elə dəniz canlıları idi.','Hovard Filips Lavkraft'),
+    A('1905-ci ilin dekabrında evində partlayıcı maddə ilə tutulan o "Oxrana" tərəfindən həbs edilmişdi. Buna baxmayaraq illər sonra Maksim Qorkinin Stalindən xahişi ilə ölkəni tərk etməsinə icazə verilmişdi. Onun kim olduğunu deyin','Yevgeni Zamyatin'),
+    A('3-cü Praqa defenestrasiyası onun xarici işlər naziri olan oğlunun ölümü ilə baş tutmuşdu. Onun kim olduğunu deyin','Tomaş Masarik')
+   ]
+  },
+  {
+   name:"Almaz",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Cənub yarımkürəsində ilk elektrikli küçə işıqları 1882-ci ildə bu şəhərdə qurulub.','Kimberli','XIX əsrin sonlarında Kimberli şəhərində almaz qızdırması baş tutmuşdu, Kimberli şəhəri isə bir çox nöqtədə digər şəhərləri qabaqlayırdı.'),
+    A('Bu klub ilk dəfə 1950-ci ildə Mitsubishi Motors şirkətinin daxili futbol klubu kimi yaradılmışdı.','Urawa Red Diamonds'),
+    A('Təxminən 15 milyon il əvvəl meteor düşməsi nəticəsində əmələ gələn krater daxilində qurulan Bu şəhərin ləqəblərindən biri "parıldayan almaz şəhəridir"','Nördlinqen','Təxminən 15 milyon il əvvəl meteorit düşməsi nəticəsində əmələ gələn krater daxilində qurulub. Bu meteor zərbəsi zamanı yaranan çox yüksək temperatur və təzyiq nəticəsində yerdəki karbon mikroskopik almazlara çevrilib. Həmin almazlar şəhərdəki binaların tikilməsi zamanı istifadə olunan daşların tərkibində mövcuddur.'),
+    A('Ritz-Carlton hoteli XX əsrin əvvəllərində dünyada dəbdəbənin və zənginliyin ən məşhur simvollarından biri idi. Siz isə həmin dövrdə hansı amerikalı ədibin yaradıcılığında Ritz-Carlton hotelinin istifadə olunduğunu deyin.','F.Skot Fitzcerald','Söhbət Fitzceraldı. "Ritz böyüklüyündəki almaz" əsərindən gedirdi.'),
+    A('Eduard Manenin sonuncu rəsm əsəri hesab olunan Foli-berjerdə bar rəsm əsərində bu pivə markasına rast gələ bilərik','Bass','loqosunda qırmızı almaz təsvir olunub.')
+   ]
+  },
+  {
+   name:"Marslı kitabı",
+   author:"Üsyan Rzalı",
+   questions:[
+    A('Alfa birinci tərəfi xüsusi isim olan ikinci növ təyini söz birləşməsidir. Marsın səhrasında uzun müddət səyahət edən Mark hər yerin bir-birinə oxşaması, naviqasiyanın olmamasının çətinliyindən bəhs edir. Bu zaman onun qarşısına çıxan və xəritədə göstərildiyi üçün ona kömək olacaq cismi Alfaya bənzədir. Alfanı deyin','İskəndəriyyə mayakı'),
+    A('Marslı kitabının bölmələri sol sözü və rəqəmlə başlayır. Siz isə sol-un nə olduğunu deyin','Mars günü','Sayılma meyarı: marsın öz oxu ətrafında döndüyü zaman, marsda bir sutkaya verilən ad və mənaya uyğun cavablar.'),
+    A('Alfa yunan mənşəli sözdür. Su istehsal etmək üçün olduqca təhlükəli hidrozin maddəsilə təcrübələr aparan obraz ehtiyatlı olmalı olduğunu əgər xırda bir səhv edərsə yaşadığı kampdan geriyə sadəcə memorial Alfasının qalacağını qeyd edir. Alfanı deyin','Krater'),
+    A('Mark, yaşayış modulunun materiallarını kəsərək müxtəlif məqsədlər üçün istifadə edir. Sonda modul sıradan çıxanda, Mark özünü il yarım yaşadan bu strukturu bir uşaq nağılı personajı ilə müqayisə edir. Hansı?','Giving tree (Səxavətli ağac)'),
+    A('Əlində qida mənbəyi kimi sadəcə kartof qalan obraz sadəcə kartof yeməkdən bezdiyini buna görə də yer planetinə qayıdanda qərbi avstraliyaya köçəcəyini deyir. Onun belə demə səbəbini xüsusi isimdən istifadə edərək dəqiqliklə izah edin.','Qərbi Avstraliya dünyanın kartof paytaxtı hesab olunan İdahonun antipodudur','Sayılma meyarı: mənaca uyğun cavablar.\n\nŞərh: yəni ona nisbətdə yer kürəsinin tam digər tərəfində yer alır.')
+   ]
+  },
+  {
+   name:"Vikipediya",
+   author:"Serkan Şentürk",
+   questions:[
+    A('Ondan bəhs edən vikipediya məqaləsində qeyd olunur ki, 3 yaşı olanda anası ona Dünya Kitab Ensiklopediyası almışdı və o, nəşriyyatın göndərdiyi stikerlərlə kitabı daim yeniləyirdi.','Cimmi Ueyls','Sayılma meyarı: Cimbo.\n\nŞərh: Vikipediyanın yaradıcısı Cimmi Ueyls hələ 3 yaşında ensiklopediyaya maraq göstərməyə başlamışdır. Maraqlıdır ki, ensiklopediyanı stikerlərlə yeniləməsi elə Vikipediyanın prinsipi ilə oxşarlıq təşkil edir.'),
+    A('Vikipediya istifadəçilərinin öz dil bilikləri haqqında məlumat vermək üçün öz səhifələrində düzdükləri qutucuqlar buranın ilə adlandırılır.','Babil','Babil qülləsinə göndərmə.'),
+    A('Maraqlıdır ki, 2010-cu ilə qədər Vikipediyanın loqosunda bu dildən olan simvol olsa da, daha sonra loqodan çıxarılmışdı. Bundan bəhs edən məqalədə aktyor Patrik Stüartı da görmək olar.','Klinqon dili','Klinqon dilində vikipediya olmadığı üçün simvol 2010-cu ildə loqodan çıxarılıb. Patrik Stüart "Ulduz yolu" aktyorlarından biridir.'),
+    A('500.000-ci məqaləyə çatması münasibətilə rusca vikipediyanın loqosuna bu meyvənin ortadan kəsilmiş təsviri qoyulmuşdu.','limon','Rus jarqonunda "limon" sözü milyonu bildirmək üçün istifadə olunur. Maraqlıdır ki, loqoya da yarım milyon məqaləni bildirmək üçün ortadan bölünmüş limon qoyulmuşdu.'),
+    A('Eyni hərflə başlayıb bitən portmentu ilə cavab verin. Vikipediyada bir neçə adı olan şəhərlərin məqalələrini adlandırmaqla bağlı yaranan mübahisələri bildirmək üçün işlədiən bu portmentuda Polşanın şimalındakı bir şəhər xatırlanır.','Qdansiq (Qdansk + Dansiq)','Bu şəhər tarixən həm Polşa, həm Almaniyanın olub və iki adla tanınır.')
+   ]
+  }
+  ]
+ }
+ ]
+},
+
+/* =========================================================
+   III TUR
+========================================================= */
+{
+ name:"III TUR",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Effektlər",
+   author:"Rüfət Əlizadə, Serkan Şentürk",
+   questions:[
+    A('İnsanların məlumatı yadda saxlamaq əvəzinə onu internet axtarış mühərriklərində tapacağını bildiyi üçün beynində saxlamaması halı bu cür adlanır','Google effekti'),
+    A('Eksentrik metodları ilə tanınan həkim Şarl-Braun Sekar 72 yaşında olanda heyvanlardan əldə olunan testeronu bədəninə yerinə yeritməklə cinsi gücünü əldə etdiyini bildirmiş və minlərlə kişi onun terapiya metodundan yararlanmışdır. Bu faktdan danışılan məqalədə xatırlananı deyin','Plasebo effekti','Şarl-Braun Sekar qvineya donuzu və itlərin xayalarından əldə etdiyi testerondan hazırladığı maye ilə cavanlaşmaq və cinsi gücü əldə etmək metodu hazırladığını bildirmişdi və minlərlə şəxs onun bu terpasiyasından yararlanmışdı. Lakin əslində aparılan araşdırmalar bu metodun heç bir elmi əsasının olmadığını, müalicə olunanların sadəcə plasebo effekti ilə fayda gördüyü məlum olmuşdur.'),
+    A('UX (User experience) dizaynerləri qeyd edirlər ki, saytlarda "indi ödə" düyməsini xüsusilə fərqli rəngdə etmək ilə əslində bunu tətbiq edirlər. Bu adını alman alimdən alıb. Nə?','Von Restorff effekti','Von Restorff effekti (həmçinin "təcrid olunma effekti" adlanır) psixoloji bir qanunauyğunluqdur, belə ki, bir-birinə bənzər obyektlərin içərisində digərlərindən fərqlənən (tək qalan) obyekt daha çox diqqət çəkir və yaddaşda daha yaxşı qalır.'),
+    A('Maksimilian tərəfindən ortaya atılmış Buna ən gözəl nümunə kimi kəndirdartma yarışı göstərilir.','Ringelman effekti','Ringelman effekti – fərdin qrup daxilində məhsuldarlığının azalması ilə xarakterizə olunan effekt. Bu anlayışa görə qrupda fərdlərin sayı artdıqca adambaşına düşən məhsuldarlıq azalır.'),
+    A('Haqqında olan vikipediya məqaləsində o "Uoterqeytin Kassandrası" adlandırılır. Onun kim olduğunu deyin','Marta Mitçell','Marta Mitçell effekti psixologiya və tibbdə, bir şəxsin baş verən real hadisələr haqqında dəqiq müşahidələrinin və dediklərinin tibb işçiləri və ya ətrafdakılar tərəfindən yanlış olaraq "sayıqlama" və ya "halüsinasiya" kimi qiymətləndirildiyi və xəstənin səhv diaqnoz qoyulduğu vəziyyəti ifadə edir. Marta Mitçell effekti adını 1970-ci illərdə ABŞ-da baş verən "Watergate" qalmaqalından alır. Riçard Niksonun administrasiyasında Baş Prokuror olan Con Mitçellin həyat yoldaşı Marta Mitçell, Ağ Evin qanunsuz işlərə qarışdığını ictimaiyyətə açıqlayan ilk şəxslərdən biri olsa da haqqında Nikson tərəfindən qarayaxma kampaniyası başladılaraq onun əslində halüsinasiya gördüyü və uydurma məlumatlar dediyi iddia edilmişdi.')
+   ]
+  },
+  {
+   name:"Proqramlaşdırma dilləri və kodlar",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Bu proqramlaşdırma dilində "Hello World" kodunu yazmaq üçün 2 səhifəlik dramatik pyes yazmalısınız. Proses ərzində Romeo və Cülyetta bir-birini tərifləyə və təhqir edə bilər.','Şekpsir','Şekspir programlaşdırma dili esoterik (yəni praktiki məqsədlə yox compüter dillərinin limitlərini yoxlamaq yaxud sənətsəl məqsədlərlə yaradılan dillər) bir proqramlaşdırma dilidi. Dilin sintaksi elə dizayn edilib ki yazılan programlar Şekspirin əsərləri kimi oxunsun.'),
+    A('Bu filmdəki məşhur digital yağış səhnəsinin müəllifi olan Simon yazır ki, Yaponiyadan olan həyat yoldaşının şərəfinə kodlar yerinə əslində suşi reseptlərindən istifadə edib. Söhbətin hansı filmdən getdiyini deyin','Matrix'),
+    A('Bu holland rəssamın şərəfinə adlandırılan proqramlaşdırma dilində, kodları sintaks əvəzinə rəngli bloklar əvəz edir','Pit Mondrian'),
+    A('Cavabda mürəkkəb ingilisdilli söz tələb olunur. Urban Müller bu dili yaradarkən məqsədi dünyanın ən kiçik kompilyatorunu yazmaq idi. Dildə "Hello world" yazmaq üçün 72 dəfə + işarəsindən istifadə etmək lazımdır','Brainfuck'),
+    A('Qısa sözlə cavab verin. Bu Java mühiti üçün yaradılan yüksək səviyyəli skript dilidir.','Tea','Java dilininin qurucusu Ceyms Qoslinq dili adlandırırkən və loqo seçərkən java qəhvəsindən ilhanlanmışdı. Maraqlıdır ki, dil üçün yaradılan başqa bir dil qısaca tea adlanır.')
+   ]
+  },
+  {
+   name:"Saç",
+   author:"Serkan Şentürk",
+   questions:[
+    A('1994-cü ilə qədər bu ölkədə tətbiq olunmuş karandaş testində şəxslər saçlarına karandaş keçirərək afro teksturalı saçının olub-olmadığını göstərməli idilər.','CAR','1994-cü ilə qədər CAR-da aparteid rejimi tətbiq olunub. İnsanların irqini müəyyən etmək üçün tətbiq olunan karandaş testində karandaş şəxsin saçına keçirilirdi. Karandaşın saçdan asanlıqla keçib-keçməməsinə görə şəxsin irqi müəyyən olunurdu.'),
+    A('Türkiyənin Dənizli ilində yerləşən bir mağara ilə bağlı folklor inancına görə mağaradakı sular saç artımına kömək edir və bir çox insan saçını uzatmaq üçün mağaraya gəlir. Mağara onun adı ilə tanınır.','Keloğlan mağarası (Keçəl mağarası cavabı qəbul olunmur)','Mağaraya adətən keçən insanlar gəlirlər ki, saçları yenidən çıxsın. Keloğlan türk folklorunda olan məşhur personajlardan biridir.'),
+    A('Yaxın Şərqdə vəziyyətin qarışıq hal aldığını bildirən bir məqalənin başlığında biz bu ifadəyə rast gələ bilərik.','Ərəb saçı','Ərəb saçı ifadəsi qarışıq, həll edilməsi çətin olan hadisələri bildirmək üçün işlədilən ifadədir.'),
+    A('Bu ABŞ restoranlar şəbəkəsi Dünya Qırmızı Saçlılar Günü münasibətilə xüsusi kospley tədbiri təşkil etmiş, iştirakçılara qalib gəlmək üçün iki hörük hörməyi və mavi zolaqları olan paltar geyinməyi tövsiyə etmişdir.','Wendy\'s','Söhbət burada "Wendy\'s" şirkətinin ikonik talismanından gedir. Loqoda da yer alan personaj qırmızı hörükləri olan, mavi zolaqlı paltar geyinmiş qızdır.'),
+    A('Marvel Comics tərəfindən yaradılmış "Inhumans" qrupunun üzvü olan o, uzun saçlarını idarə edib döyüşmək gücünə malikdir. Personajın yaradılması zamanı yunan mifologiyasından ilhamlanılmışdır.','Meduza','Inhumansların kraliçası olan Meduza da yunan mifologiyasındakı Meduza kimi saçlarını idarə etmək gücünə malikdir.')
+   ]
+  },
+  {
+   name:"Şokolad",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Avropalıların şokoladla tanışlığı aztek kralı II. Montezumanın ona təklif etdiyi şokolad içkisindən sonra olmuşdu. Onun kim olduğunu deyin','Ernan Kortes','Şokoladı Avropaya Ernan Kortes gətirib.'),
+    A('Bu şirkət uzun müddətdir ki, okeanların təmizlənməsi və dəniz atlarının nəslinin kəsilməsinin qarşısını alan qlobal "Project Seahorse" fondunun rəsmi sponsorudur. Söhbətin hansı şirkətdən getdiyini deyin','Guylian','Balıqqulağı formasında olan şokoladları məşhur olan Guylian şirkətinin loqosunda da dəniz atı təsvir olunub.'),
+    A('Üçüncü sual. Kriollo və Forastero kakao növlərinin hibridləşməsindən yaranan və ən çox istifadə olunan 3-cü kakao növünün vətəni məhz bu karib ölkəsidir','Trinidad (Trinidad və Tobaqo)','Ən çox becərilən 3-cü kakao növü olan trinitario Trinidadın şərəfinə adlandırılıb.'),
+    A('1996-cı ildə, siyasətçi olan Petro Kiyevdə bu şirkətin əsasını qoymuşdu. Siz isə Petronun soyadını və ya şirkətin adını deyin.','Paroşenko (Roşen)'),
+    A('19-cu əsrin ortalarında Parisdə şagirdlərdən biri səhvən qaynar qaymağı şokoladın üzərinə tökür. Hadisəyə əsəbiləşən usta isə şagirdinə fransızca "axmaq" deyə qışqırır. Siz isə fransızca deyin axmaq','Qanaş (Ganache)','Sualda qanaşın yaranması ilə bağlı faktı eşitdiniz.')
+   ]
+  },
+  {
+   name:"Osmanlı",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Cavab eyni hərflə başlayan iki sözdür. Avropada Primogentura kimi tanınan bənzər sistem Osmanlıda böyüklük mənası gələn "Əkrəbiyyət" adlanır və I Əhməd tərəfindən qüvvəyə mindirilmişdi. Əkrəbiyyətin nəyi qadağan etdiyini deyin','Qardaş qətli'),
+    A('O 1604-cü ildə dünyaya gəlmiş, 1618-ci il taxta çıxmış 1622-ci ildə isə öldürülmüşdü. Onun kim olduğunu deyin','İkinci Osman (Gənc Osman)','Ən gənc yaşda ölən Osmanlı padşahıdır.'),
+    A('Osmanlı ordusunun əsasını təşkil edən yeniçərilər üçün yemək bişirilməsi üçün istifadə olunan əşya sədaqətin simvolu idi. Eyni iki hərflə başlayan iki sözlə deyin nə etmək yeniçərilərin dövlətə etirazını bildirirdi?','Qazan qaldırmaq','Osmanlı ordusunun əsasını təşkil edən yeniçərilər üçün yemək bişirilən "Qazanı Şerif" (Müqəddəs Qazan) dövlətə sədaqətin simvolu idi. Əgər əsgərlər dövlətin siyasətindən, maaşların gecikməsindən və ya sultanın qərarlarından narazı olurdularsa, yeməkxanadakı böyük qazanları tərsinə çevirirdilər. Qazan qaldırmaq ifadəsi də bunu bildirirdi.'),
+    A('Osmanlı dövlətinin xaricdən satın aldığı ilk buxarlı gəminin adı bu britaniyalı ədibin soyadını daşıyırdı.','Svift'),
+    A('Osmanlı dövründə köləlik sistemi rəsmi olmasa da mövcud idi və yeni doğulan uşaqlar kölə valideynlərinin müqəddəratını yaşamalı idi. Kitabların birində bu barədə danışılarkən xatırlanan latınca ifadəni deyin','Partus sequitur ventrem','Latınca "bətndən doğulan bətnin statusunu izləyir" olan Partus sequitur ventrem, uşağın hüquqi statusunun (azad və ya qul olmasının) ananın statusuna görə müəyyən edilməsini nəzərdə tutan hüquqi doktrina idi.')
+   ]
+  }
+  ]
+ }
+ ]
+},
+
+/* =========================================================
+   IV TUR
+========================================================= */
+{
+ name:"IV tur",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Konqo Demokratik Respublikası",
+   author:"Serkan Şentürk",
+   questions:[
+    A('Dəqiqliklə deyin. 1997-ci ildə istifadə verilmiş və Konqoya aid olan bu, bəzən musiqi saytları tərəfindən də istifadə olunur.','.cd internet domeni','Konqo DR-nın internet domeni .cd-dir və bu domen CD sözünə oxşadığı üçün musiqi saytları tərəfindən də istifadə olunur.'),
+    A('Onun Kinşasada yerləşmiş heykəli müstəqillikdən sonra sökülsə də, 2005-ci ildə ölkənin mədəniyyət naziri onun pozitiv aspektlərinin qəbul edilməli olduğunu bildirərək heykəlin bərpasını təklif etmişdir.','II Leopold','Belçika Konqosu tarixində vacib yer tutan Belçika kralı II Leopoldun heykəli sökülsə də, mədəniyyət naziri onun ölkənin mədəniyyətinin formalaşmasında vacib yer tutduğunu demişdir.'),
+    A('O, bir müsahibəsində 2013-cü ildən Bəbirlərin yanında olduğunu və patriotik missiyasını yerinə yetirmək üçün hər gün 40-50 dəqiqə məşq etdiyini demişdir. Onun heç olmasa ləqəbini deyin.','Mişel Nkuka Mboladinqa və ya "Lumumba"','Söhbət 90 dəqiqə hərəkət etmədən dayanan və Patris Lumumba kimi geyinən məşhur futbol azarkeşindən gedirdi.'),
+    A('Onun Konqodakı sərgüzəştləri haqqında olan ikinci cild irqçilik məsələlərinə görə tənqid olunsa da, ironikdir ki, Konqoda populyar olmuş, Belçikada isə qadağan olunmağa cəhd olunmuşdur.','Tintin','"Tintinin macəraları" komiksi məşhur Belçika komiksidir. Əsərin ikinci cildində hadisələr Belçika Konqosunda cərəyan edir və irqçi təsvirlərinə görə tənqidlərlə üzləşib. Buna baxmayaraq, əsər Konqoda populyar olmağı bacarıb.'),
+    A('Dünyada sadəcə Konqonun şimal-şərqində rast gəlinən və ölkənin milli simvollarından olan BUnlar haqqında bir məqalədə biz ördəkburunların təsvirinə də rast gələ bilərik.','Okapi','Okapi yarı zebra, yarı zürafəyə oxşayan canlı kimi məşhurdur və sadəcə Konqoya endemikdir. Bu xüsusiyyətləri ördəkburunlarla oxşarlıq təşkil edir.')
+   ]
+  },
+  {
+   name:"Musiqiçilər",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('100 danimarka kronunun üzərində də təsviri olan o 1927-ci ildə Fyunda evim adlı avtobioqrafik əsərini yazmışdı','Karl Nilsen'),
+    A('Ondan əvvəl bir xor üzvünə bütün ilahiləri əzbərləmək üçün 10 il lazım olsa da Onun sistemindən sonra bu müddət 1-2 ilə enmişdi. Onun kim olduğunu deyin.','Qvido de Aretso','İlkin musiqi notlarının yaradıcısı olub.'),
+    A('Bəstəkar Alfred Şnitkenin məzar daşı üzərində pauzanın simvolunun altında bu 3 simvol var.','FFF','Pauza işarəsinin altında 3 simvol çox uzun müddət səssizliyi bildirir.'),
+    A('20 yaşında olarkən, Balakirevin "İslamey" və Listin "Don Juan" kimi çətin fortepiano əsərlərini həddindən artıq çox məşq etməsi nəticəsində sağ əlindən ağır zədə alan o bir müddət yalnız sol əllə ifa olunan əsərlər yazmağa başlamışdı. Onun kim olduğunu deyin','Aleksandr Skryabin'),
+    A('Təsadüfi deyil ki, O 2023-cü ildə, Kral III Çarlz və Kraliça Kamillanın tacqoyma mərasiminə musiqi yazan 12 bəstəkardan biri idi.','Cudit Uir (Judith Weir)','Birləşmiş Krallığın kral ailəsinin ən prestijli musiqi ünvanı olan "Master of King\'s music" -ə (Kralın musiqi üstadı) layiq görülən ilk qadın Cudit Uir olmuş və bu vəzifəni 2014-2024-cü illər arasında icra etmişdir.')
+   ]
+  },
+  {
+   name:"Cavablar Ponzi piramidasında",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Bu, ingilis yazıçısı Con Qeyin 18-ci əsrə aid "Dilənçilər operası" əsərinin motivləri əsasında yazılmışdı','Üç qəpiklik opera','Brextin köməkçisi və tərcüməçisi Elizabet Hauptman ingilis yazıçısı Con Qeyin 18-ci əsrə aid "Dilənçilər operası" (The Beggar\'s Opera) əsərini alman dilinə tərcümə etmiş, Brext isə onun üzərində işləyərək pyesi yenidən formalaşdırmışdı.'),
+    A('Diqqət ikinci sual. Bu filmin çəkilişləri İspaniyanın Almeriya şəhərində xüsusi dizayn edilmiş El Paso şəhəri studiyasında baş tutmuşdu. Maraqlıdır ki, ssenarist və rejissor Sercio Leone növbəti eyni zamanda trilogiyanın üçüncü filmi olan "Yaxşı, Pis və Çirkin" üçün də həmin studiyadan istifadə etmişdi','For a few dollars more (Bir neçə artıq dollar üçün)','Sayılma meyarı: Bir ovuc dollar cavabı qəbul olunmur, sualda "yaxşı, pis, çirkinin" növbəti və 3-cü film olduğu qeyd olunub.\n\nŞərh: Söhbət Sercio Leonenin məşhur dollar trilogiyasının ikinci filmindən gedirdi.'),
+    A('Fransa 1 yanvar 2002-ci ildən etibarən rəsmi olaraq Avro zonaya keçid etmişdi. Siz isə 2002-ci ildən sonra nəyin adının tez-tez dəyişdiyini deyin','99 frank kitabı','99 frank əvvəlcə adını öz qiymətinə uyğun adlandırılaraq satılırdı. Fransa avro zonaya keçid etdikdə isə artıq kitabın dəyəri tez-tez düşüb qalxır və hər yeni nəşrdə yeni adla çap olunurdu.'),
+    A('Sondakı ağır dramatik evtanaziya səhnəsi bu filmin sponsorluq imkanlarını xeyli zəiflətmişdi.','Million dollar baby'),
+    A('Diqqət! mövzunun son sualı. "Müştəri nə qədər çox pul ödəyirsə, yediyi yemək də bir o qədər natəmiz şəraitdə hazırlanır" eşitdiyiniz mətnin 1933-cü ilə aid hansı romandan olduğunu tapın','Paris və Londonda qara qəpiksiz','Paris və Londonda qara qəpiksiz kitabı Corc Oruelin ilk kitabıdır. Oruel yazıçılıq fəaliyyətinə başlamazdan əvvəl restoranlarda arxa plan xidmətçisi kimi çalışırdı. Bu səbəbdən yazdığı avtobioqrafik romanda bu kimi detallara da tez-tez toxunmuşdu. Son sualda biz də Ponzi piramidasının qurbanları kimi qəpiksiz qaldıq.')
+   ]
+  },
+  {
+   name:"Əkizlər",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Disneyin Leydi və Tramp animasiyasında yer alan əkiz pişiklərin adlarını deyin','Si, Am'),
+    A('Qardaşlardan biri döyüşdə öldükdən sonra digəri ona qovuşmaq üçün dua edirdi. Siz isə nəticədə nəyin yarandığını deyin.','Əkizlər bürcü','Kastor döyüş öldükdən sonra Polloksun ona qovuşmaq istədiyini görən Zevs əkizlər bürcünü yaradaraq onları səmada birləşdirir.'),
+    A('Yerli əfsanəyə görə BU əkizi olan sevgilisinin intiharından sonra məşəllə cəsədinin başında dayanır. "Bizim Cəbiş Müəllim" filmində də bunun adı xatırlanır. Bunu deyin.','Popokatepetl','Popokatepetl İstaksiuatl yanında yerləşən aktiv əkiz vulkandır. Yerli əfsanəyə görə Popokatepetl İstaksiuatlın sevgilisi olub və onun intiharı yəni sönməsindən sonra məşəllə cəsədinin başında dayanır. "Bizim Cəbiş Müəllim" filmində Nəcəfov oğlunun krossvord edərkən ondan soruşduğu 11 hərfli vulkan adı kimi bu vulkanı deyir.'),
+    A('Sirakuzalı Antifol, Efesli Antifol, Sirakuzalı qulluqçu Dromio və Efesli qulluqçu Dromio bu əsərin baş personajlarıdır.','Səhvlər Komediyası','Şekspirin Səhvlər Komediyası əsərinin baş qəhramanı uşaq vaxtı bir-birindən ayrı düşən əkiz qardaşlar haqqındadır. Maraqlıdır ki, onların qulluqçuları da bir-birləri ilə əkiz olur.'),
+    A('Oxucunu hazırlamadan əkiz qardaşlar və ya kopyalar ortaya çıxmamalıdır. Eşitdiyiniz bir siyahının 10-cu bəndidir. Soyaddan istifadə etməklə cavab verin hansı siyahı?','Noksun əmrləri (Noksun qaydaları, və s. mənaca oxşar)','Ronald Noks tərəfindən 1929-cu ildə irəli sürülmüş və detektiv əsərlərin necə yazılmalı olduğunu göstərən 10 qayda var.')
+   ]
+  },
+  {
+   name:"Memarlar",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Onun heykəlinin məhz "Nizami" metrostansiyasının qarşısında ucaldılması təsadüfi deyil belə ki, metrostansiyanın sol tərəfində memarlıq üslubunda tikilən binanın memarı da özü olub. Kim?','Zivərbəy Əhmədbəyov'),
+    A('Maraqlıdır ki, memarlığı ona aid edilən yeganə binanın 2000 illlik qalıqları arxeoloqlar tərəfindən 2026-cı ilin əvvəlində tapıldı. Kimə?','Vitruvi','Maraqlıdır ki, haqqında 10 kitab yazaraq memarlığın əsasını qoyan Vitruvinin sadəcə bir tikili binası olub.'),
+    A('1983-cü ildə tikilən "Rock and Roll Hall of fame" muzeyi də piramida dizayınında tikilib. Memarın kim olduğunu deyin.','Yuy Min Pey','Memarın ən məşhur tikililərindən biri Luvr muzeyidir.'),
+    A('Gənclik illərində dənizçiliklə yaxından məşğul olan O Aalborq Dəniz Kəşfiyyatçıları Dəstəsinin sədri kimi çalışaraq gəmilər də dizayn edib. Onun kim olduğunu deyin','Yorn Utzon','Sidney Opera Binasının damlarının yelkən formasında olması Utzonun gənclik illərindən dəniz və gəmi mövzularına yaxınlığı ilə bağlı olduğu deyilir.'),
+    A('Nyu-Yorkda yerləşən Sprus-8 binası öz dalğalı polad fasadı ilə seçilir. Siz isə memarın kim olduğunu deyin','Frenk Qeri','Frenk Qeri "Rəqs edən evlər" binasının memarıdır.')
+   ]
+  }
+  ]
+ }
+ ]
+},
+
+/* =========================================================
+   V TUR
+========================================================= */
+{
+ name:"V tur",
+ rounds:[
+ {
+  name:"",
+  topics:[
+  {
+   name:"Sloveniya və sloveniyalılar",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Slavyan mifologiyasında O üç aləm üzərində hökmranlıq edən üç başlı tanrı idi.','Triqlav'),
+    A('O məşhur "tualet nəzəriyyəsində" iddia edir ki, bir millətin santexnika sistemi onun mədəni ideologiyasını üzə çıxarır. Onun kim olduğunu deyin','Slavoy Jijek','Slavoy Jijek yazır ki, fransızlar tualetləri tullantıların dərhal yoxa çıxması üçün, almanlar sağlamlıq vəziyyətini yoxlamaq üçün nəcisin görünür halda qalması üçün, anqlo-saksonlar isə tullantıların suyun üzündə qala biləcəyi formada hazırlayırlar.'),
+    A('Onun personajı, fransız jurnalının redaksiyasına məktub yazaraq intiharının səbəbinin "insanların Sloveniyanın harada olduğunu bilməməsi" olduğunu qeyd etmişdi. Onun kim olduğunu deyin','Paulo Koelyo','Söhbət Veronika ölməyə qərar verir əsərindən gedir.'),
+    A('O "Sonetlər Çələngi" poemasını öz muzası olan Yuliya Primiçə həsr edərək "PRIMICOVI JULJI" akrostik formasında yazmışdı. Onun kim olduğunu deyin','Frans Preşern','Frans Preşern Sloven ədəbiyyatının ən görkəmli nümayəndəsi eyni zamanda sloveniya himninin müəllifidir.'),
+    A('2008-ci ildə buranı ziyarət edən II Elizabetaya at hədiyyə edilmişdi. Buranı deyin','Lipitsa kəndi','Lipizza atları doğulanda qara rəngdə olması böyüdükcə isə ağ rəngə çevrilməsi kimi xüsusiyyətə malik olmaqları ilə bərabər tarix boyu əhəmiyyətli olublar.')
+   ]
+  },
+  {
+   name:"Pişiklər",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Hazırda onun muzey kimi fəaliyyət göstərən evində 40-a yaxın pişik yaşayır ki, onların təxminən yarısı polidaktildi (altıbarmaqlı). Onun kim olduğunu deyin','Ernest Heminquey'),
+    A('Bygul and Trjegul Norveç meşə cinsi pişikləridir. Siz isə bu pişiklərin kimin arabasını çəkdiklərini deyin','Freya'),
+    A('Əfsanəyə görə bu gəmiyə gec gəldiyi üçün Nuh peyğəmbər qapını bağlamış və quyruğunu qapının arasında qoyub itirmişdir. Bunu deyin','Menks pişiyi','Menks pişiklərinin niyə quyruqsuz olması barədə əfsanələrdən biri belədir.'),
+    A('VII əsrdə yaşamış onun qaldığı monastırın siçanlardan tam təmiz olması yəqin ki, təsadüf deyildi. Onun kim olduğunu deyin','Müqəddəs Gertruda (Gertruda Nivelskaya)','Müqəddəs Gertruda xristianlıqda pişiklərin hamisidir.'),
+    A('Bunun sağ pəncəsi qaldırılıbsa uğur gətirir; sol pəncəsi qaldırıbsa isə gələnləri salamlayır və ya biznesə müştəri cəlb edir. Bunu deyin','Maneki-neko','Maneki-neko "çağıran pişik" mənasına gələn və sahibinə uğur, bərəkət və xoşbəxtlik gətirdiyinə inanılan ənənəvi yapon pişik heykəlciyidir. Əsasən dükan və restoranların girişində qoyulan bu fiqurlar, pəncələrini yuxarı qaldıraraq insanları içəri dəvət edirmiş kimi təsvir olunur.')
+   ]
+  },
+  {
+   name:'Soyadı "Bar" ilə başlayan şəxslər',
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Jurnalistin ona fransızca verdiyi "siz heç Lyonda olmusunuz?" sualına instinktiv olaraq dərhal "Xeyr, olmamışam" deyə cavab verməsi onun həqiqi kimliyinin ortaya çıxmasına kömək etmişdi. Onun kim olduğunu deyin.','Klaus Barbi','Lyon qəssabı ləqəbi ilə tanınan nasist Klaus Barbi uzun illər Boliviyada Klaus Altman adı ilə gizlənlənsə də həqiqi kimliyi ortaya çıxarıla bilmişdi.'),
+    A('Çiyinləri tamamilə açıqda qoyan, körpücük sümüyünün dərhal altından keçən və dekolte bölgəsini zərif şəkildə vurğulayan enli, yaxa kəsimi növü 2025-ci ildə dünyasını dəyişmiş onun adını daşıyır.','Brijit Bardo'),
+    A('İsveç kralı VI Qustav mükafatı təqdim edərkən alimə ailəsinin hamısını gətirmədiyi üçün irad tutmuşdu. O isə krala növbəti dəfə mütləq hamısını gətirəcəyini demişdi. Onun kim olduğunu deyin','Con Bardin','Con Bardin iki dəfə fizika üzrə Nobel mükafatı almış alimdir.'),
+    A('O qonkur mükafatı qazandığı "Atəş" əsərini elə Birinci Dünya Müharibəsində iştirak edərkən yazmışdı.','Anri Barbüs','Qonkur mükafatı sizi söhbətin fransız yazıçısından getdiyinə aparmalı idi.'),
+    A('Alyaskada adına ada da olan onun haqqında məqalələlərdən biri "Sakit Okeanı rus gölünə çevirən adam" başlığını daşıyır. Onun kim olduğunu deyin','Aleksandr Baranov','Aleksandr Baranov Rusiya Amerikasının (indiki Alyaska) ilk baş qubernatoru olub. Bundan əlavə olaraq Baranov Sakit okeanın şimal-şərq sahillərini, xüsusən də indiki Alyaska və onun ətrafındakı adaları araşdırmışdır. O, Sakit okeandakı Aleksandr arxipelaqında yerləşən Novo-Arxangelsk (indiki Sitka) şəhərinin əsasını qoymuş.')
+   ]
+  },
+  {
+   name:"Elementlər",
+   author:"Rüfət Əlizadə, Serkan Şentürk",
+   questions:[
+    A('Maraqlıdır ki, 35 və 56-cı elementlər bir-biri ilə birləşdikdə bəzi sinir xəstəliklərinin müalicəsində istifadə olunsa da, yüksək dozada toksik təsir göstərən maddə yaradır ki, bu da təhlükəli hesab olunur. Siz isə elementlərin adlarını və ya nəyin loqotipində vurğulandığını deyin','Brom və Barium (Breaking bad serialı)','Eynilə Uolter Uayt də əvvəllər müalicə ilə başlasa da sonra özü dediyi kimi təhlükənin özü olmuşdu.'),
+    A('Smartfon asılılığından danışılan bir məqalədə qeyd olunur ki, smartfonlar istifadəçilərdə sonsuz skroll etmə davranışı yaradır və istifadəçilər təqdim olunan məzmunla heç vaxt kifayətlənə bilmirlər. İronikdir ki, məqalədə smartfonların istehsalında bu kimyəvi elementin vacib yer tutduğu qeyd olunur. Həmin elementi tapın','Tantal','Sayılma meyarı: Tantalum.\n\nŞərh: Yunan mifologiyasında Tantal sonsuz əzaba məhkum edilib. O nə qədər əlini uzatsa da, qarşısındakı meyvələr, yeməklərə çata bilmir, doyma hissi yaşaya bilmir. Məqalədə də smartfon istifadəçilərinin sanki Tantal əzabı yaşadıqları qeyd olunur. Onlar sonsuz skroll etsələr də, heç vaxt məzmundan doya bilmirlər. İronikdir ki, tantal elementi smartfon istehsalında vacib yer tutan elementlərdən biridir.'),
+    A('ALFA ikisi qarşılıqlı samitlərlə başlayan üç sözdür. Yeni elementlərin kəşfindən danışılan bir kitabda deyilir ki, 114 və 116-cı elementlər kəşf edildiyi dövrdə 113, 115 və 117-ci elementlər hələ də dövri cədvəldə əksik idi. Bu zaman müəllif dövri cədvəlin həmin hissəsini Alfaya bənzədir. Alfanı deyin','Dişləri tökülmüş ağız','Mendeleyevin dövri cədvəlində elementlər kvadrat xanalar kimi yer alır. 114 və 116-cı elementlər kəşf edilsə də, aralarında yerləşən 113, 115, 117-ci elementlər hələ də əksik idi. Bu vəziyyətdə müəllif deyir ki, sanki həmin hissədə dişlər tökülüb.'),
+    A('Fransız alim kəşf etdiyi elementə öz soyadını yox Qallium adını vermişdi. Maraqlıdır ki, Gallus latınca xoruz deməkdir. Siz isə alimin kim olduğunu deyin','Paul-Emil Lekok','Paul-Emil Lekok kəşf etdiyi elementə öz soyadını verməsə də xoruz mənasına gələn sözü vermişdi. Maraqlıdır ki, alimin soyadı Lekok fransızcadan da elə xoruz mənasına gəlir.'),
+    A('Onun haqqında çəkilmiş 2007-ci il istehsalı "Poloniumdan zəhərlənən" filminin posterində Putin də yer alır. Onun kim olduğunu deyin','Alexander Litvinenko','Litvinenko keçmiş Rusiya kəşfiyyatçısı, Federal Təhlükəsizlik Xidmətinin (FSB) podpolkovniki və Prezident Vladimir Putin rejiminin ən kəskin tənqidçilərindən biri olmuşdur. O, 2006-cı ildə Londonda nadir radioaktiv maddə ilə sui-qəsd nəticəsində öldürülmüşdür.')
+   ]
+  },
+  {
+   name:"Yemək-içmək ətrafında",
+   author:"Rüfət Əlizadə",
+   questions:[
+    A('Beta əlifbada qonşu hərflə başlayıb bitən bir sözdür. Fransaya qastronomik səyahətə gələn turistlər Betta xəritəsindən də istifadə edirlər. Beta ilə əvəz olunanı deyin','Pendir'),
+    A('Kito şəhəri tam Ekvator xəttində yerləşsə də eyni zamanda dəniz səviyyəsindən 2,850 metr yüksəlikdə olması bir məhsulun küçə satıcılarına xüsusi üstünlük qazandırır. Üstünlüyün nədən ibarət olduğunu deyin.','Dondurmalar heç vaxt ərimir'),
+    A('ALFA əlifbada qonşu hərflə başlayan iki sözdür. Xərçəng və Oğlaq tropikləri arasında yerləşən və içində Efiopiya, Braziliya, Kolumbiya, Fil dişi sahili, İndoneziya və s. ölkələrin olduğu bölgə ALFA adlanır. Alfanı deyin','Qəhvə kəməri'),
+    A('Dəqiqləşdirilmiş cavab tələb olunur. İtaliyanın Siciliya adasında yerləşən bir dağın ətəklərində salınan üzüm bağlarında hazırlanan məhsulun dadı xüsusi duzlu və mineral tərkibli dad verir. Məhsulun nə olduğunu tapın.','Vulkanik şərab (vulkan şərabı və s. mənaya uyğun)','Etnanın ətəklərı vulkanik materiallar (lava, kül) ilə zəngin olduğu üçün orada salınmış üzüm bağlarından hazırlanan şərabların dadı da fərqli olur.'),
+    A('Məqalələrdən birində qeyd olunur ki, ALFA Böyük ipək yolundakı uzun səyahətinə şərqdən başlamış qərbə çatanda isə artıq Betta olmuşdu. Alfa və Bettanı deyin.','Nudl, Spaqetti')
+   ]
+  }
+  ]
+ }
+ ]
+}
+
+];
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+const container = document.getElementById("questionsContainer");
+const tourButtonsWrap = document.getElementById("tourButtons");
+const globalBtn = document.getElementById("globalToggleBtn");
+
+let currentTour = 0;
+let allExpanded = false;
+
+function escapeHTML(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function formatText(str){
+  return escapeHTML(str).replace(/\n/g,"<br>");
+}
+
+function plainText(str){
+  return String(str).replace(/<br\s*\/?>/gi,"\n").trim();
+}
+
+
+/* =========================================================
+   TUR BUTTONLARI
+========================================================= */
+
+function renderTourButtons(){
+
+  tourButtonsWrap.innerHTML = "";
+
+  toursData.forEach((tour,idx) => {
+
+    const btn = document.createElement("button");
+
+    btn.className = "tour-btn" + (idx === currentTour ? " active" : "");
+    btn.textContent = tour.name;
+    btn.type = "button";
+
+    btn.addEventListener("click", () => loadTour(idx));
+
+    tourButtonsWrap.appendChild(btn);
+  });
+}
+
+function loadTour(tourNum){
+
+  currentTour = tourNum;
+  allExpanded = false;
+
+  globalBtn.textContent = "Bütün cavabları göstər";
+
+  document.querySelectorAll(".tour-btn").forEach((btn,idx) => {
+    btn.classList.toggle("active", idx === tourNum);
+  });
+
+  renderQuestions();
+
+  window.scrollTo(0,0);
+}
+
+
+/* =========================================================
+   SUALLARIN RENDERİ
+========================================================= */
+
+function renderQuestions(){
+
+  container.innerHTML = "";
+
+  const tour = toursData[currentTour];
+
+  tour.rounds.forEach((round) => {
+
+    if(round.name){
+      const roundTitle = document.createElement("div");
+      roundTitle.className = "round-title";
+      roundTitle.textContent = round.name;
+      container.appendChild(roundTitle);
+    }
+
+    round.topics.forEach((topic) => {
+
+      const card = document.createElement("div");
+      card.className = "q-card";
+
+      let html = `<div class="topic-title">${formatText(topic.name)}</div>`;
+
+      topic.questions.forEach((item,qi) => {
+
+        html += `
+          <div class="q-item">
+
+            <div class="q-text">
+              <b>${qi + 1}.</b>
+              ${formatText(item.q)}
+            </div>
+
+            <button class="toggle-btn" type="button" data-q="${qi}">
+              <span>Cavabı göstər</span>
+              <svg class="arrow-icon" viewBox="0 0 8 8">
+                <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+              </svg>
+            </button>
+
+            <div class="ans-panel">
+
+              <div class="ans-row">
+                <span class="ans-label">Cavab:</span>
+                ${formatText(item.a)}
+              </div>
+
+              ${
+                item.c
+                ? `
+                <div class="ans-row">
+                  <span class="ans-label">Şərh:</span>
+                  ${formatText(item.c)}
+                </div>
+                `
+                : ""
+              }
+
+              <div class="ans-row author-row">
+                <span>
+                  <span class="ans-label">Müəllif:</span>
+                  ${formatText(topic.author || "")}
+                </span>
+
+                <button
+                  class="copy-btn"
+                  type="button"
+                  data-q="${qi}"
+                  aria-label="Sualı kopyala">
+
+                  <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g class="clip-path">
+                      <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    </g>
+                    <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  </svg>
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      });
+
+      card.innerHTML = html;
+
+      bindTopicCard(card, topic);
+
+      container.appendChild(card);
+    });
+
+  });
+}
+
+
+/* =========================================================
+   TOGGLE + COPY BIND
+========================================================= */
+
+function bindTopicCard(card, topic){
+
+  card.querySelectorAll(".toggle-btn").forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+      const qItem = btn.closest(".q-item");
+      const span = btn.querySelector("span");
+
+      qItem.classList.toggle("active");
+
+      span.textContent = qItem.classList.contains("active")
+        ? "Cavabı gizlə"
+        : "Cavabı göstər";
+    });
+
+  });
+
+  card.querySelectorAll(".copy-btn").forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+      const qi = Number(btn.dataset.q);
+      const item = topic.questions[qi];
+
+      if(!item) return;
+
+      let text = `${qi + 1}. ${plainText(item.q)}`;
+      text += `\n\nCavab: ${item.a}`;
+
+      if(item.c){
+        text += `\nŞərh: ${plainText(item.c)}`;
+      }
+
+      text += `\nMüəllif: ${topic.author || ""}`;
+
+      const showCopied = () => {
+        btn.classList.add("copied");
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(() => {
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text)
+          .then(showCopied)
+          .catch(() => fallbackCopy(text, showCopied));
+      }else{
+        fallbackCopy(text, showCopied);
+      }
+    });
+
+  });
+}
+
+function fallbackCopy(text, onDone){
+
+  const helper = document.createElement("textarea");
+  helper.value = text;
+  helper.style.position = "fixed";
+  helper.style.opacity = "0";
+
+  document.body.appendChild(helper);
+  helper.select();
+
+  try{
+    document.execCommand("copy");
+    onDone();
+  }catch(err){
+    /* copy failed silently */
+  }
+
+  document.body.removeChild(helper);
+}
+
+
+/* =========================================================
+   BÜTÜN CAVABLAR
+========================================================= */
+
+function toggleAllAnswers(){
+
+  allExpanded = !allExpanded;
+
+  document.querySelectorAll(".q-item").forEach(item => {
+
+    const span = item.querySelector(".toggle-btn span");
+
+    if(allExpanded){
+      item.classList.add("active");
+      if(span) span.textContent = "Cavabı gizlə";
+    }else{
+      item.classList.remove("active");
+      if(span) span.textContent = "Cavabı göstər";
+    }
+  });
+
+  globalBtn.textContent = allExpanded
+    ? "Bütün cavabları gizlə"
+    : "Bütün cavabları göstər";
+}
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+function sunIcon(){
+  return `
+    <circle cx="16" cy="16" r="6" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+      <path d="M16 2.7v3"/>
+      <path d="M16 26.3v3"/>
+      <path d="m2.7 16 3 0"/>
+      <path d="m26.3 16-3 0"/>
+      <path d="m6.6 6.6 2.1 2.1"/>
+      <path d="m23.3 23.3 2.1 2.1"/>
+      <path d="m25.4 6.6-2.1 2.1"/>
+      <path d="m8.7 23.3-2.1 2.1"/>
+    </g>
+  `;
+}
+
+function moonIcon(){
+  return `
+    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>
+  `;
+}
+
+function updateThemeIcon(){
+  const dark = document.body.classList.contains("dark");
+  themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
+  themeToggle.setAttribute(
+    "aria-label",
+    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
+  );
+}
+
+function setTheme(dark){
+  document.body.classList.toggle("dark", dark);
+  localStorage.setItem("piksel-theme", dark ? "dark" : "light");
+  updateThemeIcon();
+}
+
+function initTheme(){
+  const saved = localStorage.getItem("piksel-theme");
+
+  if(saved === "dark"){
+    setTheme(true);
+    return;
+  }
+
+  if(saved === "light"){
+    setTheme(false);
+    return;
+  }
+
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  setTheme(prefersDark);
+}
+
+themeToggle.addEventListener("click", () => {
+  setTheme(!document.body.classList.contains("dark"));
+});
+
+initTheme();
+
+
+/* =========================================================
+   START
+========================================================= */
+
+renderTourButtons();
+renderQuestions();
+
+</script>
+
+</body>
+</html>
