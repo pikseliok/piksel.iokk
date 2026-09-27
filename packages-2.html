@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel.iok — Sual Paketləri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#9DC3FF; --ink:#9DC3FF; --deep:#001E6F; --bright:#002E92;
+  --dark-bg:#00072C; --dark-ink:#00072C; --dark-light:#9DC3FF; --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --tx: env(safe-area-inset-top,0px); --bx: env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:var(--tx);overflow-x:hidden;max-width:100%}
+body{min-height:100%;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;max-width:100%;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;padding-top:var(--tx);padding-bottom:var(--bx)}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.reveal{opacity:0;transform:translateY(34px);animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards}
+@keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* search */
+.search-wrap{margin-top:18px;height:60px;border-radius:40px;border:2px solid var(--deep);background:rgba(255,255,255,.35);display:flex;align-items:center;padding:0 18px;gap:10px;max-width:100%;transition:border-color var(--transition),background var(--transition)}
+.dark .search-wrap{border-color:var(--dark-light);background:rgba(0,0,0,.2)}
+.search-wrap svg{width:24px;height:24px;flex:0 0 24px;color:var(--deep);transition:color var(--transition)}
+.dark .search-wrap svg{color:var(--dark-light)}
+#searchInput{flex:1 1 auto;min-width:0;width:0;border:0;background:transparent;outline:0;font-family:"Poppins",sans-serif;font-size:19px;font-weight:500;color:var(--deep)}
+.dark #searchInput{color:var(--dark-light)}
+#searchInput::placeholder{color:var(--deep);opacity:.6}
+.dark #searchInput::placeholder{color:var(--dark-light);opacity:.6}
+.sort-btn{border:0;background:transparent;cursor:pointer;display:grid;place-items:center;flex:0 0 auto;color:var(--deep);transition:color var(--transition),transform .25s ease}
+.dark .sort-btn{color:var(--dark-light)}
+.sort-btn:hover{transform:scale(1.1)}
+.sort-btn svg{width:24px;height:24px}
+.sort-btn.flip svg{transform:scaleY(-1)}
+
+.filters{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px}
+.filter-pill{height:42px;padding:0 22px;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;border:2px solid transparent;color:var(--ink);background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);transition:background var(--transition),color var(--transition),border-color var(--transition),transform .2s ease}
+.dark .filter-pill{color:var(--dark-ink);background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.filter-pill:hover{transform:translateY(-2px)}
+.filter-pill.off{background:transparent;border-color:var(--deep);color:var(--deep)}
+.dark .filter-pill.off{border-color:var(--dark-light);color:var(--dark-light)}
+
+.section-title{text-align:center;color:var(--deep);font-size:26px;font-weight:700;letter-spacing:-.8px;margin:30px 0 14px;transition:color var(--transition)}
+.dark .section-title{color:var(--dark-light)}
+
+.cards-list{display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
+.pkg-card{border-radius:31px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);padding:22px 28px;display:flex;align-items:center;gap:18px;min-height:136px;height:136px;overflow:hidden;box-shadow:0 10px 25px rgba(0,20,110,.07);transition:transform .32s cubic-bezier(.18,.8,.22,1),box-shadow .32s ease,background var(--transition),color var(--transition)}
+.dark .pkg-card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.pkg-card:hover{transform:translateY(-5px) scale(1.015);box-shadow:0 17px 35px rgba(0,20,110,.16)}
+.pkg-icon{width:70px;height:70px;flex:0 0 70px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.15)}
+.pkg-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.pkg-right{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px}
+.pkg-title{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.pkg-type{font-size:15px;font-weight:500;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pkg-date{font-size:15px;font-weight:500;opacity:.92}
+mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px solid currentColor;border-radius:6px;padding:1px 4px;display:inline-block;line-height:1.1}
+.dark mark.hl{background:rgba(0,0,0,.18)}
+
+footer{width:100%;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:190px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:17px;line-height:1.45;font-weight:500}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+@media(max-width:700px){
+  .page{width:calc(100vw - 44px);padding-top:calc(11px + var(--tx))}
+  .top-nav{height:52px;padding-left:18px;padding-right:60px}
+  .nav-links{gap:34px} .nav-link{font-size:15px}
+  .theme-toggle{width:39px;height:39px;right:8px} .theme-icon{width:22px;height:22px}
+  .search-wrap{height:52px} #searchInput{font-size:16px}
+  .filter-pill{height:36px;padding:0 16px;font-size:14px}
+  .pkg-card{padding:14px 18px;border-radius:24px;min-height:104px;height:104px;gap:14px}
+  .pkg-icon{width:52px;height:52px;flex:0 0 52px;border-radius:13px}
+  .pkg-title{font-size:16px} .pkg-type,.pkg-date{font-size:12px}
+  .section-title{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="top-nav reveal" style="animation-delay:.05s" aria-label="Əsas naviqasiya">
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    </button>
+  </nav>
+
+  <div class="search-wrap reveal" style="animation-delay:.14s">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="searchInput" type="text" placeholder="Paket Axtar" autocomplete="off">
+    <button class="sort-btn" id="sortBtn" type="button" aria-label="Sıralamanı dəyiş">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h11M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18 14v6m0 0l-3-3m3 3l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="filters reveal" id="filters" style="animation-delay:.23s"></div>
+
+  <h2 class="section-title reveal" style="animation-delay:.32s">Paketlər</h2>
+
+  <div class="cards-list" id="cardsList"></div>
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const themeToggle=document.getElementById("themeToggle");
+const themeIcon=document.getElementById("themeIcon");
+function sunIcon(){return `<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>`}
+function moonIcon(){return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`}
+function updateThemeIcon(){const dark=document.body.classList.contains("dark");themeIcon.innerHTML=dark?moonIcon():sunIcon();themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
+function setTheme(dark){document.body.classList.toggle("dark",dark);try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}updateThemeIcon()}
+function initTheme(){let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(e){}
+  if(saved==="dark"){setTheme(true);return}
+  if(saved==="light"){setTheme(false);return}
+  const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  setTheme(prefersDark);
+}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+initTheme();
+
+/* ---------- Data ---------- */
+const TYPES=[
+  {key:"nhn",short:"Nə? Harada? Nə Zaman?",full:"Nə? Harada? Nə Zaman?"},
+  {key:"xemse",short:"Xəmsə",full:"Xəmsə"},
+  {key:"breyn",short:"Breyn Rinq",full:"Breyn Rinq"},
+  {key:"ferdi",short:"Fərdi Oyun",full:"Fərdi Oyun"}
+];
+const packages=[
+  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I Tur',type:"ferdi",date:"2026-09-13",icon:"https://cdn.phototourl.com/free/2026-09-15-0ac2c4fd-d5c9-40a5-9838-a9f4f39c6cf3.jpg"},
+  {title:'"πksel.iok" WhatsApp paketi',type:"nhn",date:"2026-09-11",icon:"https://cdn.phototourl.com/free/2026-09-12-ca0318f9-f696-4766-bc88-ccf6fd84e3cb.png"},
+  {title:'"Moonopoly" turniri',type:"xemse",date:"2026-09-04",icon:"https://cdn.phototourl.com/free/2026-09-04-5f3f360c-ae8b-43f6-9609-01e19ec8afa9.jpg"},
+  {title:'"Amazon" kuboku',type:"breyn",date:"2026-09-03",icon:"https://cdn.phototourl.com/free/2026-09-05-fb593f33-10cf-4ff2-a73d-5e689135742d.jpg"},
+  {title:'"Vesper" kuboku - Məktəblilərarası',type:"nhn",date:"2026-09-01",icon:"https://cdn.phototourl.com/free/2026-09-04-cebe0b3c-9142-4668-b48f-e315a209b061.jpg"}
+].map((p,i)=>({...p,order:i}));
+
+let activeTypes=new Set(TYPES.map(t=>t.key));
+let newestFirst=true;
+let query="";
+
+const filtersEl=document.getElementById("filters");
+TYPES.forEach(t=>{
+  const btn=document.createElement("button");
+  btn.className="filter-pill";
+  btn.textContent=t.short;
+  btn.dataset.key=t.key;
+  btn.addEventListener("click",()=>{
+    if(activeTypes.has(t.key))activeTypes.delete(t.key);else activeTypes.add(t.key);
+    btn.classList.toggle("off",!activeTypes.has(t.key));
+    render();
+  });
+  filtersEl.appendChild(btn);
+});
+
+const sortBtn=document.getElementById("sortBtn");
+sortBtn.addEventListener("click",()=>{
+  newestFirst=!newestFirst;
+  sortBtn.classList.toggle("flip",!newestFirst);
+  render();
+});
+
+const searchInput=document.getElementById("searchInput");
+searchInput.addEventListener("input",()=>{
+  const v=searchInput.value.trim();
+  query=v.length>=3?v.toLowerCase():"";
+  render();
+});
+
+function highlight(title,q){
+  if(!q)return title;
+  const idx=title.toLowerCase().indexOf(q);
+  if(idx===-1)return title;
+  return title.slice(0,idx)+"<mark class='hl'>"+title.slice(idx,idx+q.length)+"</mark>"+title.slice(idx+q.length);
+}
+
+const cardsList=document.getElementById("cardsList");
+function render(){
+  let list=packages.filter(p=>activeTypes.has(p.type));
+  if(query)list=list.filter(p=>p.title.toLowerCase().includes(query));
+  list.sort((a,b)=>newestFirst?(b.date.localeCompare(a.date)||b.order-a.order):(a.date.localeCompare(b.date)||a.order-b.order));
+
+  cardsList.innerHTML="";
+  list.forEach((p,i)=>{
+    const t=TYPES.find(x=>x.key===p.type);
+    const [y,m,d]=p.date.split("-");
+    const card=document.createElement("a");
+    card.href="#";
+    card.className="pkg-card reveal";
+    card.style.animationDelay=(0.4+i*0.08)+"s";
+    card.innerHTML=`
+      <span class="pkg-icon"><img src="${p.icon}" alt=""></span>
+      <div class="pkg-right">
+        <div class="pkg-title">${highlight(p.title,query)}</div>
+        <div class="pkg-type">${t.full}</div>
+        <div class="pkg-date">${d}.${m}.${y}</div>
+      </div>`;
+    cardsList.appendChild(card);
+  });
+}
+render();
+</script>
+</body>
+</html>
