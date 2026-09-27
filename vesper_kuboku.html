@@ -268,14 +268,17 @@
     }
 
     .tour-btn.active {
-      background: #ffffff;
-      color: var(--deep);
-      border-color:transparent;
+      background: linear-gradient(135deg, var(--deep) 0%, var(--bright) 100%);
+      color: var(--ink);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
     }
 
     .dark .tour-btn.active{
-      background: var(--dark-bg);
-      color: var(--dark-light);
+      background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark-bright) 100%);
+      color: var(--dark-ink);
+      border-color: rgba(0, 7, 44, 0.25);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
 
     .global-toggle-btn {
@@ -352,25 +355,27 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: rgba(255,255,255,.92);
-      color: var(--deep);
-      border: none;
+      background: linear-gradient(135deg, var(--deep) 0%, var(--bright) 100%);
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       padding: 8px 16px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition:background .25s ease,color .25s ease,transform .2s ease;
+      transition: background .25s ease, color .25s ease, transform .2s ease, box-shadow .2s ease;
     }
 
     .dark .toggle-btn{
-      background: var(--dark-bg);
-      color: var(--dark-light);
+      background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark-bright) 100%);
+      color: var(--dark-ink);
+      border: 1px solid rgba(0, 7, 44, 0.2);
     }
 
     .toggle-btn:hover{
       transform:translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
     .arrow-icon {
@@ -478,13 +483,13 @@
     }
 
     .copy-btn.copied{
-      background:#ffffff;
-      color:var(--deep);
+      background: var(--deep);
+      color: var(--ink);
     }
 
     .dark .copy-btn.copied{
-      background:var(--dark-bg);
-      color:var(--dark-light);
+      background: var(--dark-ink);
+      color: var(--dark-light);
     }
 
     .copy-icon{
@@ -917,7 +922,7 @@
           id: 1,
           question: "Maraqlıdır ki, Londonda xəstəxanaya gedən uşağın qəribə bir şikayəti var idi: o evdəki mebel və divarları nəhəng, öz əl və ayaqlarını isə olduqca kiçik görürdü. Əlavə olaraq saatın çox yavaş keçdiyini hiss edir, zaman qavrayışını qismən itirmişdi. Bu haqda danışılan məqalədə hansı personaj xatırlanır?",
           answer: "Alisa",
-          comment: "Luis Karolun \"Alisa in wonderland\" hekayəsində Alisa qəribə yerə düşür və hər şeyin ölçüsü dəyişir. Bəzi səhnələrdə isə hadisələr ya sürətlə keçir, ya da uzun çəkirdi. Bu hadisələri yaşayan insanlara isə Alisa sindromu adlı xəstəlik ilə təşhis qoyurlar.",
+          comment: "Luis Karolun \"Alisa in wonderland\" hekayəsində Alisa qəribə yerə düşür və hər şeyin ölçüsü dəyişir. Bəzi səhnələrdə isə hadisələr ya sürətlə keçir, ya da uzun çəkirdı. Bu hadisələri yaşayan insanlara isə Alisa sindromu adlı xəstəlik ilə təşhis qoyurlar.",
           source: "<a href='https://en.m.wikipedia.org/wiki/Alice_in_Wonderland_syndrome?utm_' target='_blank'>Link 1</a>, <a href='https://pubmed.ncbi.nlm.nih.gov/28189272/?utm_' target='_blank'>Link 2</a>",
           author: "İslam Səmədov"
         },
