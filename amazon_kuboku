@@ -577,6 +577,70 @@
       color:var(--dark-ink);
     }
 
+    .author-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .copy-btn{
+      flex:0 0 auto;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      border:none;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.16);
+      color: var(--ink);
+      transition:background .25s ease,color .25s ease,transform .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .dark .copy-btn{
+      background: rgba(0,7,44,.12);
+      color: var(--dark-ink);
+    }
+
+    .copy-btn:hover{
+      transform:translateY(-1px);
+      background: rgba(255,255,255,.28);
+    }
+
+    .dark .copy-btn:hover{
+      background: rgba(0,7,44,.2);
+    }
+
+    .copy-btn.copied{
+      background:#ffffff;
+      color:var(--deep);
+    }
+
+    .dark .copy-btn.copied{
+      background:var(--dark-bg);
+      color:var(--dark-light);
+    }
+
+    .copy-icon{
+      width:16px;
+      height:16px;
+      display:block;
+    }
+
+    .copy-icon .check-path{
+      display:none;
+    }
+
+    .copy-btn.copied .copy-icon .clip-path{
+      display:none;
+    }
+
+    .copy-btn.copied .copy-icon .check-path{
+      display:block;
+    }
+
     /* ---------- FOOTER (identical to ana səhifə) ---------- */
     footer{
       width:100%;
@@ -1719,9 +1783,20 @@ function renderQuestions() {
 
         ${sourceHTML}
 
-        <div class="ans-row">
-          <span class="ans-label">Müəllif:</span>
-          ${item.author}
+        <div class="ans-row author-row">
+          <span><span class="ans-label">Müəllif:</span> ${item.author}</span>
+
+          <button class="copy-btn" type="button"
+                  onclick="copyQuestion(${index}, this)"
+                  aria-label="Sualı kopyala">
+            <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g class="clip-path">
+                <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </g>
+              <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </button>
         </div>
 
       </div>
@@ -1732,6 +1807,81 @@ function renderQuestions() {
   });
 
   notifyParentHeight();
+}
+
+
+/* =========================================================
+   SUALI KOPYALA
+   ========================================================= */
+
+function questionHtmlToText(html){
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
+function buildQuestionText(item){
+  let text = `${item.id}. ${questionHtmlToText(item.question)}`;
+  text += `\n\nCavab: ${item.answer}`;
+
+  if(item.criteria){
+    text += `\nSayılma meyarı: ${item.criteria}`;
+  }
+
+  if(item.comment){
+    text += `\nŞərh: ${item.comment}`;
+  }
+
+  if(item.source){
+    text += `\nMənbə: ${item.source}`;
+  }
+
+  text += `\nMüəllif: ${item.author}`;
+
+  return text;
+}
+
+function copyQuestion(index, btn){
+
+  const item = (setsData[currentSet] || [])[index];
+  if(!item) return;
+
+  const text = buildQuestionText(item);
+
+  function showCopied(){
+    btn.classList.add('copied');
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.classList.remove('copied');
+    }, 1600);
+  }
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(showCopied).catch(() => {
+      fallbackCopy(text, showCopied);
+    });
+  } else {
+    fallbackCopy(text, showCopied);
+  }
+}
+
+function fallbackCopy(text, onDone){
+  const helper = document.createElement('textarea');
+  helper.value = text;
+  helper.style.position = 'fixed';
+  helper.style.opacity = '0';
+  document.body.appendChild(helper);
+  helper.select();
+
+  try{
+    document.execCommand('copy');
+    onDone();
+  }catch(err){
+    /* copy failed silently */
+  }
+
+  document.body.removeChild(helper);
 }
 
 
