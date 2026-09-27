@@ -267,14 +267,18 @@
     }
 
     .tour-btn.active {
-      background: #ffffff;
-      color: var(--deep);
-      border-color:transparent;
+  background:
+    linear-gradient(135deg,var(--bg) 0%,#b8d3ff 50%,var(--bg) 100%);
+  color: var(--deep);
+  border-color: transparent;
+    } ;
     }
 
-    .dark .tour-btn.active{
-      background: var(--dark-bg);
-      color: var(--dark-light);
+    .dark .tour-btn.active {
+  background:
+    linear-gradient(135deg,var(--dark-bg) 0%,#001452 50%,var(--dark-bg) 100%);
+  color: var(--dark-light);
+    } ;
     }
 
     .global-toggle-btn {
@@ -347,25 +351,30 @@
       z-index: 1;
     }
 
-    .toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,.92);
-      color: var(--deep);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition:background .25s ease,color .25s ease,transform .2s ease;
-    }
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 
-    .dark .toggle-btn{
-      background: var(--dark-bg);
-      color: var(--dark-light);
+  background:
+    linear-gradient(135deg,var(--bg) 0%,#b8d3ff 50%,var(--bg) 100%);
+
+  color: var(--deep);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .25s ease,color .25s ease,transform .2s ease;
+}
+
+    .dark .toggle-btn {
+  background:
+    linear-gradient(135deg,var(--dark-bg) 0%,#001452 50%,var(--dark-bg) 100%);
+  color: var(--dark-light);
+    } 
     }
 
     .toggle-btn:hover{
