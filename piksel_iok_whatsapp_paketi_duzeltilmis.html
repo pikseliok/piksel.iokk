@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>πksel.iok - WhatsApp paketi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+html{scroll-behavior:smooth}
+html,body{
+  width:100%;height:auto;min-height:100vh;
+  background:var(--bg);color:var(--ink);
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;
+}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+
+/* NAV */
+.top-nav{
+  height:60px;width:100%;border-radius:40px;
+  padding:0 14px 0 26px;display:flex;align-items:center;
+  justify-content:center;position:relative;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));
+  box-shadow:0 10px 28px rgba(0,20,100,.08);
+  transition:background var(--transition),box-shadow var(--transition);
+}
+.dark .top-nav{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));
+}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{
+  position:relative;color:var(--ink);font-size:20px;font-weight:500;
+  white-space:nowrap;transition:transform .25s ease,opacity .25s ease
+}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+  border-radius:2px;background:currentColor;opacity:.9
+}
+.theme-toggle{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;color:var(--deep);
+  background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition)
+}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* CONTENT */
+.main-container{
+  width:100%;display:flex;flex-direction:column;gap:16px;
+  position:relative;margin-top:18px;padding-bottom:56px
+}
+.blur-content{display:flex;flex-direction:column;gap:16px;transition:filter .5s ease}
+body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
+
+.info-card,.tours-card,.q-card{
+  width:100%;border-radius:28px;padding:24px 26px;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));
+  color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);
+  word-wrap:break-word;overflow-wrap:break-word;
+  transition:background var(--transition),color var(--transition),box-shadow .3s ease
+}
+.dark .info-card,.dark .tours-card,.dark .q-card{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));
+  color:var(--dark-ink)
+}
+.game-title{font-size:30px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.7px;margin-bottom:16px}
+.dark .game-title{color:var(--dark-ink)}
+.info-row{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:5px}
+.dark .info-row{color:var(--dark-ink)}
+.info-row:last-child{margin-bottom:0}
+.info-label{font-weight:700}.info-val{font-weight:400}
+.tour-buttons{display:flex;flex-direction:column;gap:8px}
+
+/* SEÇİLMİŞ TUR ARTIK AĞ DEYİL: ANA ARXA PLANINDA GRADİENT */
+.tour-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));
+  color:var(--ink);
+  border:1px solid rgba(255,255,255,.18);
+  padding:12px 16px;border-radius:16px;font-size:14px;font-weight:700;
+  cursor:pointer;text-align:left;transition:all .25s ease;
+  -webkit-tap-highlight-color:transparent
+}
+.dark .tour-btn{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));
+  color:var(--dark-ink);border:1px solid rgba(0,7,44,.12)
+}
+.tour-btn.active{
+  background:linear-gradient(135deg,var(--bg),#B7D3FF 50%,var(--bg));
+  color:var(--deep);border-color:transparent
+}
+.dark .tour-btn.active{
+  background:linear-gradient(135deg,var(--dark-bg),#07134A 50%,var(--dark-bg));
+  color:var(--dark-light)
+}
+
+/* CAVABI GÖSTƏR/GİZLƏ BUTTONLARI DA EYNİ REJİMİN ANA RƏNGİ */
+.global-toggle-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));
+  color:var(--ink);border:none;padding:14px 16px;border-radius:20px;
+  font-size:14px;font-weight:700;cursor:pointer;text-align:center;
+  box-shadow:0 10px 22px rgba(0,20,110,.10);
+  transition:background var(--transition),color var(--transition),transform .25s ease
+}
+.dark .global-toggle-btn{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));
+  color:var(--dark-ink)
+}
+.global-toggle-btn:hover{transform:translateY(-2px)}
+
+.questions-container{display:flex;flex-direction:column;gap:16px}
+.q-text{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:14px}
+.dark .q-text{color:var(--dark-ink)}
+.q-text b{font-weight:700}
+.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:10px}
+.req-img{width:100%;max-width:240px;border-radius:12px;cursor:pointer;display:block}
+.toggle-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  /* AĞ YOXDUR */
+  background:linear-gradient(135deg,var(--bg),#B7D3FF 50%,var(--bg));
+  color:var(--deep);border:none;padding:8px 16px;border-radius:999px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+.dark .toggle-btn{
+  background:linear-gradient(135deg,var(--dark-bg),#07134A 50%,var(--dark-bg));
+  color:var(--dark-light)
+}
+.arrow-icon{width:10px;height:10px;fill:currentColor;transition:transform .3s ease}
+.ans-panel{
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;
+  margin-top:0;border-top:1px solid rgba(255,255,255,.22)
+}
+.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}
+.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:12px;padding-top:12px}
+.q-card.active .arrow-icon{transform:rotate(180deg)}
+.ans-row{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:7px}
+.dark .ans-row{color:var(--dark-ink)}
+.ans-row:last-child{margin-bottom:0}
+.ans-label{font-weight:700;color:var(--ink)}
+.dark .ans-label{color:var(--dark-ink)}
+.ans-row a{text-decoration:underline;word-break:break-all}
+.author-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.copy-btn{
+  flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;
+  cursor:pointer;display:grid;place-items:center;
+  background:rgba(255,255,255,.16);color:var(--ink)
+}
+.dark .copy-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
+.copy-btn.copied{background:var(--bg);color:var(--deep)}
+.dark .copy-btn.copied{background:var(--dark-bg);color:var(--dark-light)}
+.copy-icon{width:16px;height:16px}.check-path{display:none}
+.copy-btn.copied .clip-path{display:none}.copy-btn.copied .check-path{display:block}
+
+/* FOOTER */
+footer{
+  width:100%;
+  background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));
+  color:var(--ink);min-height:170px;padding:27px 20px 24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:9px;text-align:center
+}
+.dark footer{
+  background:linear-gradient(164deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));
+  color:var(--dark-ink)
+}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link:hover{opacity:.72}
+
+@media(max-width:700px){
+ .page{width:calc(100vw - 44px);padding-top:11px}
+ .top-nav{height:52px;padding-left:18px;padding-right:60px}
+ .nav-links{gap:34px}.nav-link{font-size:15px}
+ .theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}
+ .info-card,.tours-card,.q-card{border-radius:22px;padding:18px}
+ .game-title{font-size:22px}footer{min-height:185px;padding-left:12px;padding-right:12px}
+ .footer-line{font-size:14px}
+}
+@media(max-width:420px){
+ .page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}
+ .top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}
+ .theme-icon{width:20px;height:20px}.game-title{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+<nav class="top-nav" aria-label="Əsas naviqasiya">
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Əsas Səhifə</a>
+    <a class="nav-link active" href="packages.html">Sual Paketləri</a>
+  </div>
+
+  <!-- Günəş/Ay SVG-ləri saxlanılıb -->
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+    <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+  </button>
+</nav>
+
+<div class="main-container">
+<div class="blur-content">
+
+<div class="info-card">
+  <div class="game-title">"πksel.iok" WhatsApp paketi</div>
+  <div class="info-row"><span class="info-label">Təşkilatçı:</span> πksel İntellektual Oyunlar Klubu</div>
+  <div class="info-row"><span class="info-label">Redaktor:</span> Əlizadə Onur</div>
+  <div class="info-row"><span class="info-label">Müəllif(lər):</span> Əlizadə Onur, Abbaslı Nigar, Yuniszadə Ema, Əliyeva Zəhra, Qarayev Ramiz, Hüseynli Muhəmməd</div>
+  <div class="info-row"><span class="info-label">Oynadığı tarix:</span></div>
+  <div class="info-row"><span class="info-label">Əlavə olunduğu tarix:</span> 11.09.2026</div>
+</div>
+
+<div class="tours-card">
+  <div class="tour-buttons">
+    <button class="tour-btn active" onclick="loadTour(1)">I tur</button>
+    <button class="tour-btn" onclick="loadTour(2)">II tur</button>
+  </div>
+</div>
+
+<button class="global-toggle-btn" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
+<div class="questions-container" id="questionsContainer"></div>
+
+</div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+/* =========================================================
+   SƏNİN 24 SUALLIQ PAKETİN ÜÇÜN DATA QURULUŞU
+   Mövcud sual məlumatlarını buradakı obyektlərə əlavə edə bilərsən.
+   UI və rejim rəngləri artıq düzəldilib.
+========================================================= */
+const toursData = {
+  1: [
+    {id:1,question:`Bir yumoristik videoda, Roberto Karlos cərimə zərbəsini yerinə yetirməzdən əvvəl canlı səddəki rəqib futbolçuları salamlayır, sonra isə cərimə zərbəsini asanlıqla qola çevirir. Siz isə Karlosun bu qolu hansı milli komandaya atdığını yazın.`,answer:`Yaponiya`,comment:`Roberto Karlos zərbə endirməzdən əvvəl Yaponiyalı oyunçulara salam verir.`,author:`Onur Əlizadə`},
+    {id:2,question:`Bir filmdə iki kosmonavt təhlükəli görünən kompüteri söndürməyi müzakirə etmək üçün səs keçirməyən pəncərəli kapsula keçir. Lakin onlar kompüterin BUNU EDƏ bildiyini nəzərə almırlar. BUNU ETMƏKLƏ əvəz edilmiş ifadəni yazın.`,answer:`Dodaq oxumaq`,comment:`Söhbət 2001: A Space Odyssey filmindəki HAL 9000 kompüterindən gedir.`,author:`Əliyeva Zəhra`},
+    {id:3,question:`XIX əsrdə Azərbaycana səfər edən səyyahlardan biri süfrədə İKS-i görəndə yalnız tərəvəz yeyəcəyini düşünür. Lakin yeməyi daddıqdan sonra yanıldığını anlayır. İKS-i 3 sözlə yazın.`,answer:`Üç bacı dolması`,comment:`Üç bacı dolması bibər, pomidor və badımcandan hazırlanır.`,author:`Əlizadə Onur`},
+    {id:4,question:`Bir əsərdə kasıb ölkənin hökmdarı xalqının daha yaxşı yaşaması üçün əşyalarını satmaq məcburiyyətində qalır. Əsərin müəllifinin hansı məşhur siyasi liderdən ilhamlandığını cavab kartınıza yazın.`,answer:`Tomas Sankara`,comment:`Burkina Fasonun prezidenti Tomas Sankara da xalqının rifahı üçün bir çox əşyalarını satmışdı.`,author:`Muhəmməd Hüseynli`},
+    {id:5,question:`Salvador Dali bir reklam çəkilişi zamanı xidmət haqqı olaraq pul deyil, evinin bağçası üçün canlı İKS-lər tələb edir. İKS-i eyni saitli sözlə yazın.`,answer:`Kəpənək`,comment:`Salvador Dali reklam çəkilişi zamanı pul əvəzinə bağçası üçün kəpənəklər tələb etmişdi.`,author:`Abbaslı Nigar`},
+    {id:6,question:`Bir zarafata görə, Papa V Sikstusdan sonra VII Urbanusun gəlməsi İKS-in qarşısını almışdı. Yaponiyada baş əyib salam vermək də əslində İKS-dir. İKS-i bir əcnəbi mənşəli sözlə yazın.`,answer:`Tavtologiya`,comment:`Sikstus (Sextus) latınca altı deməkdir. Yaponiyada baş əymək elə salam vermək olduğu üçün hər iki ifadəni işlətmək tavtologiyadır.`,author:`Əlizadə Onur`},
+    {id:7,question:`Bəzi türk xalqlarının folklorundakı Şüralə və Arçura kimi insan-ağac məxluqlar qurbanlarını budaq və yarpaqları ilə BUNU EDƏRƏK öldürür. BUNU ETMƏKLƏ əvəz olunmuş sözü yazın.`,answer:`Qıdıqlamaq`,comment:`Tatar və Başqırd folklorundakı Şüralə qurbanlarını qıdıqlayaraq öldürməsi ilə tanınır.`,author:`Hüseynli Muhəmməd`},
+    {id:8,question:`NASA-nın Beynəlxalq Kosmik Stansiyaya uçuşlarından biri haqqında çəkilmiş videoda heyətin SƏKKİZİNCİ ASTRONAVTI da təqdim olunur. Həmin ASTRONAVTIN adını yazın.`,answer:`Bazz Laytyer`,criteria:`Buzz Lightyear; Buzz`,comment:`STS-124 missiyası zamanı Buzz Layter oyuncağı kosmosa göndərilmişdi.`,author:`Əlizadə Onur`},
+    {id:9,question:`Orta əsrlərdə fəth edilmədiyi üçün bəzi alınmaz istehkamlara simvolik olaraq İKS deyilirdi. Hamımızın tanıdığı bir İKS 2000-ci ildə UNESCO Dünya İrs Siyahısına daxil edilib. İKS-i II növ təyini söz birləşməsi ilə deyin.`,answer:`Qız Qalası`,comment:`Bu ifadədəki “qız” sözü “bakirə”, “fəth olunmamış”, “əl dəyməmiş” mənası ilə əlaqələndirilir.`,author:`Yuniszadə Ema`},
+    {id:10,question:`Son mundialda futbolçuların meydanda ağzını əllə örtərək danışmasının qadağan edilməsi ilə bağlı zarafatda Viktor Gyökereşin BUNU etməsinə görə hər matç qırmızı vərəqə ala biləcəyi bildirilir. BUNU II növ təyini söz birləşməsi ilə yazın.`,answer:`Qol sevinci`,comment:`Gyökeres vurduğu qollardan sonra əlləri ilə ağzını bağlayır.`,author:`Əlizadə Onur`},
+    {id:11,question:`Ömrünün son illərində XIV Lüdovikin bədənində qanqrena yayılmış, yaralar əmələ gəlmiş və ağzından kəskin qoxu gəlməyə başlamışdı. Buna görə bəzi mənbələrdə onu “İKS Kral” adlandırırdılar. İKS-i bir əcnəbi mənşəli sözlə yazın.`,answer:`Zombi`,comment:`XIV Lüdovikin ömrünün sonlarındakı görünüşü çürümüş meyiti xatırlatdığı üçün ona bəzən “Zombi Kral” deyilir.`,author:`Hüseynli Muhəmməd`},
+    {id:12,question:`İstehsalçı şirkətin marketinq gedişinə görə, 2000-ci illərdə dünyaca məşhur Romeo və Culyettanın uzunmüddətli münasibətinə rəsmi olaraq son qoyulur. Romeo və Culyetta ilə əvəz olunanları yazın.`,answer:`Barbi və Ken`,criteria:`Barbie and Ken`,comment:`2004-cü ildə Barbie və Ken cütlüyünün “ayrılması” marketinq kampaniyasının bir hissəsi idi.`,author:`Əlizadə Onur`}
+  ],
+  2: [
+    {id:13,question:`2003-cü ildə İraqın işğalı zamanı ABŞ ordusu əsgərlərə üzərində Səddam Hüseyn və onun yaxın adamlarının şəkilləri olan xüsusi İKS-lər paylamışdı. İKS-i iki sözlə yazın.`,answer:`Poker kartı`,criteria:`İskambil kağızı; oyun kartı`,comment:`Axtarılan İraq rəsmilərinin şəkilləri iskambil kartları üzərində çap edilmişdi.`,author:`Qarayev Ramiz`},
+    {id:14,question:`Rekvizitdə İKS-in şahidi olursunuz. İKS hər il orta hesabla 150 milyondan çox telefon zənginə səbəb olur. İKS-i ardıcıl samitlərlə başlayan iki sözlə yazın.`,answer:`Həkim xətti`,criteria:`Yalnız dəqiq cavablar`,comment:`Həkimlərin oxunması çətin olan xətti dəqiqləşdirmə zənglərinə səbəb olur.`,author:`Əlizadə Onur`},
+    {id:15,question:`Monarxiya ilə idarə olunan əksər ölkələrin saray protokoluna görə kralın hüzurunda BUNU ETMƏK olmaz. Lakin bir Polşa klubunun azarkeşlərinin BUNU ETMƏSİ hörmətsizlik kimi qəbul edilmir.`,answer:`Arxasını çevirmək`,criteria:`Mənaya uyğun cavablar`,comment:`“The Poznań” adlı azarkeş hərəkətində tərəfdarlar arxalarını meydançaya çevirirlər.`,author:`Əlizadə Onur`},
+    {id:16,question:`I və II Dünya Müharibələrində əsgərlər rahatlaşmaq üçün onlara uşaqları tərəfindən verilən İKSLƏRİ ciblərində daşıyırdılar. İKS-i 2 sözlə yazın.`,answer:`Oyuncaq ayı`,criteria:`Teddy Bear, Teddi Ayı`,comment:`Uşaqların müharibəyə yola saldıqları atalarına oyuncaq ayı hədiyyə etməsi haqqında zarafatlı məlumatdır.`,author:`Muhəmməd Hüseynli`},
+    {id:17,question:`Bir animasiyada personaj öz istəyinə çatmaq üçün 10297 BUNDAN istifadə edir. Real həyatda isə sözügedən məqsədə çatmaq üçün təxminən 23,5 milyon BU lazımdır. BU ilə əvəzlədiyimizi qısa sözlə yazın.`,answer:`Şar`,comment:`UP animasiyasında personaj 10297 şardan istifadə edərək evini uçurur.`,author:`Əliyeva Zəhra`},
+    {id:18,question:`“Dekster” serialının bir epizodunda Ritanın cəsədi öz qanı ilə dolu vannada görünür. Bu səhnə ağır dəri xəstəliyinə görə ömrünün son illərini vannada keçirən və məqalələrini də orada yazan şəxsi xatırladır. Onun kim olduğunu yazın.`,answer:`Jan-Pol Marat`,criteria:`Marat`,comment:`Fransa inqilabının liderlərindən Marat dəri xəstəliyi səbəbindən uzun müddət vannada qalırdı.`,author:`Əlizadə Onur`},
+    {id:19,question:`Aktyor Leonid Yarmolnik ağır avtomobil qəzasından möcüzəvi şəkildə sağ çıxır. Bu hadisədən sonra o, hər il BUNU iki dəfə ETMƏYƏ başlayır. BUNU ETMƏKLƏ əvəz olunmuş üç sözü yazın.`,answer:`Ad gününü keçirmək`,criteria:`Digər yaxın cavablar`,comment:`O, qəza gününü yenidən doğulduğu gün kimi qəbul edərək ildə iki dəfə ad günü qeyd etməyə başlayır.`,author:`Əlizadə Onur`},
+    {id:20,question:`Film çəkilişi zamanı havada fırlanan aktyorların bədəninə bağlanan təhlükəsizlik kəndirlərini gizlətmək lazım gəlirdi. Geyim dizaynerləri bu məqsədlə kəndirləri örtən İKS-dən istifadə etdilər. İKS-i bir qısa sözlə yazın.`,answer:`Plaş`,criteria:`Cape, Keyp`,comment:`Kəndirlər plaşın altında gizlədilərək yarasa qanadına bənzər görüntü yaradılmışdı.`,author:`Abbaslı Nigar`},
+    {id:21,question:`“Yeniyetmə mutant Nindza Tısbağalar” cizgi serialındakı mutant kərtənkələ personajının adı İKS-dir. “Mekka Kameleon” oyununda da İKS-ə rast gəlinir. İKS-i iki sözlə yazın.`,answer:`Mona Liza`,criteria:`Yalnız dəqiq cavablar`,comment:`Serialdakı mutant kərtənkələ personajının adı Mona Lizadır.`,author:`Əlizadə Onur`},
+    {id:22,question:`<b>Duplet:</b><br>1. XIX əsrin əvvəlində ABŞ generalı Vilyam Harrison yerli hindu qəbiləsinin torpaqlarını əlindən alır. Bundan sonra qəbilə rəhbəri Tekumseh İKS edir.<br>2. Aleksandr Soljenitsının yazılarından birində Stalinin çıxışı yaxınlaşdıqca insanları bürüyən qorxudan bəhs edilir.`,answer:`1. Qarğış; 2. Alqış`,criteria:`Yalnız dəqiq cavablar`,comment:`Birinci hissədə Tekumsehin qarğışı, ikinci hissədə isə Stalinin çıxışından sonrakı alqışlar əsas ipucudur.`,author:`Əlizadə Onur`},
+    {id:23,question:`“Prison Break” serialının epizodlarından birində qəhrəman polisləri aldatmaq üçün boyanmış ALFA-dan istifadə edir. ALFA-nı II növ təyini söz birləşməsi ilə yazın.`,answer:`Su tapançası`,criteria:`Yalnız dəqiq cavablar`,comment:`Maykl Skolfild su tapançasını qara rəngə boyayaraq həqiqi silaha bənzətmişdi.`,author:`Əlizadə Onur`},
+    {id:24,question:`Siz rekvizitdə bir romantik-komediya filminin afişasını görürsünüz. Dizaynerlər GİZLƏNMİŞLƏRİ adət etdiyimizdən fərqli olaraq gəlinliyin üzərinə yazıblar. Həmin afişanı filmin sonunda da görə biləcəyinizi nəzərə alaraq, GİZLƏNMİŞLƏRİ yazın.`,answer:`Film titrləri`,criteria:`Film məlumatları və digər uyğun cavablar`,comment:`Afişada aktyor adları və digər məlumatlar gəlinliyin üzərinə yerləşdirilib.`,author:`Abbaslı Nigar`}
+  ]
+};
+
+let currentTour=1, allExpanded=false, activeZoomedImg=null, activeClone=null;
+
+/* GÜNƏŞ / AY SVG-LƏRİ */
+const themeToggle=document.getElementById("themeToggle");
+const themeIcon=document.getElementById("themeIcon");
+
+function sunIcon(){
+ return `<circle cx="16" cy="16" r="6" fill="currentColor"/>
+ <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+ <path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/>
+ <path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/>
+ <path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1-2.1"/></g>`;
+}
+function moonIcon(){
+ return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
+}
+function updateThemeIcon(){
+ const dark=document.body.classList.contains("dark");
+ themeIcon.innerHTML=dark?moonIcon():sunIcon();
+ themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+}
+function setTheme(dark){
+ document.body.classList.toggle("dark",dark);
+ localStorage.setItem("piksel-theme",dark?"dark":"light");
+ updateThemeIcon();
+}
+function initTheme(){
+ const saved=localStorage.getItem("piksel-theme");
+ if(saved==="dark"){setTheme(true);return}
+ if(saved==="light"){setTheme(false);return}
+ setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+initTheme();
+
+function loadTour(n){
+ currentTour=n;allExpanded=false;
+ document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər";
+ document.querySelectorAll(".tour-btn").forEach((b,i)=>b.classList.toggle("active",i+1===n));
+ renderQuestions();
+}
+function renderQuestions(){
+ const c=document.getElementById("questionsContainer");c.innerHTML="";
+ (toursData[currentTour]||[]).forEach((item,index)=>{
+  const card=document.createElement("div");card.className="q-card";card.id="q-card-"+index;
+  const criteria=item.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${item.criteria}</div>`:"";
+  const comment=item.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${item.comment}</div>`:"";
+  card.innerHTML=`
+   <div class="q-text"><b>${item.id}.</b> ${item.question}</div>
+   <button class="toggle-btn" onclick="toggleSingleCard(${index})">
+    <span>Cavabı göstər</span>
+    <svg class="arrow-icon" viewBox="0 0 8 8"><path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/></svg>
+   </button>
+   <div class="ans-panel">
+    <div class="ans-row"><span class="ans-label">Cavab:</span> ${item.answer}</div>
+    ${criteria}${comment}
+    <div class="ans-row author-row">
+      <span><span class="ans-label">Müəllif:</span> ${item.author}</span>
+      <button class="copy-btn" onclick="copyQuestion(${index},this)" aria-label="Sualı kopyala">
+       <svg class="copy-icon" viewBox="0 0 20 20" fill="none">
+        <g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g>
+        <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+       </svg>
+      </button>
+    </div>
+   </div>`;
+  c.appendChild(card);
+ });
+}
+function toggleSingleCard(i){
+ const card=document.getElementById("q-card-"+i),t=card.querySelector(".toggle-btn span");
+ card.classList.toggle("active");
+ t.textContent=card.classList.contains("active")?"Cavabı gizlə":"Cavabı göstər";
+}
+function toggleAllAnswers(){
+ allExpanded=!allExpanded;
+ document.querySelectorAll(".q-card").forEach(card=>{
+  card.classList.toggle("active",allExpanded);
+  card.querySelector(".toggle-btn span").textContent=allExpanded?"Cavabı gizlə":"Cavabı göstər";
+ });
+ document.getElementById("globalToggleBtn").textContent=allExpanded?"Bütün cavabları gizlə":"Bütün cavabları göstər";
+}
+function stripHtml(s){return s.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").trim()}
+function copyQuestion(i,btn){
+ const x=toursData[currentTour][i];
+ let text=`${x.id}. ${stripHtml(x.question)}\n\nCavab: ${stripHtml(x.answer)}`;
+ if(x.criteria)text+=`\nSayılma meyarı: ${stripHtml(x.criteria)}`;
+ if(x.comment)text+=`\nŞərh: ${stripHtml(x.comment)}`;
+ text+=`\nMüəllif: ${x.author}`;
+ navigator.clipboard?.writeText(text).then(()=>{
+   btn.classList.add("copied");setTimeout(()=>btn.classList.remove("copied"),1600)
+ }).catch(()=>{});
+}
+loadTour(1);
+</script>
+</body>
+</html>
