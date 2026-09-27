@@ -33,11 +33,6 @@
       scroll-behavior:smooth;
     }
 
-    /*
-      HEÇ BİR daxili scroll YOXDUR. Məzmun öz təbii hündürlüyü qədər yer
-      tutur - scroll YALNIZ Google Sites-ın öz səhifəsində baş verir,
-      normal veb-səhifə scroll-u kimi, iOS-da 100% işləyir.
-    */
     html, body {
       width: 100%;
       height: auto;
@@ -68,7 +63,7 @@
       padding:12px 0 0;
     }
 
-    /* ---------- NAVIGATION (identical to ana səhifə) ---------- */
+    /* ---------- NAVIGATION ---------- */
     .top-nav{
       height:60px;
       width:100%;
@@ -186,7 +181,7 @@
       pointer-events: none;
     }
 
-    /* ---------- CARD BASE (identical gradient/shadow language to ana səhifə cards) ---------- */
+    /* ---------- CARD BASE ---------- */
     .info-card, .tours-card, .q-card {
       width: 100%;
       border-radius: 28px;
@@ -271,14 +266,13 @@
       background: linear-gradient(135deg, var(--deep) 0%, var(--bright) 100%);
       color: var(--ink);
       border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .dark .tour-btn.active{
       background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark-bright) 100%);
       color: var(--dark-ink);
       border-color: rgba(0, 7, 44, 0.25);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
 
     .global-toggle-btn {
@@ -357,25 +351,25 @@
       gap: 7px;
       background: linear-gradient(135deg, var(--deep) 0%, var(--bright) 100%);
       color: var(--ink);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 8px 16px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition: background .25s ease, color .25s ease, transform .2s ease, box-shadow .2s ease;
+      transition: background .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .dark .toggle-btn{
       background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark-bright) 100%);
       color: var(--dark-ink);
-      border: 1px solid rgba(0, 7, 44, 0.2);
+      border: 1px solid rgba(0, 7, 44, 0.15);
     }
 
     .toggle-btn:hover{
       transform:translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
     .arrow-icon {
@@ -483,13 +477,13 @@
     }
 
     .copy-btn.copied{
-      background: var(--deep);
+      background: linear-gradient(135deg, var(--deep) 0%, var(--bright) 100%);
       color: var(--ink);
     }
 
     .dark .copy-btn.copied{
-      background: var(--dark-ink);
-      color: var(--dark-light);
+      background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark-bright) 100%);
+      color: var(--dark-ink);
     }
 
     .copy-icon{
@@ -510,7 +504,7 @@
       display:block;
     }
 
-    /* ---------- FOOTER (identical to ana səhifə) ---------- */
+    /* ---------- FOOTER ---------- */
     footer{
       width:100%;
       background:
@@ -697,8 +691,7 @@
 </div>
 
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...
-   </div>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
 
   <a class="footer-line footer-link"
      href="https://www.instagram.com/piksel.iok"
@@ -922,7 +915,7 @@
           id: 1,
           question: "Maraqlıdır ki, Londonda xəstəxanaya gedən uşağın qəribə bir şikayəti var idi: o evdəki mebel və divarları nəhəng, öz əl və ayaqlarını isə olduqca kiçik görürdü. Əlavə olaraq saatın çox yavaş keçdiyini hiss edir, zaman qavrayışını qismən itirmişdi. Bu haqda danışılan məqalədə hansı personaj xatırlanır?",
           answer: "Alisa",
-          comment: "Luis Karolun \"Alisa in wonderland\" hekayəsində Alisa qəribə yerə düşür və hər şeyin ölçüsü dəyişir. Bəzi səhnələrdə isə hadisələr ya sürətlə keçir, ya da uzun çəkirdı. Bu hadisələri yaşayan insanlara isə Alisa sindromu adlı xəstəlik ilə təşhis qoyurlar.",
+          comment: "Luis Karolun \"Alisa in wonderland\" hekayəsində Alisa qəribə yerə düşür və hər şeyin ölçüsü dəyişir. Bəzi səhnələrdə isə hadisələr ya sürətlə keçir, ya da uzun çəkirdi. Bu hadisələri yaşayan insanlara isə Alisa sindromu adlı xəstəlik ilə təşhis qoyurlar.",
           source: "<a href='https://en.m.wikipedia.org/wiki/Alice_in_Wonderland_syndrome?utm_' target='_blank'>Link 1</a>, <a href='https://pubmed.ncbi.nlm.nih.gov/28189272/?utm_' target='_blank'>Link 2</a>",
           author: "İslam Səmədov"
         },
@@ -1027,7 +1020,7 @@
 
 
     /* =========================================================
-       THEME (identical to ana səhifə)
+       THEME
        ========================================================= */
 
     const themeToggle = document.getElementById("themeToggle");
@@ -1112,7 +1105,6 @@
 
       renderQuestions();
 
-      // Tur dəyişəndə səhifəni yenidən yuxarı qaytarır
       window.scrollTo(0, 0);
     }
 
