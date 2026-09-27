@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>πksel.iok - Amazon kuboku</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#9DC3FF;
+      --ink:#9DC3FF;
+      --deep:#001E6F;
+      --bright:#002E92;
+      --dark-bg:#00072C;
+      --dark-ink:#00072C;
+      --dark-light:#9DC3FF;
+      --dark-bright:#6FA5FC;
+      --transition:650ms cubic-bezier(.22,.8,.25,1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      transition:background .65s ease,color .65s ease;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    body.dark{
+      background:var(--dark-bg);
+      color:var(--dark-ink);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button{
+      font:inherit;
+    }
+
+    .page{
+      width:min(95vw,820px);
+      margin:0 auto;
+      padding:12px 0 0;
+    }
+
+    /* ---------- NAVIGATION (identical to ana səhifə) ---------- */
+    .top-nav{
+      height:60px;
+      width:100%;
+      border-radius:40px;
+      padding:0 14px 0 26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      background:
+        linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+      box-shadow:0 10px 28px rgba(0,20,100,.08);
+      transition:background var(--transition),box-shadow var(--transition);
+    }
+
+    .dark .top-nav{
+      background:
+        linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:58px;
+      height:100%;
+    }
+
+    .nav-link{
+      position:relative;
+      color:var(--ink);
+      font-size:20px;
+      font-weight:500;
+      white-space:nowrap;
+      transition:transform .25s ease,opacity .25s ease;
+    }
+
+    .dark .nav-link{
+      color:var(--dark-ink);
+    }
+
+    .nav-link:hover{
+      transform:translateY(-1px);
+    }
+
+    .nav-link.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-7px;
+      height:2px;
+      border-radius:2px;
+      background:currentColor;
+      opacity:.9;
+    }
+
+    .theme-toggle{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      width:44px;
+      height:44px;
+      border:0;
+      border-radius:50%;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      color:var(--deep);
+      background:rgba(157,195,255,.98);
+      transition:transform .3s ease,background var(--transition),color var(--transition);
+    }
+
+    .dark .theme-toggle{
+      background:var(--dark-bg);
+      color:var(--dark-light);
+    }
+
+    .theme-toggle:hover{
+      transform:translateY(-50%) scale(1.08);
+    }
+
+    .theme-toggle:active{
+      transform:translateY(-50%) scale(.95);
+    }
+
+    .theme-icon{
+      width:25px;
+      height:25px;
+      display:block;
+    }
+
+    /* ---------- MAIN CONTENT WRAP ---------- */
+    .main-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      margin-top:18px;
+      padding-bottom:56px;
+    }
+
+    .blur-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: filter 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: filter;
+    }
+
+    body.img-zoomed .blur-content {
+      filter: blur(8px);
+      pointer-events: none;
+    }
+
+    /* ---------- CARD BASE (identical gradient/shadow language to ana səhifə cards) ---------- */
+    .info-card, .tours-card, .q-card {
+      width: 100%;
+      border-radius: 28px;
+      padding: 24px 26px;
+      background:
+        linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+      color: var(--ink);
+      box-shadow: 0 10px 25px rgba(0,20,110,.09);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      transition:background var(--transition),color var(--transition),box-shadow .3s ease,transform .3s ease;
+    }
+
+    .dark .info-card, .dark .tours-card, .dark .q-card{
+      background:
+        linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+      color: var(--dark-ink);
+    }
+
+    .game-title {
+      font-size: 30px;
+      font-weight: 700;
+      font-family:"Poppins",sans-serif;
+      color: var(--ink);
+      line-height: 1.15;
+      letter-spacing:-.7px;
+      margin-bottom: 16px;
+    }
+
+    .dark .game-title{
+      color:var(--dark-ink);
+    }
+
+    .info-row {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.6;
+      margin-bottom: 5px;
+    }
+
+    .dark .info-row{
+      color:var(--dark-ink);
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: 700;
+      font-family:"Poppins",sans-serif;
+    }
+
+    .info-val {
+      font-weight: 400;
+    }
+
+    .tour-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 11px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dark .tour-btn{
+      color:var(--dark-ink);
+      border:1px solid rgba(0,7,44,.16);
+      background:rgba(0,7,44,.10);
+    }
+
+    .tour-btn.active {
+      background: #ffffff;
+      color: var(--deep);
+      border-color:transparent;
+    }
+
+    .dark .tour-btn.active{
+      background: var(--dark-bg);
+      color: var(--dark-light);
+    }
+
+    .round-arrow {
+      width: 10px;
+      height: 10px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .tour-btn.active .round-arrow {
+      transform: rotate(180deg);
+    }
+
+    .battle-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        max-height 0.35s cubic-bezier(0, 1, 0, 1),
+        opacity 0.25s ease,
+        margin-top 0.25s ease;
+      margin-top: 0;
+    }
+
+    .round-wrapper.active .battle-panel {
+      max-height: 1000px;
+      opacity: 1;
+      margin-top: 8px;
+    }
+
+    .battle-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 12px;
+    }
+
+    .battle-btn {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 10px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .dark .battle-btn{
+      color:var(--dark-ink);
+      border:1px solid rgba(0,7,44,.16);
+      background:rgba(0,7,44,.10);
+    }
+
+    .battle-btn.active {
+      background: #ffffff;
+      color: var(--deep);
+      border-color:transparent;
+    }
+
+    .dark .battle-btn.active{
+      background: var(--dark-bg);
+      color: var(--dark-light);
+    }
+
+    .sub-round-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sub-round-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 10px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dark .sub-round-btn{
+      color:var(--dark-ink);
+      border:1px solid rgba(0,7,44,.16);
+      background:rgba(0,7,44,.10);
+    }
+
+    .sub-round-btn.active {
+      background: #ffffff;
+      color: var(--deep);
+      border-color:transparent;
+    }
+
+    .dark .sub-round-btn.active{
+      background: var(--dark-bg);
+      color: var(--dark-light);
+    }
+
+    .sub-battle-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        max-height 0.35s cubic-bezier(0, 1, 0, 1),
+        opacity 0.25s ease,
+        margin-top 0.25s ease;
+      margin-top: 0;
+    }
+
+    .sub-round-wrapper.active .sub-battle-panel {
+      max-height: 500px;
+      opacity: 1;
+      margin-top: 8px;
+    }
+
+    .sub-battle-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 12px;
+    }
+
+    .global-toggle-btn {
+      width: 100%;
+      background:
+        linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+      color: var(--ink);
+      border: none;
+      padding: 14px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      box-shadow:0 10px 22px rgba(0,20,110,.10);
+      transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .dark .global-toggle-btn{
+      background:
+        linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+      color: var(--dark-ink);
+    }
+
+    .global-toggle-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 28px rgba(0,20,110,.16);
+    }
+
+    .questions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .q-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .dark .q-text{
+      color:var(--dark-ink);
+    }
+
+    .q-text b {
+      font-weight: 700;
+    }
+
+    .req-img-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      margin-top: 10px;
+    }
+
+    .req-img {
+      max-width: 100%;
+      border-radius: 12px;
+      cursor: pointer;
+      display: block;
+      transform-origin: center center;
+      transition:
+        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.5s ease;
+      will-change: transform;
+      position: relative;
+      z-index: 1;
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.92);
+      color: var(--deep);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition:background .25s ease,color .25s ease,transform .2s ease;
+    }
+
+    .dark .toggle-btn{
+      background: var(--dark-bg);
+      color: var(--dark-light);
+    }
+
+    .toggle-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .arrow-icon {
+      width: 10px;
+      height: 10px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .ans-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        max-height 0.35s cubic-bezier(0, 1, 0, 1),
+        opacity 0.25s ease,
+        margin-top 0.25s ease;
+      margin-top: 0;
+      border-top: 1px solid rgba(255,255,255,.22);
+    }
+
+    .dark .ans-panel{
+      border-top: 1px solid rgba(0,7,44,.18);
+    }
+
+    .q-card.active .ans-panel {
+      max-height: 3000px;
+      opacity: 1;
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    .q-card.active .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    .ans-row {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 7px;
+    }
+
+    .dark .ans-row{
+      color:var(--dark-ink);
+    }
+
+    .ans-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .ans-label {
+      font-weight: 700;
+      font-family:"Poppins",sans-serif;
+      color: var(--ink);
+    }
+
+    .dark .ans-label{
+      color:var(--dark-ink);
+    }
+
+    .ans-row a {
+      color: var(--ink);
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .dark .ans-row a{
+      color:var(--dark-ink);
+    }
+
+    /* ---------- FOOTER (identical to ana səhifə) ---------- */
+    footer{
+      width:100%;
+      background:
+        linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+      color:var(--ink);
+      min-height:170px;
+      padding:27px 20px 24px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      text-align:center;
+      transition:background var(--transition),color var(--transition);
+    }
+
+    .dark footer{
+      background:
+        linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+      color:var(--dark-ink);
+    }
+
+    .footer-line{
+      font-size:15px;
+      line-height:1.45;
+      font-weight:500;
+    }
+
+    .footer-link{
+      transition:opacity .25s ease,transform .25s ease;
+    }
+
+    .footer-link:hover{
+      opacity:.72;
+      transform:translateY(-1px);
+    }
+
+    /* ---------- ACCESSIBILITY ---------- */
+    .q-card:focus-visible,
+    .nav-link:focus-visible,
+    .theme-toggle:focus-visible,
+    .footer-link:focus-visible{
+      outline:3px solid currentColor;
+      outline-offset:4px;
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,
+      *::before,
+      *::after{
+        scroll-behavior:auto !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
+    }
+
+    @media (max-width:700px){
+      .page{
+        width:calc(100vw - 44px);
+        padding-top:11px;
+      }
+
+      .top-nav{
+        height:52px;
+        padding-left:18px;
+        padding-right:60px;
+      }
+
+      .nav-links{
+        gap:34px;
+      }
+
+      .nav-link{
+        font-size:15px;
+      }
+
+      .theme-toggle{
+        width:39px;
+        height:39px;
+        right:8px;
+      }
+
+      .theme-icon{
+        width:22px;
+        height:22px;
+      }
+
+      .info-card, .tours-card, .q-card{
+        border-radius:22px;
+        padding:18px 18px;
+      }
+
+      .game-title{
+        font-size:22px;
+      }
+
+      footer{
+        min-height:185px;
+        padding-left:12px;
+        padding-right:12px;
+      }
+
+      .footer-line{
+        font-size:14px;
+      }
+    }
+
+    @media (max-width:420px){
+      .page{
+        width:calc(100vw - 36px);
+      }
+
+      .nav-links{
+        gap:25px;
+      }
+
+      .nav-link{
+        font-size:13px;
+      }
+
+      .top-nav{
+        height:48px;
+      }
+
+      .theme-toggle{
+        width:36px;
+        height:36px;
+        right:6px;
+      }
+
+      .theme-icon{
+        width:20px;
+        height:20px;
+      }
+
+      .game-title{
+        font-size:20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <nav class="top-nav" aria-label="Əsas naviqasiya">
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link active" href="packages.html">Sual Paketləri</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button"
+            aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    </button>
+  </nav>
+
+<div class="main-container" id="mainContainer">
+
+  <div class="blur-content">
+
+    <!-- PAKET MƏLUMATLARI -->
+    <div class="info-card">
+
+      <div class="game-title">"Amazon" kuboku - Breyn Rinq</div>
+
+      <div class="info-row">
+        <span class="info-label">Təşkilatçı:</span>
+        <span class="info-val">Yusifov Zeynal</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Redaktor:</span>
+        <span class="info-val">Yusifov Zeynal</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Müəllif(lər):</span>
+        <span class="info-val">Zeynal Yusifov, Seyidova Aydan</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Oynanıldığı tarix:</span>
+        <span class="info-val">22.08.2026</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Əlavə edildiyi tarix:</span>
+        <span class="info-val">05.08.2026</span>
+      </div>
+
+    </div>
+
+
+    <!-- TUR / FİNAL SEÇİMLƏRİ -->
+    <div class="tours-card">
+
+      <div class="tour-buttons">
+
+        <!-- 1/4 FINAL -->
+        <div class="round-wrapper active" id="round-quarter">
+
+          <button class="tour-btn active" onclick="toggleRound('round-quarter')">
+            <span>1/4 Final</span>
+            <svg class="round-arrow" viewBox="0 0 8 8">
+              <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+            </svg>
+          </button>
+
+          <div class="battle-panel">
+            <div class="battle-buttons">
+
+              <button class="battle-btn active" onclick="loadSet('q1')">
+                I Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('q2')">
+                II Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('q3')">
+                III Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('q4')">
+                IV Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('q5')">
+                V Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('q6')">
+                VI Döyüş
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- 1/2 FINAL -->
+        <div class="round-wrapper" id="round-half">
+
+          <button class="tour-btn" onclick="toggleRound('round-half')">
+            <span>1/2 Final</span>
+            <svg class="round-arrow" viewBox="0 0 8 8">
+              <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+            </svg>
+          </button>
+
+          <div class="battle-panel">
+            <div class="battle-buttons">
+
+              <button class="battle-btn" onclick="loadSet('h1')">
+                I Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('h2')">
+                II Döyüş
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- III YER UĞRUNDA OYUN -->
+        <div class="round-wrapper" id="round-third">
+
+          <button class="tour-btn" onclick="toggleRound('round-third')">
+            <span>III Yer uğrunda oyun</span>
+            <svg class="round-arrow" viewBox="0 0 8 8">
+              <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+            </svg>
+          </button>
+
+          <div class="battle-panel">
+            <div class="battle-buttons">
+
+              <button class="battle-btn" onclick="loadSet('t1')">
+                I Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('t2')">
+                II Döyüş
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- FINAL -->
+        <div class="round-wrapper" id="round-final">
+
+          <button class="tour-btn" onclick="toggleRound('round-final')">
+            <span>Final</span>
+            <svg class="round-arrow" viewBox="0 0 8 8">
+              <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+            </svg>
+          </button>
+
+          <div class="battle-panel">
+            <div class="battle-buttons">
+
+              <button class="battle-btn" onclick="loadSet('f1')">
+                I Döyüş
+              </button>
+
+              <button class="battle-btn" onclick="loadSet('f2')">
+                II Döyüş
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <button class="global-toggle-btn"
+            id="globalToggleBtn"
+            onclick="toggleAllAnswers()">
+      Bütün cavabları göstər
+    </button>
+
+
+    <div class="questions-container" id="questionsContainer"></div>
+
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...
+   </div>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/piksel.iok"
+     target="_blank"
+     rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/onurelzh"
+     target="_blank"
+     rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+
+</footer>
+
+<script>
+
+const setsData = {
+
+  /* =========================================================
+     1/4 FINAL — I DÖYÜŞ
+     ========================================================= */
+
+  q1: [
+    {
+      id: 1,
+      question: "Aparıcı üçün qeyd: Sualdan öncə “Breyn-rinq intellektual oyunu üzrə Amazon kuboku başlayır” deyilsin.<br><br>1995-ci ildə burada satılan ilk məhsul Duqlas Hofştadterin “Fluid Concepts & Creative Analogies” kitabı olub. Buranı tapın.",
+      answer: "Amazon",
+      comment: "1995-ci ildə yaradılan şirkət fəaliyyətinin ilk illərində əsasən onlayn kitab mağazası kimi fəaliyyət göstərirdi. Amazon Kubokuna xoş gəlmisiniz!",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 2,
+      question: "\"Burger King\" 2020-ci ildə təqdim olunan \"Moldy Whopper\" kampaniyasında Whopper burgerinin zamanla kifləndiyini göstərirdi. Bəs bu kampaniyanın əsas məqsədi nə idi?",
+      answer: "Məhsullarında təbii qidalardan istifadə olunduğunu göstərmək",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 3,
+      question: "TRT televiziyası 1981-ci ildə Türkiyə bayrağından istifadə edərək nəyi nümayiş etdirmişdi?",
+      answer: "İlk rəngli televiziya yayımı",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Con Varnokun Kaliforniyada yaşadığı evin yaxınlığından Adobe Creek adlı çay axır. Con Varnok kimdir?",
+      answer: "Adobe şirkətinin qurucusu",
+      comment: "Maraqlıdır ki, məşhur şirkət adını həmin çaydan alıb.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "2014-cü il Dünya çempionatı başlamazdan əvvəl Ronaldo bir uşağın beyin əməliyyatının xərclərini qarşılayır. Bəs bundan əlavə olaraq o, Dünya çempionatı boyunca özündə hansı dəyişikliyi edir?",
+      answer: "Saçına həmin uşağın əməliyyat izi kimi iz qoymuşdu",
+      comment: "",
+      source: "",
+      author: "Aydan Seyidova"
+    }
+  ],
+
+
+  /* =========================================================
+     1/4 FINAL — II DÖYÜŞ
+     ========================================================= */
+
+  q2: [
+    {
+      id: 1,
+      question: "Qədim Roma memarı Vitruvi insan bədəninin müəyyən nisbətlərə uyğun olduğunu yazmışdı. Bəs hansı italyan bu fikirləri həndəsi şəkildə təsvir edib?",
+      answer: "Leonardo da Vinçi",
+      comment: "Leonardo da Vinçinin \"Vitruvian Adam\" adlı məşhur rəsmi Vitruviusun insan bədəninin ideal nisbətləri haqqında fikirləri əsasında yaradılıb. Rəsmdə insan fiquru həm dairə, həm də kvadrat daxilində təsvir edilir.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "Maraqlıdır ki, o, ölümü ulduzlara səyahət etməyə bənzədirdi. Bəzi yozumlara görə hətta o, sərv ağacını məhz bu səbəbdən seçmişdi. Onun kim olduğunu tapın.",
+      answer: "Vinsent Van Qoq",
+      comment: "Van Qoq qardaşı Teoya yazdığı məktubda ulduzlara çatmağı ölüm vasitəsilə həyata keçirilən bir səyahət kimi təsəvvür edirdi. “Ulduzlu gecə” əsərində də ön plandakı sərv ağacı vizual olaraq yer ilə səmanı birləşdirir. Sərvlər isə ənənəvi olaraq ölüm, qəbiristanlıq və yasla əlaqələndirilən ağaclardır.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 3,
+      question: "840-cı illərdə belçikalı alət ustası Antuan-Jozef klarnet və oboyun xüsusiyyətlərini birləşdirərək bu aləti yaratmışdı. Hansı?",
+      answer: "Saksafon",
+      comment: "Alət onu icad edən Antuan-Jozef Saksın şərəfinə \"Saksofon\" (Saksın aləti) adlandırılıb.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 4,
+      question: "İnsanların saçları stress səbəbindən bir gecədə ağara bilir. Bu sindrom hansı fransızın adını daşıyır?",
+      answer: "Mariya Antuanetta",
+      comment: "Onun saçları edam edilməzdən öncəki gecə ağarmışdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "Tomahavk hindularının istifadə etdiyi döyüş baltasıdır. Hinduların dilində \"tomahavkı yerə basdırmaq\" və \"tomahavkı qazıb çıxarmaq\" ifadələri mövcuddur. Bu iki ifadə müvafiq olaraq hansı mənaları ifadə edir?",
+      answer: "Sülh bağlamaq, müharibəyə başlamaq",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     1/4 FINAL — III DÖYÜŞ
+     ========================================================= */
+
+  q3: [
+    {
+      id: 1,
+      question: "Portuqaliyada tələbələr qara plaşlar geyinir. Bəs hansı yazıçı 1990-cı illərdə Portoda ingilis dili müəllimi kimi işləyib?",
+      answer: "Coan Ketlin Roulinq",
+      comment: "O, sehrbaz və Hoqvarts məktəbli geyimlərini həmin plaşlardan ilhamlanaraq yaradıb.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 2,
+      question: "Rusiyanın Novosibirsk şəhərində yerləşən genetika institutunun kənarında hansı heyvanın abidəsi var?",
+      answer: "Siçan",
+      comment: "Genetika və tibb elminin inkişafına verdiyi töhfələr üçün",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "Deniel Redkliff 2023-cü ildə prodüseri olduğu \"Yaşayan oğlan\" filmini çəkmişdi. Bu film Devid Holmsa həsr olunmuşdu. Bəs bunun səbəbi Devid Holmsun bir filmdəki hansı rolu olub?",
+      answer: "Harry Potter",
+      comment: "Devid Holms “Harry Potter” film seriyasında Deniel Redkliffin dublyoru idi. 2009-cu ildə o, filmin çəkilişləri zamanı qəza keçirərək ağır zədə almışdı. Sonradan Deniel Redkliff onun həyatından bəhs edən filmin prodüseri oldu.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Bartłomiej Kubkowski yaxın günlərdə İsveçdən Polşayadək olan 160 km məsafəni heç yatmadan 56 saata qət etdi. Siz isə onun imza atdığı tarixi uğuru dəqiqliklə deyin.",
+      answer: "Baltik dənizini üzərək keçən ilk insan",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 5,
+      question: "Bernard Şounun məşhur bir fikri var: \"Biz hamımız iki böyük faciə ilə üzləşə bilərik. Birincisi, ürəyimizdən keçən ən böyük arzunun heç vaxt reallaşmamasıdır\". Müəllifin fikrincə, ikinci faciə nədir?",
+      answer: "Arzunun reallaşması",
+      comment: "",
+      source: "",
+      author: "Aydan Seyidova"
+    }
+  ],
+
+
+  /* =========================================================
+     1/4 FINAL — IV DÖYÜŞ
+     ========================================================= */
+
+  q4: [
+    {
+      id: 1,
+      question: "Bir müsahibədə deyilir ki, İyunun 14-ü onun doğum günü idi. Təsadüfi deyil ki, biz bunu unutmuşuq. Kimin doğum günü?",
+      answer: "Alzeymer",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "2017-ci ildə Rus kanalı Matç Tv bir paylaşımda ONUN kiçildilmiş surətinin kosmosa göndərildiyindən bəhs edir. ONU tapın.",
+      answer: "Qaqarin kuboku",
+      comment: "Kontinental Xokkey Liqasının əsas mükafatı Yuri Qaqarinin şərəfinə adlandırılıb. Kubokun surətinin kosmosa göndərilməsi simvolik məna daşıyır.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "“Trabzonspor” klubunda çıxış edən gənc futbolçu Aral Şimşir Sivasdandır. O bu mənsubiyyətini vurğulamaq üçün matçlarda nə edir?",
+      answer: "58 nömrəli (Sivasın maşın nömrəsi olan) forma geyinir.",
+      comment: "",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 4,
+      question: "Bir rəvayətə görə, 1912–1913-cü illərdə baş verən Balkan müharibələri zamanı bəzi əsgərlər Osmanlı ordusuna qarşı döyüşərkən hər iki əllərində tapança tutaraq eyni anda atəş açırdılar. Maraqlıdır ki, həmin əsgərlər məhz buradan idi. Haradan?",
+      answer: "Makedoniya",
+      comment: "Sualda əsgərlərin hər iki əllərində tapança tutaraq eyni anda atəş açması “Makedon atəşi” ifadəsinə işarədir. Bir versiyaya görə, bu ifadə məhz sualda təsvir olunan hadisədən sonra yaranıb.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 5,
+      question: "Dina Saniçar 1867-ci ildə 6 yaşı olarkən Hindistanda meşədə canavar sürüsü ilə birlikdə tapılmışdı. Bəzi mənbələrdə bu hadisənin kimə ilham verdiyi qeyd olunur?",
+      answer: "Rudyard Kiplinq",
+      comment: "Kiplinq məşhur Mauqli obrazını “Cəngəllik kitabı” əsərində yaradıb. Bəzi mənbələrdə Mauqlinin Dina Saniçarın prototipi olduğu iddia edilir.",
+      source: "",
+      author: "Aydan Seyidova"
+    }
+  ],
+
+
+  /* =========================================================
+     1/4 FINAL — V DÖYÜŞ
+     ========================================================= */
+
+  q5: [
+    {
+      id: 1,
+      question: "Amad Diallo 2024-cü ildə “Liverpul”a qarşı keçirilən matçda uzatmalarda ikinci sarı vərəqəni alaraq meydandan qovulur. Lakin heç bir azarkeş ona əsəbiləşmir, əksinə, minnətdarlıq edirlər. Siz onun sarı vərəqə alma səbəbini deyin.",
+      answer: "Qol sevincini qeyd edərkən formasını çıxardığı üçün",
+      comment: "Diallo 120+1-ci dəqiqədə “Mançester Yunayted”ə qələbə qazandıran qolu vurduqdan sonra formasını çıxarıb. Bu onun ikinci sarı vərəqəsi olduğundan qırmızı vərəqə ilə cəzalandırılıb.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "XIX əsrə aid bir şəkildə Anna Bertanın əlini və onun nikah üzüyünü görmək olar. Siz isə Anna Bertanın kim olduğunu tapın.",
+      answer: "Vilhelm Rentgenin həyat yoldaşı",
+      comment: "Alman fizik insan bədəninin ilk rentgen görüntülərindən birində həyat yoldaşının əlindən istifadə etmişdi.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "Anna Hathaway İnterstellar filminin bir səhnəsi üçün 10 ay idman zalında məşq etmişdi. Bu məşqin səbəbi Kristofer Nolanın qoyduğu bir qadağa idi. Həmin qadağanın nə olduğunu deyin.",
+      answer: "Dublyordan istifadə etmək olmaz.",
+      comment: "Yadınızdadırsa, filmdə aktrisa bir səhnədə tərs salto vurmuşdu.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Roma imperatoru Yuli Sezar piratların əlində əsir olarkən öz fidyə qiymətini 20 talantdan 50 talanta qaldırdı. Sezar bu qərarı ilə qarşı tərəfə nəyi sübut etmək istəyirdi?",
+      answer: "Onun o qədər ucuz olmadığını",
+      comment: "",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "Rəna Kanogoki 1959-cu ildə cüdo üzrə bir yarışda çempion oldu. Lakin təşkilatçılar sonradan onun medalını əlindən aldılar. Bu barədə danışılan bir məqalədə Janna Dark və Enn Bonni də xatırlanır. Siz isə cüdoçunun medalının niyə alındığını deyin.",
+      answer: "Qadın olduğu məlum olduğu üçün.",
+      comment: "Kanogoki kişilərlə yarışa bilmək üçün özünü kişi kimi göstərmiş, saçını qısaltmış və sinəsini sarımışdı. Yarışdan sonra qadın olduğu məlum olduqda təşkilatçılar medalını geri aldılar. Janna Dark və Enn Bonni də qadın olmalarına baxmayaraq kişi qiyafəsində mübarizə aparıblar.",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     1/4 FINAL — VI DÖYÜŞ
+     ========================================================= */
+
+  q6: [
+    {
+      id: 1,
+      question: "2005-ci ildə Caved Kərim çəkdiyi 19 saniyəlik videoda fillər haqqında qısa məlumat verirdi. Bəs bu videonu məşhur edən əsas xüsusiyyət nə idi?",
+      answer: "YouTube platformasına yüklənən ilk video idi",
+      comment: "Caved Kərimin çəkdiyi bu qısa videoda o, əsasən zooparkdakı fillər və onların xortumları haqqında danışırdı. Elə video da \"Me at the zoo\" adını daşıyır.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 2,
+      question: "Hans Riegel 1920-ci ildə Bonn şəhərində məhz bu markanı yaratmışdı.",
+      answer: "Haribo",
+      comment: "\"Ha\" adının, \"Ri\" soyadının, \"Bo\" isə şəhərin adının ilk 2 hərfi idi.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "Bankonqda böyük bir parkinqin yanında yaşayan bir şəxs hər səhər canlı yayım açır. Milyonlarla insan onun yayımlarınını niyə izləyir?",
+      answer: "Parkinqdə boş yer olub-olmadığını öyrənmək üçün",
+      comment: "Şəhərdə boş parkinq yeri tapmaq olduqca çətindir. Buna görə sürücülər həmin şəxsin canlı yayımına baxaraq parkinqdə boş yerin olub-olmadığını əvvəlcədən öyrənirlər. Əgər boş yer yoxdursa, başqa parkinq axtarırlar.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Cüdo üzrə Avropa, Dünya və Olimpiya çempionu Hidayət Heydərov “Neftçi” klubunun azarkeşidir. Bir dəfə klub Hidayətə 73 nömrəli “Neftçi” forması hədiyyə etmişdi. Bəs formadakı 73 ədədi nəyi simvolizə edir?",
+      answer: "Mübarizə apardığı çəki dərəcəsi",
+      comment: "Hidayət Heydərov 73 kiloqram çəki dərəcəsində Avropa, Dünya və Olimpiya çempionudur.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "1936-cı il Berlin Olimpiadasında Haiti ilə eyni bayraqdan istifadə etdiyini görən hansı ölkə ertəsi il bayrağına qızıl tac əlavə etmişdi?",
+      answer: "Lixtenşteyn",
+      comment: "",
+      source: "",
+      author: "Yusifov Zeynal"
+    }
+  ],
+
+
+  /* =========================================================
+     1/2 FINAL — I DÖYÜŞ
+     ========================================================= */
+
+  h1: [
+    {
+      id: 1,
+      question: "O 1979-cu ildə keçiriləcək rəsmi ziyafətin ləğv olunmasını xahiş etmiş və həmin ziyafət üçün ayrılmış vəsaitin Hindistandakı kimsəsizlərə yemək paylanmasına sərf edilməsini istəmişdi. Söhbət kimdən gedir?",
+      answer: "Tereza Ana",
+      comment: "Həmin il Sülh Üzrə Nobel mükafatı qazanmışdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 2,
+      question: "Şükrü Saraçoğlu stadiona yaxın ərazidə yerləşən Onun heykəlində, o, əlində basketbol, ayağında isə futbol topu tutur. O kimdir?",
+      answer: "Can Bartu",
+      comment: "Can Bartu həm basketbol, həm də futbol üzrə Fenerbahçe əfsanəsidir. O, Türkiyə milli komandalarında hər iki idman növündə çıxış etmiş nadir idmançılardan biri idi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 3,
+      question: "Maraqlıdır ki, Andrey Çikatilo SSRİ-də \"Lesopolosa\" əməliyyatı çərçivəsində yaradılmış könüllü axtarış dəstələrindən birində iştirak etmişdi. Bəs \"Lesopolosa\" əməliyyatı kimi tutmaq üçün təşkil olunmuşdu?",
+      answer: "Andrey Çikatilo",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "\"Ümid edirəm ki, heç kimə etibar edə bilmədiyim kimi, hər şeyi sənə etibar edə biləcəyəm və ümid edirəm ki, sən mənim üçün əla təsəlli və dəstək mənbəyi olacaqsan.\" Bu sözlər 1942-ci ildə kim tərəfindən yazılıb?",
+      answer: "Anna Frank",
+      comment: "Anna Frank 1942-ci ildə, nasistlərdən gizləndiyi dövrdə gündəliyinə düşüncələrini və yaşadıqlarını qeyd edirdi. Gündəlik sonradan \"Anna Frankın gündəliyi\" adı ilə dünyada məşhurlaşdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "2023-cü ildə Türkiyə Super Liqasında keçirilən bir matçdan əvvəl “Qalatasaray”ın kapitanı Fernando Muslera top və ya qapı seçimi üçün püşk atılmasına ehtiyac olmadığını bildirərək seçimi rəqib komandanın kapitanına buraxmışdı. Siz isə “Qalatasaray”ın həmin görüşdə hansı klubla qarşılaşdığını deyin.",
+      answer: "Hatayspor",
+      comment: "Sualda 2023-cü ilin qeyd olunması təsadüfi deyildi. Həmin il Türkiyədə baş verən dağıdıcı zəlzələdən ən çox zərər çəkən bölgələrdən biri Hatay idi. Fernando Muslera da bu hadisəyə və Hatayspora hörmət əlaməti olaraq belə bir jest etmişdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     1/2 FINAL — II DÖYÜŞ
+     ========================================================= */
+
+  h2: [
+    {
+      id: 1,
+      question: "Ötən mövsümü uğursuz başa vuran \"Milan\" klubu yeni mövsüm formalarında \"İstanbuldan sonra həmişə Afina gəlir\" ifadəsinə yer verib. Bəs bu ifadə \"Milan\"ın hansı kluba qarşı keçirdiyi matçlara istinad edir?",
+      answer: "Liverpul",
+      comment: "İfadə 2005-ci ildə İstanbulda keçirilən UEFA Çempionlar Liqası finalında \"Liverpul\"a məğlubiyyətdən sonra, 2007-ci ildə Afinada eyni rəqib üzərində qazanılan qələbəyə və \"Milan\"ın yenidən Avropanın zirvəsinə qayıdışına işarə edir.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "XX əsrə aid ABŞ-in miqrasiya qanunvericiliyini tənqid edən bir karikaturada arzuolunmaz miqrantlar Sem dayının arxasınca qaçırlar. Sem dayı karikaturada nə edir?",
+      answer: "Tütək çalır.",
+      comment: "Arzuolunmaz miqrantlar Hamelin siçovulçusunun arxasınca gedən siçovullara bənzədilir.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "1885-ci ildə \"New York World\" qəzeti Amerika ictimaiyyətini pul bağışlamağa çağıraraq altı ay ərzində 100.000 dollardan çox vəsait topladı. Bəs bu pul nəyin hazırlanmasında xərcləndi?",
+      answer: "Azadlıq heykəlinin postamenti",
+      comment: "Amerika Azadlıq Heykəli Komitəsinin heykəlin postamenti üçün vəsaiti tükənəndə qəzet naşiri Cozef Pulitzer köməyə gəlmişdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Bəhs etdiyimiz hadisədə Pulitzer xalqın kampaniyada iştirakını təmin etmək üçün bir vəd vermişdi. Hansı ki bu vəd qəzetin satışlarını da artırmışdı. Həmin vəd nədən ibarət idi?",
+      answer: "İanə edən hər kəsin adı qəzetdə dərc olunacaqdı.",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 5,
+      question: "2000-ci ildə \"Qremmi\" mükafatlandırma mərasimində Cennifer Lopesin geyindiyi yaşıl libas internetdə böyük marağa səbəb oldu. İnsanlar onun fotosunu kütləvi formada axtarmağa başladılar. Bu hadisə “Google” şirkətinə hansı məşhur funksiyanı yaratmağa ilham verdi?",
+      answer: "Google Şəkillər (Google Images)",
+      comment: "Həmin dövrdə “Google” əsasən mətn əsaslı axtarış nəticələri təqdim edirdi. Cennifer Lopesin fotosuna olan böyük tələbat isə insanlara şəkillərlə axtarış imkanı verən Google Images xidmətinin yaradılmasına təkan verdi.",
+      source: "",
+      author: "Aydan Seyidova"
+    }
+  ],
+
+
+  /* =========================================================
+     III YER UĞRUNDA — I DÖYÜŞ
+     ========================================================= */
+
+  t1: [
+    {
+      id: 1,
+      question: "Bir yapon atalar sözündə deyilir: \"İlk qədəhdə insan şərabı içir, ikinci qədəhdə şərab şərabı içir\". Bəs üçüncü qədəhdə nə baş verir?",
+      answer: "Şərab insanı içir",
+      comment: "",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 2,
+      question: "2018-ci ildə \"Lacoste\" özünün məşhur timsah loqosunu müvəqqəti olaraq nəsli kəsilmək təhlükəsində olan heyvanların təsvirləri ilə əvəz etmişdi. Lakin həmin loqolarla hazırlanan köynəklərin sayı fərqli idi. Məsələn, vaquita loqolu 30, Yava kərgədanı loqolu 67, Sumatra pələngi loqolu isə 350 köynək hazırlanmışdı. Bu ədədlər nəyi ifadə edirdi?",
+      answer: "Həmin heyvanın təbiətdə qalan fərdlərinin sayı",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 3,
+      question: "Qədim Romada senatorun sözünü kəsmək hörmətsizlik hesab olunurdu. Əgər onlar uzun müddət danışarsa, digər senatorlar bunu edərək onların səsini batırır və danışığı bitirirdilər. Siz də bunu edin.",
+      answer: "Əl çalmaq",
+      comment: "Senatorlar vaxt uzadan şəxsi kütləvi şəkildə alqışlayırdı. Bu səs-küydə onun səsi eşidilməz olurdu və o, məcburən çıxışını bitirirdi.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 4,
+      question: "Soyuq müharibə Qərb və Sovet İttifaqı arasında bir çox sahədə rəqabət yaratmışdı. Bəs Sovet İttifaqında serialda da rol almış kəşfiyyatçı Ştirlits obrazının yaradılmasına təkan verən Qərbin hansı məşhur obrazı idi?",
+      answer: "Ceyms Bond",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 5,
+      question: "Aktyor Vyaçeslav Tixonov 2009-cu ildə vəfat etdikdə Rusiya prezidenti Dmitri Medvedev və baş nazir Vladimir Putin onun ailəsinə başsağlığı vermişdi. Siz Tixonovun ən məşhur rolunu deyin.",
+      answer: "Ştirlits",
+      comment: "Öncəki sualda Ştirlits obrazının bir serialda yer aldığını vurğulamışdıq. Bu obrazı isə Vyaçeslav Tixonov canlandırıb.",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     III YER UĞRUNDA — II DÖYÜŞ
+     ========================================================= */
+
+  t2: [
+    {
+      id: 1,
+      question: "Bir ironik paylaşımda yazılıb ki: \"İnsanları internetdə necə aldatmaq olar adlı bir kitab sifariş etdim, amma\" cümləni tamamlayın",
+      answer: "Kitab hələ də gəlməyib.",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "İnqvar Kamprad Agunnaryd kəndindəki Elmtaryd fermasında böyüyüb. Bəs Kamprad hansı şirkətin yaradıcısıdır?",
+      answer: "İKEA",
+      comment: "Şirkətin yaradıcısı İnqvar Kamprad öz adının baş hərflərinə böyüdüyü Elmtaryd fermasının və Agunnaryd kəndinin ilk hərflərini əlavə edərək \"İKEA\" sözünü yaratmışdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "The Notebook filmi iki gəncin illər boyu davam edən sevgi hekayəsindən bəhs edir. Bəs nəyə görə filmdəki gənc Noah qəhvəyi rəngli kontakt linzalar taxıb?",
+      answer: "Yaşlı Noahı canlandıran aktyorun göz rəngləri qəhvəyi idi",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "O verilən bir suala cavab olaraq ironiya ilə demişdi: \"Bir qadın nə qədər qoca olarsa, əri üçün bir o qədər dəyərli olar\". Bu sözlər hansı ingilisə aiddir?",
+      answer: "Aqata Kristi",
+      comment: "Onun həyat yoldaşı arxeoloq idi, ona arxeoloqla evli olmağın üstün tərəfi soruşulmuşdu.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "Maraqlıdır ki, “Tuesday” sözü adını Skandinaviya mifologiyasında döyüş və qəhrəmanlıq tanrısı olan Tiw-dən alıb. Bəs Tiw-in Roma mifologiyasındakı qarşılığı hansı tanrıdır?",
+      answer: "Mars",
+      comment: "Həftənin günlərinin adları müxtəlif dillərdə fərqli mifoloji köklərə malikdir. Bu səbəbdən fransız dilində mardi, ispan dilində martes, italyan dilində isə martedì sözləri Roma müharibə tanrısı Marsın adından gəlir.",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     FINAL — I DÖYÜŞ
+     ========================================================= */
+
+  f1: [
+    {
+      id: 1,
+      question: "2009-cu ildə BBC-nin bir layihəsində bir neçə şəxs səyahətə çıxır. Onlar səyahətə Reform clubdan başlayıb orada da bitirirlər. Bu layihənin adını tapın.",
+      answer: "80 gün dünya ətrafında",
+      comment: "Maraqlıdır ki, Jül Vernin məşhur əsərində də Filias Foq Dünya səyahətinə Reform Clubda başlayır və bitirirdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "2022-ci ildə Yaponiyada Hirokazu Tanaka ad və soyadına malik 178 nəfər bir yerə toplanır. Bu barədə danışılan bir mənbədə hansı filmimiz xatırlanır?",
+      answer: "Əhməd Haradadır?",
+      comment: "Filmdə Əhməd Əliyev ad və soyadına malik şəxslər bir yerdə toplanmışdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "Yaponiyada keçirilən həmin tədbirdə “Tanaka”dan başqa hansı qoşasamitli soyad da səslənib?",
+      answer: "Ginnes",
+      comment: "Bu hadisə Ginnesin Rekordlar Kitabına daxil edilmişdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "O, Edinburq Universitetində tibb təhsili alarkən insanları diqqətlə müşahidə edib, ən xırda detallardan onların peşəsi, xəstəliyi və həyat tərzi haqqında düzgün nəticələr çıxara bilən professor Cozef Bellə tanış olmuşdu. O KİMDİR?",
+      answer: "Artut Konan Doyl",
+      comment: "Maraqlıdır ki, Artur Konan Doyl məşhur Şerlok Holms personajını yaradarkən professor Cozef Bellin güclü müşahidə və məntiqi nəticə çıxarma bacarığından ilhamlanmışdı.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "1966-cı ildə Con Lenonun bir müsahibəsindən sonra Beatles albomları yandırıldı. Siz isə albomları yandıranların kimlər olduğunu tapın.",
+      answer: "Xristianlar",
+      comment: "Con Lenonun \"Beatles indi İsa Məsihdən daha məşhurdur\" ifadəsi xristianların qəzəbinə tuş gəlmişdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ],
+
+
+  /* =========================================================
+     FINAL — II DÖYÜŞ
+     ========================================================= */
+
+  f2: [
+    {
+      id: 1,
+      question: "2015-ci ildə ABŞ-da Owl’s Brew markası “The Green Garden” (Yaşıl bağ) adlı kokteyl təqdim etdi. Dəqiqliklə deyin, hansı tarixdə?",
+      answer: "17 Mart",
+      comment: "Bu kokteyl Müqəddəs Patrik Günü münasibətilə hazırlanmışdı.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 2,
+      question: "1976-cı il Yay Olimpiya Oyunları üçün Monrealda inşa edilən stadion “The Big O” adı ilə də tanınırdı. Stadionun tikintisi o qədər baha başa gəlmişdi ki, yaranan borcların ödənilməsi təxminən 30 il çəkdi. Buna görə yerli əhali stadiona hansı ironik ləqəbi vermişdi?",
+      answer: "The Big Owe",
+      comment: "Stadionun adı “The Big O” idi. Lakin tikintisinin yaratdığı böyük maliyyə yükünə görə yerli əhali bu adı söz oyunu ilə “The Big Owe” şəklində dəyişdirmişdi. “Owe” ingiliscə “borclu olmaq” mənasını verir.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 3,
+      question: "2025-ci ildə oynanılmış bir matçda Tottenham azarkeşləri \"Təşəkkürlər, PSG\" yazılmış pankart açmışdılar. Bunun səbəbi nə idi?",
+      answer: "PSG-nin Arsenala qalib gəlməsi",
+      comment: "Tottenham azarkeşləri ən böyük rəqibləri Arsenalın Çempionlar Liqasından kənarlaşdırılmasına görə PSG klubuna təşəkkür edirdi.",
+      source: "",
+      author: "Zeynal Yusifov"
+    },
+    {
+      id: 4,
+      question: "Maraqlıdır ki, \"İsmət\" filmində o, hava səhnələrinin çəkilişində iştirak edib və bəzi mürəkkəb uçuş hərəkətlərini yerinə yetirib. O kimdir?",
+      answer: "Leyla Məmmədbəyova",
+      comment: "Leyla Məmmədbəyova Azərbaycanın ilk qadın pilotudur və bu film ona həsr olunub. Maraqlıdır ki, bəzi səhnələrdə o məhz özü rol alıb.",
+      source: "",
+      author: "Aydan Seyidova"
+    },
+    {
+      id: 5,
+      question: "ABŞ-in 34-cü prezidenti Duayt Devid Eyzenhauer xristian ailəsində böyümüş, prezidentliyi dövründə dini inanclarını açıq şəkildə ifadə etmişdi. Bəs o, 1955-ci ildə rəsmi olaraq hansı qanunu imzaladı?",
+      answer: "ABŞ valyutasında “In God We Trust” ifadəsinin yerləşdirilməsini məcburi edən qanun",
+      comment: "",
+      source: "",
+      author: "Zeynal Yusifov"
+    }
+  ]
+
+};
+
+
+let currentSet = 'q1';
+let allExpanded = false;
+let activeZoomedImg = null;
+let activeClone = null;
+
+
+/* =========================================================
+   THEME (identical to ana səhifə)
+   ========================================================= */
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+function sunIcon(){
+  return `
+    <circle cx="16" cy="16" r="6" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+      <path d="M16 2.7v3"/>
+      <path d="M16 26.3v3"/>
+      <path d="m2.7 16 3 0"/>
+      <path d="m26.3 16-3 0"/>
+      <path d="m6.6 6.6 2.1 2.1"/>
+      <path d="m23.3 23.3 2.1 2.1"/>
+      <path d="m25.4 6.6-2.1 2.1"/>
+      <path d="m8.7 23.3-2.1 2.1"/>
+    </g>`;
+}
+
+function moonIcon(){
+  return `
+    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
+          fill="currentColor"/>`;
+}
+
+function updateThemeIcon(){
+  const dark = document.body.classList.contains("dark");
+  themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
+  themeToggle.setAttribute(
+    "aria-label",
+    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
+  );
+}
+
+function setTheme(dark){
+  document.body.classList.toggle("dark", dark);
+  localStorage.setItem("piksel-theme", dark ? "dark" : "light");
+  updateThemeIcon();
+}
+
+function initTheme(){
+  const saved = localStorage.getItem("piksel-theme");
+
+  if(saved === "dark"){
+    setTheme(true);
+    return;
+  }
+
+  if(saved === "light"){
+    setTheme(false);
+    return;
+  }
+
+  const prefersDark = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  setTheme(prefersDark);
+}
+
+themeToggle.addEventListener("click", () => {
+  setTheme(!document.body.classList.contains("dark"));
+  notifyParentHeight();
+});
+
+initTheme();
+
+
+/* =========================================================
+   SET YÜKLƏ
+   ========================================================= */
+
+function loadSet(setName) {
+
+  removeZoom();
+
+  currentSet = setName;
+  allExpanded = false;
+
+  document.getElementById('globalToggleBtn').textContent =
+    'Bütün cavabları göstər';
+
+  document.querySelectorAll('.battle-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  event.currentTarget.classList.add('active');
+
+  renderQuestions();
+}
+
+
+/* =========================================================
+   ROUND AÇ / BAĞLA
+   ========================================================= */
+
+function toggleRound(roundId) {
+
+  const wrapper = document.getElementById(roundId);
+  const wasActive = wrapper.classList.contains('active');
+
+  document.querySelectorAll('.round-wrapper').forEach(round => {
+    round.classList.remove('active');
+
+    const button = round.querySelector('.tour-btn');
+    if (button) button.classList.remove('active');
+  });
+
+  if (!wasActive) {
+    wrapper.classList.add('active');
+
+    const button = wrapper.querySelector('.tour-btn');
+    if (button) button.classList.add('active');
+  }
+
+  notifyParentHeight();
+}
+
+
+/* =========================================================
+   SUALLARI GÖSTƏR
+   ========================================================= */
+
+function renderQuestions() {
+
+  const container =
+    document.getElementById('questionsContainer');
+
+  container.innerHTML = '';
+
+  const questions = setsData[currentSet] || [];
+
+  questions.forEach((item, index) => {
+
+    const card = document.createElement('div');
+
+    card.className = 'q-card';
+    card.id = `q-card-${index}`;
+
+    let criteriaHTML = item.criteria
+      ? `<div class="ans-row">
+           <span class="ans-label">Sayılma meyarı:</span>
+           ${item.criteria}
+         </div>`
+      : '';
+
+    let sourceHTML = item.source
+      ? `<div class="ans-row">
+           <span class="ans-label">Mənbə:</span>
+           ${item.source}
+         </div>`
+      : '';
+
+    let commentHTML = item.comment
+      ? `<div class="ans-row">
+           <span class="ans-label">Şərh:</span>
+           ${item.comment}
+         </div>`
+      : '';
+
+    card.innerHTML = `
+      <div class="q-text">
+        <b>${item.id}.</b> ${item.question}
+      </div>
+
+      <button class="toggle-btn"
+              onclick="toggleSingleCard(${index})">
+
+        <span>Cavabı göstər</span>
+
+        <svg class="arrow-icon" viewBox="0 0 8 8">
+          <path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/>
+        </svg>
+
+      </button>
+
+      <div class="ans-panel">
+
+        <div class="ans-row">
+          <span class="ans-label">Cavab:</span>
+          ${item.answer}
+        </div>
+
+        ${criteriaHTML}
+
+        ${commentHTML}
+
+        ${sourceHTML}
+
+        <div class="ans-row">
+          <span class="ans-label">Müəllif:</span>
+          ${item.author}
+        </div>
+
+      </div>
+    `;
+
+    container.appendChild(card);
+
+  });
+
+  notifyParentHeight();
+}
+
+
+/* =========================================================
+   TƏK CAVABI AÇ / BAĞLA
+   ========================================================= */
+
+function toggleSingleCard(index) {
+
+  const card =
+    document.getElementById(`q-card-${index}`);
+
+  const btnText =
+    card.querySelector('.toggle-btn span');
+
+  card.classList.toggle('active');
+
+  if (card.classList.contains('active')) {
+
+    btnText.textContent = 'Cavabı gizlə';
+
+  } else {
+
+    btnText.textContent = 'Cavabı göstər';
+
+  }
+
+  notifyParentHeight();
+}
+
+
+/* =========================================================
+   BÜTÜN CAVABLAR
+   ========================================================= */
+
+function toggleAllAnswers() {
+
+  allExpanded = !allExpanded;
+
+  const cards =
+    document.querySelectorAll('.q-card');
+
+  const globalBtn =
+    document.getElementById('globalToggleBtn');
+
+  cards.forEach(card => {
+
+    const btnText =
+      card.querySelector('.toggle-btn span');
+
+    if (allExpanded) {
+
+      card.classList.add('active');
+      btnText.textContent = 'Cavabı gizlə';
+
+    } else {
+
+      card.classList.remove('active');
+      btnText.textContent = 'Cavabı göstər';
+
+    }
+
+  });
+
+  globalBtn.textContent =
+    allExpanded
+      ? 'Bütün cavabları gizlə'
+      : 'Bütün cavabları göstər';
+
+  notifyParentHeight();
+}
+
+
+/* =========================================================
+   ŞƏKİL ZOOM
+   ========================================================= */
+
+function toggleZoom(imgEl, event) {
+
+  event.stopPropagation();
+
+  if (activeZoomedImg === imgEl) {
+    removeZoom();
+    return;
+  }
+
+  removeZoom();
+
+  const rect =
+    imgEl.getBoundingClientRect();
+
+  const clone =
+    imgEl.cloneNode(true);
+
+  clone.removeAttribute('onclick');
+
+  clone.style.position = 'fixed';
+  clone.style.top = rect.top + 'px';
+  clone.style.left = rect.left + 'px';
+  clone.style.width = rect.width + 'px';
+  clone.style.height = rect.height + 'px';
+  clone.style.margin = '0';
+  clone.style.maxWidth = 'none';
+  clone.style.zIndex = '9999';
+  clone.style.transformOrigin = 'center center';
+
+  clone.style.transition =
+    'transform 0.5s cubic-bezier(0.25,1,0.5,1), box-shadow 0.5s ease';
+
+  clone.style.borderRadius = '10px';
+  clone.style.cursor = 'pointer';
+  clone.style.filter = 'none';
+
+  clone.onclick = function(e) {
+
+    e.stopPropagation();
+    removeZoom();
+
+  };
+
+  document.body.appendChild(clone);
+
+  imgEl.style.visibility = 'hidden';
+
+  document.body.classList.add('img-zoomed');
+
+  requestAnimationFrame(() => {
+
+    clone.style.transform = 'scale(1.2)';
+
+    clone.style.boxShadow =
+      '0 10px 30px rgba(0, 0, 0, 0.25)';
+
+  });
+
+  activeZoomedImg = imgEl;
+  activeClone = clone;
+}
+
+
+/* =========================================================
+   ZOOM LƏĞV
+   ========================================================= */
+
+function removeZoom() {
+
+  if (activeClone) {
+
+    const cloneToRemove =
+      activeClone;
+
+    const imgToRestore =
+      activeZoomedImg;
+
+    cloneToRemove.style.transform =
+      'scale(1)';
+
+    cloneToRemove.style.boxShadow =
+      'none';
+
+    setTimeout(() => {
+
+      cloneToRemove.remove();
+
+      if (imgToRestore) {
+        imgToRestore.style.visibility = 'visible';
+      }
+
+    }, 500);
+
+    activeClone = null;
+  }
+
+  activeZoomedImg = null;
+
+  document.body.classList.remove('img-zoomed');
+}
+
+
+/* =========================================================
+   EKRANA KƏNARDAN KLİK
+   ========================================================= */
+
+document.addEventListener('click', function(e) {
+
+  if (
+    activeZoomedImg &&
+    e.target !== activeClone
+  ) {
+    removeZoom();
+  }
+
+});
+
+
+/* =========================================================
+   GOOGLE SITES / IFRAME HÜNDÜRLÜYÜ
+   ========================================================= */
+
+function notifyParentHeight() {
+
+  setTimeout(() => {
+
+    const fullHeight =
+      document.documentElement.scrollHeight ||
+      document.body.scrollHeight;
+
+    window.parent.postMessage(
+      {
+        frameHeight: fullHeight + 20
+      },
+      '*'
+    );
+
+  }, 350);
+}
+
+
+/* =========================================================
+   BAŞLANĞIC
+   ========================================================= */
+
+loadSet('q1');
+
+</script>
+
+</body>
+</html>
