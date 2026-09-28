@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel.iok - Bizimlə Əlaqə</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;background:var(--bg);color:var(--ink);
+  font-family:"Poppins",sans-serif;overflow-x:hidden;
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+button,a{font:inherit}
+a{color:inherit;text-decoration:none}
+
+.page{
+  width:min(95vw,820px);
+  margin:0 auto;
+  padding:12px 0 84px;
+}
+
+/* Giriş animasiyası */
+.reveal{
+  opacity:0;
+  transform:translateY(34px);
+  animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards;
+}
+.reveal.r1{animation-delay:.05s}
+.reveal.r2{animation-delay:.14s}
+.reveal.r3{animation-delay:.23s}
+.reveal.r4{animation-delay:.32s}
+.reveal.r5{animation-delay:.41s}
+.reveal.r6{animation-delay:.50s}
+.reveal.r7{animation-delay:.59s}
+@keyframes revealUp{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Navbar */
+.top-nav{
+  height:60px;width:100%;border-radius:40px;
+  padding:0 14px 0 26px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  box-shadow:0 10px 28px rgba(0,20,100,.08);
+  transition:background var(--transition),box-shadow var(--transition);
+}
+.dark .top-nav{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{
+  position:relative;color:var(--ink);font-size:20px;font-weight:500;
+  white-space:nowrap;transition:transform .25s ease,opacity .25s ease;
+}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+  border-radius:2px;background:currentColor;opacity:.9;
+}
+.theme-toggle{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;color:var(--deep);
+  background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition);
+}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* Başlıq */
+.page-title{
+  margin-top:18px;margin-bottom:14px;text-align:center;color:var(--deep);
+  font-size:35px;line-height:1.05;font-weight:700;letter-spacing:-1px;
+  transition:color var(--transition);
+}
+.dark .page-title{color:var(--dark-light)}
+
+/* Kartlar */
+.contact-grid{
+  margin-top:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.contact-card{
+  min-width:0;min-height:135px;border-radius:31px;padding:20px 25px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  position:relative;overflow:hidden;cursor:pointer;color:var(--ink);
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  transition:transform .32s cubic-bezier(.18,.8,.22,1),box-shadow .32s ease,
+             background var(--transition),color var(--transition);
+}
+.dark .contact-card{
+  color:var(--dark-ink);
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+}
+.contact-card::before{
+  content:"";position:absolute;inset:-80% -35%;
+  background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.10) 50%,transparent 58%);
+  transform:translateX(-55%) rotate(8deg);opacity:0;
+  transition:transform .7s ease,opacity .35s ease;pointer-events:none;
+}
+.contact-card:hover{
+  transform:translateY(-5px) scale(1.018);
+  box-shadow:0 17px 35px rgba(0,20,110,.16);z-index:5;
+}
+.contact-card:hover::before{transform:translateX(55%) rotate(8deg);opacity:1}
+.contact-card:active{transform:scale(.985)}
+.contact-card.full{grid-column:1 / -1}
+.contact-text{
+  position:relative;z-index:2;width:100%;
+  font-size:24px;line-height:1.28;font-weight:700;letter-spacing:-.7px;
+}
+
+/* Footer */
+footer{
+  width:100%;
+  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  color:var(--ink);min-height:170px;padding:27px 20px 24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:9px;text-align:center;
+  transition:background var(--transition),color var(--transition);
+}
+.dark footer{
+  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+  color:var(--dark-ink);
+}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+.contact-card:focus-visible,.nav-link:focus-visible,
+.theme-toggle:focus-visible,.footer-link:focus-visible{
+  outline:3px solid currentColor;outline-offset:4px;
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;animation-duration:.01ms!important;
+    animation-iteration-count:1!important;transition-duration:.01ms!important;
+  }
+}
+
+/* Telefon */
+@media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding-top:11px;padding-bottom:76px}
+  .top-nav{height:52px;padding-left:18px;padding-right:60px}
+  .nav-links{gap:34px}
+  .nav-link{font-size:15px}
+  .theme-toggle{width:39px;height:39px;right:8px}
+  .theme-icon{width:22px;height:22px}
+  .page-title{margin-top:16px;margin-bottom:13px;font-size:27px;letter-spacing:-.8px}
+  .contact-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .contact-card{min-height:135px;border-radius:24px;padding:18px 14px}
+  .contact-text{font-size:18px;line-height:1.27;letter-spacing:-.55px}
+  .contact-card.full{grid-column:1 / -1}
+  footer{min-height:185px;padding-left:12px;padding-right:12px}
+  .footer-line{font-size:14px}
+}
+
+/* Çox dar telefonlar */
+@media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .nav-links{gap:25px}
+  .nav-link{font-size:13px}
+  .top-nav{height:48px}
+  .theme-toggle{width:36px;height:36px;right:6px}
+  .theme-icon{width:20px;height:20px}
+  .page-title{font-size:24px;margin-top:15px;margin-bottom:12px}
+  .contact-grid{gap:11px}
+  .contact-card{min-height:116px;border-radius:23px;padding:15px 10px}
+  .contact-text{font-size:15px;line-height:1.28;letter-spacing:-.45px}
+}
+@media (max-width:350px){
+  .contact-text{font-size:13.5px}
+  .contact-card{min-height:110px}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <nav class="top-nav reveal r1" aria-label="Əsas naviqasiya">
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link active" href="contact.html">Bizimlə Əlaqə</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button"
+            aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    </button>
+  </nav>
+
+  <main>
+    <h1 class="page-title reveal r2">Bizimlə əlaqə</h1>
+
+    <section class="contact-grid" aria-label="Bizimlə əlaqə">
+
+      <a class="contact-card reveal r3"
+         href="https://www.instagram.com/piksel.iok/?action=follow"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          "Instagram" səhifəmizi<br>
+          izləmək üçün<br>
+          klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card reveal r4"
+         href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          "WhatsApp" qrupumuza<br>
+          qoşulmaq üçün<br>
+          klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card full reveal r5"
+         href="https://api.whatsapp.com/send/?phone=994508377942&text=Salam.+M%C9%99n+sayt%C4%B1n%C4%B1za+paket+%C9%99lav%C9%99+etdirm%C9%99k+ist%C9%99yir%C9%99m&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          Saytımıza öz paketlərinizi pulsuz əlavə<br>
+          etdirmək üçün klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card full reveal r6"
+         href="https://api.whatsapp.com/send/?phone=994508377942&text=Salam.+M%C9%99n+sayt%C4%B1n%C4%B1za+elan+%C9%99lav%C9%99+etdirm%C9%99k+ist%C9%99yir%C9%99m&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          Saytımıza yarışlarınızın elanını pulsuz<br>
+          şəkildə əlavə etdirmək üçün klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card full reveal r7"
+         href="https://ig.me/m/piksel.iok"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          Sizlər üçün formalaşdırdığımız saytımıza<br>
+          töhfə, təklif vermək üçün klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card reveal r7"
+         href="https://wa.me/994508377942?text=Salam.%20M%C9%99n%20sizd%C9%99n%20sual%20paketi%20almaq%20ist%C9%99yir%C9%99m"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          Paket sifariş etmək<br>
+          üçün klikləyin
+        </div>
+      </a>
+
+      <a class="contact-card reveal r7"
+         href="https://wa.me/994508377942"
+         target="_blank" rel="noopener noreferrer">
+        <div class="contact-text">
+          Dizayn və rəqəmsal<br>
+          xidmətlər üçün klikləyin
+        </div>
+      </a>
+
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/piksel.iok"
+     target="_blank" rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/onurelzh"
+     target="_blank" rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+</footer>
+
+<script>
+function sunIcon(){
+  return `
+    <circle cx="16" cy="16" r="6" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+      <path d="M16 2.7v3"/>
+      <path d="M16 26.3v3"/>
+      <path d="m2.7 16 3 0"/>
+      <path d="m26.3 16-3 0"/>
+      <path d="m6.6 6.6 2.1 2.1"/>
+      <path d="m23.3 23.3 2.1 2.1"/>
+      <path d="m25.4 6.6-2.1 2.1"/>
+      <path d="m8.7 23.3-2.1 2.1"/>
+    </g>`;
+}
+
+function moonIcon(){
+  return `
+    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
+          fill="currentColor"/>`;
+}
+
+const themeToggle=document.getElementById("themeToggle");
+const themeIcon=document.getElementById("themeIcon");
+
+function updateThemeIcon(){
+  const dark=document.body.classList.contains("dark");
+  themeIcon.innerHTML=dark ? moonIcon() : sunIcon();
+  themeToggle.setAttribute(
+    "aria-label",
+    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
+  );
+}
+
+function setTheme(dark){
+  document.body.classList.toggle("dark",dark);
+  localStorage.setItem("piksel-theme",dark ? "dark" : "light");
+  updateThemeIcon();
+}
+
+function initTheme(){
+  const saved=localStorage.getItem("piksel-theme");
+
+  if(saved==="dark"){setTheme(true);return}
+  if(saved==="light"){setTheme(false);return}
+
+  const prefersDark=window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  setTheme(prefersDark);
+}
+
+themeToggle.addEventListener("click",()=>{
+  setTheme(!document.body.classList.contains("dark"));
+});
+
+initTheme();
+</script>
+
+</body>
+</html>
