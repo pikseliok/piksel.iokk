@@ -92,6 +92,34 @@ a{color:inherit;text-decoration:none}
 .del{border:0;cursor:pointer;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;margin-top:6px;background:var(--deep);color:var(--ink)}
 .dark .del{background:var(--dark-light);color:var(--dark-bg)}
 .empty{text-align:center;font-size:13px;font-weight:500}
+/* ölçü uyğunlaşması: telefon və kompüter */
+.board{container-type:inline-size}
+.slide{grid-template-columns:34% 1fr;gap:clamp(10px,3cqw,22px);align-items:start}
+.poster{width:100%;align-self:start;font-size:clamp(11px,2.6cqw,17px)}
+.info{align-self:stretch}
+.info .n{font-size:clamp(14px,4cqw,27px)}
+.info .l{font-size:clamp(12px,3cqw,19px)}
+.fee{font-size:clamp(13px,2.8cqw,19px);padding:clamp(7px,1.6cqw,12px) clamp(14px,3cqw,22px)}
+.abtn{font-size:clamp(15px,3.4cqw,23px);padding:clamp(12px,2.4cqw,18px) 10px}
+.actions{gap:clamp(10px,2cqw,16px)}
+.arrow{flex-basis:clamp(30px,5vw,46px)}
+.arrow svg{width:clamp(26px,4vw,38px);height:auto;aspect-ratio:30/44}
+.pbox{container-type:inline-size}
+.ptitle{font-size:clamp(20px,4.6cqw,32px)}
+.field span{font-size:clamp(12px,2.6cqw,17px)}
+.field input{font-size:clamp(14px,3cqw,20px);padding:clamp(11px,2cqw,16px) 16px}
+.err{font-size:clamp(11.5px,2.3cqw,15px)}
+.send{font-size:clamp(16px,3.4cqw,23px);padding:clamp(12px,2.2cqw,17px)}
+.lbtn{font-size:clamp(15px,3.2cqw,21px)}
+.ad .t{font-size:clamp(15px,3.2cqw,21px)}
+.ad .d{font-size:clamp(12.5px,2.7cqw,17px)}
+.del{font-size:clamp(12px,2.4cqw,16px)}
+.empty{font-size:clamp(13px,2.7cqw,17px)}
+.crow{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+.crow+.crow{margin-top:14px}
+.crow>span{font-size:clamp(13px,2.8cqw,19px);font-weight:600}
+.cval{display:inline-block;border-radius:40px;padding:8px 18px;font-weight:700;font-size:clamp(14px,3cqw,20px);color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));overflow-wrap:anywhere;transition:transform .3s}
+a.cval[href]:hover{transform:translateY(-2px)}
 footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);min-height:150px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;font-size:14px;font-weight:500;transition:background var(--tr),color var(--tr)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
 @media(max-width:700px){.page{width:calc(100vw - 24px)}.top-nav{height:52px}.nav-links{gap:34px;padding-right:44px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}}
@@ -117,7 +145,7 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
       <div class="actions">
         <button class="abtn" data-type="komanda">Komanda axtaranlar</button>
         <button class="abtn" data-type="oyuncu">Oyunçu axtaranlar</button>
-        <a class="abtn" id="contactBtn" href="#" target="_blank" rel="noopener noreferrer">Təşkilatçı ilə əlaqə</a>
+        <button class="abtn" id="contactBtn" type="button">Təşkilatçı ilə əlaqə</button>
       </div>
     </div>
     <button class="arrow" id="next" aria-label="Sonrakı"><svg viewBox="0 0 30 44" fill="none" stroke="currentColor" stroke-width="7"><path d="m5 3 19 19L5 41"/></svg></button>
@@ -138,6 +166,12 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
       <div class="lwrap" id="lwrap"><div><div class="list" id="list"></div></div></div>
     </form>
   </div></div>
+  <div class="panel" id="cpanel"><div>
+    <div class="pbox grad">
+      <div class="crow"><span>Təşkilatçının Əlaqə nömrəsi:</span><a class="cval" id="cPhone"></a></div>
+      <div class="crow"><span>Təşkilatçının Instagram səhifəsi:</span><a class="cval" id="cInsta" target="_blank" rel="noopener noreferrer"></a></div>
+    </div>
+  </div></div>
 </div>
 
 <footer>
@@ -150,12 +184,13 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
 <script>
 const API = "";  // Apps Script Web App linki
 const CLIENT_ID = "";  // Google OAuth Client ID
-const CONTACT_URL = "https://www.instagram.com/onurelzh";
+const ORG_PHONE = "";  // ehtiyat: Sheet-də yarış üçün nömrə yoxdursa
+const ORG_INSTA = "onurelzh";  // ehtiyat Instagram
 const HOURS = 26;
 const AUTH = !!(API && CLIENT_ID);
 const $ = id => document.getElementById(id);
 const demo = [
-  {ad:"Turnirin / Kubokun adı",teskilatci:"Təşkilatçı",muellif:"Müəllif(lər)",vaxt:"Vaxt",yer:"Yer",haqq:"5",afisa:""},
+  {ad:"Turnirin / Kubokun adı",teskilatci:"Təşkilatçı",muellif:"Müəllif(lər)",vaxt:"Vaxt",yer:"Yer",haqq:"5",afisa:"",nomre:"+994 50 000 00 00",instagram:"piksel.iok"},
   {ad:"İkinci kubok",teskilatci:"πksel",muellif:"Onur Əlizadə",vaxt:"10 oktyabr, 15:00",yer:"Bakı",haqq:"10",afisa:""}
 ];
 function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
@@ -167,7 +202,6 @@ function setTheme(d){document.body.classList.toggle("dark",d);$("ti").innerHTML=
 let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(e){}
 setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches);
 $("tt").onclick=()=>setTheme(!document.body.classList.contains("dark"));
-$("contactBtn").href=CONTACT_URL;
 
 /* carousel */
 let items=[],idx=0,pos=0,timer,hover=false,busy=false,panelOpen=false;
@@ -261,7 +295,7 @@ function typeTitle(t){
   clearTimeout(typeTimer);const box=$("ptitle");box.textContent="";let i=0;
   (function s(){if(i<t.length){box.textContent+=t[i++];typeTimer=setTimeout(s,35)}})();
 }
-function setGame(){$("game").value=items.length?items[idx].ad:""}
+function setGame(){$("game").value=items.length?items[idx].ad:"";setContact()}
 function setErr(id,m){const f=$(id);f.classList.toggle("bad",!!m);f.querySelector(".err").textContent=m||""}
 function nameErr(v){if(/[^\p{L}\s.'-]/u.test(v))return "Adınızı düzgün yazın";if(v.length<6)return "Tam yazın";return ""}
 function phoneErr(v){return /^\+?[\d\s()-]+$/.test(v)&&v.length>=9&&v.length<=14?"":"Əlaqə nömrənizi düzgün yazın"}
@@ -271,6 +305,7 @@ function closePanel(){panel.classList.remove("open");setBtns(null);panelOpen=fal
 document.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{
   const t=b.dataset.type;
   if(panel.classList.contains("open")&&type===t){closePanel();return}
+  $("cpanel").classList.remove("open");$("contactBtn").classList.remove("on");
   type=t;const T=TYPES[t];
   setBtns(t);form.reset();
   ["fName","fTeam","fPhone","fInsta"].forEach(id=>setErr(id,""));
@@ -326,6 +361,26 @@ form.addEventListener("submit",async e=>{
     setTimeout(()=>btn.textContent="Göndər",2500);
   }
 });
+
+/* təşkilatçı əlaqəsi */
+function setContact(){
+  const c=items[idx]||{};
+  const ph=String(c.nomre||ORG_PHONE||"").trim();
+  const ig=String(c.instagram||ORG_INSTA||"").trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/[\/?].*$/,"");
+  const a=$("cPhone"),b=$("cInsta");
+  a.textContent=ph||"—";if(ph)a.href="tel:"+ph.replace(/[^\d+]/g,"");else a.removeAttribute("href");
+  b.textContent=ig?"@"+ig:"—";if(ig)b.href="https://www.instagram.com/"+ig;else b.removeAttribute("href");
+}
+$("contactBtn").onclick=()=>{
+  const cp=$("cpanel"),cb=$("contactBtn");
+  if(cp.classList.contains("open")){
+    cp.classList.remove("open");cb.classList.remove("on");panelOpen=false;sched();return;
+  }
+  panel.classList.remove("open");setBtns(null);
+  setContact();cp.classList.add("open");cb.classList.add("on");
+  panelOpen=true;clearTimeout(timer);
+  setTimeout(()=>cp.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
+};
 
 /* load */
 async function load(){
