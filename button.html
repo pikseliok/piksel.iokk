@@ -22,243 +22,1057 @@
   --blue-grad:linear-gradient(135deg,#4F76D7,#2454D1 55%,#003DBF);
   --pink-grad:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8);
 }
-body.dark{--err:#c4160c}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
-body{
-  min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--ink);
-  font-family:"Poppins",sans-serif;overflow-x:hidden;width:100%;
-  display:flex;flex-direction:column;
-  transition:background .65s ease,color .65s ease;
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-}
-body.dark{background:var(--dark-bg);color:var(--dark-ink)}
-a{color:inherit;text-decoration:none}
-button,input{font-family:inherit}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
 
-/* NAVIGATION */
+body.dark{--err:#c4160c}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent
+}
+
+html{
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+  width:100%
+}
+
+body{
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Poppins",sans-serif;
+  overflow-x:hidden;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility
+}
+
+body.dark{
+  background:var(--dark-bg);
+  color:var(--dark-ink)
+}
+
+a{
+  color:inherit;
+  text-decoration:none
+}
+
+button,input{
+  font-family:inherit
+}
+
+.page{
+  width:min(95vw,820px);
+  margin:0 auto;
+  padding:12px 0 0;
+  flex:1 0 auto
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
 .top-nav{
-  height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;
-  display:flex;align-items:center;justify-content:center;position:relative;
+  height:60px;
+  width:100%;
+  border-radius:40px;
+  padding:0 14px 0 26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
   background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
   box-shadow:0 10px 28px rgba(0,20,100,.08);
-  transition:background var(--transition),box-shadow var(--transition);
+  transition:background var(--transition),box-shadow var(--transition)
 }
-.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
-.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
-.dark .nav-link{color:var(--dark-ink)}
-.nav-link:hover{transform:translateY(-1px)}
-.theme-toggle{
-  position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  width:44px;height:44px;min-width:44px;padding:0;margin:0;border:0;border-radius:50%;cursor:pointer;
-  display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);
-  transition:transform .3s ease,background var(--transition),color var(--transition);
-}
-.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
-.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
-.theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.theme-icon{width:25px;height:25px;display:block}
 
-/* PANEL */
-#app{width:100%;max-width:540px;margin:18px auto 40px}
-.screen{display:none;width:100%}
-.screen.active{display:flex}
-.card{
-  width:100%;min-height:min(72dvh,640px);border-radius:31px;padding:26px 24px 28px;
-  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
-  color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);
-  display:flex;flex-direction:column;overflow:hidden;position:relative;
-  transition:background var(--transition),color var(--transition);
+.dark .top-nav{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)
 }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:58px;
+  height:100%
+}
+
+.nav-link{
+  position:relative;
+  color:var(--ink);
+  font-size:20px;
+  font-weight:500;
+  white-space:nowrap;
+  transition:transform .25s ease,opacity .25s ease
+}
+
+.dark .nav-link{
+  color:var(--dark-ink)
+}
+
+.nav-link:hover{
+  transform:translateY(-1px)
+}
+
+.theme-toggle{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:44px;
+  min-width:44px;
+  padding:0;
+  margin:0;
+  border:0;
+  border-radius:50%;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  color:var(--deep);
+  background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition)
+}
+
+.dark .theme-toggle{
+  background:var(--dark-bg);
+  color:var(--dark-light)
+}
+
+.theme-toggle:hover{
+  transform:translateY(-50%) scale(1.08)
+}
+
+.theme-toggle:active{
+  transform:translateY(-50%) scale(.95)
+}
+
+.theme-icon{
+  width:25px;
+  height:25px;
+  display:block
+}
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+#app{
+  width:100%;
+  max-width:540px;
+  margin:18px auto 40px
+}
+
+.screen{
+  display:none;
+  width:100%
+}
+
+.screen.active{
+  display:flex
+}
+
+.card{
+  width:100%;
+  min-height:min(72dvh,640px);
+  border-radius:31px;
+  padding:26px 24px 28px;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  transition:background var(--transition),color var(--transition)
+}
+
 .dark .card{
   background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
-  color:var(--dark-ink);
+  color:var(--dark-ink)
 }
 
-/* BREND (loqoda çərçivə/border yoxdur) */
-.brand{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
+/* =========================================================
+   BREND
+========================================================= */
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:4px
+}
+
 .brand-badge{
-  width:42px;height:42px;border-radius:0;background:none;border:0;
-  display:flex;align-items:center;justify-content:center;overflow:visible;margin-bottom:8px;
+  width:42px;
+  height:42px;
+  border-radius:0;
+  background:none;
+  border:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+  margin-bottom:8px
 }
-.brand-badge img{width:100%;height:100%;object-fit:contain;border:0;border-radius:0;display:block}
-.brand-title{font-size:22px;font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.6px}
-.brand-tagline{font-size:13px;font-weight:500;text-align:center;line-height:1.2;margin-top:2px}
-.subtitle{text-align:center;font-size:12px;font-weight:600;opacity:.8;margin:4px 0 10px}
 
-/* INPUT */
+.brand-badge img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border:0;
+  border-radius:0;
+  display:block
+}
+
+.brand-title{
+  font-size:22px;
+  font-weight:700;
+  text-align:center;
+  line-height:1.1;
+  letter-spacing:-.6px
+}
+
+.brand-tagline{
+  font-size:13px;
+  font-weight:500;
+  text-align:center;
+  line-height:1.2;
+  margin-top:2px
+}
+
+.subtitle{
+  text-align:center;
+  font-size:12px;
+  font-weight:600;
+  opacity:.8;
+  margin:4px 0 10px
+}
+
+/* =========================================================
+   INPUT
+========================================================= */
+
 input{
-  width:100%;border:2px solid currentColor;background:rgba(157,195,255,.1);color:inherit;
-  border-radius:999px;padding:12px 18px;font-size:14px;font-weight:500;outline:none;
-  margin-bottom:10px;transition:background .25s ease;
+  width:100%;
+  border:2px solid currentColor;
+  background:rgba(157,195,255,.1);
+  color:inherit;
+  border-radius:999px;
+  padding:12px 18px;
+  font-size:14px;
+  font-weight:500;
+  outline:none;
+  margin-bottom:10px;
+  transition:background .25s ease
 }
-.dark input{background:rgba(0,7,44,.08)}
-input::placeholder{color:inherit;opacity:.55}
-input:focus{background:rgba(157,195,255,.2)}
-.dark input:focus{background:rgba(0,7,44,.15)}
 
-/* DÜYMƏLƏR */
-button{
-  width:100%;border:2px solid transparent;border-radius:999px;padding:12px;
-  font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;
-  color:var(--deep);background:var(--ink);white-space:normal;line-height:1.25;
-  transition:transform .25s ease,opacity .25s ease,background .25s ease;
+.dark input{
+  background:rgba(0,7,44,.08)
 }
-.dark button{color:var(--dark-light);background:var(--dark-ink)}
-button:hover{transform:translateY(-2px)}
-button:active{transform:scale(.97)}
-button.secondary,button.orange,button.red{background:transparent;color:inherit;border:2px solid currentColor}
-.card button.secondary,.card button.orange,.card button.red{color:var(--ink)}
-.dark .card button.secondary,.dark .card button.orange,.dark .card button.red{color:var(--dark-ink)}
-button:disabled{opacity:.35;cursor:not-allowed;transform:none}
-button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:3px}
-.btn-fit{font-size:clamp(11px,3.3vw,14px);padding:10px 8px;line-height:1.2}
+
+input::placeholder{
+  color:inherit;
+  opacity:.55
+}
+
+input:focus{
+  background:rgba(157,195,255,.2)
+}
+
+.dark input:focus{
+  background:rgba(0,7,44,.15)
+}
+
+/* =========================================================
+   DÜYMƏLƏR
+========================================================= */
+
+button{
+  width:100%;
+  border:2px solid transparent;
+  border-radius:999px;
+  padding:12px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:8px;
+  color:var(--deep);
+  background:var(--ink);
+  white-space:normal;
+  line-height:1.25;
+  transition:transform .25s ease,opacity .25s ease,background .25s ease
+}
+
+.dark button{
+  color:var(--dark-light);
+  background:var(--dark-ink)
+}
+
+button:hover{
+  transform:translateY(-2px)
+}
+
+button:active{
+  transform:scale(.97)
+}
+
+button.secondary,
+button.orange,
+button.red{
+  background:transparent;
+  color:inherit;
+  border:2px solid currentColor
+}
+
+.card button.secondary,
+.card button.orange,
+.card button.red{
+  color:var(--ink)
+}
+
+.dark .card button.secondary,
+.dark .card button.orange,
+.dark .card button.red{
+  color:var(--dark-ink)
+}
+
+button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  transform:none
+}
+
+button:focus-visible,
+input:focus-visible,
+.nav-link:focus-visible,
+.footer-link:focus-visible{
+  outline:3px solid currentColor;
+  outline-offset:3px
+}
+
+.btn-fit{
+  font-size:clamp(11px,3.3vw,14px);
+  padding:10px 8px;
+  line-height:1.2
+}
 
 .room-code{
-  text-align:center;font-size:26px;font-weight:800;letter-spacing:1px;margin:4px 0 6px;
-  cursor:pointer;user-select:none;-webkit-user-select:none;
+  text-align:center;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin:4px 0 6px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none
 }
 
-/* KOMANDALAR */
-.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+/* =========================================================
+   KOMANDALAR
+========================================================= */
+
+.teams{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:10px 0
+}
+
 .team{
-  border-radius:22px;padding:10px 8px;min-height:76px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;position:relative;
+  border-radius:22px;
+  padding:10px 8px;
+  min-height:76px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative
 }
-.team.blue{background:linear-gradient(135deg,#4E73D7,#1E4DC7 55%,#2C62D7)}
-.team.pink{background:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)}
+
+.team.blue{
+  background:linear-gradient(135deg,#4E73D7,#1E4DC7 55%,#2C62D7)
+}
+
+.team.pink{
+  background:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)
+}
+
 .kick-btn{
-  position:absolute;top:7px;right:7px;width:22px;height:22px;min-width:22px;border-radius:50%;
-  padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;
-  border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.2);color:#FFFFFF;
-  display:flex;align-items:center;justify-content:center;
+  position:absolute;
+  top:7px;
+  right:7px;
+  width:22px;
+  height:22px;
+  min-width:22px;
+  border-radius:50%;
+  padding:0;
+  margin:0;
+  font-size:11px;
+  font-weight:800;
+  line-height:20px;
+  cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.7);
+  background:rgba(255,255,255,.2);
+  color:#FFFFFF;
+  display:flex;
+  align-items:center;
+  justify-content:center
 }
-.dark .kick-btn{color:#FFFFFF;background:rgba(255,255,255,.2)}
-.kick-btn:hover{transform:none}
-.kick-btn:active{transform:scale(.9)}
-.kick-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:60;background:rgba(0,7,44,0);pointer-events:none}
+
+.dark .kick-btn{
+  color:#FFFFFF;
+  background:rgba(255,255,255,.2)
+}
+
+.kick-btn:hover{
+  transform:none
+}
+
+.kick-btn:active{
+  transform:scale(.9)
+}
+
+.kick-overlay{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:60;
+  background:rgba(0,7,44,0);
+  pointer-events:none
+}
+
 .kick-modal{
-  opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);
-  border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;
-  box-shadow:0 17px 35px rgba(0,20,110,.3);
+  opacity:0;
+  transform:scale(.85);
+  background:var(--dark-light);
+  color:var(--deep);
+  border-radius:24px;
+  padding:22px 20px;
+  width:82%;
+  max-width:320px;
+  text-align:center;
+  box-shadow:0 17px 35px rgba(0,20,110,.3)
 }
-.dark .kick-modal{background:var(--dark-bg);color:var(--dark-light)}
-.kick-modal-text{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:14px;word-break:break-word;letter-spacing:-.2px}
-.kick-modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.kick-modal-buttons button{margin-top:0}
-.kick-modal-buttons button.green{background:var(--deep);color:var(--dark-light);border-color:transparent}
-.dark .kick-modal-buttons button.green{background:var(--dark-light);color:var(--dark-bg)}
-.kick-modal-buttons button.red{background:var(--red);color:#fff;border-color:transparent}
-.dark .card .kick-modal-buttons button.red,.card .kick-modal-buttons button.red{color:#fff}
-.team-name{font-size:14px;font-weight:700;color:#F5F7FA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
-.score{font-size:34px;font-weight:800;color:#F5F7FA;margin-top:2px;line-height:1}
 
-/* TAYMER */
-.timer{text-align:center;font-size:clamp(44px,11vh,68px);line-height:1;font-weight:600;margin:8px 0 10px;font-variant-numeric:tabular-nums}
-.timer.warning,.timer.danger{color:var(--err)}
-.question-value{text-align:center;font-size:12px;font-weight:500;opacity:.9}
-.question-value strong{font-size:17px;font-weight:700}
+.dark .kick-modal{
+  background:var(--dark-bg);
+  color:var(--dark-light)
+}
 
-/* Sual/dəyər sıfırlayıcı (kiçik) */
+.kick-modal-text{
+  font-size:15px;
+  font-weight:700;
+  line-height:1.35;
+  margin-bottom:14px;
+  word-break:break-word;
+  letter-spacing:-.2px
+}
+
+.kick-modal-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+.kick-modal-buttons button{
+  margin-top:0
+}
+
+.kick-modal-buttons button.green{
+  background:var(--deep);
+  color:var(--dark-light);
+  border-color:transparent
+}
+
+.dark .kick-modal-buttons button.green{
+  background:var(--dark-light);
+  color:var(--dark-bg)
+}
+
+.kick-modal-buttons button.red{
+  background:var(--red);
+  color:#fff;
+  border-color:transparent
+}
+
+.dark .card .kick-modal-buttons button.red,
+.card .kick-modal-buttons button.red{
+  color:#fff
+}
+
+.team-name{
+  font-size:14px;
+  font-weight:700;
+  color:#F5F7FA;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:100%
+}
+
+.score{
+  font-size:34px;
+  font-weight:800;
+  color:#F5F7FA;
+  margin-top:2px;
+  line-height:1
+}
+
+/* =========================================================
+   TAYMER
+========================================================= */
+
+.timer{
+  text-align:center;
+  font-size:clamp(44px,11vh,68px);
+  line-height:1;
+  font-weight:600;
+  margin:8px 0 10px;
+  font-variant-numeric:tabular-nums
+}
+
+.timer.warning,
+.timer.danger{
+  color:var(--err)
+}
+
+.question-value{
+  text-align:center;
+  font-size:12px;
+  font-weight:500;
+  opacity:.9
+}
+
+.question-value strong{
+  font-size:17px;
+  font-weight:700
+}
+
 button.mini-reset{
-  width:auto;display:block;margin:4px auto 0;padding:4px 14px;font-size:11px;font-weight:600;
+  width:auto;
+  display:block;
+  margin:4px auto 0;
+  padding:4px 14px;
+  font-size:11px;
+  font-weight:600
 }
-.card button.mini-reset{color:var(--ink)}
-.dark .card button.mini-reset{color:var(--dark-ink)}
 
-/* BUZZ */
+.card button.mini-reset{
+  color:var(--ink)
+}
+
+.dark .card button.mini-reset{
+  color:var(--dark-ink)
+}
+
+/* =========================================================
+   BUZZ
+========================================================= */
+
 .big-buzz{
-  display:flex;align-items:center;justify-content:center;min-height:clamp(90px,18vh,140px);
-  border-radius:30px;margin-top:10px;font-weight:800;border:0;padding:8px;overflow:hidden;flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:clamp(90px,18vh,140px);
+  border-radius:30px;
+  margin-top:10px;
+  font-weight:800;
+  border:0;
+  padding:8px;
+  overflow:hidden;
+  flex:1
 }
-.big-buzz:hover{transform:none}
-.big-buzz:active{transform:scale(.97)}
-.big-buzz.blue,.dark .big-buzz.blue{background:var(--blue-grad);color:#F5F7FA}
-.big-buzz.pink,.dark .big-buzz.pink{background:var(--pink-grad);color:#F5F7FA}
-.big-buzz.locked{background:rgba(157,195,255,.16);color:var(--ink);border:2px solid currentColor;opacity:.75}
-.dark .big-buzz.locked{background:rgba(0,7,44,.1);color:var(--dark-ink)}
-.buzz-label{display:block;width:100%;text-align:center;line-height:1.05;word-break:break-word;overflow-wrap:break-word}
-.buzz-label.jumbo{font-size:clamp(30px,10vh,58px)}
-.buzz-label.small{font-size:clamp(12px,3.6vw,17px)}
 
-/* HADİSƏ */
+.big-buzz:hover{
+  transform:none
+}
+
+.big-buzz:active{
+  transform:scale(.97)
+}
+
+.big-buzz.blue,
+.dark .big-buzz.blue{
+  background:var(--blue-grad);
+  color:#F5F7FA
+}
+
+.big-buzz.pink,
+.dark .big-buzz.pink{
+  background:var(--pink-grad);
+  color:#F5F7FA
+}
+
+.big-buzz.locked{
+  background:rgba(157,195,255,.16);
+  color:var(--ink);
+  border:2px solid currentColor;
+  opacity:.75
+}
+
+.dark .big-buzz.locked{
+  background:rgba(0,7,44,.1);
+  color:var(--dark-ink)
+}
+
+.buzz-label{
+  display:block;
+  width:100%;
+  text-align:center;
+  line-height:1.05;
+  word-break:break-word;
+  overflow-wrap:break-word
+}
+
+.buzz-label.jumbo{
+  font-size:clamp(30px,10vh,58px)
+}
+
+.buzz-label.small{
+  font-size:clamp(12px,3.6vw,17px)
+}
+
+/* =========================================================
+   HADİSƏ
+========================================================= */
+
 .event{
-  min-height:38px;border-radius:999px;margin-top:10px;display:flex;align-items:center;justify-content:center;
-  text-align:center;padding:8px 14px;font-size:13px;font-weight:600;word-break:break-word;background:rgba(157,195,255,.14);
+  min-height:38px;
+  border-radius:999px;
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:8px 14px;
+  font-size:13px;
+  font-weight:600;
+  word-break:break-word;
+  background:rgba(157,195,255,.14)
 }
-.dark .event{background:rgba(0,7,44,.1)}
-.event.neutral{opacity:1}
-.event.blue,.dark .event.blue{background:var(--blue-grad);color:#F5F7FA}
-.event.pink,.dark .event.pink{background:var(--pink-grad);color:#F5F7FA}
-.host-controls{margin-top:6px}
-.point-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.point-grid button{font-size:15px;padding:11px 5px;margin-top:0}
-.winner{text-align:center;font-size:16px;font-weight:700;padding:6px 4px;word-break:break-word}
-.info{text-align:center;font-size:11px;font-weight:500;opacity:.85;margin-top:6px;line-height:1.3}
-.hidden{display:none!important}
-.error{color:var(--err);text-align:center;margin-top:8px;font-size:12px;font-weight:600}
-.connection{text-align:center;font-size:10px;margin-top:6px;font-weight:600;opacity:.8}
-.connection.off{color:var(--err);opacity:1}
 
-/* REJİM */
-.mode-select{display:flex;flex-direction:column;gap:8px;margin:8px 0 6px}
-.mode-option{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
-.mode-option input[type="radio"]{width:16px;height:16px;margin:0;padding:0;flex-shrink:0;accent-color:var(--ink);background:none;border-radius:50%}
-.dark .mode-option input[type="radio"]{accent-color:var(--dark-ink)}
-.mode-option span{flex:1}
+.dark .event{
+  background:rgba(0,7,44,.1)
+}
+
+.event.neutral{
+  opacity:1
+}
+
+.event.blue,
+.dark .event.blue{
+  background:var(--blue-grad);
+  color:#F5F7FA
+}
+
+.event.pink,
+.dark .event.pink{
+  background:var(--pink-grad);
+  color:#F5F7FA
+}
+
+.host-controls{
+  margin-top:6px
+}
+
+.point-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px
+}
+
+.point-grid button{
+  font-size:15px;
+  padding:11px 5px;
+  margin-top:0
+}
+
+.winner{
+  text-align:center;
+  font-size:16px;
+  font-weight:700;
+  padding:6px 4px;
+  word-break:break-word
+}
+
+.info{
+  text-align:center;
+  font-size:11px;
+  font-weight:500;
+  opacity:.85;
+  margin-top:6px;
+  line-height:1.3
+}
+
+.hidden{
+  display:none!important
+}
+
+.error{
+  color:var(--err);
+  text-align:center;
+  margin-top:8px;
+  font-size:12px;
+  font-weight:600
+}
+
+.connection{
+  text-align:center;
+  font-size:10px;
+  margin-top:6px;
+  font-weight:600;
+  opacity:.8
+}
+
+.connection.off{
+  color:var(--err);
+  opacity:1
+}
+
+/* =========================================================
+   REJİM
+========================================================= */
+
+.mode-select{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:8px 0 6px
+}
+
+.mode-option{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer
+}
+
+.mode-option input[type="radio"]{
+  width:16px;
+  height:16px;
+  margin:0;
+  padding:0;
+  flex-shrink:0;
+  accent-color:var(--ink);
+  background:none;
+  border-radius:50%
+}
+
+.dark .mode-option input[type="radio"]{
+  accent-color:var(--dark-ink)
+}
+
+.mode-option span{
+  flex:1
+}
+
 button.info-btn{
-  width:22px;height:22px;min-width:22px;padding:0;margin:0;border-radius:50%;
-  font-size:11px;font-weight:800;line-height:18px;background:transparent;color:inherit;
-  border:2px solid currentColor;flex-shrink:0;cursor:pointer;
+  width:22px;
+  height:22px;
+  min-width:22px;
+  padding:0;
+  margin:0;
+  border-radius:50%;
+  font-size:11px;
+  font-weight:800;
+  line-height:18px;
+  background:transparent;
+  color:inherit;
+  border:2px solid currentColor;
+  flex-shrink:0;
+  cursor:pointer
 }
-.card button.info-btn{color:var(--ink)}
-.dark .card button.info-btn{color:var(--dark-ink)}
-button.info-btn:hover{transform:none}
-.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.4;margin-top:4px}
-.dark .info-bubble{background:var(--dark-bg);color:var(--dark-light)}
 
-/* FOOTER */
+.card button.info-btn{
+  color:var(--ink)
+}
+
+.dark .card button.info-btn{
+  color:var(--dark-ink)
+}
+
+button.info-btn:hover{
+  transform:none
+}
+
+.info-bubble{
+  background:var(--dark-light);
+  color:var(--deep);
+  border-radius:20px;
+  padding:10px 14px;
+  font-size:12px;
+  font-weight:500;
+  line-height:1.4;
+  margin-top:4px
+}
+
+.dark .info-bubble{
+  background:var(--dark-bg);
+  color:var(--dark-light)
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
 footer{
-  width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  color:var(--ink);min-height:170px;padding:27px 20px 24px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;
-  transition:background var(--transition),color var(--transition);
+  width:100%;
+  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  color:var(--ink);
+  min-height:170px;
+  padding:27px 20px 24px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  text-align:center;
+  transition:background var(--transition),color var(--transition)
 }
-.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
-.footer-line{font-size:15px;line-height:1.45;font-weight:500}
-.footer-link{transition:opacity .25s ease,transform .25s ease}
-.footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
+.dark footer{
+  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+  color:var(--dark-ink)
+}
+
+.footer-line{
+  font-size:15px;
+  line-height:1.45;
+  font-weight:500
+}
+
+.footer-link{
+  transition:opacity .25s ease,transform .25s ease
+}
+
+.footer-link:hover{
+  opacity:.72;
+  transform:translateY(-1px)
+}
+
+/* =========================================================
+   FADE-IN + YUXARI QALXMA
+========================================================= */
+
+@keyframes fadeUpPage{
+  from{
+    opacity:0;
+    transform:translateY(22px)
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0)
+  }
+}
+
+@keyframes fadeUpNew{
+  from{
+    opacity:0;
+    transform:translateY(18px)
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0)
+  }
+}
+
+/* İlk açılış və ekran dəyişməsi */
+.screen.active > .card > *{
+  animation-name:fadeUpPage;
+  animation-duration:.65s;
+  animation-timing-function:cubic-bezier(.22,.8,.25,1);
+  animation-fill-mode:both;
+}
+
+/* Yuxarıdan aşağıya ardıcıllıq */
+.screen.active > .card > *:nth-child(1){
+  animation-delay:.08s
+}
+
+.screen.active > .card > *:nth-child(2){
+  animation-delay:.15s
+}
+
+.screen.active > .card > *:nth-child(3){
+  animation-delay:.22s
+}
+
+.screen.active > .card > *:nth-child(4){
+  animation-delay:.29s
+}
+
+.screen.active > .card > *:nth-child(5){
+  animation-delay:.36s
+}
+
+.screen.active > .card > *:nth-child(6){
+  animation-delay:.43s
+}
+
+.screen.active > .card > *:nth-child(7){
+  animation-delay:.50s
+}
+
+.screen.active > .card > *:nth-child(8){
+  animation-delay:.57s
+}
+
+.screen.active > .card > *:nth-child(9){
+  animation-delay:.64s
+}
+
+.screen.active > .card > *:nth-child(10){
+  animation-delay:.71s
+}
+
+.screen.active > .card > *:nth-child(11){
+  animation-delay:.78s
+}
+
+.screen.active > .card > *:nth-child(12){
+  animation-delay:.85s
+}
+
+/* Sonradan görünən yeni hissələr */
+.animate-new{
+  animation:fadeUpNew .55s cubic-bezier(.22,.8,.25,1) both !important
+}
+
+/* Accessibility */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important}
+
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+    animation-duration:.01ms !important
+  }
+
+  .screen.active > .card > *,
+  .animate-new{
+    animation:none !important
+  }
 }
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media (max-width:700px){
-  .page{width:calc(100vw - 44px);padding-top:11px}
-  .top-nav{height:52px;padding-left:18px;padding-right:60px}
-  .nav-links{gap:34px}
-  .nav-link{font-size:15px}
-  .theme-toggle{width:39px;height:39px;min-width:39px;right:8px}
-  .theme-icon{width:22px;height:22px}
-  #app{margin-top:16px}
-  .card{border-radius:29px;padding:22px 18px 24px}
-  footer{min-height:185px;padding-left:12px;padding-right:12px}
-  .footer-line{font-size:14px}
+
+  .page{
+    width:calc(100vw - 44px);
+    padding-top:11px
+  }
+
+  .top-nav{
+    height:52px;
+    padding-left:18px;
+    padding-right:60px
+  }
+
+  .nav-links{
+    gap:34px
+  }
+
+  .nav-link{
+    font-size:15px
+  }
+
+  .theme-toggle{
+    width:39px;
+    height:39px;
+    min-width:39px;
+    right:8px
+  }
+
+  .theme-icon{
+    width:22px;
+    height:22px
+  }
+
+  #app{
+    margin-top:16px
+  }
+
+  .card{
+    border-radius:29px;
+    padding:22px 18px 24px
+  }
+
+  footer{
+    min-height:185px;
+    padding-left:12px;
+    padding-right:12px
+  }
+
+  .footer-line{
+    font-size:14px
+  }
 }
+
 @media (max-width:420px){
-  .page{width:calc(100vw - 36px)}
-  .nav-links{gap:25px}
-  .nav-link{font-size:13px}
-  .top-nav{height:48px}
-  .theme-toggle{width:36px;height:36px;min-width:36px;right:6px}
-  .theme-icon{width:20px;height:20px}
-  .card{padding:20px 14px 22px}
+
+  .page{
+    width:calc(100vw - 36px)
+  }
+
+  .nav-links{
+    gap:25px
+  }
+
+  .nav-link{
+    font-size:13px
+  }
+
+  .top-nav{
+    height:48px
+  }
+
+  .theme-toggle{
+    width:36px;
+    height:36px;
+    min-width:36px;
+    right:6px
+  }
+
+  .theme-icon{
+    width:20px;
+    height:20px
+  }
+
+  .card{
+    padding:20px 14px 22px
+  }
 }
+
 @media(max-height:680px){
-  .brand-badge{width:34px;height:34px;margin-bottom:5px}
-  .brand-title{font-size:18px}
+
+  .brand-badge{
+    width:34px;
+    height:34px;
+    margin-bottom:5px
+  }
+
+  .brand-title{
+    font-size:18px
+  }
 }
 </style>
 </head>
@@ -272,195 +1086,526 @@ footer{
       <a class="nav-link" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
-      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="Gecə rejiminə keç">
     </button>
   </nav>
 
-<main>
-<div id="app">
+  <main>
 
-<!-- ANA -->
-<div id="homeScreen" class="screen active">
-  <div class="card">
-    <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
-      <div class="brand-title">Breyn Rinq</div>
-      <div class="brand-tagline">düymə sistemi</div>
-    </div>
-    <div style="flex:1"></div>
-    <button onclick="showHostCreate()">APARICI</button>
-    <button class="secondary" onclick="showPlayerJoin()">OYUNÇU</button>
-  </div>
-</div>
+    <div id="app">
 
-<!-- HOST CREATE -->
-<div id="hostCreateScreen" class="screen">
-  <div class="card">
-    <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
-      <div class="brand-title">Breyn Rinq</div>
-      <div class="brand-tagline">düymə sistemi</div>
-    </div>
-    <div class="subtitle">APARICI PANELİ:</div>
-    <input id="hostName" placeholder="Aparıcının adı">
-    <div class="mode-select">
-      <label class="mode-option">
-        <input type="radio" name="gameMode" value="physical" onchange="setGameMode('physical')">
-        <span>Oyun əyanidir</span>
-        <button type="button" class="info-btn" onclick="showModeInfo('physical')">i</button>
-      </label>
-      <label class="mode-option">
-        <input type="radio" name="gameMode" value="online" checked onchange="setGameMode('online')">
-        <span>Oyun onlayndır</span>
-        <button type="button" class="info-btn" onclick="showModeInfo('online')">i</button>
-      </label>
-    </div>
-    <div id="modeInfoBubble" class="info-bubble hidden"></div>
-    <div style="flex:1"></div>
-    <button onclick="createRoom()">OTAQ YARAT</button>
-    <button class="secondary" onclick="goHome()">GERİ</button>
-    <div id="hostCreateError" class="error"></div>
-  </div>
-</div>
+      <!-- ANA -->
+      <div id="homeScreen" class="screen active">
 
-<!-- HOST -->
-<div id="hostScreen" class="screen">
-  <div class="card">
+        <div class="card">
 
-    <div class="question-value">
-      Sual <strong id="hostQuestion">1</strong>
-      &nbsp;•&nbsp;
-      Dəyər <strong>+<span id="hostValue">1</span></strong>
-    </div>
+          <div class="brand">
+            <div class="brand-badge">
+              <img
+                src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png"
+                alt="πksel">
+            </div>
 
-    <button type="button" id="resetQVBtn" class="secondary mini-reset" onclick="resetQuestionValue()">Xalı sıfırla</button>
+            <div class="brand-title">Breyn Rinq</div>
+            <div class="brand-tagline">düymə sistemi</div>
+          </div>
 
-    <div id="hostTimer" class="timer">20</div>
+          <div style="flex:1"></div>
 
-    <div id="hostEvent" class="event neutral">Komandalar gözlənilir...</div>
+          <button onclick="showHostCreate()">APARICI</button>
 
-    <div class="teams">
-      <div class="team blue">
-        <button type="button" class="kick-btn" id="kickBlueBtn" onclick="confirmKick('blue')">✕</button>
-        <div id="hostBlueName" class="team-name">Gözləyir...</div>
-        <div id="hostBlueScore" class="score">0</div>
-      </div>
-      <div class="team pink">
-        <button type="button" class="kick-btn" id="kickPinkBtn" onclick="confirmKick('pink')">✕</button>
-        <div id="hostPinkName" class="team-name">Gözləyir...</div>
-        <div id="hostPinkScore" class="score">0</div>
-      </div>
-    </div>
+          <button
+            class="secondary"
+            onclick="showPlayerJoin()">
+            OYUNÇU
+          </button>
 
-    <div class="host-controls">
-      <div class="subtitle">πksel.iok</div>
-
-      <button id="startBtn" onclick="hostStart()">▶ VAXT! — 20 SANİYƏ</button>
-      <button id="resetBtn" class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
-
-      <div id="answerControls" class="hidden">
-        <div class="winner" id="winnerText"></div>
-        <div class="point-grid">
-          <button onclick="givePoints(1)">+1</button>
-          <button onclick="givePoints(2)">+2</button>
-          <button onclick="givePoints(3)">+3</button>
-        </div>
-        <button class="red btn-fit" onclick="wrongAnswer()">QALAN VAXT RƏQİB KOMANDANIN</button>
-        <button class="orange btn-fit" onclick="unresolved()">DOĞRU CAVAB YOXDUR</button>
-      </div>
-
-      <div id="expiredControls" class="hidden">
-        <button class="orange btn-fit" onclick="unresolved()">DOĞRU CAVAB YOXDUR</button>
-      </div>
-
-      <div id="finishedControls" class="hidden">
-        <button class="green" onclick="newGame()">YENİ OYUN</button>
-      </div>
-    </div>
-
-    <div style="flex:1"></div>
-
-    <div class="connection" id="hostConnection">● Firebase bağlantısı</div>
-
-    <div class="info">
-      OTAQ KODU
-      <div id="hostRoomCode" class="room-code" onclick="copyRoomCode()">------</div>
-    </div>
-
-    <div id="kickOverlay" class="kick-overlay">
-      <div class="kick-modal" id="kickModal">
-        <div class="kick-modal-text" id="kickModalText"></div>
-        <div class="kick-modal-buttons">
-          <button class="green" onclick="kickConfirm(true)">BƏLİ</button>
-          <button class="red" onclick="kickConfirm(false)">XEYR</button>
         </div>
       </div>
-    </div>
 
-  </div>
-</div>
 
-<!-- PLAYER JOIN -->
-<div id="playerJoinScreen" class="screen">
-  <div class="card">
-    <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
-      <div class="brand-title">Breyn Rinq</div>
-      <div class="brand-tagline">düymə sistemi</div>
-    </div>
-    <div class="subtitle">OYUNÇU GİRİŞİ</div>
-    <input id="roomInput" maxlength="6" placeholder="6 simvollu otaq kodu">
-    <input id="teamNameInput" placeholder="Komanda adı">
-    <div style="flex:1"></div>
-    <button onclick="joinRoom()">OTAĞA QOŞUL</button>
-    <button class="secondary" onclick="goHome()">GERİ</button>
-    <div id="joinError" class="error"></div>
-  </div>
-</div>
+      <!-- HOST CREATE -->
+      <div id="hostCreateScreen" class="screen">
 
-<!-- PLAYER -->
-<div id="playerScreen" class="screen">
-  <div class="card">
+        <div class="card">
 
-    <div class="question-value">
-      Sual <strong id="playerQuestion">1</strong>
-      &nbsp;•&nbsp;
-      Dəyər <strong>+<span id="playerValue">1</span></strong>
-    </div>
+          <div class="brand">
+            <div class="brand-badge">
+              <img
+                src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png"
+                alt="πksel">
+            </div>
 
-    <div id="playerTimer" class="timer">20</div>
+            <div class="brand-title">Breyn Rinq</div>
+            <div class="brand-tagline">düymə sistemi</div>
+          </div>
 
-    <div id="playerEvent" class="event neutral">Aparıcı START verməlidir.</div>
+          <div class="subtitle">APARICI PANELİ:</div>
 
-    <button id="buzzButton" class="big-buzz" onclick="playerBuzz()">
-      <span id="buzzButtonLabel" class="buzz-label jumbo">BAS!</span>
-    </button>
+          <input
+            id="hostName"
+            placeholder="Aparıcının adı">
 
-    <div class="teams">
-      <div class="team blue">
-        <div id="playerBlueName" class="team-name">Gözləyir...</div>
-        <div id="playerBlueScore" class="score">0</div>
+          <div class="mode-select">
+
+            <label class="mode-option">
+              <input
+                type="radio"
+                name="gameMode"
+                value="physical"
+                onchange="setGameMode('physical')">
+
+              <span>Oyun əyanidir</span>
+
+              <button
+                type="button"
+                class="info-btn"
+                onclick="showModeInfo('physical')">
+                i
+              </button>
+            </label>
+
+            <label class="mode-option">
+
+              <input
+                type="radio"
+                name="gameMode"
+                value="online"
+                checked
+                onchange="setGameMode('online')">
+
+              <span>Oyun onlayndır</span>
+
+              <button
+                type="button"
+                class="info-btn"
+                onclick="showModeInfo('online')">
+                i
+              </button>
+
+            </label>
+
+          </div>
+
+          <div
+            id="modeInfoBubble"
+            class="info-bubble hidden">
+          </div>
+
+          <div style="flex:1"></div>
+
+          <button onclick="createRoom()">
+            OTAQ YARAT
+          </button>
+
+          <button
+            class="secondary"
+            onclick="goHome()">
+            GERİ
+          </button>
+
+          <div
+            id="hostCreateError"
+            class="error">
+          </div>
+
+        </div>
       </div>
-      <div class="team pink">
-        <div id="playerPinkName" class="team-name">Gözləyir...</div>
-        <div id="playerPinkScore" class="score">0</div>
+
+
+      <!-- HOST -->
+      <div id="hostScreen" class="screen">
+
+        <div class="card">
+
+          <div class="question-value">
+            Sual <strong id="hostQuestion">1</strong>
+            &nbsp;•&nbsp;
+            Dəyər <strong>+<span id="hostValue">1</span></strong>
+          </div>
+
+          <button
+            type="button"
+            id="resetQVBtn"
+            class="secondary mini-reset"
+            onclick="resetQuestionValue()">
+            Xalı sıfırla
+          </button>
+
+          <div id="hostTimer" class="timer">
+            20
+          </div>
+
+          <div
+            id="hostEvent"
+            class="event neutral">
+            Komandalar gözlənilir...
+          </div>
+
+          <div class="teams">
+
+            <div class="team blue">
+
+              <button
+                type="button"
+                class="kick-btn"
+                id="kickBlueBtn"
+                onclick="confirmKick('blue')">
+                ✕
+              </button>
+
+              <div
+                id="hostBlueName"
+                class="team-name">
+                Gözləyir...
+              </div>
+
+              <div
+                id="hostBlueScore"
+                class="score">
+                0
+              </div>
+
+            </div>
+
+            <div class="team pink">
+
+              <button
+                type="button"
+                class="kick-btn"
+                id="kickPinkBtn"
+                onclick="confirmKick('pink')">
+                ✕
+              </button>
+
+              <div
+                id="hostPinkName"
+                class="team-name">
+                Gözləyir...
+              </div>
+
+              <div
+                id="hostPinkScore"
+                class="score">
+                0
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="host-controls">
+
+            <div class="subtitle">
+              πksel.iok
+            </div>
+
+            <button
+              id="startBtn"
+              onclick="hostStart()">
+              ▶ VAXT! — 20 SANİYƏ
+            </button>
+
+            <button
+              id="resetBtn"
+              class="secondary"
+              onclick="resetButtons()">
+              DÜYMƏLƏRİ SIFIRLA
+            </button>
+
+            <div
+              id="answerControls"
+              class="hidden">
+
+              <div
+                class="winner"
+                id="winnerText">
+              </div>
+
+              <div class="point-grid">
+
+                <button onclick="givePoints(1)">
+                  +1
+                </button>
+
+                <button onclick="givePoints(2)">
+                  +2
+                </button>
+
+                <button onclick="givePoints(3)">
+                  +3
+                </button>
+
+              </div>
+
+              <button
+                class="red btn-fit"
+                onclick="wrongAnswer()">
+                QALAN VAXT RƏQİB KOMANDANIN
+              </button>
+
+              <button
+                class="orange btn-fit"
+                onclick="unresolved()">
+                DOĞRU CAVAB YOXDUR
+              </button>
+
+            </div>
+
+            <div
+              id="expiredControls"
+              class="hidden">
+
+              <button
+                class="orange btn-fit"
+                onclick="unresolved()">
+                DOĞRU CAVAB YOXDUR
+              </button>
+
+            </div>
+
+            <div
+              id="finishedControls"
+              class="hidden">
+
+              <button
+                class="green"
+                onclick="newGame()">
+                YENİ OYUN
+              </button>
+
+            </div>
+
+          </div>
+
+          <div style="flex:1"></div>
+
+          <div
+            class="connection"
+            id="hostConnection">
+            ● Firebase bağlantısı
+          </div>
+
+          <div class="info">
+
+            OTAQ KODU
+
+            <div
+              id="hostRoomCode"
+              class="room-code"
+              onclick="copyRoomCode()">
+              ------
+            </div>
+
+          </div>
+
+          <div
+            id="kickOverlay"
+            class="kick-overlay">
+
+            <div
+              class="kick-modal"
+              id="kickModal">
+
+              <div
+                class="kick-modal-text"
+                id="kickModalText">
+              </div>
+
+              <div class="kick-modal-buttons">
+
+                <button
+                  class="green"
+                  onclick="kickConfirm(true)">
+                  BƏLİ
+                </button>
+
+                <button
+                  class="red"
+                  onclick="kickConfirm(false)">
+                  XEYR
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
       </div>
+
+
+      <!-- PLAYER JOIN -->
+      <div id="playerJoinScreen" class="screen">
+
+        <div class="card">
+
+          <div class="brand">
+
+            <div class="brand-badge">
+              <img
+                src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png"
+                alt="πksel">
+            </div>
+
+            <div class="brand-title">
+              Breyn Rinq
+            </div>
+
+            <div class="brand-tagline">
+              düymə sistemi
+            </div>
+
+          </div>
+
+          <div class="subtitle">
+            OYUNÇU GİRİŞİ
+          </div>
+
+          <input
+            id="roomInput"
+            maxlength="6"
+            placeholder="6 simvollu otaq kodu">
+
+          <input
+            id="teamNameInput"
+            placeholder="Komanda adı">
+
+          <div style="flex:1"></div>
+
+          <button onclick="joinRoom()">
+            OTAĞA QOŞUL
+          </button>
+
+          <button
+            class="secondary"
+            onclick="goHome()">
+            GERİ
+          </button>
+
+          <div
+            id="joinError"
+            class="error">
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- PLAYER -->
+      <div id="playerScreen" class="screen">
+
+        <div class="card">
+
+          <div class="question-value">
+            Sual <strong id="playerQuestion">1</strong>
+            &nbsp;•&nbsp;
+            Dəyər <strong>+<span id="playerValue">1</span></strong>
+          </div>
+
+          <div
+            id="playerTimer"
+            class="timer">
+            20
+          </div>
+
+          <div
+            id="playerEvent"
+            class="event neutral">
+            Aparıcı START verməlidir.
+          </div>
+
+          <button
+            id="buzzButton"
+            class="big-buzz"
+            onclick="playerBuzz()">
+
+            <span
+              id="buzzButtonLabel"
+              class="buzz-label jumbo">
+              BAS!
+            </span>
+
+          </button>
+
+          <div class="teams">
+
+            <div class="team blue">
+
+              <div
+                id="playerBlueName"
+                class="team-name">
+                Gözləyir...
+              </div>
+
+              <div
+                id="playerBlueScore"
+                class="score">
+                0
+              </div>
+
+            </div>
+
+            <div class="team pink">
+
+              <div
+                id="playerPinkName"
+                class="team-name">
+                Gözləyir...
+              </div>
+
+              <div
+                id="playerPinkScore"
+                class="score">
+                0
+              </div>
+
+            </div>
+
+          </div>
+
+          <div
+            class="connection"
+            id="playerConnection">
+            ● Firebase bağlantısı
+          </div>
+
+        </div>
+      </div>
+
     </div>
+  </main>
 
-    <div class="connection" id="playerConnection">● Firebase bağlantısı</div>
-
-  </div>
-</div>
-
-</div>
-</main>
 </div>
 
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...</div>
-  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
-  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+
+  <div class="footer-line">
+    İntellektuallar üçün hər şey...
+  </div>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/piksel.iok"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/onurelzh"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+
 </footer>
 
 
@@ -469,68 +1614,271 @@ footer{
 /* =========================================================
    TEMA
 ========================================================= */
+
 const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
+const themeIcon = document.createElement("svg");
+
+themeIcon.id = "themeIcon";
+themeIcon.className = "theme-icon";
+themeIcon.setAttribute("viewBox","0 0 32 32");
+themeIcon.setAttribute("aria-hidden","true");
+
+themeToggle.appendChild(themeIcon);
 
 function sunIcon(){
   return `
     <circle cx="16" cy="16" r="6" fill="currentColor"/>
     <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
-      <path d="M16 2.7v3"/><path d="M16 26.3v3"/>
-      <path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/>
-      <path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/>
-      <path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/>
+      <path d="M16 2.7v3"/>
+      <path d="M16 26.3v3"/>
+      <path d="m2.7 16 3 0"/>
+      <path d="m26.3 16-3 0"/>
+      <path d="m6.6 6.6 2.1 2.1"/>
+      <path d="m23.3 23.3 2.1 2.1"/>
+      <path d="m25.4 6.6-2.1 2.1"/>
+      <path d="m8.7 23.3-2.1 2.1"/>
     </g>`;
 }
+
 function moonIcon(){
-  return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
+  return `
+    <path
+      d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
+      fill="currentColor"/>`;
 }
+
 function updateThemeIcon(){
-  const dark = document.body.classList.contains("dark");
-  themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
-  themeToggle.setAttribute("aria-label", dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+
+  const dark =
+    document.body.classList.contains("dark");
+
+  themeIcon.innerHTML =
+    dark ? moonIcon() : sunIcon();
+
+  themeToggle.setAttribute(
+    "aria-label",
+    dark
+      ? "Gündüz rejiminə keç"
+      : "Gecə rejiminə keç"
+  );
 }
+
 function setTheme(dark){
-  document.body.classList.toggle("dark", dark);
-  try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(e){}
+
+  document.body.classList.toggle("dark",dark);
+
+  try{
+    localStorage.setItem(
+      "piksel-theme",
+      dark ? "dark" : "light"
+    );
+  }catch(e){}
+
   updateThemeIcon();
 }
+
 function initTheme(){
+
   let saved = null;
-  try{ saved = localStorage.getItem("piksel-theme"); }catch(e){}
-  if(saved === "dark") return setTheme(true);
-  if(saved === "light") return setTheme(false);
-  setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  try{
+    saved = localStorage.getItem("piksel-theme");
+  }catch(e){}
+
+  if(saved === "dark"){
+    return setTheme(true);
+  }
+
+  if(saved === "light"){
+    return setTheme(false);
+  }
+
+  setTheme(
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 }
-themeToggle.addEventListener("click", () => setTheme(!document.body.classList.contains("dark")));
+
+themeToggle.addEventListener(
+  "click",
+  () => setTheme(
+    !document.body.classList.contains("dark")
+  )
+);
+
 initTheme();
+
+
+/* =========================================================
+   ANİMASİYA SİSTEMİ
+========================================================= */
+
+/*
+  Ekran dəyişəndə bütün elementlərin animasiyasını
+  yenidən başladırıq.
+*/
+
+function restartScreenAnimation(screen){
+
+  if(!screen) return;
+
+  const children =
+    screen.querySelectorAll(":scope > .card > *");
+
+  children.forEach(function(el){
+
+    el.classList.remove("animate-new");
+
+    /*
+      Browser-in animasiya vəziyyətini sıfırlayır.
+    */
+    void el.offsetWidth;
+  });
+}
+
+
+/*
+  Sonradan görünən hissəyə animasiya verir.
+  Taymer və adi məlumat dəyişikliklərinə toxunmur.
+*/
+
+function animateNewElement(el){
+
+  if(!el) return;
+
+  el.classList.remove("animate-new");
+
+  void el.offsetWidth;
+
+  el.classList.add("animate-new");
+
+  setTimeout(function(){
+
+    if(el){
+      el.classList.remove("animate-new");
+    }
+
+  },650);
+}
+
+
+/*
+  Hidden-dən görünənə keçən elementlərə
+  avtomatik animasiya.
+*/
+
+function showWithAnimation(el){
+
+  if(!el) return;
+
+  const wasHidden =
+    el.classList.contains("hidden");
+
+  el.classList.remove("hidden");
+
+  if(wasHidden){
+    animateNewElement(el);
+  }
+}
+
+
+/* =========================================================
+   SCREEN
+========================================================= */
+
+function showScreen(id){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(function(x){
+      x.classList.remove("active");
+    });
+
+  const screen =
+    document.getElementById(id);
+
+  if(!screen) return;
+
+  /*
+    Köhnə animasiya vəziyyətini sıfırla.
+  */
+  restartScreenAnimation(screen);
+
+  /*
+    Browser-in əvvəlki layout-u hesablamasını təmin edir.
+  */
+  void screen.offsetWidth;
+
+  screen.classList.add("active");
+}
+
+function goHome(){
+
+  stopPolling();
+
+  roomCode = null;
+  role = null;
+  team = null;
+  currentRoom = null;
+
+  showScreen("homeScreen");
+}
+
+function showHostCreate(){
+  showScreen("hostCreateScreen");
+}
+
+function showPlayerJoin(){
+  showScreen("playerJoinScreen");
+}
 
 
 /* =========================================================
    FIREBASE
 ========================================================= */
+
 const firebaseConfig = {
+
   apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",
-  authDomain:"piksel-breyn-rinq.firebaseapp.com",
-  databaseURL:"https://piksel-breyn-rinq-default-rtdb.firebaseio.com",
-  projectId:"piksel-breyn-rinq",
-  storageBucket:"piksel-breyn-rinq.firebasestorage.app",
-  messagingSenderId:"284823608972",
-  appId:"1:284823608972:web:58dfcbcbfde0119affa5a9",
-  measurementId:"G-GVZ4MN579R"
+
+  authDomain:
+    "piksel-breyn-rinq.firebaseapp.com",
+
+  databaseURL:
+    "https://piksel-breyn-rinq-default-rtdb.firebaseio.com",
+
+  projectId:
+    "piksel-breyn-rinq",
+
+  storageBucket:
+    "piksel-breyn-rinq.firebasestorage.app",
+
+  messagingSenderId:
+    "284823608972",
+
+  appId:
+    "1:284823608972:web:58dfcbcbfde0119affa5a9",
+
+  measurementId:
+    "G-GVZ4MN579R"
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const DB_URL = "https://piksel-breyn-rinq-default-rtdb.firebaseio.com";
 
-/* Oyuna qayıtmaq/atılmaq üçün yönləndirmə ünvanı */
-const KICK_REDIRECT = "button.html";
+const db =
+  firebase.database();
+
+const DB_URL =
+  "https://piksel-breyn-rinq-default-rtdb.firebaseio.com";
+
+const KICK_REDIRECT =
+  "button.html";
 
 
 /* =========================================================
    GLOBAL
 ========================================================= */
+
 let roomCode = null;
 let role = null;
 let team = null;
@@ -542,22 +1890,21 @@ let audioContext = null;
 let lastStateKey = "";
 let audioUnlocked = false;
 
-/* vaxt bitmə səsi bir dəfə çalınsın */
 let lastTimeUpEnd = null;
 
-/* Beep üçün: start (startedAt) və 10/4 saniyə (timerEnd|saniyə) izləmə */
 let lastStartedAt = undefined;
 let lastBeepKey = "";
 
-/* İndi çalan beep (düyməyə basılanda kəsilə bilsin) */
 let activeBeep = null;
 
-/* Bu oyunçunun komanda adı (aparıcı çıxaranda aşkar etmək üçün) */
 let myTeamName = null;
 
-let localFlags = { start:false, buzz:false, fail:false };
+let localFlags = {
+  start:false,
+  buzz:false,
+  fail:false
+};
 
-/* "physical" = yalnız aparıcının cihazından səs; "online" = hər cihazdan */
 let gameMode = "online";
 
 let infoBubbleTimeout = null;
@@ -569,67 +1916,76 @@ let kickBusy = false;
 
 
 /* =========================================================
-   SCREEN
+   OYUN REJİMİ
 ========================================================= */
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+
+function setGameMode(mode){
+  gameMode = mode;
 }
-
-function goHome(){
-  stopPolling();
-  roomCode = null;
-  role = null;
-  team = null;
-  currentRoom = null;
-  showScreen("homeScreen");
-}
-
-function showHostCreate(){ showScreen("hostCreateScreen"); }
-function showPlayerJoin(){ showScreen("playerJoinScreen"); }
-
-
-/* =========================================================
-   OYUN REJİMİ SEÇİMİ
-========================================================= */
-function setGameMode(mode){ gameMode = mode; }
 
 function showModeInfo(mode){
 
-  const bubble = document.getElementById("modeInfoBubble");
+  const bubble =
+    document.getElementById("modeInfoBubble");
 
   bubble.textContent =
     mode === "physical"
     ? "Vaxt, düymə və digər səslər qarışıqlığın qarşısını almaq üçün yalnız APARICININ cihazından eşidiləcək."
     : "Vaxt, düymə və digər səslər hər komandaya aydın olsun deyə, hər KOMANDANIN öz, APARICININ da öz cihazından eşidiləcək.";
 
-  if(infoBubbleTimeout) clearTimeout(infoBubbleTimeout);
-  if(infoBubbleHideTimeout) clearTimeout(infoBubbleHideTimeout);
+  if(infoBubbleTimeout)
+    clearTimeout(infoBubbleTimeout);
+
+  if(infoBubbleHideTimeout)
+    clearTimeout(infoBubbleHideTimeout);
 
   bubble.classList.remove("hidden");
+
   bubble.style.display = "block";
   bubble.style.transition = "opacity .4s ease";
   bubble.style.opacity = "0";
 
+  animateNewElement(bubble);
+
   requestAnimationFrame(function(){
-    requestAnimationFrame(function(){ bubble.style.opacity = "1"; });
+
+    requestAnimationFrame(function(){
+
+      bubble.style.opacity = "1";
+
+    });
+
   });
 
-  infoBubbleTimeout = setTimeout(function(){
-    bubble.style.transition = "opacity .6s ease";
-    bubble.style.opacity = "0";
-    infoBubbleHideTimeout = setTimeout(function(){
-      bubble.classList.add("hidden");
-      bubble.style.display = "";
-    }, 600);
-  }, 3000);
+  infoBubbleTimeout =
+    setTimeout(function(){
+
+      bubble.style.transition =
+        "opacity .6s ease";
+
+      bubble.style.opacity = "0";
+
+      infoBubbleHideTimeout =
+        setTimeout(function(){
+
+          bubble.classList.add("hidden");
+          bubble.style.display = "";
+
+        },600);
+
+    },3000);
 }
 
-/* Bu cihazda səs çalınmalıdırmı? Aparıcı HƏMİŞƏ eşidir. */
 function audioAllowed(){
-  if(currentRoom && currentRoom.soundMode === "physical" && role !== "host"){
+
+  if(
+    currentRoom &&
+    currentRoom.soundMode === "physical" &&
+    role !== "host"
+  ){
     return false;
   }
+
   return true;
 }
 
@@ -637,186 +1993,382 @@ function audioAllowed(){
 /* =========================================================
    AUDIO
 ========================================================= */
+
 function unlockAudio(){
+
   try{
+
     if(!audioContext){
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+      audioContext =
+        new (
+          window.AudioContext ||
+          window.webkitAudioContext
+        )();
+
     }
-    if(audioContext.state === "suspended") audioContext.resume();
+
+    if(audioContext.state === "suspended"){
+      audioContext.resume();
+    }
+
     audioUnlocked = true;
+
   }catch(e){}
 }
 
-document.addEventListener("pointerdown", function(){ unlockAudio(); }, {passive:true});
+document.addEventListener(
+  "pointerdown",
+  function(){
+    unlockAudio();
+  },
+  {passive:true}
+);
 
-/* Səs çalmaq mümkündürsə audio kontekstini qaytarır */
 function getCtx(){
-  if(!audioAllowed()) return null;
+
+  if(!audioAllowed())
+    return null;
+
   unlockAudio();
-  if(!audioContext) return null;
-  if(audioContext.state === "suspended") audioContext.resume();
+
+  if(!audioContext)
+    return null;
+
+  if(audioContext.state === "suspended"){
+    audioContext.resume();
+  }
+
   return audioContext;
 }
 
-/* Çalan beep-i dərhal (kliksiz, qısa səngimə ilə) kəsir. */
 function stopBeep(){
-  if(!activeBeep) return;
+
+  if(!activeBeep)
+    return;
+
   try{
-    const now = audioContext.currentTime;
-    const g = activeBeep.gain.gain;
+
+    const now =
+      audioContext.currentTime;
+
+    const g =
+      activeBeep.gain.gain;
+
     g.cancelScheduledValues(now);
-    g.setValueAtTime(g.value, now);
-    g.linearRampToValueAtTime(0.0001, now + 0.02);
-    activeBeep.osc.stop(now + 0.03);
+
+    g.setValueAtTime(
+      g.value,
+      now
+    );
+
+    g.linearRampToValueAtTime(
+      0.0001,
+      now + 0.02
+    );
+
+    activeBeep.osc.stop(
+      now + 0.03
+    );
+
   }catch(e){}
+
   activeBeep = null;
 }
 
-/*
-  UZUN "DİİİT" (0.7 san).
-  YALNIZ: taymer başlayanda, 10 saniyə qalanda, 4 saniyə qalanda.
-  Düyməyə basılanda kəsilir.
-*/
 function beep(){
-  try{
-    const ctx = getCtx();
-    if(!ctx) return;
 
-    const now = ctx.currentTime;
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
+  try{
+
+    const ctx = getCtx();
+
+    if(!ctx)
+      return;
+
+    const now =
+      ctx.currentTime;
+
+    const oscillator =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
 
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(880, now);
 
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(0.32, now + 0.015);
-    gain.gain.setValueAtTime(0.32, now + 0.66);
-    gain.gain.linearRampToValueAtTime(0.0001, now + 0.70);
+    oscillator.frequency.setValueAtTime(
+      880,
+      now
+    );
+
+    gain.gain.setValueAtTime(
+      0.0001,
+      now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0.32,
+      now + 0.015
+    );
+
+    gain.gain.setValueAtTime(
+      0.32,
+      now + 0.66
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0.0001,
+      now + 0.70
+    );
 
     stopBeep();
 
     oscillator.connect(gain);
     gain.connect(ctx.destination);
 
-    activeBeep = { osc:oscillator, gain:gain };
-
-    oscillator.onended = function(){
-      if(activeBeep && activeBeep.osc === oscillator) activeBeep = null;
+    activeBeep = {
+      osc:oscillator,
+      gain:gain
     };
+
+    oscillator.onended =
+      function(){
+
+        if(
+          activeBeep &&
+          activeBeep.osc === oscillator
+        ){
+          activeBeep = null;
+        }
+
+      };
 
     oscillator.start(now);
     oscillator.stop(now + 0.72);
+
   }catch(e){}
 }
 
-/* VAXT BİTMƏ SƏSİ — 2 saniyə, 700 Hz. */
 function timeUpSound(){
-  try{
-    const ctx = getCtx();
-    if(!ctx) return;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+  try{
+
+    const ctx = getCtx();
+
+    if(!ctx)
+      return;
+
+    const osc =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
     osc.type = "sine";
     osc.frequency.value = 700;
 
-    const now = ctx.currentTime;
+    const now =
+      ctx.currentTime;
+
     const dur = 2;
 
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(0.22, now + 0.015);
-    gain.gain.setValueAtTime(0.22, now + Math.max(dur - 0.04, 0.02));
-    gain.gain.linearRampToValueAtTime(0, now + dur);
+    gain.gain.setValueAtTime(
+      0,
+      now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0.22,
+      now + 0.015
+    );
+
+    gain.gain.setValueAtTime(
+      0.22,
+      now + Math.max(dur - 0.04,0.02)
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0,
+      now + dur
+    );
 
     osc.connect(gain);
     gain.connect(ctx.destination);
+
     osc.start(now);
     osc.stop(now + dur + 0.03);
+
   }catch(e){}
 }
 
-/* DÜYMƏYƏ BASMA SƏSİ — qısa "ding". Çalan beep varsa kəsilir. */
 function buzzSound(){
 
   stopBeep();
 
   try{
+
     const ctx = getCtx();
-    if(!ctx) return;
 
-    const now = ctx.currentTime;
+    if(!ctx)
+      return;
 
-    [1568, 1976].forEach(function(f,i){
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const t = now + i*0.08;
+    const now =
+      ctx.currentTime;
 
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(f, t);
+    [1568,1976].forEach(
+      function(f,i){
 
-      gain.gain.setValueAtTime(0.0001, t);
-      gain.gain.linearRampToValueAtTime(0.28, t + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+        const osc =
+          ctx.createOscillator();
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.25);
-    });
+        const gain =
+          ctx.createGain();
+
+        const t =
+          now + i * 0.08;
+
+        osc.type = "sine";
+
+        osc.frequency.setValueAtTime(
+          f,
+          t
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          t
+        );
+
+        gain.gain.linearRampToValueAtTime(
+          0.28,
+          t + 0.015
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          t + 0.22
+        );
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + 0.25);
+
+      }
+    );
+
   }catch(e){}
 }
 
-/* QALİBİYYƏT SƏSİ — yüksələn 4 nota. */
 function winSound(){
+
   try{
+
     const ctx = getCtx();
-    if(!ctx) return;
 
-    const now = ctx.currentTime;
+    if(!ctx)
+      return;
 
-    [523.25,659.25,783.99,1046.5].forEach(function(f,i){
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const t = now + i*0.12;
+    const now =
+      ctx.currentTime;
 
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(f, t);
+    [523.25,659.25,783.99,1046.5]
+      .forEach(function(f,i){
 
-      gain.gain.setValueAtTime(0.0001, t);
-      gain.gain.linearRampToValueAtTime(0.3, t + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+        const osc =
+          ctx.createOscillator();
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.32);
-    });
+        const gain =
+          ctx.createGain();
+
+        const t =
+          now + i * 0.12;
+
+        osc.type = "triangle";
+
+        osc.frequency.setValueAtTime(
+          f,
+          t
+        );
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          t
+        );
+
+        gain.gain.linearRampToValueAtTime(
+          0.3,
+          t + 0.02
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          t + 0.3
+        );
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + 0.32);
+
+      });
+
   }catch(e){}
 }
 
-/* ERKƏN BASMA CƏZA SƏSİ. */
 function failSound(){
-  try{
-    const ctx = getCtx();
-    if(!ctx) return;
 
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+  try{
+
+    const ctx = getCtx();
+
+    if(!ctx)
+      return;
+
+    const now =
+      ctx.currentTime;
+
+    const osc =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
 
     osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(300, now);
-    osc.frequency.exponentialRampToValueAtTime(150, now + 0.25);
 
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(0.25, now + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+    osc.frequency.setValueAtTime(
+      300,
+      now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+      150,
+      now + 0.25
+    );
+
+    gain.gain.setValueAtTime(
+      0.0001,
+      now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0.25,
+      now + 0.02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      now + 0.28
+    );
 
     osc.connect(gain);
     gain.connect(ctx.destination);
+
     osc.start(now);
     osc.stop(now + 0.3);
+
   }catch(e){}
 }
 
@@ -824,66 +2376,139 @@ function failSound(){
 /* =========================================================
    SERVER TIME
 ========================================================= */
+
 let offsetReady = false;
 let offsetReadyResolvers = [];
 
 function waitForOffset(){
-  if(offsetReady) return Promise.resolve();
-  return new Promise(function(resolve){ offsetReadyResolvers.push(resolve); });
+
+  if(offsetReady)
+    return Promise.resolve();
+
+  return new Promise(
+    function(resolve){
+      offsetReadyResolvers.push(resolve);
+    }
+  );
 }
 
-db.ref(".info/serverTimeOffset").on("value", function(snapshot){
-  const val = snapshot.val();
-  if(typeof val === "number") serverOffset = val;
-  offsetReady = true;
-  offsetReadyResolvers.forEach(function(resolve){ resolve(); });
-  offsetReadyResolvers = [];
-});
+db.ref(".info/serverTimeOffset")
+  .on("value",function(snapshot){
 
-function serverNow(){ return Date.now() + serverOffset; }
+    const val =
+      snapshot.val();
+
+    if(typeof val === "number"){
+      serverOffset = val;
+    }
+
+    offsetReady = true;
+
+    offsetReadyResolvers.forEach(
+      function(resolve){
+        resolve();
+      }
+    );
+
+    offsetReadyResolvers = [];
+
+  });
+
+function serverNow(){
+  return Date.now() + serverOffset;
+}
 
 
 /* =========================================================
    ROOM CODE
 ========================================================= */
+
 function generateRoomCode(){
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
   let result = "";
+
   for(let i=0;i<6;i++){
-    result += chars[Math.floor(Math.random()*chars.length)];
+
+    result +=
+      chars[
+        Math.floor(
+          Math.random() *
+          chars.length
+        )
+      ];
+
   }
+
   return result;
 }
 
-/* Otaq kodunun üzərinə vuranda kopyalanır (ayrıca düymə yoxdur) */
 function copyRoomCode(){
 
-  if(!roomCode) return;
+  if(!roomCode)
+    return;
 
-  const el = document.getElementById("hostRoomCode");
-  const code = roomCode;
+  const el =
+    document.getElementById("hostRoomCode");
 
-  const done = function(){
-    el.textContent = "KOPYALANDI";
-    setTimeout(function(){ el.textContent = code; }, 1000);
-  };
+  const code =
+    roomCode;
 
-  const fallback = function(){
-    const t = document.createElement("textarea");
-    t.value = code;
-    t.style.position = "fixed";
-    t.style.opacity = "0";
-    document.body.appendChild(t);
-    t.select();
-    try{ document.execCommand("copy"); }catch(e){}
-    t.remove();
-    done();
-  };
+  const done =
+    function(){
 
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(code).then(done).catch(fallback);
+      el.textContent =
+        "KOPYALANDI";
+
+      setTimeout(
+        function(){
+          el.textContent = code;
+        },
+        1000
+      );
+
+    };
+
+  const fallback =
+    function(){
+
+      const t =
+        document.createElement("textarea");
+
+      t.value = code;
+      t.style.position = "fixed";
+      t.style.opacity = "0";
+
+      document.body.appendChild(t);
+
+      t.select();
+
+      try{
+        document.execCommand("copy");
+      }catch(e){}
+
+      t.remove();
+
+      done();
+
+    };
+
+  if(
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ){
+
+    navigator.clipboard
+      .writeText(code)
+      .then(done)
+      .catch(fallback);
+
   }else{
+
     fallback();
+
   }
 }
 
@@ -891,16 +2516,31 @@ function copyRoomCode(){
 /* =========================================================
    HOST CREATE
 ========================================================= */
+
 async function createRoom(){
 
   unlockAudio();
 
-  const name = document.getElementById("hostName").value.trim();
-  const error = document.getElementById("hostCreateError");
+  const name =
+    document
+      .getElementById("hostName")
+      .value
+      .trim();
+
+  const error =
+    document.getElementById(
+      "hostCreateError"
+    );
+
   error.textContent = "";
 
   if(!name){
-    error.textContent = "Aparıcının adını yazın.";
+
+    error.textContent =
+      "Aparıcının adını yazın.";
+
+    animateNewElement(error);
+
     return;
   }
 
@@ -911,50 +2551,88 @@ async function createRoom(){
     let code = null;
 
     for(let i=0;i<10;i++){
-      const candidate = generateRoomCode();
-      const snap = await db.ref("rooms/" + candidate).once("value");
+
+      const candidate =
+        generateRoomCode();
+
+      const snap =
+        await db
+          .ref("rooms/" + candidate)
+          .once("value");
+
       if(!snap.exists()){
+
         code = candidate;
         break;
+
       }
     }
 
-    if(!code) throw new Error("Otaq kodu yaradıla bilmədi.");
+    if(!code)
+      throw new Error(
+        "Otaq kodu yaradıla bilmədi."
+      );
 
     const room = {
-      createdAt: firebase.database.ServerValue.TIMESTAMP,
+
+      createdAt:
+        firebase.database.ServerValue.TIMESTAMP,
+
       status:"waiting",
-      soundMode: gameMode,
-      host:{ name:name, connected:true },
+
+      soundMode:gameMode,
+
+      host:{
+        name:name,
+        connected:true
+      },
+
       blue:null,
       pink:null,
+
       blueScore:0,
       pinkScore:0,
+
       value:1,
       question:1,
+
       winner:null,
+
       startedAt:null,
       timerEnd:null,
+
       failBlue:false,
       failPink:false,
+
       wrongBlue:false,
       wrongPink:false,
+
       buzzAt:null,
       pausedRemaining:null
     };
 
-    await db.ref("rooms/" + code).set(room);
+    await db
+      .ref("rooms/" + code)
+      .set(room);
 
     roomCode = code;
     role = "host";
 
-    document.getElementById("hostRoomCode").textContent = code;
+    document
+      .getElementById("hostRoomCode")
+      .textContent = code;
 
     showScreen("hostScreen");
+
     startPolling();
 
   }catch(e){
-    error.textContent = "Xəta: " + e.message;
+
+    error.textContent =
+      "Xəta: " + e.message;
+
+    animateNewElement(error);
+
   }
 }
 
@@ -962,22 +2640,46 @@ async function createRoom(){
 /* =========================================================
    PLAYER JOIN
 ========================================================= */
+
 async function joinRoom(){
 
   unlockAudio();
 
-  const code = document.getElementById("roomInput").value.trim().toUpperCase();
-  const teamName = document.getElementById("teamNameInput").value.trim();
-  const error = document.getElementById("joinError");
+  const code =
+    document
+      .getElementById("roomInput")
+      .value
+      .trim()
+      .toUpperCase();
+
+  const teamName =
+    document
+      .getElementById("teamNameInput")
+      .value
+      .trim();
+
+  const error =
+    document.getElementById("joinError");
+
   error.textContent = "";
 
   if(code.length !== 6){
-    error.textContent = "Otaq kodu 6 simvol olmalıdır.";
+
+    error.textContent =
+      "Otaq kodu 6 simvol olmalıdır.";
+
+    animateNewElement(error);
+
     return;
   }
 
   if(!teamName){
-    error.textContent = "Komanda adını yazın.";
+
+    error.textContent =
+      "Komanda adını yazın.";
+
+    animateNewElement(error);
+
     return;
   }
 
@@ -985,51 +2687,112 @@ async function joinRoom(){
 
   try{
 
-    const path = "rooms/" + code;
-    const snap = await db.ref(path).once("value");
-    const room = snap.val();
+    const path =
+      "rooms/" + code;
+
+    const snap =
+      await db.ref(path).once("value");
+
+    const room =
+      snap.val();
 
     if(!room){
-      error.textContent = "Belə otaq yoxdur.";
+
+      error.textContent =
+        "Belə otaq yoxdur.";
+
+      animateNewElement(error);
+
       return;
     }
 
     if(room.status === "finished"){
-      error.textContent = "Bu oyun artıq bitib.";
+
+      error.textContent =
+        "Bu oyun artıq bitib.";
+
+      animateNewElement(error);
+
       return;
     }
 
-    /* eyni otaqda iki komandanın eyni adı daşımasına icazə yoxdur */
     const existingTeamName =
-      room.blue ? room.blue.name : (room.pink ? room.pink.name : null);
+      room.blue
+        ? room.blue.name
+        : (
+            room.pink
+              ? room.pink.name
+              : null
+          );
 
     if(
       existingTeamName &&
-      existingTeamName.trim().toLowerCase() === teamName.toLowerCase()
+      existingTeamName
+        .trim()
+        .toLowerCase() ===
+      teamName.toLowerCase()
     ){
-      error.textContent = "Bu komanda adı artıq istifadə olunub, fərqli ad seçin.";
+
+      error.textContent =
+        "Bu komanda adı artıq istifadə olunub, fərqli ad seçin.";
+
+      animateNewElement(error);
+
       return;
     }
 
     let joinedTeam = null;
 
     if(!room.blue){
-      const ok = await claimTeam(code, "blue", { name:teamName, connected:true });
-      if(ok) joinedTeam = "blue";
+
+      const ok =
+        await claimTeam(
+          code,
+          "blue",
+          {
+            name:teamName,
+            connected:true
+          }
+        );
+
+      if(ok)
+        joinedTeam = "blue";
     }
 
     if(!joinedTeam){
-      const latestSnap = await db.ref(path).once("value");
-      const latest = latestSnap.val();
+
+      const latestSnap =
+        await db
+          .ref(path)
+          .once("value");
+
+      const latest =
+        latestSnap.val();
 
       if(latest && !latest.pink){
-        const ok = await claimTeam(code, "pink", { name:teamName, connected:true });
-        if(ok) joinedTeam = "pink";
+
+        const ok =
+          await claimTeam(
+            code,
+            "pink",
+            {
+              name:teamName,
+              connected:true
+            }
+          );
+
+        if(ok)
+          joinedTeam = "pink";
       }
     }
 
     if(!joinedTeam){
-      error.textContent = "Bu otaqda artıq 2 komanda var.";
+
+      error.textContent =
+        "Bu otaqda artıq 2 komanda var.";
+
+      animateNewElement(error);
+
       return;
     }
 
@@ -1039,10 +2802,16 @@ async function joinRoom(){
     myTeamName = teamName;
 
     showScreen("playerScreen");
+
     startPolling();
 
   }catch(e){
-    error.textContent = "Xəta: " + e.message;
+
+    error.textContent =
+      "Xəta: " + e.message;
+
+    animateNewElement(error);
+
   }
 }
 
@@ -1050,64 +2819,109 @@ async function joinRoom(){
 /* =========================================================
    ATOMIC TEAM CLAIM
 ========================================================= */
-async function claimTeam(code, teamKey, value){
+
+async function claimTeam(
+  code,
+  teamKey,
+  value
+){
+
   try{
-    const ref = db.ref("rooms/" + code + "/" + teamKey);
-    const result = await ref.transaction(function(current){
-      return current === null ? value : undefined;
-    });
+
+    const ref =
+      db.ref(
+        "rooms/" +
+        code +
+        "/" +
+        teamKey
+      );
+
+    const result =
+      await ref.transaction(
+        function(current){
+
+          return current === null
+            ? value
+            : undefined;
+
+        }
+      );
+
     return !!result.committed;
+
   }catch(e){
+
     return false;
+
   }
 }
 
 
 /* =========================================================
-   ATILMA (KICK) — oyunçu tərəfi
+   KICK — PLAYER
 ========================================================= */
+
 function kickedOut(){
 
-  const wasPlayer = role === "player";
+  const wasPlayer =
+    role === "player";
 
-  /* roomCode/role əvvəlcədən null olur ki, beforeunload
-     silinmiş komandanı yenidən yaratmasın */
   stopPolling();
+
   roomCode = null;
   role = null;
   team = null;
   currentRoom = null;
 
   if(wasPlayer){
-    location.replace(KICK_REDIRECT);
+
+    location.replace(
+      KICK_REDIRECT
+    );
+
   }
 }
 
 
 /* =========================================================
-   REALTIME ROOM LISTENER
+   ROOM LISTENER
 ========================================================= */
+
 function attachRoomListener(){
 
   detachRoomListener();
 
-  roomRef = db.ref("rooms/" + roomCode);
+  roomRef =
+    db.ref(
+      "rooms/" +
+      roomCode
+    );
 
   roomRef.on(
     "value",
     function(snapshot){
 
-      const room = snapshot.val();
+      const room =
+        snapshot.val();
 
       if(!room){
-        if(role === "player") kickedOut();
+
+        if(role === "player")
+          kickedOut();
+
         return;
       }
 
-      /* Oyunçu aparıcı tərəfindən çıxarılıbsa — avtomatik get */
       if(role === "player"){
-        const mine = room[team];
-        if(!mine || mine.name !== myTeamName){
+
+        const mine =
+          room[team];
+
+        if(
+          !mine ||
+          mine.name !== myTeamName
+        ){
+
           kickedOut();
           return;
         }
@@ -1118,24 +2932,34 @@ function attachRoomListener(){
       setConnection(true);
 
       if(role === "host"){
+
         renderHost(room);
         checkAutoExpire(room);
+
       }else{
+
         renderPlayer(room);
+
       }
 
       processAudioEvents(room);
+
     },
-    function(err){
+    function(){
+
       setConnection(false);
+
     }
   );
 }
 
 function detachRoomListener(){
+
   if(roomRef){
+
     roomRef.off();
     roomRef = null;
+
   }
 }
 
@@ -1149,7 +2973,11 @@ function startPolling(){
 
   attachRoomListener();
 
-  timerLoop = setInterval(updateTimerOnly, 50);
+  timerLoop =
+    setInterval(
+      updateTimerOnly,
+      50
+    );
 }
 
 function stopPolling(){
@@ -1157,39 +2985,54 @@ function stopPolling(){
   detachRoomListener();
 
   if(timerLoop){
+
     clearInterval(timerLoop);
     timerLoop = null;
+
   }
 }
 
 
 /* =========================================================
-   AUDIO STATE EVENTS
+   AUDIO STATE
 ========================================================= */
+
 function processAudioEvents(room){
 
-  /* START beep-i: yalnız yeni startedAt yarananda (düyməyə basma
-     winner yazsa da beep təkrar çalınmır) */
   if(lastStartedAt === undefined){
-    lastStartedAt = room.startedAt || null;
-  }else if(room.startedAt && room.startedAt !== lastStartedAt){
 
-    lastStartedAt = room.startedAt;
+    lastStartedAt =
+      room.startedAt || null;
+
+  }else if(
+    room.startedAt &&
+    room.startedAt !== lastStartedAt
+  ){
+
+    lastStartedAt =
+      room.startedAt;
 
     if(localFlags.start){
+
       localFlags.start = false;
-    }else if(room.status === "running"){
+
+    }else if(
+      room.status === "running"
+    ){
+
       beep();
+
     }
   }
 
-  /* Düyməyə basılıb/vaxt bitib/oyun bitibsə çalan beep kəsilir */
   if(
     room.status === "answered" ||
     room.status === "expired" ||
     room.status === "finished"
   ){
+
     stopBeep();
+
   }
 
   const stateKey =
@@ -1203,26 +3046,42 @@ function processAudioEvents(room){
   if(stateKey !== lastStateKey){
 
     if(room.status === "answered"){
+
       if(localFlags.buzz){
+
         localFlags.buzz = false;
+
       }else{
+
         buzzSound();
+
       }
     }
 
     if(room.status === "finished"){
+
       winSound();
+
     }
 
-    if(room.status === "waiting" && (room.failBlue || room.failPink)){
+    if(
+      room.status === "waiting" &&
+      (room.failBlue || room.failPink)
+    ){
+
       if(localFlags.fail){
+
         localFlags.fail = false;
+
       }else{
+
         failSound();
+
       }
     }
 
     lastStateKey = stateKey;
+
   }
 }
 
@@ -1230,17 +3089,30 @@ function processAudioEvents(room){
 /* =========================================================
    TIMER
 ========================================================= */
+
 function calculateRemaining(room){
 
-  if(!room) return 20;
+  if(!room)
+    return 20;
 
-  if(room.status === "waiting") return 20;
+  if(room.status === "waiting")
+    return 20;
 
-  if(room.status === "running" && room.timerEnd){
+  if(
+    room.status === "running" &&
+    room.timerEnd
+  ){
+
     return Math.max(
       0,
-      Math.ceil((Number(room.timerEnd) - serverNow()) / 1000)
+      Math.ceil(
+        (
+          Number(room.timerEnd) -
+          serverNow()
+        ) / 1000
+      )
     );
+
   }
 
   return 0;
@@ -1248,59 +3120,107 @@ function calculateRemaining(room){
 
 function updateTimerOnly(){
 
-  if(!currentRoom) return;
+  if(!currentRoom)
+    return;
 
-  const seconds = calculateRemaining(currentRoom);
+  const seconds =
+    calculateRemaining(
+      currentRoom
+    );
 
-  const el = document.getElementById(
-    role === "host" ? "hostTimer" : "playerTimer"
+  const el =
+    document.getElementById(
+      role === "host"
+        ? "hostTimer"
+        : "playerTimer"
+    );
+
+  el.textContent =
+    seconds;
+
+  el.classList.toggle(
+    "warning",
+    seconds <= 10 &&
+    seconds > 4
   );
 
-  el.textContent = seconds;
-  el.classList.toggle("warning", seconds <= 10 && seconds > 4);
-  el.classList.toggle("danger", seconds <= 4);
+  el.classList.toggle(
+    "danger",
+    seconds <= 4
+  );
 
-  /* Ekranda 0 gəlibsə oyunçu düyməsi bloklanır */
   if(role !== "host"){
 
-    const btn = document.getElementById("buzzButton");
+    const btn =
+      document.getElementById(
+        "buzzButton"
+      );
 
     if(
       currentRoom.status === "running" &&
       seconds <= 0 &&
       !btn.classList.contains("locked")
     ){
+
       btn.disabled = true;
-      btn.className = "big-buzz locked";
-      setBuzzLabel("VAXT BİTDİ", false);
+
+      btn.className =
+        "big-buzz locked";
+
+      setBuzzLabel(
+        "VAXT BİTDİ",
+        false
+      );
+
     }
   }
 
-  if(currentRoom.status === "running" && currentRoom.timerEnd){
+  if(
+    currentRoom.status === "running" &&
+    currentRoom.timerEnd
+  ){
 
-    /* 10 və 4 saniyə qalanda beep (hər timerEnd üçün yalnız bir dəfə) */
-    const key = currentRoom.timerEnd + "|" + seconds;
+    const key =
+      currentRoom.timerEnd +
+      "|" +
+      seconds;
 
-    if((seconds === 10 || seconds === 4) && lastBeepKey !== key){
+    if(
+      (seconds === 10 ||
+       seconds === 4) &&
+      lastBeepKey !== key
+    ){
+
       lastBeepKey = key;
+
       beep();
+
     }
 
-    /* vaxt bitmə səsi */
     if(
-      Number(currentRoom.timerEnd) <= serverNow() &&
-      lastTimeUpEnd !== currentRoom.timerEnd
+      Number(currentRoom.timerEnd) <=
+      serverNow() &&
+      lastTimeUpEnd !==
+      currentRoom.timerEnd
     ){
-      lastTimeUpEnd = currentRoom.timerEnd;
+
+      lastTimeUpEnd =
+        currentRoom.timerEnd;
+
       timeUpSound();
+
     }
 
     if(
       role === "host" &&
-      Number(currentRoom.timerEnd) <= serverNow()
+      Number(currentRoom.timerEnd) <=
+      serverNow()
     ){
+
       expireQuestion();
+
     }
+
   }
 }
 
@@ -1308,90 +3228,158 @@ function updateTimerOnly(){
 /* =========================================================
    EXPIRE
 ========================================================= */
+
 let expiring = false;
 
 async function expireQuestion(){
 
-  if(expiring) return;
+  if(expiring)
+    return;
+
   expiring = true;
 
   try{
 
-    const snap = await db.ref("rooms/" + roomCode).once("value");
-    const room = snap.val();
+    const snap =
+      await db
+        .ref("rooms/" + roomCode)
+        .once("value");
+
+    const room =
+      snap.val();
 
     if(
       room &&
       room.status === "running" &&
       room.timerEnd &&
-      Number(room.timerEnd) <= serverNow()
+      Number(room.timerEnd) <=
+      serverNow()
     ){
-      await db.ref("rooms/" + roomCode).update({
-        status:"expired",
-        timerEnd:null
-      });
+
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+          status:"expired",
+          timerEnd:null
+        });
+
     }
 
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ expiring=false; }, 500);
+
+    setTimeout(
+      ()=>{
+        expiring=false;
+      },
+      500
+    );
+
   }
 }
 
 
 /* =========================================================
-   AUTO-EXPIRE
+   AUTO EXPIRE
 ========================================================= */
+
 let lockingOut = false;
 
 async function checkAutoExpire(room){
 
-  if(role !== "host") return;
-  if(!room) return;
+  if(role !== "host")
+    return;
+
+  if(!room)
+    return;
 
   if(room.status === "waiting"){
 
-    if(!room.failBlue || !room.failPink) return;
+    if(
+      !room.failBlue ||
+      !room.failPink
+    )
+      return;
 
   }else if(room.status === "running"){
 
-    const blueLocked = !!(room.failBlue || room.wrongBlue);
-    const pinkLocked = !!(room.failPink || room.wrongPink);
+    const blueLocked =
+      !!(
+        room.failBlue ||
+        room.wrongBlue
+      );
 
-    if(!(blueLocked && pinkLocked)) return;
+    const pinkLocked =
+      !!(
+        room.failPink ||
+        room.wrongPink
+      );
+
+    if(
+      !(blueLocked && pinkLocked)
+    )
+      return;
 
   }else{
+
     return;
+
   }
 
-  if(lockingOut) return;
+  if(lockingOut)
+    return;
+
   lockingOut = true;
 
   try{
 
-    const snap = await db.ref("rooms/" + roomCode).once("value");
-    const fresh = snap.val();
+    const snap =
+      await db
+        .ref("rooms/" + roomCode)
+        .once("value");
 
-    if(!fresh) return;
+    const fresh =
+      snap.val();
+
+    if(!fresh)
+      return;
 
     const stillWaitingBothFailed =
-      fresh.status === "waiting" && fresh.failBlue && fresh.failPink;
+      fresh.status === "waiting" &&
+      fresh.failBlue &&
+      fresh.failPink;
 
     const stillRunningBothLocked =
       fresh.status === "running" &&
       (fresh.failBlue || fresh.wrongBlue) &&
       (fresh.failPink || fresh.wrongPink);
 
-    if(stillWaitingBothFailed || stillRunningBothLocked){
-      await db.ref("rooms/" + roomCode).update({
-        status:"expired",
-        timerEnd:null
-      });
+    if(
+      stillWaitingBothFailed ||
+      stillRunningBothLocked
+    ){
+
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+          status:"expired",
+          timerEnd:null
+        });
+
     }
 
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ lockingOut=false; }, 500);
+
+    setTimeout(
+      ()=>{
+        lockingOut=false;
+      },
+      500
+    );
+
   }
 }
 
@@ -1399,42 +3387,114 @@ async function checkAutoExpire(room){
 /* =========================================================
    HOST RENDER
 ========================================================= */
+
+let previousHostStatus = null;
+
 function renderHost(room){
 
-  document.getElementById("hostQuestion").textContent = room.question || 1;
-  document.getElementById("hostValue").textContent = room.value || 1;
+  const statusChanged =
+    previousHostStatus !== room.status;
 
-  document.getElementById("hostBlueName").textContent =
-    room.blue ? room.blue.name : "Gözləyir...";
+  document.getElementById(
+    "hostQuestion"
+  ).textContent =
+    room.question || 1;
 
-  document.getElementById("hostPinkName").textContent =
-    room.pink ? room.pink.name : "Gözləyir...";
+  document.getElementById(
+    "hostValue"
+  ).textContent =
+    room.value || 1;
 
-  document.getElementById("hostBlueScore").textContent = room.blueScore || 0;
-  document.getElementById("hostPinkScore").textContent = room.pinkScore || 0;
+  document.getElementById(
+    "hostBlueName"
+  ).textContent =
+    room.blue
+      ? room.blue.name
+      : "Gözləyir...";
 
-  /* Çıxarma (x) düymələri yalnız "waiting" mərhələsində */
-  const kickAllowed = room.status === "waiting";
+  document.getElementById(
+    "hostPinkName"
+  ).textContent =
+    room.pink
+      ? room.pink.name
+      : "Gözləyir...";
 
-  document.getElementById("kickBlueBtn").style.display =
-    (kickAllowed && room.blue) ? "flex" : "none";
+  document.getElementById(
+    "hostBlueScore"
+  ).textContent =
+    room.blueScore || 0;
 
-  document.getElementById("kickPinkBtn").style.display =
-    (kickAllowed && room.pink) ? "flex" : "none";
+  document.getElementById(
+    "hostPinkScore"
+  ).textContent =
+    room.pinkScore || 0;
 
-  if(!kickAllowed && kickOverlayOpen){
+  const kickAllowed =
+    room.status === "waiting";
+
+  document.getElementById(
+    "kickBlueBtn"
+  ).style.display =
+    (
+      kickAllowed &&
+      room.blue
+    )
+      ? "flex"
+      : "none";
+
+  document.getElementById(
+    "kickPinkBtn"
+  ).style.display =
+    (
+      kickAllowed &&
+      room.pink
+    )
+      ? "flex"
+      : "none";
+
+  if(
+    !kickAllowed &&
+    kickOverlayOpen
+  ){
+
     closeKickOverlay(false);
+
   }
 
-  const event = document.getElementById("hostEvent");
-  const startBtn = document.getElementById("startBtn");
+  const event =
+    document.getElementById(
+      "hostEvent"
+    );
 
-  document.getElementById("resetBtn").disabled = room.status !== "waiting";
-  document.getElementById("resetQVBtn").disabled = room.status !== "waiting";
+  const startBtn =
+    document.getElementById(
+      "startBtn"
+    );
 
-  const answerControls = document.getElementById("answerControls");
-  const expiredControls = document.getElementById("expiredControls");
-  const finishedControls = document.getElementById("finishedControls");
+  document.getElementById(
+    "resetBtn"
+  ).disabled =
+    room.status !== "waiting";
+
+  document.getElementById(
+    "resetQVBtn"
+  ).disabled =
+    room.status !== "waiting";
+
+  const answerControls =
+    document.getElementById(
+      "answerControls"
+    );
+
+  const expiredControls =
+    document.getElementById(
+      "expiredControls"
+    );
+
+  const finishedControls =
+    document.getElementById(
+      "finishedControls"
+    );
 
   answerControls.classList.add("hidden");
   expiredControls.classList.add("hidden");
@@ -1445,234 +3505,552 @@ function renderHost(room){
     if(!room.blue || !room.pink){
 
       startBtn.disabled = true;
-      event.className = "event neutral";
-      event.textContent = "İki komandanın qoşulması gözlənilir...";
 
-    }else if(room.failBlue && room.failPink){
+      event.className =
+        "event neutral";
+
+      event.textContent =
+        "İki komandanın qoşulması gözlənilir...";
+
+    }else if(
+      room.failBlue &&
+      room.failPink
+    ){
 
       startBtn.disabled = true;
-      event.className = "event neutral";
-      event.textContent = "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
 
-    }else if(room.failBlue || room.failPink){
+      event.className =
+        "event neutral";
+
+      event.textContent =
+        "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
+
+    }else if(
+      room.failBlue ||
+      room.failPink
+    ){
 
       startBtn.disabled = false;
 
       const falseStartName =
         room.failBlue
-        ? (room.blue?.name || "Mavi")
-        : (room.pink?.name || "Çəhrayı");
+          ? (
+              room.blue?.name ||
+              "Mavi"
+            )
+          : (
+              room.pink?.name ||
+              "Çəhrayı"
+            );
 
-      event.className = room.failBlue ? "event blue" : "event pink";
-      event.textContent = falseStartName + " FALSTART ETDİ";
+      event.className =
+        room.failBlue
+          ? "event blue"
+          : "event pink";
+
+      event.textContent =
+        falseStartName +
+        " FALSTART ETDİ";
 
     }else{
 
       startBtn.disabled = false;
-      event.className = "event neutral";
-      event.textContent = "Hazırdır. Sualı oxuyun və START basın.";
+
+      event.className =
+        "event neutral";
+
+      event.textContent =
+        "Hazırdır. Sualı oxuyun və START basın.";
+
     }
 
-  }else if(room.status === "running"){
+  }else if(
+    room.status === "running"
+  ){
 
     startBtn.disabled = true;
-    event.className = "event neutral";
-    event.textContent = "⏱️ CAVAB VAXTI DAVAM EDİR";
 
-  }else if(room.status === "answered"){
+    event.className =
+      "event neutral";
+
+    event.textContent =
+      "⏱️ CAVAB VAXTI DAVAM EDİR";
+
+  }else if(
+    room.status === "answered"
+  ){
 
     startBtn.disabled = true;
-    answerControls.classList.remove("hidden");
 
-    const winner = room.winner;
+    showWithAnimation(
+      answerControls
+    );
+
+    const winner =
+      room.winner;
 
     const winnerName =
       winner === "blue"
-      ? (room.blue?.name || "Mavi")
-      : (room.pink?.name || "Çəhrayı");
+        ? (
+            room.blue?.name ||
+            "Mavi"
+          )
+        : (
+            room.pink?.name ||
+            "Çəhrayı"
+          );
 
-    const wt = document.getElementById("winnerText");
-    wt.className = "winner " + winner;
-    wt.textContent = winnerName + " CAVAB VERİR";
+    const wt =
+      document.getElementById(
+        "winnerText"
+      );
 
-    event.className = winner === "blue" ? "event blue" : "event pink";
-    event.textContent = winnerName + " CAVAB VERİR";
+    wt.className =
+      "winner " + winner;
 
-  }else if(room.status === "expired"){
+    wt.textContent =
+      winnerName +
+      " CAVAB VERİR";
+
+    event.className =
+      winner === "blue"
+        ? "event blue"
+        : "event pink";
+
+    event.textContent =
+      winnerName +
+      " CAVAB VERİR";
+
+  }else if(
+    room.status === "expired"
+  ){
 
     startBtn.disabled = true;
-    expiredControls.classList.remove("hidden");
-    event.className = "event neutral";
-    event.textContent = "⏱️ VAXT BİTDİ — HEÇ KİM CAVAB VERMƏDİ";
 
-  }else if(room.status === "finished"){
+    showWithAnimation(
+      expiredControls
+    );
+
+    event.className =
+      "event neutral";
+
+    event.textContent =
+      "⏱️ VAXT BİTDİ — HEÇ KİM CAVAB VERMƏDİ";
+
+  }else if(
+    room.status === "finished"
+  ){
 
     startBtn.disabled = true;
-    finishedControls.classList.remove("hidden");
 
-    const winner = room.winner;
+    showWithAnimation(
+      finishedControls
+    );
+
+    const winner =
+      room.winner;
 
     const winnerName =
       winner === "blue"
-      ? (room.blue?.name || "Mavi")
-      : (room.pink?.name || "Çəhrayı");
+        ? (
+            room.blue?.name ||
+            "Mavi"
+          )
+        : (
+            room.pink?.name ||
+            "Çəhrayı"
+          );
 
-    event.className = winner === "blue" ? "event blue" : "event pink";
-    event.textContent = "🏆 " + winnerName + " QALİB OLDU!";
+    event.className =
+      winner === "blue"
+        ? "event blue"
+        : "event pink";
+
+    event.textContent =
+      "🏆 " +
+      winnerName +
+      " QALİB OLDU!";
+
   }
 
-  if(room.status === "running" && room.failBlue && room.failPink){
-    event.className = "event neutral";
-    event.textContent = "Hər iki komandanın cavab hüququ yoxdur.";
+  if(
+    room.status === "running" &&
+    room.failBlue &&
+    room.failPink
+  ){
+
+    event.className =
+      "event neutral";
+
+    event.textContent =
+      "Hər iki komandanın cavab hüququ yoxdur.";
+
   }
+
+  /*
+    Yalnız vəziyyət həqiqətən dəyişibsə
+    yeni gələn hissələr animasiya alır.
+  */
+
+  if(statusChanged){
+
+    if(room.status === "answered"){
+      animateNewElement(answerControls);
+    }
+
+    if(room.status === "expired"){
+      animateNewElement(expiredControls);
+    }
+
+    if(room.status === "finished"){
+      animateNewElement(finishedControls);
+    }
+
+    animateNewElement(event);
+  }
+
+  previousHostStatus =
+    room.status;
 }
 
 
 /* =========================================================
    PLAYER RENDER
 ========================================================= */
-function setBuzzLabel(text, big){
-  const label = document.getElementById("buzzButtonLabel");
-  label.textContent = text;
-  label.className = "buzz-label " + (big ? "jumbo" : "small");
+
+let previousPlayerStatus = null;
+
+function setBuzzLabel(text,big){
+
+  const label =
+    document.getElementById(
+      "buzzButtonLabel"
+    );
+
+  label.textContent =
+    text;
+
+  label.className =
+    "buzz-label " +
+    (
+      big
+        ? "jumbo"
+        : "small"
+    );
 }
 
 function renderPlayer(room){
 
-  document.getElementById("playerQuestion").textContent = room.question || 1;
-  document.getElementById("playerValue").textContent = room.value || 1;
+  const statusChanged =
+    previousPlayerStatus !== room.status;
 
-  document.getElementById("playerBlueName").textContent =
-    room.blue ? room.blue.name : "Gözləyir...";
+  document.getElementById(
+    "playerQuestion"
+  ).textContent =
+    room.question || 1;
 
-  document.getElementById("playerPinkName").textContent =
-    room.pink ? room.pink.name : "Gözləyir...";
+  document.getElementById(
+    "playerValue"
+  ).textContent =
+    room.value || 1;
 
-  document.getElementById("playerBlueScore").textContent = room.blueScore || 0;
-  document.getElementById("playerPinkScore").textContent = room.pinkScore || 0;
+  document.getElementById(
+    "playerBlueName"
+  ).textContent =
+    room.blue
+      ? room.blue.name
+      : "Gözləyir...";
 
-  const button = document.getElementById("buzzButton");
-  const event = document.getElementById("playerEvent");
+  document.getElementById(
+    "playerPinkName"
+  ).textContent =
+    room.pink
+      ? room.pink.name
+      : "Gözləyir...";
+
+  document.getElementById(
+    "playerBlueScore"
+  ).textContent =
+    room.blueScore || 0;
+
+  document.getElementById(
+    "playerPinkScore"
+  ).textContent =
+    room.pinkScore || 0;
+
+  const button =
+    document.getElementById(
+      "buzzButton"
+    );
+
+  const event =
+    document.getElementById(
+      "playerEvent"
+    );
 
   button.disabled = false;
-  button.className = "big-buzz " + team;
 
-  /* ---------- WAITING ---------- */
+  button.className =
+    "big-buzz " + team;
+
   if(room.status === "waiting"){
 
-    const failed = team === "blue" ? room.failBlue : room.failPink;
+    const failed =
+      team === "blue"
+        ? room.failBlue
+        : room.failPink;
 
     if(failed){
+
       button.disabled = true;
-      button.className = "big-buzz locked";
-      setBuzzLabel("CAVAB HÜQUQU YOXDUR", false);
+
+      button.className =
+        "big-buzz locked";
+
+      setBuzzLabel(
+        "CAVAB HÜQUQU YOXDUR",
+        false
+      );
+
     }else{
+
       button.disabled = false;
-      setBuzzLabel("BAS!", true);
+
+      setBuzzLabel(
+        "BAS!",
+        true
+      );
+
     }
 
-    const opponentFailed = team === "blue" ? room.failPink : room.failBlue;
+    const opponentFailed =
+      team === "blue"
+        ? room.failPink
+        : room.failBlue;
 
     if(opponentFailed){
 
       const opponentName =
         team === "blue"
-        ? (room.pink?.name || "Çəhrayı")
-        : (room.blue?.name || "Mavi");
+          ? (
+              room.pink?.name ||
+              "Çəhrayı"
+            )
+          : (
+              room.blue?.name ||
+              "Mavi"
+            );
 
-      event.className = team === "blue" ? "event pink" : "event blue";
-      event.textContent = opponentName + " FALSTART ETDİ";
+      event.className =
+        team === "blue"
+          ? "event pink"
+          : "event blue";
+
+      event.textContent =
+        opponentName +
+        " FALSTART ETDİ";
 
     }else{
-      event.className = "event neutral";
-      event.textContent = "Aparıcı START verməlidir.";
+
+      event.className =
+        "event neutral";
+
+      event.textContent =
+        "Aparıcı START verməlidir.";
+
     }
+
+    if(statusChanged)
+      animateNewElement(event);
+
+    previousPlayerStatus =
+      room.status;
 
     return;
   }
 
-  /* ---------- RUNNING ---------- */
+
   if(room.status === "running"){
 
-    const failed = team === "blue" ? room.failBlue : room.failPink;
-    const wrong = team === "blue" ? room.wrongBlue : room.wrongPink;
+    const failed =
+      team === "blue"
+        ? room.failBlue
+        : room.failPink;
+
+    const wrong =
+      team === "blue"
+        ? room.wrongBlue
+        : room.wrongPink;
 
     if(failed || wrong){
 
       button.disabled = true;
-      button.className = "big-buzz locked";
-      setBuzzLabel("CAVAB HÜQUQU YOXDUR", false);
 
-    }else if(calculateRemaining(room) <= 0){
+      button.className =
+        "big-buzz locked";
 
-      /* ekranda 0 gəlibsə basmaq olmaz */
+      setBuzzLabel(
+        "CAVAB HÜQUQU YOXDUR",
+        false
+      );
+
+    }else if(
+      calculateRemaining(room) <= 0
+    ){
+
       button.disabled = true;
-      button.className = "big-buzz locked";
-      setBuzzLabel("VAXT BİTDİ", false);
+
+      button.className =
+        "big-buzz locked";
+
+      setBuzzLabel(
+        "VAXT BİTDİ",
+        false
+      );
 
     }else{
 
       button.disabled = false;
-      button.className = "big-buzz " + team;
-      setBuzzLabel("BAS!", true);
+
+      button.className =
+        "big-buzz " + team;
+
+      setBuzzLabel(
+        "BAS!",
+        true
+      );
+
     }
 
-    event.className = "event neutral";
-    event.textContent = "⏱️ BASMAQ ÜÇÜN VAXT VAR";
+    event.className =
+      "event neutral";
+
+    event.textContent =
+      "⏱️ BASMAQ ÜÇÜN VAXT VAR";
+
+    if(statusChanged)
+      animateNewElement(event);
+
+    previousPlayerStatus =
+      room.status;
 
     return;
   }
 
-  /* ---------- ANSWERED ---------- */
+
   if(room.status === "answered"){
 
     button.disabled = true;
-    button.className = "big-buzz locked";
 
-    setBuzzLabel(room.winner === team ? "SİZ BASDINIZ" : "RƏQİB BASDI", false);
+    button.className =
+      "big-buzz locked";
+
+    setBuzzLabel(
+      room.winner === team
+        ? "SİZ BASDINIZ"
+        : "RƏQİB BASDI",
+      false
+    );
 
     const winnerName =
       room.winner === "blue"
-      ? (room.blue?.name || "Mavi")
-      : (room.pink?.name || "Çəhrayı");
+        ? (
+            room.blue?.name ||
+            "Mavi"
+          )
+        : (
+            room.pink?.name ||
+            "Çəhrayı"
+          );
 
-    event.className = room.winner === "blue" ? "event blue" : "event pink";
+    event.className =
+      room.winner === "blue"
+        ? "event blue"
+        : "event pink";
 
     event.textContent =
       room.winner === team
-      ? "SİZ CAVAB VERİRSİNİZ"
-      : winnerName + " CAVAB VERİR";
+        ? "SİZ CAVAB VERİRSİNİZ"
+        : winnerName +
+          " CAVAB VERİR";
+
+    if(statusChanged)
+      animateNewElement(event);
+
+    previousPlayerStatus =
+      room.status;
 
     return;
   }
 
-  /* ---------- EXPIRED ---------- */
+
   if(room.status === "expired"){
 
     button.disabled = true;
-    button.className = "big-buzz locked";
-    setBuzzLabel("VAXT BİTDİ", false);
 
-    event.className = "event neutral";
-    event.textContent = "⏱️ VAXT BİTDİ";
+    button.className =
+      "big-buzz locked";
+
+    setBuzzLabel(
+      "VAXT BİTDİ",
+      false
+    );
+
+    event.className =
+      "event neutral";
+
+    event.textContent =
+      "⏱️ VAXT BİTDİ";
+
+    if(statusChanged)
+      animateNewElement(event);
+
+    previousPlayerStatus =
+      room.status;
 
     return;
   }
 
-  /* ---------- FINISHED ---------- */
+
   if(room.status === "finished"){
 
     button.disabled = true;
-    button.className = "big-buzz locked";
-    setBuzzLabel("OYUN BİTDİ", false);
+
+    button.className =
+      "big-buzz locked";
+
+    setBuzzLabel(
+      "OYUN BİTDİ",
+      false
+    );
 
     const winnerName =
       room.winner === "blue"
-      ? (room.blue?.name || "Mavi")
-      : (room.pink?.name || "Çəhrayı");
+        ? (
+            room.blue?.name ||
+            "Mavi"
+          )
+        : (
+            room.pink?.name ||
+            "Çəhrayı"
+          );
 
-    event.className = room.winner === "blue" ? "event blue" : "event pink";
-    event.textContent = "🏆 " + winnerName + " QALİB OLDU!";
+    event.className =
+      room.winner === "blue"
+        ? "event blue"
+        : "event pink";
+
+    event.textContent =
+      "🏆 " +
+      winnerName +
+      " QALİB OLDU!";
+
+    if(statusChanged)
+      animateNewElement(event);
+
+    previousPlayerStatus =
+      room.status;
+
   }
 }
 
@@ -1680,294 +4058,543 @@ function renderPlayer(room){
 /* =========================================================
    HOST START
 ========================================================= */
+
 let startBusy = false;
 
 async function hostStart(){
 
-  if(startBusy) return;
+  if(startBusy)
+    return;
+
   startBusy = true;
 
   unlockAudio();
 
   try{
 
-    const snap = await db.ref("rooms/" + roomCode).once("value");
-    const room = snap.val();
+    const snap =
+      await db
+        .ref("rooms/" + roomCode)
+        .once("value");
 
-    if(!room || !room.blue || !room.pink || room.status !== "waiting"){
+    const room =
+      snap.val();
+
+    if(
+      !room ||
+      !room.blue ||
+      !room.pink ||
+      room.status !== "waiting"
+    ){
+
       return;
     }
 
     await waitForOffset();
 
-    const startedAt = serverNow();
-    const timerEnd = startedAt + 20000;
+    const startedAt =
+      serverNow();
+
+    const timerEnd =
+      startedAt + 20000;
 
     localFlags.start = true;
+
     beep();
 
-    await db.ref("rooms/" + roomCode).update({
-      status:"running",
-      startedAt:startedAt,
-      timerEnd:timerEnd,
-      winner:null,
-      buzzAt:null
-    });
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        status:"running",
+
+        startedAt:
+          startedAt,
+
+        timerEnd:
+          timerEnd,
+
+        winner:null,
+
+        buzzAt:null
+
+      });
 
   }catch(e){
+
     console.log(e);
+
   }finally{
-    setTimeout(()=>{ startBusy=false; }, 500);
+
+    setTimeout(
+      ()=>{
+        startBusy=false;
+      },
+      500
+    );
+
   }
 }
 
 
 /* =========================================================
-   DÜYMƏLƏRİ SIFIRLA (yalnız "waiting" mərhələsində)
+   DÜYMƏLƏRİ SIFIRLA
 ========================================================= */
+
 let resetBusy = false;
 
 async function resetButtons(){
 
-  if(resetBusy) return;
+  if(resetBusy)
+    return;
+
   resetBusy = true;
 
   try{
-    await db.ref("rooms/" + roomCode).update({
-      failBlue:false,
-      failPink:false,
-      wrongBlue:false,
-      wrongPink:false
-    });
+
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        failBlue:false,
+        failPink:false,
+
+        wrongBlue:false,
+        wrongPink:false
+
+      });
+
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ resetBusy=false; }, 300);
+
+    setTimeout(
+      ()=>{
+        resetBusy=false;
+      },
+      300
+    );
+
   }
 }
 
 
 /* =========================================================
-   SUAL VƏ DƏYƏRİ SIFIRLA (xallara toxunmur)
+   SUAL VƏ DƏYƏRİ SIFIRLA
 ========================================================= */
+
 let resetQVBusy = false;
 
 async function resetQuestionValue(){
 
-  if(resetQVBusy) return;
-  if(!currentRoom || currentRoom.status !== "waiting") return;
+  if(resetQVBusy)
+    return;
+
+  if(
+    !currentRoom ||
+    currentRoom.status !== "waiting"
+  )
+    return;
 
   resetQVBusy = true;
 
   try{
-    await db.ref("rooms/" + roomCode).update({
-      question:1,
-      value:1
-    });
+
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        question:1,
+        value:1
+
+      });
+
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ resetQVBusy=false; }, 300);
+
+    setTimeout(
+      ()=>{
+        resetQVBusy=false;
+      },
+      300
+    );
+
   }
 }
 
 
 /* =========================================================
-   İŞTİRAKÇI ÇIXARMA (KICK) — aparıcı tərəfi
+   KICK
 ========================================================= */
+
 function confirmKick(teamKey){
 
-  if(!currentRoom) return;
-  if(currentRoom.status !== "waiting") return;
+  if(!currentRoom)
+    return;
 
-  const teamObj = currentRoom[teamKey];
-  if(!teamObj) return;
+  if(currentRoom.status !== "waiting")
+    return;
 
-  kickTarget = teamKey;
-  kickOverlayOpen = true;
+  const teamObj =
+    currentRoom[teamKey];
 
-  const overlay = document.getElementById("kickOverlay");
-  const modal = document.getElementById("kickModal");
-  const text = document.getElementById("kickModalText");
+  if(!teamObj)
+    return;
 
-  text.textContent = teamObj.name + " ÇIXARMAQ İSTƏYİRSİZ?";
+  kickTarget =
+    teamKey;
 
-  overlay.style.display = "flex";
-  overlay.style.pointerEvents = "auto";
+  kickOverlayOpen =
+    true;
+
+  const overlay =
+    document.getElementById(
+      "kickOverlay"
+    );
+
+  const modal =
+    document.getElementById(
+      "kickModal"
+    );
+
+  const text =
+    document.getElementById(
+      "kickModalText"
+    );
+
+  text.textContent =
+    teamObj.name +
+    " ÇIXARMAQ İSTƏYİRSİZ?";
+
+  overlay.style.display =
+    "flex";
+
+  overlay.style.pointerEvents =
+    "auto";
+
   overlay.style.transition =
     "background .2s ease, backdrop-filter .2s ease, -webkit-backdrop-filter .2s ease";
 
-  modal.style.transition = "opacity .5s ease, transform .5s ease";
+  modal.style.transition =
+    "opacity .5s ease, transform .5s ease";
 
   requestAnimationFrame(function(){
+
     requestAnimationFrame(function(){
-      overlay.style.background = "rgba(0,7,44,.3)";
-      overlay.style.backdropFilter = "blur(8px)";
-      overlay.style.webkitBackdropFilter = "blur(8px)";
-      modal.style.opacity = "1";
-      modal.style.transform = "scale(1)";
+
+      overlay.style.background =
+        "rgba(0,7,44,.3)";
+
+      overlay.style.backdropFilter =
+        "blur(8px)";
+
+      overlay.style.webkitBackdropFilter =
+        "blur(8px)";
+
+      modal.style.opacity =
+        "1";
+
+      modal.style.transform =
+        "scale(1)";
+
     });
+
   });
 }
 
-function closeKickOverlay(shouldRemove){
+function closeKickOverlay(
+  shouldRemove
+){
 
-  const overlay = document.getElementById("kickOverlay");
-  const modal = document.getElementById("kickModal");
+  const overlay =
+    document.getElementById(
+      "kickOverlay"
+    );
 
-  modal.style.transition = "opacity .3s ease";
-  modal.style.opacity = "0";
+  const modal =
+    document.getElementById(
+      "kickModal"
+    );
+
+  modal.style.transition =
+    "opacity .3s ease";
+
+  modal.style.opacity =
+    "0";
 
   overlay.style.transition =
     "background .2s ease, backdrop-filter .2s ease, -webkit-backdrop-filter .2s ease";
 
-  overlay.style.background = "rgba(0,7,44,0)";
-  overlay.style.backdropFilter = "blur(0px)";
-  overlay.style.webkitBackdropFilter = "blur(0px)";
-  overlay.style.pointerEvents = "none";
+  overlay.style.background =
+    "rgba(0,7,44,0)";
 
-  kickOverlayOpen = false;
+  overlay.style.backdropFilter =
+    "blur(0px)";
 
-  setTimeout(function(){
-    overlay.style.display = "none";
-    modal.style.transform = "scale(.85)";
-  }, 300);
+  overlay.style.webkitBackdropFilter =
+    "blur(0px)";
+
+  overlay.style.pointerEvents =
+    "none";
+
+  kickOverlayOpen =
+    false;
+
+  setTimeout(
+    function(){
+
+      overlay.style.display =
+        "none";
+
+      modal.style.transform =
+        "scale(.85)";
+
+    },
+    300
+  );
 
   if(shouldRemove){
+
     performKick();
+
   }else{
+
     kickTarget = null;
+
   }
 }
 
 async function performKick(){
 
-  if(kickBusy) return;
-  if(!kickTarget) return;
+  if(kickBusy)
+    return;
+
+  if(!kickTarget)
+    return;
 
   kickBusy = true;
 
-  const field = kickTarget;
+  const field =
+    kickTarget;
+
   kickTarget = null;
 
   try{
-    await db.ref("rooms/" + roomCode).update({
-      [field]: null,
-      blueScore:0,
-      pinkScore:0
-    });
+
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        [field]:null,
+
+        blueScore:0,
+        pinkScore:0
+
+      });
+
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ kickBusy=false; }, 300);
+
+    setTimeout(
+      ()=>{
+        kickBusy=false;
+      },
+      300
+    );
+
   }
 }
 
-function kickConfirm(yes){ closeKickOverlay(yes); }
+function kickConfirm(yes){
+  closeKickOverlay(yes);
+}
 
 
 /* =========================================================
    PLAYER BUZZ
 ========================================================= */
+
 let buzzBusy = false;
 
 async function playerBuzz(){
 
-  if(buzzBusy) return;
-  if(!currentRoom) return;
+  if(buzzBusy)
+    return;
 
-  const room = currentRoom;
+  if(!currentRoom)
+    return;
 
-  /* ---------- START-dan əvvəl (falstart) ---------- */
+  const room =
+    currentRoom;
+
   if(room.status === "waiting"){
 
-    const otherAlreadyFailed = team === "blue" ? room.failPink : room.failBlue;
-    if(otherAlreadyFailed) return;
+    const otherAlreadyFailed =
+      team === "blue"
+        ? room.failPink
+        : room.failBlue;
+
+    if(otherAlreadyFailed)
+      return;
 
     buzzBusy = true;
 
     try{
 
-      const field = team === "blue" ? "failBlue" : "failPink";
+      const field =
+        team === "blue"
+          ? "failBlue"
+          : "failPink";
 
       localFlags.fail = true;
+
       failSound();
 
-      await db.ref("rooms/" + roomCode).update({ [field]:true });
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+          [field]:true
+        });
 
     }catch(e){
+
     }finally{
-      setTimeout(()=>{ buzzBusy=false; }, 250);
+
+      setTimeout(
+        ()=>{
+          buzzBusy=false;
+        },
+        250
+      );
+
     }
 
     return;
   }
 
-  if(room.status !== "running") return;
+  if(room.status !== "running")
+    return;
 
-  /* Ekranda 0 gəlibsə basmaq olmaz */
-  if(calculateRemaining(room) <= 0) return;
+  if(
+    calculateRemaining(room) <= 0
+  )
+    return;
 
   if(
     team === "blue"
-      ? room.failBlue || room.wrongBlue
-      : room.failPink || room.wrongPink
+      ? room.failBlue ||
+        room.wrongBlue
+      : room.failPink ||
+        room.wrongPink
   ){
+
     return;
   }
 
-  if(!room.timerEnd || Number(room.timerEnd) <= serverNow()){
+  if(
+    !room.timerEnd ||
+    Number(room.timerEnd) <=
+    serverNow()
+  ){
+
     return;
   }
 
   buzzBusy = true;
 
-  /* Beep çalırsa dərhal kəsilir (düymə səsi çalınır) */
   stopBeep();
 
   try{
+
     await atomicWinnerClaim();
+
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ buzzBusy=false; }, 200);
+
+    setTimeout(
+      ()=>{
+        buzzBusy=false;
+      },
+      200
+    );
+
   }
 }
 
 
 /* =========================================================
-   ATOMIC WINNER CLAIM
+   ATOMIC WINNER
 ========================================================= */
+
 async function atomicWinnerClaim(){
 
   try{
 
-    const ref = db.ref("rooms/" + roomCode + "/winner");
+    const ref =
+      db.ref(
+        "rooms/" +
+        roomCode +
+        "/winner"
+      );
 
-    const result = await ref.transaction(function(current){
-      return current === null ? team : undefined;
-    });
+    const result =
+      await ref.transaction(
+        function(current){
 
-    if(!result.committed) return false;
+          return current === null
+            ? team
+            : undefined;
 
-    /* rəqibə "qalan vaxtdan davam" üçün qalan müddət saxlanır */
+        }
+      );
+
+    if(!result.committed)
+      return false;
+
     const remainingMs =
-      currentRoom && currentRoom.timerEnd
-      ? Math.max(0, Number(currentRoom.timerEnd) - serverNow())
-      : 0;
+      currentRoom &&
+      currentRoom.timerEnd
+        ? Math.max(
+            0,
+            Number(
+              currentRoom.timerEnd
+            ) -
+            serverNow()
+          )
+        : 0;
 
     localFlags.buzz = true;
+
     buzzSound();
 
-    if(navigator.vibrate) navigator.vibrate(100);
+    if(navigator.vibrate)
+      navigator.vibrate(100);
 
-    await db.ref("rooms/" + roomCode).update({
-      status:"answered",
-      buzzAt: firebase.database.ServerValue.TIMESTAMP,
-      timerEnd:null,
-      pausedRemaining:remainingMs
-    });
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        status:"answered",
+
+        buzzAt:
+          firebase.database.ServerValue.TIMESTAMP,
+
+        timerEnd:null,
+
+        pausedRemaining:
+          remainingMs
+
+      });
 
     return true;
 
   }catch(e){
+
     return false;
+
   }
 }
 
@@ -1975,49 +4602,93 @@ async function atomicWinnerClaim(){
 /* =========================================================
    WRONG ANSWER
 ========================================================= */
+
 let wrongBusy = false;
 
 async function wrongAnswer(){
 
-  if(wrongBusy) return;
+  if(wrongBusy)
+    return;
 
-  const snap = await db.ref("rooms/" + roomCode).once("value");
-  const room = snap.val();
+  const snap =
+    await db
+      .ref("rooms/" + roomCode)
+      .once("value");
 
-  if(!room || room.status !== "answered" || !room.winner) return;
+  const room =
+    snap.val();
 
-  const wrongField = room.winner === "blue" ? "wrongBlue" : "wrongPink";
+  if(
+    !room ||
+    room.status !== "answered" ||
+    !room.winner
+  )
+    return;
+
+  const wrongField =
+    room.winner === "blue"
+      ? "wrongBlue"
+      : "wrongPink";
 
   wrongBusy = true;
 
   try{
 
-    const remaining = Number(room.pausedRemaining || 0);
+    const remaining =
+      Number(
+        room.pausedRemaining || 0
+      );
 
     if(remaining > 0){
 
-      await db.ref("rooms/" + roomCode).update({
-        [wrongField]:true,
-        winner:null,
-        status:"running",
-        timerEnd: serverNow() + remaining,
-        pausedRemaining:null
-      });
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+
+          [wrongField]:true,
+
+          winner:null,
+
+          status:"running",
+
+          timerEnd:
+            serverNow() + remaining,
+
+          pausedRemaining:null
+
+        });
 
     }else{
 
-      await db.ref("rooms/" + roomCode).update({
-        [wrongField]:true,
-        winner:null,
-        status:"expired",
-        timerEnd:null,
-        pausedRemaining:null
-      });
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+
+          [wrongField]:true,
+
+          winner:null,
+
+          status:"expired",
+
+          timerEnd:null,
+
+          pausedRemaining:null
+
+        });
+
     }
 
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ wrongBusy=false; }, 400);
+
+    setTimeout(
+      ()=>{
+        wrongBusy=false;
+      },
+      400
+    );
+
   }
 }
 
@@ -2025,121 +4696,237 @@ async function wrongAnswer(){
 /* =========================================================
    GIVE POINTS
 ========================================================= */
+
 let pointBusy = false;
 
 async function givePoints(points){
 
-  if(pointBusy) return;
+  if(pointBusy)
+    return;
+
   pointBusy = true;
 
   try{
 
-    const snap = await db.ref("rooms/" + roomCode).once("value");
-    const room = snap.val();
+    const snap =
+      await db
+        .ref("rooms/" + roomCode)
+        .once("value");
 
-    if(!room || room.status !== "answered" || !room.winner) return;
+    const room =
+      snap.val();
 
-    const winner = room.winner;
+    if(
+      !room ||
+      room.status !== "answered" ||
+      !room.winner
+    )
+      return;
 
-    let blueScore = Number(room.blueScore || 0);
-    let pinkScore = Number(room.pinkScore || 0);
+    const winner =
+      room.winner;
+
+    let blueScore =
+      Number(
+        room.blueScore || 0
+      );
+
+    let pinkScore =
+      Number(
+        room.pinkScore || 0
+      );
 
     if(winner === "blue"){
+
       blueScore += points;
+
     }else{
+
       pinkScore += points;
+
     }
 
     if(blueScore >= 5){
-      await db.ref("rooms/" + roomCode).update({
-        blueScore:blueScore,
-        pinkScore:pinkScore,
-        status:"finished",
-        winner:"blue",
-        timerEnd:null
-      });
+
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+
+          blueScore:
+            blueScore,
+
+          pinkScore:
+            pinkScore,
+
+          status:"finished",
+
+          winner:"blue",
+
+          timerEnd:null
+
+        });
+
       return;
     }
 
     if(pinkScore >= 5){
-      await db.ref("rooms/" + roomCode).update({
-        blueScore:blueScore,
-        pinkScore:pinkScore,
-        status:"finished",
-        winner:"pink",
-        timerEnd:null
-      });
+
+      await db
+        .ref("rooms/" + roomCode)
+        .update({
+
+          blueScore:
+            blueScore,
+
+          pinkScore:
+            pinkScore,
+
+          status:"finished",
+
+          winner:"pink",
+
+          timerEnd:null
+
+        });
+
       return;
     }
 
-    await db.ref("rooms/" + roomCode).update({
-      blueScore:blueScore,
-      pinkScore:pinkScore,
-      question:Number(room.question || 1) + 1,
-      value:1,
-      status:"waiting",
-      winner:null,
-      startedAt:null,
-      timerEnd:null,
-      failBlue:false,
-      failPink:false,
-      wrongBlue:false,
-      wrongPink:false,
-      buzzAt:null
-    });
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        blueScore:
+          blueScore,
+
+        pinkScore:
+          pinkScore,
+
+        question:
+          Number(
+            room.question || 1
+          ) + 1,
+
+        value:1,
+
+        status:"waiting",
+
+        winner:null,
+
+        startedAt:null,
+
+        timerEnd:null,
+
+        failBlue:false,
+        failPink:false,
+
+        wrongBlue:false,
+        wrongPink:false,
+
+        buzzAt:null
+
+      });
 
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ pointBusy=false; }, 400);
+
+    setTimeout(
+      ()=>{
+        pointBusy=false;
+      },
+      400
+    );
+
   }
 }
 
 
 /* =========================================================
-   X — UNRESOLVED
+   UNRESOLVED
 ========================================================= */
+
 let xBusy = false;
 
 async function unresolved(){
 
-  if(xBusy) return;
+  if(xBusy)
+    return;
+
   xBusy = true;
 
   try{
 
-    const snap = await db.ref("rooms/" + roomCode).once("value");
-    const room = snap.val();
+    const snap =
+      await db
+        .ref("rooms/" + roomCode)
+        .once("value");
 
-    if(!room) return;
+    const room =
+      snap.val();
 
-    const value = Number(room.value || 1);
+    if(!room)
+      return;
+
+    const value =
+      Number(
+        room.value || 1
+      );
 
     const base = {
-      question:Number(room.question || 1) + 1,
+
+      question:
+        Number(
+          room.question || 1
+        ) + 1,
+
       status:"waiting",
+
       winner:null,
+
       startedAt:null,
+
       timerEnd:null,
+
       failBlue:false,
       failPink:false,
+
       wrongBlue:false,
       wrongPink:false,
+
       buzzAt:null
+
     };
 
     if(value < 3){
-      base.value = value + 1;
+
+      base.value =
+        value + 1;
+
     }else{
+
       base.value = 1;
+
       base.blueScore = 0;
       base.pinkScore = 0;
+
     }
 
-    await db.ref("rooms/" + roomCode).update(base);
+    await db
+      .ref("rooms/" + roomCode)
+      .update(base);
 
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ xBusy=false; }, 400);
+
+    setTimeout(
+      ()=>{
+        xBusy=false;
+      },
+      400
+    );
+
   }
 }
 
@@ -2147,32 +4934,56 @@ async function unresolved(){
 /* =========================================================
    NEW GAME
 ========================================================= */
+
 let newGameBusy = false;
 
 async function newGame(){
 
-  if(newGameBusy) return;
+  if(newGameBusy)
+    return;
+
   newGameBusy = true;
 
   try{
-    await db.ref("rooms/" + roomCode).update({
-      blueScore:0,
-      pinkScore:0,
-      question:1,
-      value:1,
-      status:"waiting",
-      winner:null,
-      startedAt:null,
-      timerEnd:null,
-      failBlue:false,
-      failPink:false,
-      wrongBlue:false,
-      wrongPink:false,
-      buzzAt:null
-    });
+
+    await db
+      .ref("rooms/" + roomCode)
+      .update({
+
+        blueScore:0,
+        pinkScore:0,
+
+        question:1,
+        value:1,
+
+        status:"waiting",
+
+        winner:null,
+
+        startedAt:null,
+        timerEnd:null,
+
+        failBlue:false,
+        failPink:false,
+
+        wrongBlue:false,
+        wrongPink:false,
+
+        buzzAt:null
+
+      });
+
   }catch(e){
+
   }finally{
-    setTimeout(()=>{ newGameBusy=false; }, 400);
+
+    setTimeout(
+      ()=>{
+        newGameBusy=false;
+      },
+      400
+    );
+
   }
 }
 
@@ -2180,20 +4991,33 @@ async function newGame(){
 /* =========================================================
    CONNECTION
 ========================================================= */
+
 function setConnection(ok){
 
-  const el = document.getElementById(
-    role === "host" ? "hostConnection" : "playerConnection"
-  );
+  const el =
+    document.getElementById(
+      role === "host"
+        ? "hostConnection"
+        : "playerConnection"
+    );
 
-  if(!el) return;
+  if(!el)
+    return;
 
   if(ok){
+
     el.classList.remove("off");
-    el.textContent = "● Firebase bağlantısı";
+
+    el.textContent =
+      "● Firebase bağlantısı";
+
   }else{
+
     el.classList.add("off");
-    el.textContent = "● Bağlantı problemi";
+
+    el.textContent =
+      "● Bağlantı problemi";
+
   }
 }
 
@@ -2201,26 +5025,55 @@ function setConnection(ok){
 /* =========================================================
    PAGE CLOSE
 ========================================================= */
-window.addEventListener("beforeunload", function(){
 
-  if(roomCode && role === "player" && team){
+window.addEventListener(
+  "beforeunload",
+  function(){
 
-    fetch(
-      DB_URL + "/rooms/" + roomCode + "/" + team + ".json",
-      {
-        method:"PATCH",
-        headers:{ "Content-Type":"application/json" },
-        body:JSON.stringify({ connected:false }),
-        keepalive:true
-      }
-    ).catch(()=>{});
+    if(
+      roomCode &&
+      role === "player" &&
+      team
+    ){
+
+      fetch(
+
+        DB_URL +
+        "/rooms/" +
+        roomCode +
+        "/" +
+        team +
+        ".json",
+
+        {
+
+          method:"PATCH",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            connected:false
+          }),
+
+          keepalive:true
+
+        }
+
+      ).catch(()=>{});
+
+    }
+
   }
-});
+);
 
 
 /* =========================================================
    INITIAL
 ========================================================= */
+
 showScreen("homeScreen");
 
 </script>
