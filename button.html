@@ -15,66 +15,29 @@
 
 <style>
 :root{
-  --bg:#9DC3FF;
-  --ink:#9DC3FF;
-  --deep:#001E6F;
-  --bright:#002E92;
-  --dark-bg:#00072C;
-  --dark-ink:#00072C;
-  --dark-light:#9DC3FF;
-  --dark-bright:#6FA5FC;
+  --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
+  --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
   --transition:650ms cubic-bezier(.22,.8,.25,1);
-  --red:#ff3b30;
-  --err:#ff8a82;
+  --red:#ff3b30;--err:#ff8a82;
   --blue-grad:linear-gradient(135deg,#4F76D7,#2454D1 55%,#003DBF);
   --pink-grad:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8);
 }
-body.dark{ --err:#c4160c; }
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html{
-  scroll-behavior:smooth;
-  overflow-x:hidden;
-  width:100%;
-}
-
+body.dark{--err:#c4160c}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
 body{
-  min-height:100vh;
-  min-height:100dvh;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:"Poppins",sans-serif;
-  overflow-x:hidden;
-  width:100%;
-  display:flex;
-  flex-direction:column;
+  min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font-family:"Poppins",sans-serif;overflow-x:hidden;width:100%;
+  display:flex;flex-direction:column;
   transition:background .65s ease,color .65s ease;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
-
-body.dark{
-  background:var(--dark-bg);
-  color:var(--dark-ink);
-}
-
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
 a{color:inherit;text-decoration:none}
 button,input{font-family:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
 
-.page{
-  width:min(95vw,820px);
-  margin:0 auto;
-  padding:12px 0 0;
-  flex:1 0 auto;
-}
-
-/* ---------- NAVIGATION (eyni) ---------- */
+/* NAVIGATION */
 .top-nav{
   height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;
   display:flex;align-items:center;justify-content:center;position:relative;
@@ -98,30 +61,15 @@ button,input{font-family:inherit}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
 .theme-icon{width:25px;height:25px;display:block}
 
-/* =========================================================
-   ƏSAS PANEL
-========================================================= */
-#app{
-  width:100%;
-  max-width:540px;
-  margin:18px auto 40px;
-}
-
+/* PANEL */
+#app{width:100%;max-width:540px;margin:18px auto 40px}
 .screen{display:none;width:100%}
 .screen.active{display:flex}
-
 .card{
-  width:100%;
-  min-height:min(72dvh,640px);
-  border-radius:31px;
-  padding:26px 24px 28px;
+  width:100%;min-height:min(72dvh,640px);border-radius:31px;padding:26px 24px 28px;
   background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
-  color:var(--ink);
-  box-shadow:0 10px 25px rgba(0,20,110,.07);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  position:relative;
+  color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);
+  display:flex;flex-direction:column;overflow:hidden;position:relative;
   transition:background var(--transition),color var(--transition);
 }
 .dark .card{
@@ -129,97 +77,52 @@ button,input{font-family:inherit}
   color:var(--dark-ink);
 }
 
-/* ---------- BREND ---------- */
+/* BREND (loqoda çərçivə/border yoxdur) */
 .brand{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
 .brand-badge{
-  width:42px;height:42px;border-radius:15px;
-  background:linear-gradient(135deg,#3B63E8,#0B4CC4);
-  display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;
+  width:42px;height:42px;border-radius:0;background:none;border:0;
+  display:flex;align-items:center;justify-content:center;overflow:visible;margin-bottom:8px;
 }
-.brand-badge img{width:74%;height:74%;object-fit:contain}
+.brand-badge img{width:100%;height:100%;object-fit:contain;border:0;border-radius:0;display:block}
 .brand-title{font-size:22px;font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.6px}
 .brand-tagline{font-size:13px;font-weight:500;text-align:center;line-height:1.2;margin-top:2px}
+.subtitle{text-align:center;font-size:12px;font-weight:600;opacity:.8;margin:4px 0 10px}
 
-.subtitle{
-  text-align:center;font-size:12px;font-weight:600;opacity:.8;
-  margin:4px 0 10px;
-}
-
-/* ---------- INPUT ---------- */
+/* INPUT */
 input{
-  width:100%;
-  border:2px solid currentColor;
-  background:rgba(157,195,255,.1);
-  color:inherit;
-  border-radius:999px;
-  padding:12px 18px;
-  font-size:14px;
-  font-weight:500;
-  outline:none;
-  margin-bottom:10px;
-  transition:background .25s ease;
+  width:100%;border:2px solid currentColor;background:rgba(157,195,255,.1);color:inherit;
+  border-radius:999px;padding:12px 18px;font-size:14px;font-weight:500;outline:none;
+  margin-bottom:10px;transition:background .25s ease;
 }
 .dark input{background:rgba(0,7,44,.08)}
 input::placeholder{color:inherit;opacity:.55}
 input:focus{background:rgba(157,195,255,.2)}
 .dark input:focus{background:rgba(0,7,44,.15)}
 
-/* ---------- DÜYMƏLƏR (saytın mode düymələri kimi) ---------- */
+/* DÜYMƏLƏR */
 button{
-  width:100%;
-  border:2px solid transparent;
-  border-radius:999px;
-  padding:12px;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-  margin-top:8px;
-  color:var(--deep);
-  background:var(--ink);
-  white-space:normal;
-  line-height:1.25;
+  width:100%;border:2px solid transparent;border-radius:999px;padding:12px;
+  font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;
+  color:var(--deep);background:var(--ink);white-space:normal;line-height:1.25;
   transition:transform .25s ease,opacity .25s ease,background .25s ease;
 }
 .dark button{color:var(--dark-light);background:var(--dark-ink)}
 button:hover{transform:translateY(-2px)}
 button:active{transform:scale(.97)}
-
-button.secondary,
-button.orange,
-button.red{
-  background:transparent;
-  color:inherit;
-  border:2px solid currentColor;
-}
-.card button.secondary,
-.card button.orange,
-.card button.red{color:var(--ink)}
-.dark .card button.secondary,
-.dark .card button.orange,
-.dark .card button.red{color:var(--dark-ink)}
-
-button.green{}
+button.secondary,button.orange,button.red{background:transparent;color:inherit;border:2px solid currentColor}
+.card button.secondary,.card button.orange,.card button.red{color:var(--ink)}
+.dark .card button.secondary,.dark .card button.orange,.dark .card button.red{color:var(--dark-ink)}
 button:disabled{opacity:.35;cursor:not-allowed;transform:none}
-
-button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:focus-visible{
-  outline:3px solid currentColor;outline-offset:3px;
-}
-
-.btn-fit{
-  font-size:clamp(11px,3.3vw,14px);
-  padding:10px 8px;
-  line-height:1.2;
-}
+button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.btn-fit{font-size:clamp(11px,3.3vw,14px);padding:10px 8px;line-height:1.2}
 
 .room-code{
-  text-align:center;font-size:26px;font-weight:800;letter-spacing:1px;
-  margin:4px 0 6px;
+  text-align:center;font-size:26px;font-weight:800;letter-spacing:1px;margin:4px 0 6px;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
 }
 
-/* ---------- KOMANDALAR (rənglər sabit) ---------- */
-.teams{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;
-}
+/* KOMANDALAR */
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 .team{
   border-radius:22px;padding:10px 8px;min-height:76px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -227,27 +130,18 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 }
 .team.blue{background:linear-gradient(135deg,#4E73D7,#1E4DC7 55%,#2C62D7)}
 .team.pink{background:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)}
-
 .kick-btn{
-  position:absolute;top:7px;right:7px;
-  width:22px;height:22px;min-width:22px;border-radius:50%;
+  position:absolute;top:7px;right:7px;width:22px;height:22px;min-width:22px;border-radius:50%;
   padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;
-  border:1.5px solid rgba(255,255,255,.7);
-  background:rgba(255,255,255,.2);
-  color:#FFFFFF;
+  border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.2);color:#FFFFFF;
   display:flex;align-items:center;justify-content:center;
 }
 .dark .kick-btn{color:#FFFFFF;background:rgba(255,255,255,.2)}
 .kick-btn:hover{transform:none}
 .kick-btn:active{transform:scale(.9)}
-
-.kick-overlay{
-  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
-  z-index:60;background:rgba(0,7,44,0);pointer-events:none;
-}
+.kick-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:60;background:rgba(0,7,44,0);pointer-events:none}
 .kick-modal{
-  opacity:0;transform:scale(.85);
-  background:var(--dark-light);color:var(--deep);
+  opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);
   border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;
   box-shadow:0 17px 35px rgba(0,20,110,.3);
 }
@@ -259,112 +153,81 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 .dark .kick-modal-buttons button.green{background:var(--dark-light);color:var(--dark-bg)}
 .kick-modal-buttons button.red{background:var(--red);color:#fff;border-color:transparent}
 .dark .card .kick-modal-buttons button.red,.card .kick-modal-buttons button.red{color:#fff}
-
-.team-name{
-  font-size:14px;font-weight:700;color:#F5F7FA;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;
-}
+.team-name{font-size:14px;font-weight:700;color:#F5F7FA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .score{font-size:34px;font-weight:800;color:#F5F7FA;margin-top:2px;line-height:1}
 
-/* ---------- TAYMER ---------- */
-.timer{
-  text-align:center;
-  font-size:clamp(44px,11vh,68px);
-  line-height:1;font-weight:600;margin:8px 0 10px;
-  font-variant-numeric:tabular-nums;
-}
+/* TAYMER */
+.timer{text-align:center;font-size:clamp(44px,11vh,68px);line-height:1;font-weight:600;margin:8px 0 10px;font-variant-numeric:tabular-nums}
 .timer.warning,.timer.danger{color:var(--err)}
-
 .question-value{text-align:center;font-size:12px;font-weight:500;opacity:.9}
 .question-value strong{font-size:17px;font-weight:700}
 
-/* ---------- BÖYÜK BUZZ DÜYMƏSİ ---------- */
+/* Sual/dəyər sıfırlayıcı (kiçik) */
+button.mini-reset{
+  width:auto;display:block;margin:4px auto 0;padding:4px 14px;font-size:11px;font-weight:600;
+}
+.card button.mini-reset{color:var(--ink)}
+.dark .card button.mini-reset{color:var(--dark-ink)}
+
+/* BUZZ */
 .big-buzz{
-  display:flex;align-items:center;justify-content:center;
-  min-height:clamp(90px,18vh,140px);
-  border-radius:30px;margin-top:10px;font-weight:800;border:0;
-  padding:8px;overflow:hidden;flex:1;
+  display:flex;align-items:center;justify-content:center;min-height:clamp(90px,18vh,140px);
+  border-radius:30px;margin-top:10px;font-weight:800;border:0;padding:8px;overflow:hidden;flex:1;
 }
 .big-buzz:hover{transform:none}
 .big-buzz:active{transform:scale(.97)}
 .big-buzz.blue,.dark .big-buzz.blue{background:var(--blue-grad);color:#F5F7FA}
 .big-buzz.pink,.dark .big-buzz.pink{background:var(--pink-grad);color:#F5F7FA}
-.big-buzz.locked{
-  background:rgba(157,195,255,.16);
-  color:var(--ink);
-  border:2px solid currentColor;
-  opacity:.75;
-}
+.big-buzz.locked{background:rgba(157,195,255,.16);color:var(--ink);border:2px solid currentColor;opacity:.75}
 .dark .big-buzz.locked{background:rgba(0,7,44,.1);color:var(--dark-ink)}
-
 .buzz-label{display:block;width:100%;text-align:center;line-height:1.05;word-break:break-word;overflow-wrap:break-word}
 .buzz-label.jumbo{font-size:clamp(30px,10vh,58px)}
 .buzz-label.small{font-size:clamp(12px,3.6vw,17px)}
 
-/* ---------- HADİSƏ ---------- */
+/* HADİSƏ */
 .event{
-  min-height:38px;border-radius:999px;margin-top:10px;
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  padding:8px 14px;font-size:13px;font-weight:600;word-break:break-word;
-  background:rgba(157,195,255,.14);
+  min-height:38px;border-radius:999px;margin-top:10px;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:8px 14px;font-size:13px;font-weight:600;word-break:break-word;background:rgba(157,195,255,.14);
 }
 .dark .event{background:rgba(0,7,44,.1)}
 .event.neutral{opacity:1}
 .event.blue,.dark .event.blue{background:var(--blue-grad);color:#F5F7FA}
 .event.pink,.dark .event.pink{background:var(--pink-grad);color:#F5F7FA}
-
 .host-controls{margin-top:6px}
-
 .point-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .point-grid button{font-size:15px;padding:11px 5px;margin-top:0}
-
 .winner{text-align:center;font-size:16px;font-weight:700;padding:6px 4px;word-break:break-word}
-
 .info{text-align:center;font-size:11px;font-weight:500;opacity:.85;margin-top:6px;line-height:1.3}
 .hidden{display:none!important}
-
 .error{color:var(--err);text-align:center;margin-top:8px;font-size:12px;font-weight:600}
-
 .connection{text-align:center;font-size:10px;margin-top:6px;font-weight:600;opacity:.8}
 .connection.off{color:var(--err);opacity:1}
 
-/* ---------- OYUN REJİMİ ---------- */
+/* REJİM */
 .mode-select{display:flex;flex-direction:column;gap:8px;margin:8px 0 6px}
 .mode-option{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
-.mode-option input[type="radio"]{
-  width:16px;height:16px;margin:0;padding:0;flex-shrink:0;
-  accent-color:var(--ink);background:none;border-radius:50%;
-}
+.mode-option input[type="radio"]{width:16px;height:16px;margin:0;padding:0;flex-shrink:0;accent-color:var(--ink);background:none;border-radius:50%}
 .dark .mode-option input[type="radio"]{accent-color:var(--dark-ink)}
 .mode-option span{flex:1}
-
 button.info-btn{
   width:22px;height:22px;min-width:22px;padding:0;margin:0;border-radius:50%;
-  font-size:11px;font-weight:800;line-height:18px;
-  background:transparent;color:inherit;border:2px solid currentColor;flex-shrink:0;cursor:pointer;
+  font-size:11px;font-weight:800;line-height:18px;background:transparent;color:inherit;
+  border:2px solid currentColor;flex-shrink:0;cursor:pointer;
 }
 .card button.info-btn{color:var(--ink)}
 .dark .card button.info-btn{color:var(--dark-ink)}
 button.info-btn:hover{transform:none}
-
-.info-bubble{
-  background:var(--dark-light);color:var(--deep);
-  border-radius:20px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.4;margin-top:4px;
-}
+.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.4;margin-top:4px}
 .dark .info-bubble{background:var(--dark-bg);color:var(--dark-light)}
 
-/* ---------- FOOTER (eyni) ---------- */
+/* FOOTER */
 footer{
-  width:100%;
-  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
   color:var(--ink);min-height:170px;padding:27px 20px 24px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;
   transition:background var(--transition),color var(--transition);
 }
-.dark footer{
-  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-  color:var(--dark-ink);
-}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .footer-line{font-size:15px;line-height:1.45;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
@@ -372,7 +235,6 @@ footer{
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
-
 @media (max-width:700px){
   .page{width:calc(100vw - 44px);padding-top:11px}
   .top-nav{height:52px;padding-left:18px;padding-right:60px}
@@ -410,7 +272,6 @@ footer{
       <a class="nav-link" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
-
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
       <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
     </button>
@@ -419,75 +280,51 @@ footer{
 <main>
 <div id="app">
 
-<!-- ================= ANA ================= -->
-
+<!-- ANA -->
 <div id="homeScreen" class="screen active">
   <div class="card">
-
     <div class="brand">
-      <div class="brand-badge">
-        <img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel">
-      </div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
-
     <div style="flex:1"></div>
-
     <button onclick="showHostCreate()">APARICI</button>
     <button class="secondary" onclick="showPlayerJoin()">OYUNÇU</button>
-
   </div>
 </div>
 
-
-<!-- ================= HOST CREATE ================= -->
-
+<!-- HOST CREATE -->
 <div id="hostCreateScreen" class="screen">
   <div class="card">
-
     <div class="brand">
-      <div class="brand-badge">
-        <img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel">
-      </div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
     <div class="subtitle">APARICI PANELİ:</div>
-
     <input id="hostName" placeholder="Aparıcının adı">
-
     <div class="mode-select">
-
       <label class="mode-option">
         <input type="radio" name="gameMode" value="physical" onchange="setGameMode('physical')">
         <span>Oyun əyanidir</span>
         <button type="button" class="info-btn" onclick="showModeInfo('physical')">i</button>
       </label>
-
       <label class="mode-option">
         <input type="radio" name="gameMode" value="online" checked onchange="setGameMode('online')">
         <span>Oyun onlayndır</span>
         <button type="button" class="info-btn" onclick="showModeInfo('online')">i</button>
       </label>
-
     </div>
-
     <div id="modeInfoBubble" class="info-bubble hidden"></div>
-
     <div style="flex:1"></div>
-
     <button onclick="createRoom()">OTAQ YARAT</button>
     <button class="secondary" onclick="goHome()">GERİ</button>
-
     <div id="hostCreateError" class="error"></div>
-
   </div>
 </div>
 
-
-<!-- ================= HOST ================= -->
-
+<!-- HOST -->
 <div id="hostScreen" class="screen">
   <div class="card">
 
@@ -497,87 +334,58 @@ footer{
       Dəyər <strong>+<span id="hostValue">1</span></strong>
     </div>
 
+    <button type="button" id="resetQVBtn" class="secondary mini-reset" onclick="resetQuestionValue()">Xalı sıfırla</button>
+
     <div id="hostTimer" class="timer">20</div>
 
-    <div id="hostEvent" class="event neutral">
-      Komandalar gözlənilir...
-    </div>
+    <div id="hostEvent" class="event neutral">Komandalar gözlənilir...</div>
 
     <div class="teams">
-
       <div class="team blue">
         <button type="button" class="kick-btn" id="kickBlueBtn" onclick="confirmKick('blue')">✕</button>
         <div id="hostBlueName" class="team-name">Gözləyir...</div>
         <div id="hostBlueScore" class="score">0</div>
       </div>
-
       <div class="team pink">
         <button type="button" class="kick-btn" id="kickPinkBtn" onclick="confirmKick('pink')">✕</button>
         <div id="hostPinkName" class="team-name">Gözləyir...</div>
         <div id="hostPinkScore" class="score">0</div>
       </div>
-
     </div>
 
     <div class="host-controls">
-
       <div class="subtitle">πksel.iok</div>
 
-      <button id="startBtn" onclick="hostStart()">
-        ▶ VAXT! — 20 SANİYƏ
-      </button>
-
-      <button id="resetBtn" class="secondary" onclick="resetButtons()">
-        DÜYMƏLƏRİ SIFIRLA
-      </button>
+      <button id="startBtn" onclick="hostStart()">▶ VAXT! — 20 SANİYƏ</button>
+      <button id="resetBtn" class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
 
       <div id="answerControls" class="hidden">
-
         <div class="winner" id="winnerText"></div>
-
         <div class="point-grid">
           <button onclick="givePoints(1)">+1</button>
           <button onclick="givePoints(2)">+2</button>
           <button onclick="givePoints(3)">+3</button>
         </div>
-
-        <button class="red btn-fit" onclick="wrongAnswer()">
-          QALAN VAXT RƏQİB KOMANDANIN
-        </button>
-
-        <button class="orange btn-fit" onclick="unresolved()">
-          DOĞRU CAVAB YOXDUR
-        </button>
-
+        <button class="red btn-fit" onclick="wrongAnswer()">QALAN VAXT RƏQİB KOMANDANIN</button>
+        <button class="orange btn-fit" onclick="unresolved()">DOĞRU CAVAB YOXDUR</button>
       </div>
 
       <div id="expiredControls" class="hidden">
-
-        <button class="orange btn-fit" onclick="unresolved()">
-          DOĞRU CAVAB YOXDUR
-        </button>
-
+        <button class="orange btn-fit" onclick="unresolved()">DOĞRU CAVAB YOXDUR</button>
       </div>
 
       <div id="finishedControls" class="hidden">
-
-        <button class="green" onclick="newGame()">
-          YENİ OYUN
-        </button>
-
+        <button class="green" onclick="newGame()">YENİ OYUN</button>
       </div>
-
     </div>
 
     <div style="flex:1"></div>
 
-    <div class="connection" id="hostConnection">
-      ● Firebase bağlantısı
-    </div>
+    <div class="connection" id="hostConnection">● Firebase bağlantısı</div>
 
     <div class="info">
       OTAQ KODU
-      <div id="hostRoomCode" class="room-code">------</div>
+      <div id="hostRoomCode" class="room-code" onclick="copyRoomCode()">------</div>
     </div>
 
     <div id="kickOverlay" class="kick-overlay">
@@ -593,38 +401,25 @@ footer{
   </div>
 </div>
 
-
-<!-- ================= PLAYER JOIN ================= -->
-
+<!-- PLAYER JOIN -->
 <div id="playerJoinScreen" class="screen">
   <div class="card">
-
     <div class="brand">
-      <div class="brand-badge">
-        <img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel">
-      </div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
     <div class="subtitle">OYUNÇU GİRİŞİ</div>
-
     <input id="roomInput" maxlength="6" placeholder="6 simvollu otaq kodu">
-
     <input id="teamNameInput" placeholder="Komanda adı">
-
     <div style="flex:1"></div>
-
     <button onclick="joinRoom()">OTAĞA QOŞUL</button>
     <button class="secondary" onclick="goHome()">GERİ</button>
-
     <div id="joinError" class="error"></div>
-
   </div>
 </div>
 
-
-<!-- ================= PLAYER ================= -->
-
+<!-- PLAYER -->
 <div id="playerScreen" class="screen">
   <div class="card">
 
@@ -636,34 +431,24 @@ footer{
 
     <div id="playerTimer" class="timer">20</div>
 
-    <div id="playerEvent" class="event neutral">
-      Aparıcı START verməlidir.
-    </div>
+    <div id="playerEvent" class="event neutral">Aparıcı START verməlidir.</div>
 
-    <button
-      id="buzzButton"
-      class="big-buzz"
-      onclick="playerBuzz()">
+    <button id="buzzButton" class="big-buzz" onclick="playerBuzz()">
       <span id="buzzButtonLabel" class="buzz-label jumbo">BAS!</span>
     </button>
 
     <div class="teams">
-
       <div class="team blue">
         <div id="playerBlueName" class="team-name">Gözləyir...</div>
         <div id="playerBlueScore" class="score">0</div>
       </div>
-
       <div class="team pink">
         <div id="playerPinkName" class="team-name">Gözləyir...</div>
         <div id="playerPinkScore" class="score">0</div>
       </div>
-
     </div>
 
-    <div class="connection" id="playerConnection">
-      ● Firebase bağlantısı
-    </div>
+    <div class="connection" id="playerConnection">● Firebase bağlantısı</div>
 
   </div>
 </div>
@@ -674,27 +459,16 @@ footer{
 
 <footer>
   <div class="footer-line">İntellektuallar üçün hər şey...</div>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/piksel.iok"
-     target="_blank" rel="noopener noreferrer">
-    ©πksel intellektual oyunlar klubu
-  </a>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/onurelzh"
-     target="_blank" rel="noopener noreferrer">
-    ©Onur Əlizadə
-  </a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
 
 <script>
 
 /* =========================================================
-   TEMA (saytla eyni)
+   TEMA
 ========================================================= */
-
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -735,7 +509,6 @@ initTheme();
 /* =========================================================
    FIREBASE
 ========================================================= */
-
 const firebaseConfig = {
   apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",
   authDomain:"piksel-breyn-rinq.firebaseapp.com",
@@ -748,58 +521,48 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
+const DB_URL = "https://piksel-breyn-rinq-default-rtdb.firebaseio.com";
 
-const DB_URL =
-  "https://piksel-breyn-rinq-default-rtdb.firebaseio.com";
+/* Oyuna qayıtmaq/atılmaq üçün yönləndirmə ünvanı */
+const KICK_REDIRECT = "button.html";
 
 
 /* =========================================================
    GLOBAL
 ========================================================= */
-
 let roomCode = null;
 let role = null;
 let team = null;
-
 let roomRef = null;
 let timerLoop = null;
-
 let currentRoom = null;
-
 let serverOffset = 0;
-
 let audioContext = null;
-
 let lastStateKey = "";
-let lastTimerSecond = null;
 let audioUnlocked = false;
 
-/* Vaxt bitmə səsinin eyni sual üçün təkrar çalınmaması üçün */
+/* vaxt bitmə səsi bir dəfə çalınsın */
 let lastTimeUpEnd = null;
 
-let localFlags = {
-  start:false,
-  buzz:false,
-  fail:false
-};
+/* Beep üçün: start (startedAt) və 10/4 saniyə (timerEnd|saniyə) izləmə */
+let lastStartedAt = undefined;
+let lastBeepKey = "";
 
-/*
-  Aparıcının seçdiyi oyun rejimi.
-  "physical"  = Oyun əyanidir  → yalnız aparıcının
-                cihazından səs gələcək.
-  "online"    = Oyun onlaynidir → hər cihaz öz
-                səsini eşidəcək.
-*/
+/* İndi çalan beep (düyməyə basılanda kəsilə bilsin) */
+let activeBeep = null;
+
+/* Bu oyunçunun komanda adı (aparıcı çıxaranda aşkar etmək üçün) */
+let myTeamName = null;
+
+let localFlags = { start:false, buzz:false, fail:false };
+
+/* "physical" = yalnız aparıcının cihazından səs; "online" = hər cihazdan */
 let gameMode = "online";
 
 let infoBubbleTimeout = null;
 let infoBubbleHideTimeout = null;
 
-/*
-  İştirakçı çıxarma (kick) təsdiq pəncərəsinin vəziyyəti.
-*/
 let kickTarget = null;
 let kickOverlayOpen = false;
 let kickBusy = false;
@@ -808,66 +571,40 @@ let kickBusy = false;
 /* =========================================================
    SCREEN
 ========================================================= */
-
 function showScreen(id){
-
-  document.querySelectorAll(".screen")
-    .forEach(x=>x.classList.remove("active"));
-
-  document.getElementById(id)
-    .classList.add("active");
+  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-
 function goHome(){
-
   stopPolling();
-
   roomCode = null;
   role = null;
   team = null;
   currentRoom = null;
-
   showScreen("homeScreen");
 }
 
-
-function showHostCreate(){
-  showScreen("hostCreateScreen");
-}
-
-
-function showPlayerJoin(){
-  showScreen("playerJoinScreen");
-}
+function showHostCreate(){ showScreen("hostCreateScreen"); }
+function showPlayerJoin(){ showScreen("playerJoinScreen"); }
 
 
 /* =========================================================
    OYUN REJİMİ SEÇİMİ
 ========================================================= */
-
-function setGameMode(mode){
-  gameMode = mode;
-}
-
+function setGameMode(mode){ gameMode = mode; }
 
 function showModeInfo(mode){
 
-  const bubble =
-    document.getElementById("modeInfoBubble");
+  const bubble = document.getElementById("modeInfoBubble");
 
   bubble.textContent =
     mode === "physical"
     ? "Vaxt, düymə və digər səslər qarışıqlığın qarşısını almaq üçün yalnız APARICININ cihazından eşidiləcək."
     : "Vaxt, düymə və digər səslər hər komandaya aydın olsun deyə, hər KOMANDANIN öz, APARICININ da öz cihazından eşidiləcək.";
 
-  if(infoBubbleTimeout){
-    clearTimeout(infoBubbleTimeout);
-  }
-
-  if(infoBubbleHideTimeout){
-    clearTimeout(infoBubbleHideTimeout);
-  }
+  if(infoBubbleTimeout) clearTimeout(infoBubbleTimeout);
+  if(infoBubbleHideTimeout) clearTimeout(infoBubbleHideTimeout);
 
   bubble.classList.remove("hidden");
   bubble.style.display = "block";
@@ -875,47 +612,24 @@ function showModeInfo(mode){
   bubble.style.opacity = "0";
 
   requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      bubble.style.opacity = "1";
-    });
+    requestAnimationFrame(function(){ bubble.style.opacity = "1"; });
   });
 
-  infoBubbleTimeout =
-    setTimeout(
-      function(){
-
-        bubble.style.transition = "opacity .6s ease";
-        bubble.style.opacity = "0";
-
-        infoBubbleHideTimeout =
-          setTimeout(
-            function(){
-              bubble.classList.add("hidden");
-              bubble.style.display = "";
-            },
-            600
-          );
-      },
-      3000
-    );
+  infoBubbleTimeout = setTimeout(function(){
+    bubble.style.transition = "opacity .6s ease";
+    bubble.style.opacity = "0";
+    infoBubbleHideTimeout = setTimeout(function(){
+      bubble.classList.add("hidden");
+      bubble.style.display = "";
+    }, 600);
+  }, 3000);
 }
 
-
-/*
-  Cari otağın rejiminə görə bu cihazda səs
-  çalınmalıdırmı? Aparıcı HƏMİŞƏ eşidir.
-  "physical" rejimində oyunçu cihazları susdurulur.
-*/
+/* Bu cihazda səs çalınmalıdırmı? Aparıcı HƏMİŞƏ eşidir. */
 function audioAllowed(){
-
-  if(
-    currentRoom &&
-    currentRoom.soundMode === "physical" &&
-    role !== "host"
-  ){
+  if(currentRoom && currentRoom.soundMode === "physical" && role !== "host"){
     return false;
   }
-
   return true;
 }
 
@@ -923,126 +637,87 @@ function audioAllowed(){
 /* =========================================================
    AUDIO
 ========================================================= */
-
 function unlockAudio(){
-
   try{
-
     if(!audioContext){
-
-      audioContext =
-        new (window.AudioContext ||
-             window.webkitAudioContext)();
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
-
-    if(audioContext.state === "suspended"){
-      audioContext.resume();
-    }
-
+    if(audioContext.state === "suspended") audioContext.resume();
     audioUnlocked = true;
-
   }catch(e){}
 }
 
+document.addEventListener("pointerdown", function(){ unlockAudio(); }, {passive:true});
 
-document.addEventListener(
-  "pointerdown",
-  function(){
-    unlockAudio();
-  },
-  {passive:true}
-);
+/* Səs çalmaq mümkündürsə audio kontekstini qaytarır */
+function getCtx(){
+  if(!audioAllowed()) return null;
+  unlockAudio();
+  if(!audioContext) return null;
+  if(audioContext.state === "suspended") audioContext.resume();
+  return audioContext;
+}
 
+/* Çalan beep-i dərhal (kliksiz, qısa səngimə ilə) kəsir. */
+function stopBeep(){
+  if(!activeBeep) return;
+  try{
+    const now = audioContext.currentTime;
+    const g = activeBeep.gain.gain;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(0.0001, now + 0.02);
+    activeBeep.osc.stop(now + 0.03);
+  }catch(e){}
+  activeBeep = null;
+}
 
 /*
-  UZUN "DİİİT" SƏSİ.
-  YALNIZ: START, 10 saniyə qalanda, 3 saniyə qalanda.
-  Müddət: 0.7 saniyə.
+  UZUN "DİİİT" (0.7 san).
+  YALNIZ: taymer başlayanda, 10 saniyə qalanda, 4 saniyə qalanda.
+  Düyməyə basılanda kəsilir.
 */
 function beep(){
-
   try{
-
-    if(!audioAllowed()) return;
-
-    unlockAudio();
-
-    if(!audioContext) return;
-
-    const ctx = audioContext;
-
-    if(ctx.state === "suspended"){
-      ctx.resume();
-    }
+    const ctx = getCtx();
+    if(!ctx) return;
 
     const now = ctx.currentTime;
-
-    const oscillator =
-      ctx.createOscillator();
-
-    const gain =
-      ctx.createGain();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
 
     oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, now);
 
-    oscillator.frequency.setValueAtTime(
-      880,
-      now
-    );
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(0.32, now + 0.015);
+    gain.gain.setValueAtTime(0.32, now + 0.66);
+    gain.gain.linearRampToValueAtTime(0.0001, now + 0.70);
 
-    gain.gain.setValueAtTime(
-      0.0001,
-      now
-    );
-
-    gain.gain.linearRampToValueAtTime(
-      0.32,
-      now + 0.015
-    );
-
-    gain.gain.setValueAtTime(
-      0.32,
-      now + 0.66
-    );
-
-    gain.gain.linearRampToValueAtTime(
-      0.0001,
-      now + 0.70
-    );
+    stopBeep();
 
     oscillator.connect(gain);
     gain.connect(ctx.destination);
 
+    activeBeep = { osc:oscillator, gain:gain };
+
+    oscillator.onended = function(){
+      if(activeBeep && activeBeep.osc === oscillator) activeBeep = null;
+    };
+
     oscillator.start(now);
     oscillator.stop(now + 0.72);
-
   }catch(e){}
 }
 
-
-/*
-  VAXT BİTMƏ SƏSİ — taymerdəki (Nə? Harada? Nə Zaman?)
-  vaxt bitdikdə çıxan səslə eynidir: 2 saniyə, 700 Hz.
-*/
+/* VAXT BİTMƏ SƏSİ — 2 saniyə, 700 Hz. */
 function timeUpSound(){
-
   try{
-
-    if(!audioAllowed()) return;
-
-    unlockAudio();
-
-    if(!audioContext) return;
-
-    const ctx = audioContext;
-
-    if(ctx.state === "suspended"){
-      ctx.resume();
-    }
+    const ctx = getCtx();
+    if(!ctx) return;
 
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-
     osc.type = "sine";
     osc.frequency.value = 700;
 
@@ -1056,187 +731,92 @@ function timeUpSound(){
 
     osc.connect(gain);
     gain.connect(ctx.destination);
-
     osc.start(now);
     osc.stop(now + dur + 0.03);
-
   }catch(e){}
 }
 
-
-/*
-  OYUNÇU BUZZ SƏSİ — nazik/yüksək tonlu qısa "ding".
-*/
+/* DÜYMƏYƏ BASMA SƏSİ — qısa "ding". Çalan beep varsa kəsilir. */
 function buzzSound(){
 
+  stopBeep();
+
   try{
-
-    if(!audioAllowed()) return;
-
-    unlockAudio();
-
-    if(!audioContext) return;
-
-    const ctx = audioContext;
-
-    if(ctx.state === "suspended"){
-      ctx.resume();
-    }
+    const ctx = getCtx();
+    if(!ctx) return;
 
     const now = ctx.currentTime;
 
-    const freqs = [1568, 1976];
-
-    freqs.forEach(function(f,i){
-
+    [1568, 1976].forEach(function(f,i){
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
+      const t = now + i*0.08;
 
       osc.type = "sine";
+      osc.frequency.setValueAtTime(f, t);
 
-      osc.frequency.setValueAtTime(
-        f,
-        now + i*0.08
-      );
-
-      gain.gain.setValueAtTime(
-        0.0001,
-        now + i*0.08
-      );
-
-      gain.gain.linearRampToValueAtTime(
-        0.28,
-        now + i*0.08 + 0.015
-      );
-
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now + i*0.08 + 0.22
-      );
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(0.28, t + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
-
-      osc.start(now + i*0.08);
-      osc.stop(now + i*0.08 + 0.25);
+      osc.start(t);
+      osc.stop(t + 0.25);
     });
-
   }catch(e){}
 }
 
-
-/*
-  QALİBİYYƏT SƏSİ — yüksələn 4 nota.
-*/
+/* QALİBİYYƏT SƏSİ — yüksələn 4 nota. */
 function winSound(){
-
   try{
-
-    if(!audioAllowed()) return;
-
-    unlockAudio();
-
-    if(!audioContext) return;
-
-    const ctx = audioContext;
-
-    if(ctx.state === "suspended"){
-      ctx.resume();
-    }
+    const ctx = getCtx();
+    if(!ctx) return;
 
     const now = ctx.currentTime;
 
-    const notes = [523.25,659.25,783.99,1046.5];
-
-    notes.forEach(function(f,i){
-
+    [523.25,659.25,783.99,1046.5].forEach(function(f,i){
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
+      const t = now + i*0.12;
 
       osc.type = "triangle";
+      osc.frequency.setValueAtTime(f, t);
 
-      osc.frequency.setValueAtTime(
-        f,
-        now + i*0.12
-      );
-
-      gain.gain.setValueAtTime(
-        0.0001,
-        now + i*0.12
-      );
-
-      gain.gain.linearRampToValueAtTime(
-        0.3,
-        now + i*0.12 + 0.02
-      );
-
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now + i*0.12 + 0.3
-      );
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
-
-      osc.start(now + i*0.12);
-      osc.stop(now + i*0.12 + 0.32);
+      osc.start(t);
+      osc.stop(t + 0.32);
     });
-
   }catch(e){}
 }
 
-
-/*
-  ERKƏN BASMA CƏZA SƏSİ.
-*/
+/* ERKƏN BASMA CƏZA SƏSİ. */
 function failSound(){
-
   try{
-
-    if(!audioAllowed()) return;
-
-    unlockAudio();
-
-    if(!audioContext) return;
-
-    const ctx = audioContext;
-
-    if(ctx.state === "suspended"){
-      ctx.resume();
-    }
+    const ctx = getCtx();
+    if(!ctx) return;
 
     const now = ctx.currentTime;
-
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
     osc.type = "sawtooth";
-
     osc.frequency.setValueAtTime(300, now);
-
-    osc.frequency.exponentialRampToValueAtTime(
-      150,
-      now + 0.25
-    );
+    osc.frequency.exponentialRampToValueAtTime(150, now + 0.25);
 
     gain.gain.setValueAtTime(0.0001, now);
-
-    gain.gain.linearRampToValueAtTime(
-      0.25,
-      now + 0.02
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001,
-      now + 0.28
-    );
+    gain.gain.linearRampToValueAtTime(0.25, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
-
     osc.start(now);
     osc.stop(now + 0.3);
-
   }catch(e){}
 }
 
@@ -1244,95 +824,83 @@ function failSound(){
 /* =========================================================
    SERVER TIME
 ========================================================= */
-
 let offsetReady = false;
 let offsetReadyResolvers = [];
 
 function waitForOffset(){
-
-  if(offsetReady){
-    return Promise.resolve();
-  }
-
-  return new Promise(function(resolve){
-    offsetReadyResolvers.push(resolve);
-  });
+  if(offsetReady) return Promise.resolve();
+  return new Promise(function(resolve){ offsetReadyResolvers.push(resolve); });
 }
 
-db.ref(".info/serverTimeOffset").on(
-  "value",
-  function(snapshot){
+db.ref(".info/serverTimeOffset").on("value", function(snapshot){
+  const val = snapshot.val();
+  if(typeof val === "number") serverOffset = val;
+  offsetReady = true;
+  offsetReadyResolvers.forEach(function(resolve){ resolve(); });
+  offsetReadyResolvers = [];
+});
 
-    const val = snapshot.val();
-
-    if(typeof val === "number"){
-      serverOffset = val;
-    }
-
-    offsetReady = true;
-
-    offsetReadyResolvers.forEach(
-      function(resolve){
-        resolve();
-      }
-    );
-
-    offsetReadyResolvers = [];
-  }
-);
-
-
-function serverNow(){
-
-  return Date.now() + serverOffset;
-}
+function serverNow(){ return Date.now() + serverOffset; }
 
 
 /* =========================================================
    ROOM CODE
 ========================================================= */
-
 function generateRoomCode(){
-
-  const chars =
-    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let result = "";
-
   for(let i=0;i<6;i++){
-
-    result +=
-      chars[Math.floor(
-        Math.random()*chars.length
-      )];
+    result += chars[Math.floor(Math.random()*chars.length)];
   }
-
   return result;
+}
+
+/* Otaq kodunun üzərinə vuranda kopyalanır (ayrıca düymə yoxdur) */
+function copyRoomCode(){
+
+  if(!roomCode) return;
+
+  const el = document.getElementById("hostRoomCode");
+  const code = roomCode;
+
+  const done = function(){
+    el.textContent = "KOPYALANDI";
+    setTimeout(function(){ el.textContent = code; }, 1000);
+  };
+
+  const fallback = function(){
+    const t = document.createElement("textarea");
+    t.value = code;
+    t.style.position = "fixed";
+    t.style.opacity = "0";
+    document.body.appendChild(t);
+    t.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    t.remove();
+    done();
+  };
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(done).catch(fallback);
+  }else{
+    fallback();
+  }
 }
 
 
 /* =========================================================
    HOST CREATE
 ========================================================= */
-
 async function createRoom(){
 
   unlockAudio();
 
-  const name =
-    document.getElementById("hostName")
-      .value.trim();
-
-  const error =
-    document.getElementById("hostCreateError");
-
+  const name = document.getElementById("hostName").value.trim();
+  const error = document.getElementById("hostCreateError");
   error.textContent = "";
 
   if(!name){
-
-    error.textContent =
-      "Aparıcının adını yazın.";
-
+    error.textContent = "Aparıcının adını yazın.";
     return;
   }
 
@@ -1343,61 +911,34 @@ async function createRoom(){
     let code = null;
 
     for(let i=0;i<10;i++){
-
-      const candidate =
-        generateRoomCode();
-
-      const snap =
-        await db.ref("rooms/" + candidate)
-          .once("value");
-
+      const candidate = generateRoomCode();
+      const snap = await db.ref("rooms/" + candidate).once("value");
       if(!snap.exists()){
-
         code = candidate;
         break;
       }
     }
 
-    if(!code){
-
-      throw new Error(
-        "Otaq kodu yaradıla bilmədi."
-      );
-    }
+    if(!code) throw new Error("Otaq kodu yaradıla bilmədi.");
 
     const room = {
-
       createdAt: firebase.database.ServerValue.TIMESTAMP,
-
       status:"waiting",
-
       soundMode: gameMode,
-
-      host:{
-        name:name,
-        connected:true
-      },
-
+      host:{ name:name, connected:true },
       blue:null,
       pink:null,
-
       blueScore:0,
       pinkScore:0,
-
       value:1,
       question:1,
-
       winner:null,
-
       startedAt:null,
       timerEnd:null,
-
       failBlue:false,
       failPink:false,
-
       wrongBlue:false,
       wrongPink:false,
-
       buzzAt:null,
       pausedRemaining:null
     };
@@ -1407,18 +948,13 @@ async function createRoom(){
     roomCode = code;
     role = "host";
 
-    document.getElementById(
-      "hostRoomCode"
-    ).textContent = code;
+    document.getElementById("hostRoomCode").textContent = code;
 
     showScreen("hostScreen");
-
     startPolling();
 
   }catch(e){
-
-    error.textContent =
-      "Xəta: " + e.message;
+    error.textContent = "Xəta: " + e.message;
   }
 }
 
@@ -1426,38 +962,22 @@ async function createRoom(){
 /* =========================================================
    PLAYER JOIN
 ========================================================= */
-
 async function joinRoom(){
 
   unlockAudio();
 
-  const code =
-    document.getElementById("roomInput")
-      .value.trim()
-      .toUpperCase();
-
-  const teamName =
-    document.getElementById("teamNameInput")
-      .value.trim();
-
-  const error =
-    document.getElementById("joinError");
-
+  const code = document.getElementById("roomInput").value.trim().toUpperCase();
+  const teamName = document.getElementById("teamNameInput").value.trim();
+  const error = document.getElementById("joinError");
   error.textContent = "";
 
   if(code.length !== 6){
-
-    error.textContent =
-      "Otaq kodu 6 simvol olmalıdır.";
-
+    error.textContent = "Otaq kodu 6 simvol olmalıdır.";
     return;
   }
 
   if(!teamName){
-
-    error.textContent =
-      "Komanda adını yazın.";
-
+    error.textContent = "Komanda adını yazın.";
     return;
   }
 
@@ -1466,119 +986,63 @@ async function joinRoom(){
   try{
 
     const path = "rooms/" + code;
-
-    const snap =
-      await db.ref(path).once("value");
-
+    const snap = await db.ref(path).once("value");
     const room = snap.val();
 
     if(!room){
-
-      error.textContent =
-        "Belə otaq yoxdur.";
-
+      error.textContent = "Belə otaq yoxdur.";
       return;
     }
 
     if(room.status === "finished"){
-
-      error.textContent =
-        "Bu oyun artıq bitib.";
-
+      error.textContent = "Bu oyun artıq bitib.";
       return;
     }
 
-
-    /*
-      ƏLAVƏ: eyni otaqda iki komandanın eyni adı
-      daşımasına icazə vermirik.
-    */
+    /* eyni otaqda iki komandanın eyni adı daşımasına icazə yoxdur */
     const existingTeamName =
-      room.blue
-      ? room.blue.name
-      : (room.pink ? room.pink.name : null);
+      room.blue ? room.blue.name : (room.pink ? room.pink.name : null);
 
     if(
       existingTeamName &&
-      existingTeamName.trim().toLowerCase() ===
-        teamName.toLowerCase()
+      existingTeamName.trim().toLowerCase() === teamName.toLowerCase()
     ){
-
-      error.textContent =
-        "Bu komanda adı artıq istifadə olunub, fərqli ad seçin.";
-
+      error.textContent = "Bu komanda adı artıq istifadə olunub, fərqli ad seçin.";
       return;
     }
-
 
     let joinedTeam = null;
 
-
     if(!room.blue){
-
-      const ok =
-        await claimTeam(
-          code,
-          "blue",
-          {
-            name:teamName,
-            connected:true
-          }
-        );
-
-      if(ok){
-        joinedTeam = "blue";
-      }
+      const ok = await claimTeam(code, "blue", { name:teamName, connected:true });
+      if(ok) joinedTeam = "blue";
     }
 
-
     if(!joinedTeam){
-
-      const latestSnap =
-        await db.ref(path).once("value");
-
+      const latestSnap = await db.ref(path).once("value");
       const latest = latestSnap.val();
 
       if(latest && !latest.pink){
-
-        const ok =
-          await claimTeam(
-            code,
-            "pink",
-            {
-              name:teamName,
-              connected:true
-            }
-          );
-
-        if(ok){
-          joinedTeam = "pink";
-        }
+        const ok = await claimTeam(code, "pink", { name:teamName, connected:true });
+        if(ok) joinedTeam = "pink";
       }
     }
 
-
     if(!joinedTeam){
-
-      error.textContent =
-        "Bu otaqda artıq 2 komanda var.";
-
+      error.textContent = "Bu otaqda artıq 2 komanda var.";
       return;
     }
-
 
     roomCode = code;
     role = "player";
     team = joinedTeam;
+    myTeamName = teamName;
 
     showScreen("playerScreen");
-
     startPolling();
 
   }catch(e){
-
-    error.textContent =
-      "Xəta: " + e.message;
+    error.textContent = "Xəta: " + e.message;
   }
 }
 
@@ -1586,27 +1050,36 @@ async function joinRoom(){
 /* =========================================================
    ATOMIC TEAM CLAIM
 ========================================================= */
-
 async function claimTeam(code, teamKey, value){
-
   try{
-
-    const ref =
-      db.ref("rooms/" + code + "/" + teamKey);
-
-    const result =
-      await ref.transaction(function(current){
-
-        return current === null
-          ? value
-          : undefined;
-      });
-
+    const ref = db.ref("rooms/" + code + "/" + teamKey);
+    const result = await ref.transaction(function(current){
+      return current === null ? value : undefined;
+    });
     return !!result.committed;
-
   }catch(e){
-
     return false;
+  }
+}
+
+
+/* =========================================================
+   ATILMA (KICK) — oyunçu tərəfi
+========================================================= */
+function kickedOut(){
+
+  const wasPlayer = role === "player";
+
+  /* roomCode/role əvvəlcədən null olur ki, beforeunload
+     silinmiş komandanı yenidən yaratmasın */
+  stopPolling();
+  roomCode = null;
+  role = null;
+  team = null;
+  currentRoom = null;
+
+  if(wasPlayer){
+    location.replace(KICK_REDIRECT);
   }
 }
 
@@ -1614,7 +1087,6 @@ async function claimTeam(code, teamKey, value){
 /* =========================================================
    REALTIME ROOM LISTENER
 ========================================================= */
-
 function attachRoomListener(){
 
   detachRoomListener();
@@ -1627,7 +1099,19 @@ function attachRoomListener(){
 
       const room = snapshot.val();
 
-      if(!room) return;
+      if(!room){
+        if(role === "player") kickedOut();
+        return;
+      }
+
+      /* Oyunçu aparıcı tərəfindən çıxarılıbsa — avtomatik get */
+      if(role === "player"){
+        const mine = room[team];
+        if(!mine || mine.name !== myTeamName){
+          kickedOut();
+          return;
+        }
+      }
 
       currentRoom = room;
 
@@ -1648,29 +1132,25 @@ function attachRoomListener(){
   );
 }
 
-
 function detachRoomListener(){
-
   if(roomRef){
     roomRef.off();
     roomRef = null;
   }
 }
 
-
 function startPolling(){
 
   stopPolling();
 
+  lastStartedAt = undefined;
+  lastBeepKey = "";
+  lastStateKey = "";
+
   attachRoomListener();
 
-  timerLoop =
-    setInterval(
-      updateTimerOnly,
-      50
-    );
+  timerLoop = setInterval(updateTimerOnly, 50);
 }
-
 
 function stopPolling(){
 
@@ -1686,35 +1166,43 @@ function stopPolling(){
 /* =========================================================
    AUDIO STATE EVENTS
 ========================================================= */
-
 function processAudioEvents(room){
 
+  /* START beep-i: yalnız yeni startedAt yarananda (düyməyə basma
+     winner yazsa da beep təkrar çalınmır) */
+  if(lastStartedAt === undefined){
+    lastStartedAt = room.startedAt || null;
+  }else if(room.startedAt && room.startedAt !== lastStartedAt){
+
+    lastStartedAt = room.startedAt;
+
+    if(localFlags.start){
+      localFlags.start = false;
+    }else if(room.status === "running"){
+      beep();
+    }
+  }
+
+  /* Düyməyə basılıb/vaxt bitib/oyun bitibsə çalan beep kəsilir */
+  if(
+    room.status === "answered" ||
+    room.status === "expired" ||
+    room.status === "finished"
+  ){
+    stopBeep();
+  }
+
   const stateKey =
-    String(room.question || 0) +
-    "|" +
-    String(room.status || "") +
-    "|" +
-    String(room.winner || "") +
-    "|" +
-    String(room.buzzAt || "") +
-    "|" +
-    String(!!room.failBlue) +
-    "|" +
+    String(room.question || 0) + "|" +
+    String(room.status || "") + "|" +
+    String(room.winner || "") + "|" +
+    String(room.buzzAt || "") + "|" +
+    String(!!room.failBlue) + "|" +
     String(!!room.failPink);
 
   if(stateKey !== lastStateKey){
 
-    if(room.status === "running"){
-
-      if(localFlags.start){
-        localFlags.start = false;
-      }else{
-        beep();
-      }
-    }
-
     if(room.status === "answered"){
-
       if(localFlags.buzz){
         localFlags.buzz = false;
       }else{
@@ -1726,11 +1214,7 @@ function processAudioEvents(room){
       winSound();
     }
 
-    if(
-      room.status === "waiting" &&
-      (room.failBlue || room.failPink)
-    ){
-
+    if(room.status === "waiting" && (room.failBlue || room.failPink)){
       if(localFlags.fail){
         localFlags.fail = false;
       }else{
@@ -1740,142 +1224,83 @@ function processAudioEvents(room){
 
     lastStateKey = stateKey;
   }
-
-
-  if(room.status === "running" &&
-     room.timerEnd){
-
-    const remaining =
-      Math.max(
-        0,
-        room.timerEnd - serverNow()
-      );
-
-    const second =
-      Math.ceil(remaining / 1000);
-
-    if(
-      (second === 10 || second === 3) &&
-      lastTimerSecond !== second
-    ){
-
-      beep();
-
-      lastTimerSecond = second;
-    }
-
-    if(second !== 10 && second !== 3){
-      lastTimerSecond = null;
-    }
-
-  }else{
-
-    lastTimerSecond = null;
-  }
 }
 
 
 /* =========================================================
    TIMER
 ========================================================= */
-
 function calculateRemaining(room){
 
   if(!room) return 20;
 
-  if(room.status === "waiting"){
-    return 20;
-  }
+  if(room.status === "waiting") return 20;
 
-  if(
-    room.status === "running" &&
-    room.timerEnd
-  ){
-
+  if(room.status === "running" && room.timerEnd){
     return Math.max(
       0,
-      Math.ceil(
-        (Number(room.timerEnd) - serverNow()) / 1000
-      )
+      Math.ceil((Number(room.timerEnd) - serverNow()) / 1000)
     );
   }
 
   return 0;
 }
 
-
 function updateTimerOnly(){
 
   if(!currentRoom) return;
 
-  const seconds =
-    calculateRemaining(currentRoom);
+  const seconds = calculateRemaining(currentRoom);
 
-  if(role === "host"){
+  const el = document.getElementById(
+    role === "host" ? "hostTimer" : "playerTimer"
+  );
 
-    const el =
-      document.getElementById("hostTimer");
+  el.textContent = seconds;
+  el.classList.toggle("warning", seconds <= 10 && seconds > 4);
+  el.classList.toggle("danger", seconds <= 4);
 
-    el.textContent = seconds;
+  /* Ekranda 0 gəlibsə oyunçu düyməsi bloklanır */
+  if(role !== "host"){
 
-    el.classList.toggle(
-      "warning",
-      seconds <= 10 &&
-      seconds > 3
-    );
+    const btn = document.getElementById("buzzButton");
 
-    el.classList.toggle(
-      "danger",
-      seconds <= 3
-    );
-
-  }else{
-
-    const el =
-      document.getElementById("playerTimer");
-
-    el.textContent = seconds;
-
-    el.classList.toggle(
-      "warning",
-      seconds <= 10 &&
-      seconds > 3
-    );
-
-    el.classList.toggle(
-      "danger",
-      seconds <= 3
-    );
+    if(
+      currentRoom.status === "running" &&
+      seconds <= 0 &&
+      !btn.classList.contains("locked")
+    ){
+      btn.disabled = true;
+      btn.className = "big-buzz locked";
+      setBuzzLabel("VAXT BİTDİ", false);
+    }
   }
 
+  if(currentRoom.status === "running" && currentRoom.timerEnd){
 
-  /*
-    ƏLAVƏ: vaxt həqiqətən bitdikdə (cavab verən olmadıqda
-    və ya rəqib komandaya keçən qalan vaxt bitdikdə)
-    taymerdəki vaxt bitmə səsi çalınır. Hər sual/davam
-    müddəti üçün yalnız bir dəfə.
-  */
-  if(
-    currentRoom.status === "running" &&
-    currentRoom.timerEnd &&
-    Number(currentRoom.timerEnd) <= serverNow() &&
-    lastTimeUpEnd !== currentRoom.timerEnd
-  ){
+    /* 10 və 4 saniyə qalanda beep (hər timerEnd üçün yalnız bir dəfə) */
+    const key = currentRoom.timerEnd + "|" + seconds;
 
-    lastTimeUpEnd = currentRoom.timerEnd;
+    if((seconds === 10 || seconds === 4) && lastBeepKey !== key){
+      lastBeepKey = key;
+      beep();
+    }
 
-    timeUpSound();
-  }
+    /* vaxt bitmə səsi */
+    if(
+      Number(currentRoom.timerEnd) <= serverNow() &&
+      lastTimeUpEnd !== currentRoom.timerEnd
+    ){
+      lastTimeUpEnd = currentRoom.timerEnd;
+      timeUpSound();
+    }
 
-
-  if(
-    role === "host" &&
-    currentRoom.status === "running" &&
-    currentRoom.timerEnd &&
-    Number(currentRoom.timerEnd) <= serverNow()
-  ){
-
-    expireQuestion();
+    if(
+      role === "host" &&
+      Number(currentRoom.timerEnd) <= serverNow()
+    ){
+      expireQuestion();
+    }
   }
 }
 
@@ -1883,21 +1308,16 @@ function updateTimerOnly(){
 /* =========================================================
    EXPIRE
 ========================================================= */
-
 let expiring = false;
 
 async function expireQuestion(){
 
   if(expiring) return;
-
   expiring = true;
 
   try{
 
-    const snap =
-      await db.ref("rooms/" + roomCode)
-        .once("value");
-
+    const snap = await db.ref("rooms/" + roomCode).once("value");
     const room = snap.val();
 
     if(
@@ -1906,24 +1326,15 @@ async function expireQuestion(){
       room.timerEnd &&
       Number(room.timerEnd) <= serverNow()
     ){
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          status:"expired",
-          timerEnd:null
-        });
+      await db.ref("rooms/" + roomCode).update({
+        status:"expired",
+        timerEnd:null
+      });
     }
 
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        expiring=false;
-      },
-      500
-    );
+    setTimeout(()=>{ expiring=false; }, 500);
   }
 }
 
@@ -1931,7 +1342,6 @@ async function expireQuestion(){
 /* =========================================================
    AUTO-EXPIRE
 ========================================================= */
-
 let lockingOut = false;
 
 async function checkAutoExpire(room){
@@ -1941,73 +1351,47 @@ async function checkAutoExpire(room){
 
   if(room.status === "waiting"){
 
-    if(!room.failBlue || !room.failPink){
-      return;
-    }
+    if(!room.failBlue || !room.failPink) return;
 
   }else if(room.status === "running"){
 
-    const blueLocked =
-      !!(room.failBlue || room.wrongBlue);
+    const blueLocked = !!(room.failBlue || room.wrongBlue);
+    const pinkLocked = !!(room.failPink || room.wrongPink);
 
-    const pinkLocked =
-      !!(room.failPink || room.wrongPink);
-
-    if(!(blueLocked && pinkLocked)){
-      return;
-    }
+    if(!(blueLocked && pinkLocked)) return;
 
   }else{
-
     return;
   }
 
   if(lockingOut) return;
-
   lockingOut = true;
 
   try{
 
-    const snap =
-      await db.ref("rooms/" + roomCode)
-        .once("value");
-
+    const snap = await db.ref("rooms/" + roomCode).once("value");
     const fresh = snap.val();
 
     if(!fresh) return;
 
     const stillWaitingBothFailed =
-      fresh.status === "waiting" &&
-      fresh.failBlue &&
-      fresh.failPink;
+      fresh.status === "waiting" && fresh.failBlue && fresh.failPink;
 
     const stillRunningBothLocked =
       fresh.status === "running" &&
       (fresh.failBlue || fresh.wrongBlue) &&
       (fresh.failPink || fresh.wrongPink);
 
-    if(
-      stillWaitingBothFailed ||
-      stillRunningBothLocked
-    ){
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          status:"expired",
-          timerEnd:null
-        });
+    if(stillWaitingBothFailed || stillRunningBothLocked){
+      await db.ref("rooms/" + roomCode).update({
+        status:"expired",
+        timerEnd:null
+      });
     }
 
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        lockingOut=false;
-      },
-      500
-    );
+    setTimeout(()=>{ lockingOut=false; }, 500);
   }
 }
 
@@ -2015,133 +1399,62 @@ async function checkAutoExpire(room){
 /* =========================================================
    HOST RENDER
 ========================================================= */
-
 function renderHost(room){
 
-  document.getElementById(
-    "hostQuestion"
-  ).textContent =
-    room.question || 1;
+  document.getElementById("hostQuestion").textContent = room.question || 1;
+  document.getElementById("hostValue").textContent = room.value || 1;
 
-  document.getElementById(
-    "hostValue"
-  ).textContent =
-    room.value || 1;
+  document.getElementById("hostBlueName").textContent =
+    room.blue ? room.blue.name : "Gözləyir...";
 
-  document.getElementById(
-    "hostBlueName"
-  ).textContent =
-    room.blue
-    ? room.blue.name
-    : "Gözləyir...";
+  document.getElementById("hostPinkName").textContent =
+    room.pink ? room.pink.name : "Gözləyir...";
 
-  document.getElementById(
-    "hostPinkName"
-  ).textContent =
-    room.pink
-    ? room.pink.name
-    : "Gözləyir...";
+  document.getElementById("hostBlueScore").textContent = room.blueScore || 0;
+  document.getElementById("hostPinkScore").textContent = room.pinkScore || 0;
 
-  document.getElementById(
-    "hostBlueScore"
-  ).textContent =
-    room.blueScore || 0;
+  /* Çıxarma (x) düymələri yalnız "waiting" mərhələsində */
+  const kickAllowed = room.status === "waiting";
 
-  document.getElementById(
-    "hostPinkScore"
-  ).textContent =
-    room.pinkScore || 0;
-
-
-  /*
-    ƏLAVƏ: İştirakçı çıxarma (x) düymələri YALNIZ
-    "waiting" mərhələsində (START basılmamış, sual
-    üzərində vaxt getmirsə) görünür və basıla bilir.
-    Arxada vaxt gedən müddətdə (running/answered/
-    expired/finished) bu düymələr gizlədilir.
-  */
-  const kickAllowed =
-    room.status === "waiting";
-
-  const kickBlueBtn =
-    document.getElementById("kickBlueBtn");
-
-  const kickPinkBtn =
-    document.getElementById("kickPinkBtn");
-
-  kickBlueBtn.style.display =
+  document.getElementById("kickBlueBtn").style.display =
     (kickAllowed && room.blue) ? "flex" : "none";
 
-  kickPinkBtn.style.display =
+  document.getElementById("kickPinkBtn").style.display =
     (kickAllowed && room.pink) ? "flex" : "none";
 
   if(!kickAllowed && kickOverlayOpen){
     closeKickOverlay(false);
   }
 
+  const event = document.getElementById("hostEvent");
+  const startBtn = document.getElementById("startBtn");
 
-  const event =
-    document.getElementById("hostEvent");
+  document.getElementById("resetBtn").disabled = room.status !== "waiting";
+  document.getElementById("resetQVBtn").disabled = room.status !== "waiting";
 
-  const startBtn =
-    document.getElementById("startBtn");
-
-  const resetBtn =
-    document.getElementById("resetBtn");
-
-  resetBtn.disabled = room.status !== "waiting";
-
-  const answerControls =
-    document.getElementById(
-      "answerControls"
-    );
-
-  const expiredControls =
-    document.getElementById(
-      "expiredControls"
-    );
-
-  const finishedControls =
-    document.getElementById(
-      "finishedControls"
-    );
-
+  const answerControls = document.getElementById("answerControls");
+  const expiredControls = document.getElementById("expiredControls");
+  const finishedControls = document.getElementById("finishedControls");
 
   answerControls.classList.add("hidden");
   expiredControls.classList.add("hidden");
   finishedControls.classList.add("hidden");
-
 
   if(room.status === "waiting"){
 
     if(!room.blue || !room.pink){
 
       startBtn.disabled = true;
-
-      event.className =
-        "event neutral";
-
-      event.textContent =
-        "İki komandanın qoşulması gözlənilir...";
+      event.className = "event neutral";
+      event.textContent = "İki komandanın qoşulması gözlənilir...";
 
     }else if(room.failBlue && room.failPink){
 
       startBtn.disabled = true;
-
-      event.className =
-        "event neutral";
-
-      event.textContent =
-        "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
+      event.className = "event neutral";
+      event.textContent = "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
 
     }else if(room.failBlue || room.failPink){
-
-      /*
-        ƏLAVƏ: yalnız BİR komanda erkən basıbsa
-        (FALSTART), bunu aparıcı panelində göstəririk —
-        eynilə "... CAVAB VERİR" mesajının göründüyü
-        kimi, indi "... FALSTART ETDİ" göstərilir.
-      */
 
       startBtn.disabled = false;
 
@@ -2150,129 +1463,67 @@ function renderHost(room){
         ? (room.blue?.name || "Mavi")
         : (room.pink?.name || "Çəhrayı");
 
-      event.className =
-        room.failBlue ? "event blue" : "event pink";
-
-      event.textContent =
-        falseStartName + " FALSTART ETDİ";
+      event.className = room.failBlue ? "event blue" : "event pink";
+      event.textContent = falseStartName + " FALSTART ETDİ";
 
     }else{
 
       startBtn.disabled = false;
-
-      event.className =
-        "event neutral";
-
-      event.textContent =
-        "Hazırdır. Sualı oxuyun və START basın.";
+      event.className = "event neutral";
+      event.textContent = "Hazırdır. Sualı oxuyun və START basın.";
     }
 
-  }
-
-
-  else if(room.status === "running"){
+  }else if(room.status === "running"){
 
     startBtn.disabled = true;
+    event.className = "event neutral";
+    event.textContent = "⏱️ CAVAB VAXTI DAVAM EDİR";
 
-    event.className =
-      "event neutral";
-
-    event.textContent =
-      "⏱️ CAVAB VAXTI DAVAM EDİR";
-
-  }
-
-
-  else if(room.status === "answered"){
+  }else if(room.status === "answered"){
 
     startBtn.disabled = true;
+    answerControls.classList.remove("hidden");
 
-    answerControls.classList.remove(
-      "hidden"
-    );
-
-    const winner =
-      room.winner;
+    const winner = room.winner;
 
     const winnerName =
       winner === "blue"
       ? (room.blue?.name || "Mavi")
       : (room.pink?.name || "Çəhrayı");
 
-    const wt =
-      document.getElementById("winnerText");
-
+    const wt = document.getElementById("winnerText");
     wt.className = "winner " + winner;
     wt.textContent = winnerName + " CAVAB VERİR";
 
+    event.className = winner === "blue" ? "event blue" : "event pink";
+    event.textContent = winnerName + " CAVAB VERİR";
 
-    event.className =
-      winner === "blue"
-      ? "event blue"
-      : "event pink";
-
-    event.textContent =
-      winnerName + " CAVAB VERİR";
-
-  }
-
-
-  else if(room.status === "expired"){
+  }else if(room.status === "expired"){
 
     startBtn.disabled = true;
+    expiredControls.classList.remove("hidden");
+    event.className = "event neutral";
+    event.textContent = "⏱️ VAXT BİTDİ — HEÇ KİM CAVAB VERMƏDİ";
 
-    expiredControls.classList.remove(
-      "hidden"
-    );
-
-    event.className =
-      "event neutral";
-
-    event.textContent =
-      "⏱️ VAXT BİTDİ — HEÇ KİM CAVAB VERMƏDİ";
-
-  }
-
-
-  else if(room.status === "finished"){
+  }else if(room.status === "finished"){
 
     startBtn.disabled = true;
+    finishedControls.classList.remove("hidden");
 
-    finishedControls.classList.remove(
-      "hidden"
-    );
-
-    const winner =
-      room.winner;
+    const winner = room.winner;
 
     const winnerName =
       winner === "blue"
       ? (room.blue?.name || "Mavi")
       : (room.pink?.name || "Çəhrayı");
 
-    event.className =
-      winner === "blue"
-      ? "event blue"
-      : "event pink";
-
-    event.textContent =
-      "🏆 " + winnerName + " QALİB OLDU!";
-
+    event.className = winner === "blue" ? "event blue" : "event pink";
+    event.textContent = "🏆 " + winnerName + " QALİB OLDU!";
   }
 
-
-  if(
-    room.status === "running" &&
-    room.failBlue &&
-    room.failPink
-  ){
-
-    event.className =
-      "event neutral";
-
-    event.textContent =
-      "Hər iki komandanın cavab hüququ yoxdur.";
-
+  if(room.status === "running" && room.failBlue && room.failPink){
+    event.className = "event neutral";
+    event.textContent = "Hər iki komandanın cavab hüququ yoxdur.";
   }
 }
 
@@ -2280,109 +1531,47 @@ function renderHost(room){
 /* =========================================================
    PLAYER RENDER
 ========================================================= */
-
 function setBuzzLabel(text, big){
-
-  const label =
-    document.getElementById(
-      "buzzButtonLabel"
-    );
-
+  const label = document.getElementById("buzzButtonLabel");
   label.textContent = text;
-
-  label.className =
-    "buzz-label " + (big ? "jumbo" : "small");
+  label.className = "buzz-label " + (big ? "jumbo" : "small");
 }
-
 
 function renderPlayer(room){
 
-  document.getElementById(
-    "playerQuestion"
-  ).textContent =
-    room.question || 1;
+  document.getElementById("playerQuestion").textContent = room.question || 1;
+  document.getElementById("playerValue").textContent = room.value || 1;
 
-  document.getElementById(
-    "playerValue"
-  ).textContent =
-    room.value || 1;
+  document.getElementById("playerBlueName").textContent =
+    room.blue ? room.blue.name : "Gözləyir...";
 
+  document.getElementById("playerPinkName").textContent =
+    room.pink ? room.pink.name : "Gözləyir...";
 
-  document.getElementById(
-    "playerBlueName"
-  ).textContent =
-    room.blue
-    ? room.blue.name
-    : "Gözləyir...";
+  document.getElementById("playerBlueScore").textContent = room.blueScore || 0;
+  document.getElementById("playerPinkScore").textContent = room.pinkScore || 0;
 
-  document.getElementById(
-    "playerPinkName"
-  ).textContent =
-    room.pink
-    ? room.pink.name
-    : "Gözləyir...";
-
-
-  document.getElementById(
-    "playerBlueScore"
-  ).textContent =
-    room.blueScore || 0;
-
-  document.getElementById(
-    "playerPinkScore"
-  ).textContent =
-    room.pinkScore || 0;
-
-
-  const button =
-    document.getElementById(
-      "buzzButton"
-    );
-
-  const event =
-    document.getElementById(
-      "playerEvent"
-    );
-
+  const button = document.getElementById("buzzButton");
+  const event = document.getElementById("playerEvent");
 
   button.disabled = false;
-  button.className =
-    "big-buzz " + team;
+  button.className = "big-buzz " + team;
 
-
-  /* ================= WAITING ================= */
-
+  /* ---------- WAITING ---------- */
   if(room.status === "waiting"){
 
-    const failed =
-      team === "blue"
-      ? room.failBlue
-      : room.failPink;
+    const failed = team === "blue" ? room.failBlue : room.failPink;
 
     if(failed){
-
       button.disabled = true;
-      button.className =
-        "big-buzz locked";
-
+      button.className = "big-buzz locked";
       setBuzzLabel("CAVAB HÜQUQU YOXDUR", false);
-
     }else{
-
       button.disabled = false;
-
       setBuzzLabel("BAS!", true);
     }
 
-
-    /*
-      ƏLAVƏ: rəqib komanda erkən basıbsa (FALSTART),
-      bunu oyunçu ekranında da göstəririk.
-    */
-    const opponentFailed =
-      team === "blue"
-      ? room.failPink
-      : room.failBlue;
+    const opponentFailed = team === "blue" ? room.failPink : room.failBlue;
 
     if(opponentFailed){
 
@@ -2391,97 +1580,63 @@ function renderPlayer(room){
         ? (room.pink?.name || "Çəhrayı")
         : (room.blue?.name || "Mavi");
 
-      event.className =
-        team === "blue" ? "event pink" : "event blue";
-
-      event.textContent =
-        opponentName + " FALSTART ETDİ";
+      event.className = team === "blue" ? "event pink" : "event blue";
+      event.textContent = opponentName + " FALSTART ETDİ";
 
     }else{
-
-      event.className =
-        "event neutral";
-
-      event.textContent =
-        "Aparıcı START verməlidir.";
+      event.className = "event neutral";
+      event.textContent = "Aparıcı START verməlidir.";
     }
 
     return;
   }
 
-
-  /* ================= RUNNING ================= */
-
+  /* ---------- RUNNING ---------- */
   if(room.status === "running"){
 
-    const failed =
-      team === "blue"
-      ? room.failBlue
-      : room.failPink;
-
-    const wrong =
-      team === "blue"
-      ? room.wrongBlue
-      : room.wrongPink;
-
+    const failed = team === "blue" ? room.failBlue : room.failPink;
+    const wrong = team === "blue" ? room.wrongBlue : room.wrongPink;
 
     if(failed || wrong){
 
       button.disabled = true;
-
-      button.className =
-        "big-buzz locked";
-
+      button.className = "big-buzz locked";
       setBuzzLabel("CAVAB HÜQUQU YOXDUR", false);
+
+    }else if(calculateRemaining(room) <= 0){
+
+      /* ekranda 0 gəlibsə basmaq olmaz */
+      button.disabled = true;
+      button.className = "big-buzz locked";
+      setBuzzLabel("VAXT BİTDİ", false);
 
     }else{
 
       button.disabled = false;
-
-      button.className =
-        "big-buzz " + team;
-
+      button.className = "big-buzz " + team;
       setBuzzLabel("BAS!", true);
     }
 
-
-    event.className =
-      "event neutral";
-
-    event.textContent =
-      "⏱️ BASMAQ ÜÇÜN VAXT VAR";
+    event.className = "event neutral";
+    event.textContent = "⏱️ BASMAQ ÜÇÜN VAXT VAR";
 
     return;
   }
 
-
-  /* ================= ANSWERED ================= */
-
+  /* ---------- ANSWERED ---------- */
   if(room.status === "answered"){
 
     button.disabled = true;
+    button.className = "big-buzz locked";
 
-    button.className =
-      "big-buzz locked";
-
-    setBuzzLabel(
-      room.winner === team
-      ? "SİZ BASDINIZ"
-      : "RƏQİB BASDI",
-      false
-    );
-
+    setBuzzLabel(room.winner === team ? "SİZ BASDINIZ" : "RƏQİB BASDI", false);
 
     const winnerName =
       room.winner === "blue"
       ? (room.blue?.name || "Mavi")
       : (room.pink?.name || "Çəhrayı");
 
-    event.className =
-      room.winner === "blue"
-      ? "event blue"
-      : "event pink";
-
+    event.className = room.winner === "blue" ? "event blue" : "event pink";
 
     event.textContent =
       room.winner === team
@@ -2491,52 +1646,33 @@ function renderPlayer(room){
     return;
   }
 
-
-  /* ================= EXPIRED ================= */
-
+  /* ---------- EXPIRED ---------- */
   if(room.status === "expired"){
 
     button.disabled = true;
-
-    button.className =
-      "big-buzz locked";
-
+    button.className = "big-buzz locked";
     setBuzzLabel("VAXT BİTDİ", false);
 
-    event.className =
-      "event neutral";
-
-    event.textContent =
-      "⏱️ VAXT BİTDİ";
+    event.className = "event neutral";
+    event.textContent = "⏱️ VAXT BİTDİ";
 
     return;
   }
 
-
-  /* ================= FINISHED ================= */
-
+  /* ---------- FINISHED ---------- */
   if(room.status === "finished"){
 
     button.disabled = true;
-
-    button.className =
-      "big-buzz locked";
-
+    button.className = "big-buzz locked";
     setBuzzLabel("OYUN BİTDİ", false);
-
 
     const winnerName =
       room.winner === "blue"
       ? (room.blue?.name || "Mavi")
       : (room.pink?.name || "Çəhrayı");
 
-    event.className =
-      room.winner === "blue"
-      ? "event blue"
-      : "event pink";
-
-    event.textContent =
-      "🏆 " + winnerName + " QALİB OLDU!";
+    event.className = room.winner === "blue" ? "event blue" : "event pink";
+    event.textContent = "🏆 " + winnerName + " QALİB OLDU!";
   }
 }
 
@@ -2544,182 +1680,138 @@ function renderPlayer(room){
 /* =========================================================
    HOST START
 ========================================================= */
-
 let startBusy = false;
 
 async function hostStart(){
 
   if(startBusy) return;
-
   startBusy = true;
 
   unlockAudio();
 
   try{
 
-    const snap =
-      await db.ref("rooms/" + roomCode)
-        .once("value");
-
+    const snap = await db.ref("rooms/" + roomCode).once("value");
     const room = snap.val();
 
-    if(
-      !room ||
-      !room.blue ||
-      !room.pink ||
-      room.status !== "waiting"
-    ){
-
+    if(!room || !room.blue || !room.pink || room.status !== "waiting"){
       return;
     }
 
     await waitForOffset();
 
-    const startedAt =
-      serverNow();
-
-    const timerEnd =
-      startedAt + 20000;
+    const startedAt = serverNow();
+    const timerEnd = startedAt + 20000;
 
     localFlags.start = true;
     beep();
 
-    await db.ref("rooms/" + roomCode)
-      .update({
-        status:"running",
-        startedAt:startedAt,
-        timerEnd:timerEnd,
-        winner:null,
-        buzzAt:null
-      });
+    await db.ref("rooms/" + roomCode).update({
+      status:"running",
+      startedAt:startedAt,
+      timerEnd:timerEnd,
+      winner:null,
+      buzzAt:null
+    });
 
   }catch(e){
-
     console.log(e);
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        startBusy=false;
-      },
-      500
-    );
+    setTimeout(()=>{ startBusy=false; }, 500);
   }
 }
 
 
 /* =========================================================
-   DÜYMƏLƏRİ SIFIRLA
-
-   ƏLAVƏ: START basılmazdan əvvəl komandalar düyməni
-   sınaqdan keçirərkən yanlışlıqla FALSTART edə bilər və
-   bu, əsl sual üçün cavab hüququnu itirmələrinə səbəb
-   olur. Bu düymə YALNIZ "waiting" mərhələsində (START
-   basılmamış) aktivdir və sual nömrəsinə, dəyərə,
-   xallara TOXUNMADAN yalnız fail/wrong bayraqlarını
-   sıfırlayır.
+   DÜYMƏLƏRİ SIFIRLA (yalnız "waiting" mərhələsində)
 ========================================================= */
-
 let resetBusy = false;
 
 async function resetButtons(){
 
   if(resetBusy) return;
-
   resetBusy = true;
 
   try{
-
-    await db.ref("rooms/" + roomCode)
-      .update({
-        failBlue:false,
-        failPink:false,
-        wrongBlue:false,
-        wrongPink:false
-      });
-
+    await db.ref("rooms/" + roomCode).update({
+      failBlue:false,
+      failPink:false,
+      wrongBlue:false,
+      wrongPink:false
+    });
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        resetBusy=false;
-      },
-      300
-    );
+    setTimeout(()=>{ resetBusy=false; }, 300);
   }
 }
 
 
 /* =========================================================
-   İŞTİRAKÇI ÇIXARMA (KICK)
-
-   ƏLAVƏ: Aparıcı bir komandanı otaqdan çıxara bilər.
-   Yalnız "waiting" mərhələsində (START basılmamış)
-   açıla bilər. Təsdiq pəncərəsi bulanmış fon üzərinə
-   scale+fade ilə gəlir; "XEYR" heç nəyi dəyişmədən
-   bağlayır, "BƏLİ" komandanı otaqdan çıxarır və hər
-   iki komandanın xalını sıfırlayır.
+   SUAL VƏ DƏYƏRİ SIFIRLA (xallara toxunmur)
 ========================================================= */
+let resetQVBusy = false;
 
+async function resetQuestionValue(){
+
+  if(resetQVBusy) return;
+  if(!currentRoom || currentRoom.status !== "waiting") return;
+
+  resetQVBusy = true;
+
+  try{
+    await db.ref("rooms/" + roomCode).update({
+      question:1,
+      value:1
+    });
+  }catch(e){
+  }finally{
+    setTimeout(()=>{ resetQVBusy=false; }, 300);
+  }
+}
+
+
+/* =========================================================
+   İŞTİRAKÇI ÇIXARMA (KICK) — aparıcı tərəfi
+========================================================= */
 function confirmKick(teamKey){
 
   if(!currentRoom) return;
   if(currentRoom.status !== "waiting") return;
 
   const teamObj = currentRoom[teamKey];
-
   if(!teamObj) return;
 
   kickTarget = teamKey;
   kickOverlayOpen = true;
 
-  const overlay =
-    document.getElementById("kickOverlay");
+  const overlay = document.getElementById("kickOverlay");
+  const modal = document.getElementById("kickModal");
+  const text = document.getElementById("kickModalText");
 
-  const modal =
-    document.getElementById("kickModal");
-
-  const text =
-    document.getElementById("kickModalText");
-
-  text.textContent =
-    teamObj.name + " ÇIXARMAQ İSTƏYİRSİZ?";
+  text.textContent = teamObj.name + " ÇIXARMAQ İSTƏYİRSİZ?";
 
   overlay.style.display = "flex";
   overlay.style.pointerEvents = "auto";
-
   overlay.style.transition =
     "background .2s ease, backdrop-filter .2s ease, -webkit-backdrop-filter .2s ease";
 
-  modal.style.transition =
-    "opacity .5s ease, transform .5s ease";
+  modal.style.transition = "opacity .5s ease, transform .5s ease";
 
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-
-      overlay.style.background =
-        "rgba(0,7,44,.3)";
-
+      overlay.style.background = "rgba(0,7,44,.3)";
       overlay.style.backdropFilter = "blur(8px)";
       overlay.style.webkitBackdropFilter = "blur(8px)";
-
       modal.style.opacity = "1";
       modal.style.transform = "scale(1)";
     });
   });
 }
 
-
 function closeKickOverlay(shouldRemove){
 
-  const overlay =
-    document.getElementById("kickOverlay");
-
-  const modal =
-    document.getElementById("kickModal");
+  const overlay = document.getElementById("kickOverlay");
+  const modal = document.getElementById("kickModal");
 
   modal.style.transition = "opacity .3s ease";
   modal.style.opacity = "0";
@@ -2734,13 +1826,10 @@ function closeKickOverlay(shouldRemove){
 
   kickOverlayOpen = false;
 
-  setTimeout(
-    function(){
-      overlay.style.display = "none";
-      modal.style.transform = "scale(.85)";
-    },
-    300
-  );
+  setTimeout(function(){
+    overlay.style.display = "none";
+    modal.style.transform = "scale(.85)";
+  }, 300);
 
   if(shouldRemove){
     performKick();
@@ -2748,7 +1837,6 @@ function closeKickOverlay(shouldRemove){
     kickTarget = null;
   }
 }
-
 
 async function performKick(){
 
@@ -2761,105 +1849,61 @@ async function performKick(){
   kickTarget = null;
 
   try{
-
-    await db.ref("rooms/" + roomCode)
-      .update({
-        [field]: null,
-        blueScore:0,
-        pinkScore:0
-      });
-
+    await db.ref("rooms/" + roomCode).update({
+      [field]: null,
+      blueScore:0,
+      pinkScore:0
+    });
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        kickBusy=false;
-      },
-      300
-    );
+    setTimeout(()=>{ kickBusy=false; }, 300);
   }
 }
 
-
-function kickConfirm(yes){
-  closeKickOverlay(yes);
-}
+function kickConfirm(yes){ closeKickOverlay(yes); }
 
 
 /* =========================================================
    PLAYER BUZZ
 ========================================================= */
-
 let buzzBusy = false;
 
 async function playerBuzz(){
 
   if(buzzBusy) return;
-
   if(!currentRoom) return;
 
-  const room =
-    currentRoom;
+  const room = currentRoom;
 
-
+  /* ---------- START-dan əvvəl (falstart) ---------- */
   if(room.status === "waiting"){
 
-    /*
-      ƏLAVƏ: startdan əvvəl YALNIZ BİR komandanın
-      düyməni sınaması (falstart) qeydə alınır. Əgər
-      digər komanda artıq falstart edibsə, bu komandanın
-      basması heç nəyə təsir etməməlidir — həmin komanda
-      real oyunun başlaması üçün mütləq START düyməsini
-      gözləməlidir.
-    */
-    const otherAlreadyFailed =
-      team === "blue"
-      ? room.failPink
-      : room.failBlue;
-
-    if(otherAlreadyFailed){
-      return;
-    }
+    const otherAlreadyFailed = team === "blue" ? room.failPink : room.failBlue;
+    if(otherAlreadyFailed) return;
 
     buzzBusy = true;
 
     try{
 
-      const field =
-        team === "blue"
-        ? "failBlue"
-        : "failPink";
+      const field = team === "blue" ? "failBlue" : "failPink";
 
       localFlags.fail = true;
       failSound();
 
-      await db.ref("rooms/" + roomCode)
-        .update({
-          [field]:true
-        });
+      await db.ref("rooms/" + roomCode).update({ [field]:true });
 
     }catch(e){
-
     }finally{
-
-      setTimeout(
-        ()=>{
-          buzzBusy=false;
-        },
-        250
-      );
+      setTimeout(()=>{ buzzBusy=false; }, 250);
     }
 
     return;
   }
 
+  if(room.status !== "running") return;
 
-  if(room.status !== "running"){
-    return;
-  }
-
+  /* Ekranda 0 gəlibsə basmaq olmaz */
+  if(calculateRemaining(room) <= 0) return;
 
   if(
     team === "blue"
@@ -2869,32 +1913,20 @@ async function playerBuzz(){
     return;
   }
 
-
-  if(
-    !room.timerEnd ||
-    Number(room.timerEnd) <= serverNow()
-  ){
-
+  if(!room.timerEnd || Number(room.timerEnd) <= serverNow()){
     return;
   }
 
-
   buzzBusy = true;
 
+  /* Beep çalırsa dərhal kəsilir (düymə səsi çalınır) */
+  stopBeep();
+
   try{
-
     await atomicWinnerClaim();
-
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        buzzBusy=false;
-      },
-      200
-    );
+    setTimeout(()=>{ buzzBusy=false; }, 200);
   }
 }
 
@@ -2902,33 +1934,19 @@ async function playerBuzz(){
 /* =========================================================
    ATOMIC WINNER CLAIM
 ========================================================= */
-
 async function atomicWinnerClaim(){
 
   try{
 
-    const ref =
-      db.ref("rooms/" + roomCode + "/winner");
+    const ref = db.ref("rooms/" + roomCode + "/winner");
 
-    const result =
-      await ref.transaction(function(current){
+    const result = await ref.transaction(function(current){
+      return current === null ? team : undefined;
+    });
 
-        return current === null
-          ? team
-          : undefined;
-      });
+    if(!result.committed) return false;
 
-    if(!result.committed){
-      return false;
-    }
-
-    /*
-      ƏLAVƏ: rəqib komandaya "qalan vaxtdan davam"
-      imkanı vermək üçün, sual dondurulan andakı
-      qalan müddəti (millisaniyə) yadda saxlayırıq.
-      wrongAnswer() bu dəyəri istifadə edərək taymeri
-      məhz buradan davam etdirəcək.
-    */
+    /* rəqibə "qalan vaxtdan davam" üçün qalan müddət saxlanır */
     const remainingMs =
       currentRoom && currentRoom.timerEnd
       ? Math.max(0, Number(currentRoom.timerEnd) - serverNow())
@@ -2937,22 +1955,18 @@ async function atomicWinnerClaim(){
     localFlags.buzz = true;
     buzzSound();
 
-    if(navigator.vibrate){
-      navigator.vibrate(100);
-    }
+    if(navigator.vibrate) navigator.vibrate(100);
 
-    await db.ref("rooms/" + roomCode)
-      .update({
-        status:"answered",
-        buzzAt: firebase.database.ServerValue.TIMESTAMP,
-        timerEnd:null,
-        pausedRemaining:remainingMs
-      });
+    await db.ref("rooms/" + roomCode).update({
+      status:"answered",
+      buzzAt: firebase.database.ServerValue.TIMESTAMP,
+      timerEnd:null,
+      pausedRemaining:remainingMs
+    });
 
     return true;
 
   }catch(e){
-
     return false;
   }
 }
@@ -2961,89 +1975,49 @@ async function atomicWinnerClaim(){
 /* =========================================================
    WRONG ANSWER
 ========================================================= */
-
 let wrongBusy = false;
 
 async function wrongAnswer(){
 
   if(wrongBusy) return;
 
-  const snap =
-    await db.ref("rooms/" + roomCode)
-      .once("value");
-
+  const snap = await db.ref("rooms/" + roomCode).once("value");
   const room = snap.val();
 
-  if(
-    !room ||
-    room.status !== "answered" ||
-    !room.winner
-  ){
-    return;
-  }
+  if(!room || room.status !== "answered" || !room.winner) return;
 
-
-  const wrongTeam =
-    room.winner;
-
-
-  const wrongField =
-    wrongTeam === "blue"
-    ? "wrongBlue"
-    : "wrongPink";
-
+  const wrongField = room.winner === "blue" ? "wrongBlue" : "wrongPink";
 
   wrongBusy = true;
 
   try{
 
-    /*
-      ƏLAVƏ / DÜZƏLİŞ: "answered" statusuna keçəndə
-      timerEnd artıq null edilmişdi (dondurma), ona görə
-      buradan Number(room.timerEnd) HƏMİŞƏ 0 qaytarırdı
-      və rəqib komanda üçün vaxt heç vaxt düzgün davam
-      etmirdi (sual həmişə "vaxt bitdi"yə keçirdi). İndi
-      dondurulma anında yadda saxlanan pausedRemaining
-      istifadə olunur ki, vaxt MƏHZ qaldığı saniyədən
-      rəqib komanda üçün davam etsin.
-    */
-    const remaining =
-      Number(room.pausedRemaining || 0);
-
+    const remaining = Number(room.pausedRemaining || 0);
 
     if(remaining > 0){
 
-      await db.ref("rooms/" + roomCode)
-        .update({
-          [wrongField]:true,
-          winner:null,
-          status:"running",
-          timerEnd: serverNow() + remaining,
-          pausedRemaining:null
-        });
+      await db.ref("rooms/" + roomCode).update({
+        [wrongField]:true,
+        winner:null,
+        status:"running",
+        timerEnd: serverNow() + remaining,
+        pausedRemaining:null
+      });
 
     }else{
 
-      await db.ref("rooms/" + roomCode)
-        .update({
-          [wrongField]:true,
-          winner:null,
-          status:"expired",
-          timerEnd:null,
-          pausedRemaining:null
-        });
+      await db.ref("rooms/" + roomCode).update({
+        [wrongField]:true,
+        winner:null,
+        status:"expired",
+        timerEnd:null,
+        pausedRemaining:null
+      });
     }
 
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        wrongBusy=false;
-      },
-      400
-    );
+    setTimeout(()=>{ wrongBusy=false; }, 400);
   }
 }
 
@@ -3051,119 +2025,72 @@ async function wrongAnswer(){
 /* =========================================================
    GIVE POINTS
 ========================================================= */
-
 let pointBusy = false;
 
 async function givePoints(points){
 
   if(pointBusy) return;
-
   pointBusy = true;
 
   try{
 
-    const snap =
-      await db.ref("rooms/" + roomCode)
-        .once("value");
-
+    const snap = await db.ref("rooms/" + roomCode).once("value");
     const room = snap.val();
 
+    if(!room || room.status !== "answered" || !room.winner) return;
 
-    if(
-      !room ||
-      room.status !== "answered" ||
-      !room.winner
-    ){
-      return;
-    }
+    const winner = room.winner;
 
-
-    const winner =
-      room.winner;
-
-
-    let blueScore =
-      Number(room.blueScore || 0);
-
-    let pinkScore =
-      Number(room.pinkScore || 0);
-
+    let blueScore = Number(room.blueScore || 0);
+    let pinkScore = Number(room.pinkScore || 0);
 
     if(winner === "blue"){
-
       blueScore += points;
-
     }else{
-
       pinkScore += points;
     }
 
-
     if(blueScore >= 5){
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          blueScore:blueScore,
-          pinkScore:pinkScore,
-          status:"finished",
-          winner:"blue",
-          timerEnd:null
-        });
-
-      return;
-    }
-
-
-    if(pinkScore >= 5){
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          blueScore:blueScore,
-          pinkScore:pinkScore,
-          status:"finished",
-          winner:"pink",
-          timerEnd:null
-        });
-
-      return;
-    }
-
-
-    await db.ref("rooms/" + roomCode)
-      .update({
+      await db.ref("rooms/" + roomCode).update({
         blueScore:blueScore,
         pinkScore:pinkScore,
-
-        question:
-          Number(room.question || 1) + 1,
-
-        value:1,
-
-        status:"waiting",
-
-        winner:null,
-        startedAt:null,
-        timerEnd:null,
-
-        failBlue:false,
-        failPink:false,
-
-        wrongBlue:false,
-        wrongPink:false,
-
-        buzzAt:null
+        status:"finished",
+        winner:"blue",
+        timerEnd:null
       });
+      return;
+    }
+
+    if(pinkScore >= 5){
+      await db.ref("rooms/" + roomCode).update({
+        blueScore:blueScore,
+        pinkScore:pinkScore,
+        status:"finished",
+        winner:"pink",
+        timerEnd:null
+      });
+      return;
+    }
+
+    await db.ref("rooms/" + roomCode).update({
+      blueScore:blueScore,
+      pinkScore:pinkScore,
+      question:Number(room.question || 1) + 1,
+      value:1,
+      status:"waiting",
+      winner:null,
+      startedAt:null,
+      timerEnd:null,
+      failBlue:false,
+      failPink:false,
+      wrongBlue:false,
+      wrongPink:false,
+      buzzAt:null
+    });
 
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        pointBusy=false;
-      },
-      400
-    );
+    setTimeout(()=>{ pointBusy=false; }, 400);
   }
 }
 
@@ -3171,95 +2098,48 @@ async function givePoints(points){
 /* =========================================================
    X — UNRESOLVED
 ========================================================= */
-
 let xBusy = false;
 
 async function unresolved(){
 
   if(xBusy) return;
-
   xBusy = true;
 
   try{
 
-    const snap =
-      await db.ref("rooms/" + roomCode)
-        .once("value");
-
+    const snap = await db.ref("rooms/" + roomCode).once("value");
     const room = snap.val();
 
+    if(!room) return;
 
-    if(!room){
-      return;
-    }
+    const value = Number(room.value || 1);
 
-
-    const value =
-      Number(room.value || 1);
-
+    const base = {
+      question:Number(room.question || 1) + 1,
+      status:"waiting",
+      winner:null,
+      startedAt:null,
+      timerEnd:null,
+      failBlue:false,
+      failPink:false,
+      wrongBlue:false,
+      wrongPink:false,
+      buzzAt:null
+    };
 
     if(value < 3){
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          question:
-            Number(room.question || 1) + 1,
-
-          value:value + 1,
-
-          status:"waiting",
-
-          winner:null,
-          startedAt:null,
-          timerEnd:null,
-
-          failBlue:false,
-          failPink:false,
-
-          wrongBlue:false,
-          wrongPink:false,
-
-          buzzAt:null
-        });
-
+      base.value = value + 1;
     }else{
-
-      await db.ref("rooms/" + roomCode)
-        .update({
-          blueScore:0,
-          pinkScore:0,
-
-          question:
-            Number(room.question || 1) + 1,
-
-          value:1,
-
-          status:"waiting",
-
-          winner:null,
-          startedAt:null,
-          timerEnd:null,
-
-          failBlue:false,
-          failPink:false,
-
-          wrongBlue:false,
-          wrongPink:false,
-
-          buzzAt:null
-        });
+      base.value = 1;
+      base.blueScore = 0;
+      base.pinkScore = 0;
     }
 
+    await db.ref("rooms/" + roomCode).update(base);
+
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        xBusy=false;
-      },
-      400
-    );
+    setTimeout(()=>{ xBusy=false; }, 400);
   }
 }
 
@@ -3267,50 +2147,32 @@ async function unresolved(){
 /* =========================================================
    NEW GAME
 ========================================================= */
-
 let newGameBusy = false;
 
 async function newGame(){
 
   if(newGameBusy) return;
-
   newGameBusy = true;
 
   try{
-
-    await db.ref("rooms/" + roomCode)
-      .update({
-        blueScore:0,
-        pinkScore:0,
-
-        question:1,
-        value:1,
-
-        status:"waiting",
-
-        winner:null,
-        startedAt:null,
-        timerEnd:null,
-
-        failBlue:false,
-        failPink:false,
-
-        wrongBlue:false,
-        wrongPink:false,
-
-        buzzAt:null
-      });
-
+    await db.ref("rooms/" + roomCode).update({
+      blueScore:0,
+      pinkScore:0,
+      question:1,
+      value:1,
+      status:"waiting",
+      winner:null,
+      startedAt:null,
+      timerEnd:null,
+      failBlue:false,
+      failPink:false,
+      wrongBlue:false,
+      wrongPink:false,
+      buzzAt:null
+    });
   }catch(e){
-
   }finally{
-
-    setTimeout(
-      ()=>{
-        newGameBusy=false;
-      },
-      400
-    );
+    setTimeout(()=>{ newGameBusy=false; }, 400);
   }
 }
 
@@ -3318,79 +2180,47 @@ async function newGame(){
 /* =========================================================
    CONNECTION
 ========================================================= */
-
 function setConnection(ok){
 
-  const id =
-    role === "host"
-    ? "hostConnection"
-    : "playerConnection";
-
-  const el =
-    document.getElementById(id);
+  const el = document.getElementById(
+    role === "host" ? "hostConnection" : "playerConnection"
+  );
 
   if(!el) return;
 
   if(ok){
-
     el.classList.remove("off");
-
-    el.textContent =
-      "● Firebase bağlantısı";
-
+    el.textContent = "● Firebase bağlantısı";
   }else{
-
     el.classList.add("off");
-
-    el.textContent =
-      "● Bağlantı problemi";
+    el.textContent = "● Bağlantı problemi";
   }
 }
 
 
 /* =========================================================
-   ROOM CLEANUP / PAGE CLOSE
+   PAGE CLOSE
 ========================================================= */
+window.addEventListener("beforeunload", function(){
 
-window.addEventListener(
-  "beforeunload",
-  function(){
+  if(roomCode && role === "player" && team){
 
-    if(
-      roomCode &&
-      role === "player" &&
-      team
-    ){
-
-      const data = {
-        connected:false
-      };
-
-      fetch(
-        DB_URL +
-        "/rooms/" +
-        roomCode +
-        "/" +
-        team +
-        ".json",
-        {
-          method:"PATCH",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify(data),
-          keepalive:true
-        }
-      ).catch(()=>{});
-    }
+    fetch(
+      DB_URL + "/rooms/" + roomCode + "/" + team + ".json",
+      {
+        method:"PATCH",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ connected:false }),
+        keepalive:true
+      }
+    ).catch(()=>{});
   }
-);
+});
 
 
 /* =========================================================
    INITIAL
 ========================================================= */
-
 showScreen("homeScreen");
 
 </script>
