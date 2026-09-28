@@ -2112,5 +2112,82 @@ loadSet('q1');
 
 </script>
 
+  <script>
+(function () {
+  if (!document.body || !document.body.animate) return;
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var SKIP = /^(SCRIPT|STYLE|NOSCRIPT|FOOTER|LINK|META|BR|HR|TEXTAREA)$/;
+  var TEXT = /^(P|H1|H2|H3|H4|H5|H6|LI|IMG|BUTTON|A|SVG|TABLE|FIGURE|INPUT|SELECT|TEXTAREA|LABEL)$/;
+
+  function fade(list) {
+    list.forEach(function (el, i) {
+      el.animate(
+        [{ opacity: 0, translate: "0 22px" }, { opacity: 1, translate: "0 0" }],
+        { duration: 500, delay: Math.min(i * 70, 700), easing: "cubic-bezier(.22,.8,.25,1)", fill: "backwards" }
+      );
+    });
+  }
+
+  function hasBox(cs) {
+    return (cs.backgroundColor !== "rgba(0, 0, 0, 0)" && cs.backgroundColor !== "transparent") ||
+           cs.backgroundImage !== "none" || cs.boxShadow !== "none" ||
+           parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderBottomWidth) > 0;
+  }
+
+  /* ---------- 1) SƏHİFƏYƏ İLK GİRİŞ ---------- */
+  function intro() {
+    var vh = window.innerHeight * 1.1;
+    var list = [];
+
+    (function walk(el) {
+      Array.prototype.forEach.call(el.children, function (c) {
+        if (SKIP.test(c.tagName.toUpperCase()) || c.closest("footer")) return;
+        var cs = getComputedStyle(c), r = c.getBoundingClientRect();
+        if (cs.display === "none" || cs.visibility === "hidden" || (r.width === 0 && r.height === 0)) return;
+        if (c.children.length === 0 || TEXT.test(c.tagName.toUpperCase()) || hasBox(cs)) {
+          if (r.top < vh && r.bottom > 0) list.push(c);
+        } else {
+          walk(c);
+        }
+      });
+    })(document.body);
+
+    fade(list);
+  }
+
+  /* ---------- 2) TUR DƏYİŞƏNDƏ / SONRADAN ƏLAVƏ OLUNAN ELEMENTLƏR ---------- */
+  var ready = false, queue = [], pending = false;
+
+  new MutationObserver(function (muts) {
+    if (!ready) return;
+    muts.forEach(function (m) {
+      Array.prototype.forEach.call(m.addedNodes, function (n) {
+        if (n.nodeType !== 1) return;
+        if (SKIP.test(n.tagName.toUpperCase()) || n.closest("footer")) return;
+        if (n.parentNode !== m.target) return;
+        if (getComputedStyle(n).position === "fixed") return;   /* böyüdülən şəkil klonu */
+        queue.push(n);
+      });
+    });
+    if (queue.length && !pending) {
+      pending = true;
+      requestAnimationFrame(function () {
+        fade(queue.slice(0, 12));
+        queue = [];
+        pending = false;
+      });
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+
+  function start() {
+    intro();
+    setTimeout(function () { ready = true; }, 50);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+</script>
 </body>
 </html>
