@@ -249,6 +249,12 @@ themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.conta
 initTheme();
 
 /* Müəlliflər və onlara aid paketlər.
+   Sıralama:
+   1) Daha çox paket = daha yuxarı
+   2) Say bərabərdirsə Onur Əlizadə həmişə daha yuxarı
+   3) Seyidova Aydan həmişə daha aşağı
+   4) Qalan bərabərliklərdə ilkin siyahı sırası qorunur
+*/
 const authors=[
   {
     name:"Yusifov Zeynal",
@@ -390,8 +396,8 @@ function render(){
       </span>
       <div class="author-right">
         <div class="author-name">${highlight(author.name,query)}</div>
-        <div class="author-count">${author.packages.length} paketə müəlliflik edib</div>
-        <div class="author-hint">Paketləri görmək üçün toxunun</div>
+        <div class="author-count">${author.packages.length} paket</div>
+        <div class="author-hint"></div>
       </div>
     `;
 
