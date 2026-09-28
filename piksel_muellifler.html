@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel.iok — Müəlliflər</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#9DC3FF; --ink:#9DC3FF; --deep:#001E6F; --bright:#002E92;
+  --dark-bg:#00072C; --dark-ink:#00072C; --dark-light:#9DC3FF; --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --tx:env(safe-area-inset-top,0px); --bx:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:var(--tx);overflow-x:hidden;max-width:100%}
+body{
+  min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Poppins",sans-serif;overflow-x:hidden;max-width:100%;
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;padding-top:var(--tx);padding-bottom:var(--bx)
+}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.reveal{opacity:0;transform:translateY(34px);animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards}
+@keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+
+.top-nav{
+  height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)
+}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition)
+}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* müəllif axtarışı */
+.search-wrap{
+  margin-top:18px;height:60px;border-radius:40px;border:2px solid var(--deep);
+  background:rgba(255,255,255,.35);display:flex;align-items:center;padding:0 18px;gap:10px;
+  max-width:100%;transition:border-color var(--transition),background var(--transition)
+}
+.dark .search-wrap{border-color:var(--dark-light);background:rgba(0,0,0,.2)}
+.search-wrap svg{width:24px;height:24px;flex:0 0 24px;color:var(--deep);transition:color var(--transition)}
+.dark .search-wrap svg{color:var(--dark-light)}
+#searchInput{
+  flex:1 1 auto;min-width:0;width:0;border:0;background:transparent;outline:0;
+  font-family:"Poppins",sans-serif;font-size:19px;font-weight:500;color:var(--deep)
+}
+.dark #searchInput{color:var(--dark-light)}
+#searchInput::placeholder{color:var(--deep);opacity:.6}
+.dark #searchInput::placeholder{color:var(--dark-light);opacity:.6}
+
+.sort-btn{
+  border:0;background:transparent;cursor:pointer;display:grid;place-items:center;flex:0 0 auto;
+  color:var(--deep);transition:color var(--transition),transform .25s ease
+}
+.dark .sort-btn{color:var(--dark-light)}
+.sort-btn:hover{transform:scale(1.1)}
+.sort-btn svg{width:24px;height:24px}
+.sort-btn.flip svg{transform:scaleY(-1)}
+
+.section-title{
+  text-align:center;color:var(--deep);font-size:26px;font-weight:700;letter-spacing:-.8px;
+  margin:30px 0 14px;transition:color var(--transition)
+}
+.dark .section-title{color:var(--dark-light)}
+
+.cards-list{display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
+.author-card{
+  border-radius:31px;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  color:var(--ink);padding:22px 28px;display:flex;align-items:center;gap:18px;
+  min-height:136px;height:136px;overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  cursor:pointer;
+  transition:transform .32s cubic-bezier(.18,.8,.22,1),box-shadow .32s ease,background var(--transition),color var(--transition)
+}
+.dark .author-card{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+  color:var(--dark-ink)
+}
+.author-card:hover{transform:translateY(-5px) scale(1.015);box-shadow:0 17px 35px rgba(0,20,110,.16)}
+.author-icon{
+  width:70px;height:70px;flex:0 0 70px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.15)
+}
+.author-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.author-right{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px}
+.author-name{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.author-count{font-size:15px;font-weight:500;opacity:.92}
+.author-hint{font-size:13px;font-weight:400;opacity:.75}
+
+.packages-panel{
+  display:grid;grid-template-rows:0fr;opacity:0;transform:translateY(-7px);
+  transition:grid-template-rows .35s ease,opacity .25s ease,transform .35s ease;margin-top:0
+}
+.author-wrapper.open .packages-panel{grid-template-rows:1fr;opacity:1;transform:translateY(0);margin-top:-5px}
+.packages-inner{overflow:hidden;padding:0 2px}
+.package-item{
+  min-height:50px;margin-bottom:7px;padding:9px 16px;border-radius:17px;
+  display:flex;align-items:center;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  color:var(--ink);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 5px 15px rgba(0,20,110,.08);
+  font-size:16px;font-weight:600;
+  transition:transform .2s ease,background var(--transition),color var(--transition)
+}
+.dark .package-item{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+  color:var(--dark-ink)
+}
+.package-item:active{transform:scale(.985)}
+mark.hl{
+  background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px solid currentColor;
+  border-radius:6px;padding:1px 4px;display:inline-block;line-height:1.1
+}
+.dark mark.hl{background:rgba(0,0,0,.18)}
+
+.no-results{
+  text-align:center;color:var(--deep);font-size:16px;font-weight:500;padding:25px 10px 50px
+}
+.dark .no-results{color:var(--dark-light)}
+
+footer{
+  width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)
+}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+@media(max-width:700px){
+  .page{width:calc(100vw - 44px);padding-top:calc(11px + var(--tx))}
+  .top-nav{height:52px;padding-left:18px;padding-right:60px}
+  .nav-links{gap:34px}.nav-link{font-size:15px}
+  .theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}
+  .search-wrap{height:52px}#searchInput{font-size:16px}
+  .author-card{padding:14px 18px;border-radius:24px;min-height:104px;height:104px;gap:14px}
+  .author-icon{width:52px;height:52px;flex:0 0 52px;border-radius:13px}
+  .author-name{font-size:16px}.author-count{font-size:12px}.author-hint{font-size:11px}
+  .package-item{min-height:45px;padding:7px 12px;border-radius:14px;font-size:14px}
+  .section-title{font-size:20px}
+  footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}
+}
+@media(max-width:420px){
+  .page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}
+  .top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<nav class="top-nav reveal" style="animation-delay:.05s" aria-label="Əsas naviqasiya">
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Əsas Səhifə</a>
+    <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+  </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+    <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+  </button>
+</nav>
+
+<div class="search-wrap reveal" style="animation-delay:.14s">
+  <svg viewBox="0 0 24 24" fill="none">
+    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+    <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <input id="searchInput" type="text" placeholder="Müəllif axtar" autocomplete="off">
+  <button class="sort-btn" id="sortBtn" type="button" aria-label="Sıralamanı dəyiş">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 6h16M4 12h11M4 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M18 14v6m0 0l-3-3m3 3l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<h2 class="section-title reveal" style="animation-delay:.23s">Müəlliflər</h2>
+<div class="cards-list" id="cardsList"></div>
+
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const themeToggle=document.getElementById("themeToggle");
+const themeIcon=document.getElementById("themeIcon");
+
+const DAY_ICON="https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fb5303c34-5ba7-472a-baa1-8b9143bc98cb-1000463113.png";
+const NIGHT_ICON="https://cdn.phototourl.com/member/2026-09-27-be52e931-8795-498a-850b-3c147010701e.png";
+
+function sunIcon(){
+  return `<circle cx="16" cy="16" r="6" fill="currentColor"/>
+  <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+    <path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/>
+    <path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/>
+    <path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/>
+  </g>`;
+}
+function moonIcon(){
+  return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
+}
+function updateThemeIcon(){
+  const dark=document.body.classList.contains("dark");
+  themeIcon.innerHTML=dark?moonIcon():sunIcon();
+  themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  document.querySelectorAll(".author-icon img").forEach(img=>{
+    img.src=dark?NIGHT_ICON:DAY_ICON;
+  });
+}
+function setTheme(dark){
+  document.body.classList.toggle("dark",dark);
+  try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}
+  updateThemeIcon();
+}
+function initTheme(){
+  let saved=null;
+  try{saved=localStorage.getItem("piksel-theme")}catch(e){}
+  if(saved==="dark"){setTheme(true);return}
+  if(saved==="light"){setTheme(false);return}
+  const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  setTheme(prefersDark);
+}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+initTheme();
+
+/* Müəlliflər və onlara aid paketlər.
+   Sıralama:
+   1) Daha çox paket = daha yuxarı
+   2) Say bərabərdirsə Onur Əlizadə həmişə daha yuxarı
+   3) Seyidova Aydan həmişə daha aşağı
+   4) Qalan bərabərliklərdə ilkin siyahı sırası qorunur
+*/
+const authors=[
+  {
+    name:"Yusifov Zeynal",
+    packages:[
+      {title:"Amazon kuboku",link:"/amazon_kuboku.html"},
+      {title:"Moonopoly turniri",link:"/moonopoly_turniri.html"},
+      {title:"Vesper kuboku",link:"/vesper_kuboku.html"}
+    ]
+  },
+  {
+    name:"Kərimli Kərim",
+    packages:[{title:"Vesper kuboku",link:"/vesper_kuboku.html"}]
+  },
+  {
+    name:"Əlizadə Onur",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Səmədov İslam",
+    packages:[{title:"Vesper kuboku",link:"/vesper_kuboku.html"}]
+  },
+  {
+    name:"Hüseynli Qabil",
+    packages:[{title:"Vesper kuboku",link:"/vesper_kuboku.html"}]
+  },
+  {
+    name:"Nəhmətli Turqut",
+    packages:[{title:"Vesper kuboku",link:"/vesper_kuboku.html"}]
+  },
+  {
+    name:"Abbaslı Nigar",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Yuniszadə Ema",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Hüseynli Muhəmməd",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Əliyeva Zəhra",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Qarayev Ramiz",
+    packages:[{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Seyidova Aydan",
+    packages:[{title:"πksel-1",link:"/piksel_paket_1.html"}]
+  },
+  {
+    name:"Əlizadə Rüfət",
+    packages:[{title:"Diamonds 1",link:"/diamonds2_1.html"}]
+  },
+  {
+    name:"Şentürk Serkan",
+    packages:[{title:"Diamonds 1",link:"/diamonds2_1.html"}]
+  },
+  {
+    name:"Rzalı Üsyan",
+    packages:[{title:"Diamonds 1",link:"/diamonds2_1.html"}]
+  }
+].map((a,i)=>({...a,order:i}));
+
+let newestFirst=true;
+let query="";
+
+const searchInput=document.getElementById("searchInput");
+const sortBtn=document.getElementById("sortBtn");
+const cardsList=document.getElementById("cardsList");
+
+searchInput.addEventListener("input",()=>{
+  const v=searchInput.value.trim();
+  query=v.length>=1?v.toLocaleLowerCase("az-AZ"):"";
+  render();
+});
+
+sortBtn.addEventListener("click",()=>{
+  newestFirst=!newestFirst;
+  sortBtn.classList.toggle("flip",!newestFirst);
+  render();
+});
+
+function normalize(s){
+  return s.toLocaleLowerCase("az-AZ");
+}
+function highlight(text,q){
+  if(!q)return text;
+  const lower=normalize(text);
+  const idx=lower.indexOf(q);
+  if(idx===-1)return text;
+  return text.slice(0,idx)+"<mark class='hl'>"+text.slice(idx,idx+q.length)+"</mark>"+text.slice(idx+q.length);
+}
+
+function authorCompare(a,b){
+  const countDiff=b.packages.length-a.packages.length;
+  if(countDiff!==0)return newestFirst?countDiff:-countDiff;
+
+  const onurA=normalize(a.name)==normalize("Əlizadə Onur");
+  const onurB=normalize(b.name)==normalize("Əlizadə Onur");
+  if(onurA!==onurB){
+    const result=onurA?-1:1;
+    return newestFirst?result:-result;
+  }
+
+  const aydanA=normalize(a.name)==normalize("Seyidova Aydan");
+  const aydanB=normalize(b.name)==normalize("Seyidova Aydan");
+  if(aydanA!==aydanB){
+    const result=aydanA?1:-1;
+    return newestFirst?result:-result;
+  }
+
+  return a.order-b.order;
+}
+
+function render(){
+  let list=authors.filter(a=>!query||normalize(a.name).includes(query));
+  list.sort(authorCompare);
+  cardsList.innerHTML="";
+
+  if(!list.length){
+    cardsList.innerHTML=`<div class="no-results">Bu ada uyğun müəllif tapılmadı.</div>`;
+    return;
+  }
+
+  list.forEach((author,i)=>{
+    const wrapper=document.createElement("div");
+    wrapper.className="author-wrapper reveal";
+    wrapper.style.animationDelay=(0.32+i*0.06)+"s";
+
+    const card=document.createElement("div");
+    card.className="author-card author-button";
+    card.innerHTML=`
+      <span class="author-icon">
+        <img src="${document.body.classList.contains("dark")?NIGHT_ICON:DAY_ICON}" alt="Müəllif">
+      </span>
+      <div class="author-right">
+        <div class="author-name">${highlight(author.name,query)}</div>
+        <div class="author-count">${author.packages.length} paketə müəlliflik edib</div>
+        <div class="author-hint">Paketləri görmək üçün toxunun</div>
+      </div>
+    `;
+
+    const panel=document.createElement("div");
+    panel.className="packages-panel";
+    panel.innerHTML=`<div class="packages-inner"></div>`;
+    const inner=panel.querySelector(".packages-inner");
+
+    author.packages.forEach(pkg=>{
+      const link=document.createElement("a");
+      link.className="package-item";
+      link.href=pkg.link;
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.textContent=pkg.title;
+      inner.appendChild(link);
+    });
+
+    card.addEventListener("click",()=>{
+      wrapper.classList.toggle("open");
+    });
+
+    wrapper.appendChild(card);
+    wrapper.appendChild(panel);
+    cardsList.appendChild(wrapper);
+  });
+}
+render();
+</script>
+</body>
+</html>
