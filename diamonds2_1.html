@@ -1968,5 +1968,23 @@ renderQuestions();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
   else run();
 })();
+</script> <script>
+document.addEventListener("click", function (e) {
+  if (!e.target.closest(".tour-btn")) return;
+
+  var y = window.scrollY;
+
+  function restore() {
+    if (Math.abs(window.scrollY - y) > 2) {
+      window.scrollTo({ top: y, behavior: "instant" });
+    }
+  }
+
+  requestAnimationFrame(function () {
+    restore();
+    requestAnimationFrame(restore);
+  });
+  setTimeout(restore, 120);
+}, true);
 </script> </body>  
 </html>
