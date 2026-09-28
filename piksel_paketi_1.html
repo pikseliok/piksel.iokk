@@ -262,34 +262,207 @@ footer{
    Mövcud sual məlumatlarını buradakı obyektlərə əlavə edə bilərsən.
    UI və rejim rəngləri artıq düzəldilib.
 ========================================================= */
-const toursData = {
+const questionsData = {
   1: [
-    {id:1,question:`Bir yumoristik videoda, Roberto Karlos cərimə zərbəsini yerinə yetirməzdən əvvəl canlı səddəki rəqib futbolçuları salamlayır, sonra isə cərimə zərbəsini asanlıqla qola çevirir. Siz isə Karlosun bu qolu hansı milli komandaya atdığını yazın.`,answer:`Yaponiya`,comment:`Roberto Karlos zərbə endirməzdən əvvəl Yaponiyalı oyunçulara salam verir.`,author:`Onur Əlizadə`},
-    {id:2,question:`Bir filmdə iki kosmonavt təhlükəli görünən kompüteri söndürməyi müzakirə etmək üçün səs keçirməyən pəncərəli kapsula keçir. Lakin onlar kompüterin BUNU EDƏ bildiyini nəzərə almırlar. BUNU ETMƏKLƏ əvəz edilmiş ifadəni yazın.`,answer:`Dodaq oxumaq`,comment:`Söhbət 2001: A Space Odyssey filmindəki HAL 9000 kompüterindən gedir.`,author:`Əliyeva Zəhra`},
-    {id:3,question:`XIX əsrdə Azərbaycana səfər edən səyyahlardan biri süfrədə İKS-i görəndə yalnız tərəvəz yeyəcəyini düşünür. Lakin yeməyi daddıqdan sonra yanıldığını anlayır. İKS-i 3 sözlə yazın.`,answer:`Üç bacı dolması`,comment:`Üç bacı dolması bibər, pomidor və badımcandan hazırlanır.`,author:`Əlizadə Onur`},
-    {id:4,question:`Bir əsərdə kasıb ölkənin hökmdarı xalqının daha yaxşı yaşaması üçün əşyalarını satmaq məcburiyyətində qalır. Əsərin müəllifinin hansı məşhur siyasi liderdən ilhamlandığını cavab kartınıza yazın.`,answer:`Tomas Sankara`,comment:`Burkina Fasonun prezidenti Tomas Sankara da xalqının rifahı üçün bir çox əşyalarını satmışdı.`,author:`Muhəmməd Hüseynli`},
-    {id:5,question:`Salvador Dali bir reklam çəkilişi zamanı xidmət haqqı olaraq pul deyil, evinin bağçası üçün canlı İKS-lər tələb edir. İKS-i eyni saitli sözlə yazın.`,answer:`Kəpənək`,comment:`Salvador Dali reklam çəkilişi zamanı pul əvəzinə bağçası üçün kəpənəklər tələb etmişdi.`,author:`Abbaslı Nigar`},
-    {id:6,question:`Bir zarafata görə, Papa V Sikstusdan sonra VII Urbanusun gəlməsi İKS-in qarşısını almışdı. Yaponiyada baş əyib salam vermək də əslində İKS-dir. İKS-i bir əcnəbi mənşəli sözlə yazın.`,answer:`Tavtologiya`,comment:`Sikstus (Sextus) latınca altı deməkdir. Yaponiyada baş əymək elə salam vermək olduğu üçün hər iki ifadəni işlətmək tavtologiyadır.`,author:`Əlizadə Onur`},
-    {id:7,question:`Bəzi türk xalqlarının folklorundakı Şüralə və Arçura kimi insan-ağac məxluqlar qurbanlarını budaq və yarpaqları ilə BUNU EDƏRƏK öldürür. BUNU ETMƏKLƏ əvəz olunmuş sözü yazın.`,answer:`Qıdıqlamaq`,comment:`Tatar və Başqırd folklorundakı Şüralə qurbanlarını qıdıqlayaraq öldürməsi ilə tanınır.`,author:`Hüseynli Muhəmməd`},
-    {id:8,question:`NASA-nın Beynəlxalq Kosmik Stansiyaya uçuşlarından biri haqqında çəkilmiş videoda heyətin SƏKKİZİNCİ ASTRONAVTI da təqdim olunur. Həmin ASTRONAVTIN adını yazın.`,answer:`Bazz Laytyer`,criteria:`Buzz Lightyear; Buzz`,comment:`STS-124 missiyası zamanı Buzz Layter oyuncağı kosmosa göndərilmişdi.`,author:`Əlizadə Onur`},
-    {id:9,question:`Orta əsrlərdə fəth edilmədiyi üçün bəzi alınmaz istehkamlara simvolik olaraq İKS deyilirdi. Hamımızın tanıdığı bir İKS 2000-ci ildə UNESCO Dünya İrs Siyahısına daxil edilib. İKS-i II növ təyini söz birləşməsi ilə deyin.`,answer:`Qız Qalası`,comment:`Bu ifadədəki “qız” sözü “bakirə”, “fəth olunmamış”, “əl dəyməmiş” mənası ilə əlaqələndirilir.`,author:`Yuniszadə Ema`},
-    {id:10,question:`Son mundialda futbolçuların meydanda ağzını əllə örtərək danışmasının qadağan edilməsi ilə bağlı zarafatda Viktor Gyökereşin BUNU etməsinə görə hər matç qırmızı vərəqə ala biləcəyi bildirilir. BUNU II növ təyini söz birləşməsi ilə yazın.`,answer:`Qol sevinci`,comment:`Gyökeres vurduğu qollardan sonra əlləri ilə ağzını bağlayır.`,author:`Əlizadə Onur`},
-    {id:11,question:`Ömrünün son illərində XIV Lüdovikin bədənində qanqrena yayılmış, yaralar əmələ gəlmiş və ağzından kəskin qoxu gəlməyə başlamışdı. Buna görə bəzi mənbələrdə onu “İKS Kral” adlandırırdılar. İKS-i bir əcnəbi mənşəli sözlə yazın.`,answer:`Zombi`,comment:`XIV Lüdovikin ömrünün sonlarındakı görünüşü çürümüş meyiti xatırlatdığı üçün ona bəzən “Zombi Kral” deyilir.`,author:`Hüseynli Muhəmməd`},
-    {id:12,question:`İstehsalçı şirkətin marketinq gedişinə görə, 2000-ci illərdə dünyaca məşhur Romeo və Culyettanın uzunmüddətli münasibətinə rəsmi olaraq son qoyulur. Romeo və Culyetta ilə əvəz olunanları yazın.`,answer:`Barbi və Ken`,criteria:`Barbie and Ken`,comment:`2004-cü ildə Barbie və Ken cütlüyünün “ayrılması” marketinq kampaniyasının bir hissəsi idi.`,author:`Əlizadə Onur`}
+    {
+      id: 1,
+      question: `Bir yumoristik videoda, Roberto Karlos cərimə zərbəsini yerinə yetirməzdən əvvəl canlı səddəki rəqib futbolçuları salamlayır, sonra isə cərimə zərbəsini asanlıqla qola çevirir. Siz isə Karlosun bu qolu hansı milli komandaya atdığını yazın.`,
+      answer: `Yaponiya`,
+      comment: `Roberto Karlos zərbə endirməzdən əvvəl Yaponiyalı oyunçulara salam verir, onlar da cavab olaraq başını əyərək cavab verdiyi an, Karlos cərimə zərbəsini yerinə yetirir. "Asanlıqla" da açar söz idi.<br>Biz də bu sualla iştirakçıları salamlayırıq.`,
+      source: `<a href='https://youtube.com/shorts/rOOy6egdnI4?si=y321JU9RAm3L8onO' target='_blank'>Link</a>`,
+      author: `Onur Əlizadə`
+    },
+    {
+      id: 2,
+      question: `Bir filmdə iki kosmonavt təhlükəli görünən kompüteri söndürməyi müzakirə etmək üçün səs keçirməyən pəncərəli kapsula keçir. Lakin onlar kompüterin BUNU EDƏ bildiyini nəzərə almırlar. İşi BUNU ETMƏK olan insanların ən böyük qorxularından biri gur bığ və saqqallı şəxslərdir. BUNU ETMƏKLƏ əvəz edilmiş ifadəni yazın.`,
+      answer: `Dodaq oxumaq`,
+      criteria: `Ağız oxumaq və digər yaxın cavablar`,
+      comment: `Söhbət 2001: A Space Odyssey filmindəki HAL 9000 kompüterindən gedir. Kosmonavtlar səs keçirməyən kapsulda danışsalar da, kompüter onların dodaq hərəkətlərini oxuyaraq söhbəti anlayır. Dodaq oxuyan mütəxəssislər üçün isə gur bığ və saqqal dodaqların görünməsinə mane olur.`,
+      author: `Əliyeva Zəhra`
+    },
+    {
+      id: 3,
+      question: `XIX əsrdə Azərbaycana səfər edən səyyahlardan biri süfrədə İKS-i görəndə yalnız tərəvəz yeyəcəyini düşünür. Lakin yeməyi daddıqdan sonra yanıldığını anlayır. Maraqlıdır ki, biologiya da İKS-in adının təsadüfi seçilmədiyini, fəsilə birliyini izah edərək göstərir. İKS-i 3 sözlə yazın.`,
+      answer: `Üç bacı dolması`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `Üç bacı dolması bibər, pomidor və badımcandan hazırlanır. Fransız səyyah yeməyi ilk gördükdə onu öz vətəninin məhşur tərəvəz yeməyi ratatuy hesab etsə də, içliyinə görə yanıldığını anlayır. Maraqlıdır ki, dolmanın adındakı üç tərəvəz də Badımcançiçəklilər fəsiləsinə daxildir. Sualın 3-cü olması da sizə cavaba çıxarmalı idi.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 4,
+      question: `Bir əsərdə kasıb ölkənin hökmdarı xalqının daha yaxşı yaşaması üçün əşyalarını satmaq məcburiyyətində qalır. Bundan danışılan zaman onun 4 atının, 1 faytonunun və 3 musiqi alətinin qaldığı xüsusilə vurğulanır. Əsərin müəllifinin hansı məşhur siyasi liderdən ilhamlandığını cavab kartınıza yazın.`,
+      answer: `Tomas Sankara`,
+      comment: `Burkina Fasonun prezidenti Tomas Sankara da xalqının rifahı üçün bir çox əşyalarını satmışdı. Qeyd edək ki, Sankaranın sadəcə 1 maşını, 4 velosipedi və 3 gitarası var idi. Sualda hökmdarın 1 faytonu, 4 atı və 3 musiqi alətinin olması sizə kömək etməli idi.`,
+      author: `Muhəmməd Hüseynli`
+    },
+    {
+      id: 5,
+      question: `Salvador Dali bir reklam çəkilişi zamanı xidmət haqqı olaraq pul deyil, evinin bağçası üçün canlı İKS-lər tələb edir. İKS Məhəmməd Əlinin döyüş taktikası haqqında söylədiyi məşhur aforizmdə adı çəkilən canlılardan biridir. İKS-i eyni saitli sözlə yazın.`,
+      answer: `Kəpənək`,
+      comment: `Salvador Dali bir reklam çəkilişi zamanı pul əvəzinə bağçası üçün minlərlə kəpənək tələb etmişdi. Məhəmməd Əlinin məşhur aforizmində isə "Kəpənək kimi uç, arı kimi sanc" ifadəsi işlədilir.`,
+      author: `Abbaslı Nigar`
+    },
+    {
+      id: 6,
+      question: `Bir zarafata görə, Papa V Sikstusdan sonra VII Urbanusun gəlməsi İKS-in qarşısını almışdı. Sual müəllifinin fikrincə, Yaponiyada baş əyib, salam vermək də əslində İKS-dir. İKS-i bir əcnəbi mənşəli sözlə yazın.`,
+      answer: `Tavtologiya`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `Sikstus (Sextus) latınca altı deməkdir. V Sikstusdan sonra növbəti Sikstus gəlsəydi, adı "VI Sikstus" olacaqdı ki, bu da tavtologiya yaradardı. Yaponiyada isə baş əymək elə salam vermək olduğu üçün hər iki ifadəni bir yerdə işlətmək tavtologiyadır.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 7,
+      question: `Bəzi türk xalqlarının folklorundakı Şüralə və Arçura kimi insan-ağac məxluqlar qurbanlarını budaq və yarpaqları ilə BUNU EDƏRƏK öldürür. Maraqlıdır ki, keçmişdə BUNUN uzun müddət davam etdirilməsi nəfəs almağı çətinləşdirdiyi üçün işgəncə üsullarından biri hesab olunurdu. BUNU ETMƏKLƏ əvəz olunmuş sözü yazın.`,
+      answer: `Qıdıqlamaq`,
+      comment: `Tatar və Başqırd folklorundakı Şüralə qurbanlarını qıdıqlayaraq öldürməsi ilə tanınır. Uzunmüddətli qıdıqlamanın nəfəs almağa mane olduğu düşüncəsi isə tarixdə onu işgəncə vasitəsi kimi məşhurlaşdırıb.`,
+      author: `Hüseynli Muhəmməd`
+    },
+    {
+      id: 8,
+      question: `NASA-nın Beynəlxalq Kosmik Stansiyaya uçuşlarından biri haqqında çəkilmiş videoda heyətin SƏKKİZİNCİ ASTRONAVTI da təqdim olunur. Videonun bir hissəsində onun "Sonsuzluğa və daha da irəli!" dediyi aydın eşidilir. Maraqlıdır ki, həmin ASTRONAVT Ayda yeriyən ikinci insanla adaşdır. SƏKKİZİNCİ ASTRONAVTIN adını yazın.`,
+      answer: `Bazz Laytyer`,
+      criteria: `Buzz Lightyear; Buzz və digər dəqiq cavablar`,
+      comment: `STS-124 missiyası zamanı Buzz Layter oyuncağı kosmosa göndərilmişdi. Onun məşhur şüarı "To infinity and beyond!" ifadəsidir. Bazz Laytyer adını isə Ayda yeriyən ikinci insan olan Buzz Aldrindan almışdır.`,
+      source: `<a href='https://youtu.be/AzcnBdq1TZ4?t=85&si=q5GiIYDOSrJZjgPP' target='_blank'>Link</a>`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 9,
+      question: `Orta əsrlərdə fəth edilmədiyi üçün bəzi alınmaz istehkamlara simvolik olaraq İKS deyilirdi. Hamımızın tanıdığı bir İKS, 2000-ci ildə UNESCO Dünya İrs Siyahısına daxil edilib. İKS-i II növ təyini söz birləşməsi ilə deyin.`,
+      answer: `Qız Qalası`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `Tarixi yanaşmalara görə, bu ifadədəki "qız" sözü "bakirə", "fəth olunmamış", "əl dəyməmiş" mənasını verir. Buna görə də düşmən tərəfindən ələ keçirilməyən bəzi istehkamlara simvolik olaraq "Qız qalası" deyilirdi. Bakıdakı Qız qalasının adının mənşəyi ilə bağlı məşhur rəvayətdə hökmdarın qızı özünü qalanın başından dənizə atır. Lakin tədqiqatçılar qalanın adını yalnız bu rəvayətlə yox, həm də "fəth olunmamış qala" mənası ilə əlaqələndirirlər. Bu konsepsiya təkcə Azərbaycanda deyil, dünya memarlığında da (məsələn, İstanbuldakı Kız Kulesi, Avropadakı Magdeburg və s.) eyni məntiqlə işlədilir.`,
+      source: `Mənbə (PDF), səhifə 13: <a href='https://history.az/pdf.php?item_id=20110305094445016&ext=pdf&hl=tr-TR' target='_blank'>Link</a>`,
+      author: `Yuniszadə Ema`
+    },
+    {
+      id: 10,
+      question: `Son mundialda futbolçuların meydanda ağzını əllə örtərək danışmasının qadağan edilməsi ilə bağlı zarafatda, isveçli hücumçu Viktor Gyökereşin BUNU etməsinə görə hər matç qırmızı vərəqə ala biləcəyi bildirilir. BUNU II növ təyini söz birləşməsi ilə yazın.`,
+      answer: `Qol sevinci`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `İsveç millisinin hücumçusu Viktor Gyökereş vurduğu qollardan sonra əlləri ilə ağzını bağlayır. Bu sevinc futbolçuya aid məşhur qol sevincidir. Yeni qaydalara görə isə futbolçuların ağızlarını əlləri ilə bağlayaraq danışması qadağan edilib. İnternet memlərində Gyökeresin bu özünəməxsus qol sevincinin də tezliklə səhv başa düşülərək qırmızı vərəqə ilə cəzalandırılacağı yumorla qeyd olunur.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 11,
+      question: `Ömrünün son illərində XIV Lüdovikin bədənində qanqrena yayılmış, yaralar əmələ gəlmiş və ağzından kəskin qoxu gəlməyə başlamışdı. Buna görə bəzi mənbələrdə onu "İKS Kral" adlandırırdılar. İlk rəsmi İKS 1962-ci ildə xəstəxanada həkimlər tərəfindən ölü elan edilib, ertəsi gün basdırılsa da, 18 il sonra o, bacısının qarşısına sağ çıxır. İKS-i bir əcnəbi mənşəli sözlə yazın.`,
+      answer: `Zombi`,
+      comment: `XIV Lüdovikin ömrünün sonlarındakı görünüşü çürümüş meyiti xatırlatdığı üçün ona bəzən "Zombi Kral" deyilir. Sualın ikinci hissəsi isə ölü elan olunub sonradan sağ tapılan bir şəxslə bağlıdır. Bu şəxs rəsmi qeydiyyata alınmış ilk Zombi, Clairvius Narcisse idi.`,
+      author: `Hüseynli Muhəmməd`
+    },
+    {
+      id: 12,
+      question: `İstehsalçı şirkətin marketinq gedişinə görə, 2000-ci illərdə dünyaca məşhur Romeo və Culyettanın uzunmüddətli münasibətinə rəsmi olaraq son qoyulur. Biz isə Romeo və Culyettanı astronavtdan tutmuş dövlət başçısına qədər saysız-hesabsız fərqli rollarda görmüşük. Romeo və Culyetta ilə əvəz olunanları yazın.`,
+      answer: `Barbi və Ken`,
+      criteria: `Barbie and Ken`,
+      comment: `Sual Mattel şirkətinin Barbie və Ken cütlüyü üzərindən qurduğu marketinq strategiyasına əsaslanır. 2004-cü ildə onların "ayrılması" və 2011-ci ildə yenidən birləşməsi brend marağını artırmaq üçün istifadə olunan kampaniya elementləridir. Barbie-nin astronavt, həkim, dövlət başçısı və s. kimi saysız rollarda təqdim olunması onun müxtəlif peşələrdə simvolik obraz kimi istifadə edilməsinə və geniş reklam xəttinə işarə edir. Romeo və Culyetta da məhşur cütlük olduğu üçün əvəzetmə onların üzərində aparılıb.`,
+      source: `<a href='https://www.remindmagazine.com/article/10794/barbie-ken-breakup-2004-explained-mattel/' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Barbie%27s_careers' target='_blank'>Link 2</a>`,
+      author: `Əlizadə Onur`
+    }
   ],
   2: [
-    {id:13,question:`2003-cü ildə İraqın işğalı zamanı ABŞ ordusu əsgərlərə üzərində Səddam Hüseyn və onun yaxın adamlarının şəkilləri olan xüsusi İKS-lər paylamışdı. İKS-i iki sözlə yazın.`,answer:`Poker kartı`,criteria:`İskambil kağızı; oyun kartı`,comment:`Axtarılan İraq rəsmilərinin şəkilləri iskambil kartları üzərində çap edilmişdi.`,author:`Qarayev Ramiz`},
-    {id:14,question:`Rekvizitdə İKS-in şahidi olursunuz. İKS hər il orta hesabla 150 milyondan çox telefon zənginə səbəb olur. İKS-i ardıcıl samitlərlə başlayan iki sözlə yazın.`,answer:`Həkim xətti`,criteria:`Yalnız dəqiq cavablar`,comment:`Həkimlərin oxunması çətin olan xətti dəqiqləşdirmə zənglərinə səbəb olur.`,author:`Əlizadə Onur`},
-    {id:15,question:`Monarxiya ilə idarə olunan əksər ölkələrin saray protokoluna görə kralın hüzurunda BUNU ETMƏK olmaz. Lakin bir Polşa klubunun azarkeşlərinin BUNU ETMƏSİ hörmətsizlik kimi qəbul edilmir.`,answer:`Arxasını çevirmək`,criteria:`Mənaya uyğun cavablar`,comment:`“The Poznań” adlı azarkeş hərəkətində tərəfdarlar arxalarını meydançaya çevirirlər.`,author:`Əlizadə Onur`},
-    {id:16,question:`I və II Dünya Müharibələrində əsgərlər rahatlaşmaq üçün onlara uşaqları tərəfindən verilən İKSLƏRİ ciblərində daşıyırdılar. İKS-i 2 sözlə yazın.`,answer:`Oyuncaq ayı`,criteria:`Teddy Bear, Teddi Ayı`,comment:`Uşaqların müharibəyə yola saldıqları atalarına oyuncaq ayı hədiyyə etməsi haqqında zarafatlı məlumatdır.`,author:`Muhəmməd Hüseynli`},
-    {id:17,question:`Bir animasiyada personaj öz istəyinə çatmaq üçün 10297 BUNDAN istifadə edir. Real həyatda isə sözügedən məqsədə çatmaq üçün təxminən 23,5 milyon BU lazımdır. BU ilə əvəzlədiyimizi qısa sözlə yazın.`,answer:`Şar`,comment:`UP animasiyasında personaj 10297 şardan istifadə edərək evini uçurur.`,author:`Əliyeva Zəhra`},
-    {id:18,question:`“Dekster” serialının bir epizodunda Ritanın cəsədi öz qanı ilə dolu vannada görünür. Bu səhnə ağır dəri xəstəliyinə görə ömrünün son illərini vannada keçirən və məqalələrini də orada yazan şəxsi xatırladır. Onun kim olduğunu yazın.`,answer:`Jan-Pol Marat`,criteria:`Marat`,comment:`Fransa inqilabının liderlərindən Marat dəri xəstəliyi səbəbindən uzun müddət vannada qalırdı.`,author:`Əlizadə Onur`},
-    {id:19,question:`Aktyor Leonid Yarmolnik ağır avtomobil qəzasından möcüzəvi şəkildə sağ çıxır. Bu hadisədən sonra o, hər il BUNU iki dəfə ETMƏYƏ başlayır. BUNU ETMƏKLƏ əvəz olunmuş üç sözü yazın.`,answer:`Ad gününü keçirmək`,criteria:`Digər yaxın cavablar`,comment:`O, qəza gününü yenidən doğulduğu gün kimi qəbul edərək ildə iki dəfə ad günü qeyd etməyə başlayır.`,author:`Əlizadə Onur`},
-    {id:20,question:`Film çəkilişi zamanı havada fırlanan aktyorların bədəninə bağlanan təhlükəsizlik kəndirlərini gizlətmək lazım gəlirdi. Geyim dizaynerləri bu məqsədlə kəndirləri örtən İKS-dən istifadə etdilər. İKS-i bir qısa sözlə yazın.`,answer:`Plaş`,criteria:`Cape, Keyp`,comment:`Kəndirlər plaşın altında gizlədilərək yarasa qanadına bənzər görüntü yaradılmışdı.`,author:`Abbaslı Nigar`},
-    {id:21,question:`“Yeniyetmə mutant Nindza Tısbağalar” cizgi serialındakı mutant kərtənkələ personajının adı İKS-dir. “Mekka Kameleon” oyununda da İKS-ə rast gəlinir. İKS-i iki sözlə yazın.`,answer:`Mona Liza`,criteria:`Yalnız dəqiq cavablar`,comment:`Serialdakı mutant kərtənkələ personajının adı Mona Lizadır.`,author:`Əlizadə Onur`},
-    {id:22,question:`<b>Duplet:</b><br>1. XIX əsrin əvvəlində ABŞ generalı Vilyam Harrison yerli hindu qəbiləsinin torpaqlarını əlindən alır. Bundan sonra qəbilə rəhbəri Tekumseh İKS edir.<br>2. Aleksandr Soljenitsının yazılarından birində Stalinin çıxışı yaxınlaşdıqca insanları bürüyən qorxudan bəhs edilir.`,answer:`1. Qarğış; 2. Alqış`,criteria:`Yalnız dəqiq cavablar`,comment:`Birinci hissədə Tekumsehin qarğışı, ikinci hissədə isə Stalinin çıxışından sonrakı alqışlar əsas ipucudur.`,author:`Əlizadə Onur`},
-    {id:23,question:`“Prison Break” serialının epizodlarından birində qəhrəman polisləri aldatmaq üçün boyanmış ALFA-dan istifadə edir. ALFA-nı II növ təyini söz birləşməsi ilə yazın.`,answer:`Su tapançası`,criteria:`Yalnız dəqiq cavablar`,comment:`Maykl Skolfild su tapançasını qara rəngə boyayaraq həqiqi silaha bənzətmişdi.`,author:`Əlizadə Onur`},
-    {id:24,question:`Siz rekvizitdə bir romantik-komediya filminin afişasını görürsünüz. Dizaynerlər GİZLƏNMİŞLƏRİ adət etdiyimizdən fərqli olaraq gəlinliyin üzərinə yazıblar. Həmin afişanı filmin sonunda da görə biləcəyinizi nəzərə alaraq, GİZLƏNMİŞLƏRİ yazın.`,answer:`Film titrləri`,criteria:`Film məlumatları və digər uyğun cavablar`,comment:`Afişada aktyor adları və digər məlumatlar gəlinliyin üzərinə yerləşdirilib.`,author:`Abbaslı Nigar`}
+    {
+      id: 13,
+      question: `2003-cü ildə İraqın işğalı zamanı ABŞ ordusu əsgərlərə üzərində Səddam Hüseyn və onun yaxın adamlarının şəkilləri olan xüsusi İKS-lər paylamışdı. Məqsəd əsgərlərin asudə vaxtlarında əylənərkən axtarılan şəxslərin simalarını yadda saxlaması idi. Üzərində Səddam Hüseyn olan İKS, İKS-lərin yekası kimi təsvir olunmuşdu. İKS-i iki sözlə yazın.`,
+      answer: `Poker kartı`,
+      criteria: `İskambil kağızı; oyun kartı`,
+      comment: `ABŞ ordusu axtarılan İraq rəsmilərinin şəkillərini iskambil kartları üzərində çap etmişdi. Əsgərlər kart oynayarkən həmin şəxslərin simalarını yadda saxlayırdılar. Səddam Hüseyn isə dəstin ən vacib kartı hesab olunurdu.`,
+      extraImage: `https://cdn.phototourl.com/free/2026-09-12-c9d97bee-2f64-4717-893b-0dd064459589.jpg`,
+      author: `Qarayev Ramiz`
+    },
+    {
+      id: 14,
+      reqImg: `https://cdn.phototourl.com/free/2026-09-12-b471b763-ef43-4943-848f-3e6555ea107b.jpg`,
+      question: `Rekvizitdə İKS-in şahidi olursunuz. İKS hər il orta hesabla 150 milyondan çox telefon zənginə səbəb olur. Hər zəng isə orta hesabla 5-7 dəqiqə çəkir. Bunun qarşısını almaq üçün ABŞ və Avropa boyunca elektron sistemlər yaradılsa da, problemin tam həlli mümkün olmayıb. İKS-i ardıcıl samitlərlə başlayan iki sözlə yazın.`,
+      answer: `Həkim xətti`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `Həkimlərin oxunması çətin olan xətti hər il milyonlarla dəqiqləşdirmə zənginə səbəb olur. Bu problemi azaltmaq üçün ABŞ və Avropada elektron resept sistemləri tətbiq edilsə də, məsələ tam həll olunmayıb. Siz isə rekvizitdə həkim xətti ilə yazılmış "PİKSEL İNTELLEKTUAL OYUNLAR KLUBU" yazısını görürsünüz.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 15,
+      question: `Monarxiya ilə idarə olunan əksər ölkələrin saray protokoluna görə kralın hüzurunda BUNU ETMƏK olmaz, çünki hörmətsizlik sayılır. Lakin bir Polşa klubunun azarkeşlərinin BUNU ETMƏSİ hörmətsizlik kimi qəbul edilmir. Çünki azarkeşlər BUNU EDƏRƏK ən sevdikləri oyunçunun kim olduğunu və klublarına hər daim inandıqlarını göstərirlər. BUNU ETMƏKLƏ əvəz olunmuş sözləri yazın.`,
+      answer: `Arxasını çevirmək`,
+      criteria: `Mənaya uyğun cavablar`,
+      comment: `Kralın qarşısında arxa çevirmək saray protokolunda hörmətsizlik sayılır. Buna görə də kralla görüşü bitirən şəxs arxası krala tərəf olmadan, arxa-arxaya addımlayaraq otağı tərk edir. Polşanın "Lex Poznan" klubunun azarkeşləri isə qol və ya qələbə zamanı çiyin-çiyinə tutuşaraq arxalarını meydançaya çevirirlər. Dünya futbolunda "The Poznán" adlanan bu hərəkətlə azarkeşlər formalarında sevimli oyunçularının adını və komandalarına oyuna baxmadan, gözü yumulu inandıqlarını göstərir.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 16,
+      question: `Maraqlıdır ki, I və II Dünya Müharibələrində əsgərlər rahatlaşmaq üçün onlara uşaqları tərəfindən verilən İKSLƏRİ ciblərində daşıyırdılar. Bir zarafata görə, İKSLƏR ən çox Kaliforniyada istehsal olunur. İKS-i 2 sözlə yazın.`,
+      answer: `Oyuncaq ayı`,
+      criteria: `Teddy Bear, Teddi Ayı və digər yaxın cavablar`,
+      comment: `Atalarını müharibəyə yola salan uşaqlar onlara öz oyuncaq ayılarını hədiyyə verirdilər. Əsgərlərsə bu ayılara baxıb rahatlaşırdılar. Zarafatda isə Kaliforniyanın simvolu hesab olunan ayıya görə, oyuncaq ayıların orada daha çox istehsal olunduğu deyilirdi.`,
+      source: `<a href='https://share.google/hFVtZWB5iQqsTTGXA' target='_blank'>Link</a>`,
+      author: `Muhəmməd Hüseynli`
+    },
+    {
+      id: 17,
+      question: `Bir animasiyada personaj öz istəyinə çatmaq üçün 10297 BUNDAN istifadə edir. Hesablamalar göstərir ki, real həyatda isə sözügedən məqsədə çatmaq üçün təxminən 23,5 milyon BU lazımdır. 2018-ci ildə həm adında həm də özündə BU olan əsər "özü-özünü yox edən" sözləri ilə tarixə düşdü. BU ilə əvəzlədiyimizi qısa sözlə yazın.`,
+      answer: `Şar`,
+      comment: `UP animasiyasında personaj 10297 şardan istifadə edərək evini uçurmağı bacarmışdı. Lakin araşdırmalar göstərir ki, həmin ölçüdə evi uçurmaq üçün təxminən 23,5 milyon şara ehtiyac var. 2018-ci ildə Banksy-nin "Qırmızı şarlı qız" əsəri də hərracda satıldıqdan saniyələr sonra öz-özünü yox edir.`,
+      source: `<a href='https://slate.com/news-and-politics/2009/06/how-many-balloons-would-it-take-to-lift-a-house-like-the-one-in-pixar-s-up.html' target='_blank'>Link 1</a>, <a href='https://www.trthaber.com/haber/dunya/muzayedede-satilan-tablo-kendi-kendini-imha-etti-388106.html' target='_blank'>Link 2</a>`,
+      author: `Əliyeva Zəhra`
+    },
+    {
+      id: 18,
+      question: `"Dekster" serialının bir epizodunda baş qəhrəmanın sevgilisi Ritanın cəsədi öz qanı ilə dolu vannada görünür. Sual müəllifi bu epizodu izləyərkən ağır dəri xəstəliyindən əziyyət çəkdiyi üçün ömrünün son illərini vannada keçirsə də, məqalələrini elə vannada yazmağa davam edən ONUnu xatırlayır. ONUN kim olduğunu yazın.`,
+      answer: `Jan-Pol Marat`,
+      criteria: `Marat`,
+      comment: `Fransa inqilabının liderlərindən olan Marat şiddətli dəri xəstəliyi səbəbindən ağrıları sakitləşdirmək üçün ömrünün son illərini demək olar ki ancaq vannada keçirir və "Xalqın dostu" qəzeti üçün məqalələrini də orada yazırdı. "Dekster" serialının 4-cü mövsümünün finalında Ritanın vannada qətlə yetirilmiş halda tapılması səhnəsi də məhz sual müəllifinə Maratı xatırlatdı.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 19,
+      question: `Aktyor Leonid Yarmolnik ağır avtomobil qəzasından möcüzəvi şəkildə sağ çıxır. Avtomobildən demək olar ki, salamat qalan hissə olmasa da, özü cüzi xəsarətlərlə xilas olur. Bu hadisədən sonra o, hər il BUNU iki dəfə ETMƏYƏ başlayır. Statistikaya görə, bu il Yer kürəsində təxminən hər 1460 nəfərdən biri BUNU etməyib. BUNU ETMƏKLƏ əvəz olunmuş üç sözü yazın.`,
+      answer: `Ad gününü keçirmək`,
+      criteria: `Digər yaxın cavablar`,
+      comment: `Rus aktyor Yarmolnik ağır avtomobil qəzasından möcüzəvi şəkildə sağ qalır və bu günü özünün yenidən doğulduğu gün kimi qəbul edərək ad günü kimi qeyd etməyə başlayır. Beləliklə, o, ildə iki dəfə ad günü keçirmiş olur. Statistikaya görə isə Yer üzündə hər 1460 nəfərdən biri 29 fevralda doğulduğu üçün bu il ad gününü real tarixdə qeyd edə bilmir.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 20,
+      question: `Bir film çəkilişi zamanı havada fırlanan aktyorların bədəninə bağlanan təhlükəsizlik kəndirlərini gizlətmək lazım gəlirdi. Geyim dizaynerləri bu məqsədlə kəndirləri örtən və aktyorun hərəkətlərini yarasanın qanadlarını xatırladan İKS-dən istifadə etdilər. İKS-i bir qısa sözlə yazın.`,
+      answer: `Plaş`,
+      criteria: `Cape, Keyp`,
+      comment: `Film çəkilişlərində istifadə olunan təhlükəsizlik kəndirlərini gizlətmək üçün bəzən kostyum elementlərindən yararlanılır. Bu halda kəndirlər plaşın altında gizlədilmiş, nəticədə aktyorun hərəkətləri yarasanın qanad çalmasına bənzər vizual effekt yaratmışdır.`,
+      author: `Abbaslı Nigar`
+    },
+    {
+      id: 21,
+      question: `"Yeniyetmə mutant Nindza Tısbağalar" cizgi serialındakı mutant kərtənkələ personajının adı İKS-dir. Həmçinin son aylarda populyarlıq qazanan "Mekka Kameleon" oyununda yaradıcı oyunçuların ən çox gizləndiyi yerlər arasında da İKS-ə rast gəlinir. İKS-i iki sözlə yazın.`,
+      answer: `Mona Liza`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `"Yeniyetmə mutant Nindza Tısbağalar" cizgi serialında mutant kərtənkələ personajının adı Mona Lizadır. Bu ad Leonardo da Vinçinin məşhur əsərindən gəlsə də, addakı Liza ingiliscə "kərtənkələ" mənasını verən "lizard" sözünə işarə edir. "Mekka Kameleon" oyununda isə oyunçular verilən ərazidə ətraf mühitə uyğun gizlənməyə çalışırlar. Yaradıcı oyunçular rəssamlıq bacarıqlarından istifadə edərək Mona Liza tablosunun üzərində də gizlənə bilirlər.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 22,
+      question: `<b>Duplet:</b><br>[Qafiyəni qoruyun!]<br>1. XIX əsrin əvvəlində ABŞ generalı Vilyam Harrison yerli hindu qəbiləsinin torpaqlarını əlindən alır. Bundan sonra qəbilə rəhbəri Tekumseh İKS edir. İKS-i qalın saitli sözlə yazın.<br>2. Aleksandr Soljenıtsın yazılarından birində, Stalinin çıxışı yaxınlaşdıqca insanları bürüyən qorxudan bəhs edir. Qorxunun əsas səbəbi Stalinin özü deyil, çıxışdan sonrakı İQREK idi. İQREK-i qalın saitli sözlə yazın.`,
+      answer: `1. Qarğış; 2. Alqış`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `Torpaqları əlindən alınan qəbilə başçısı Tekumsehin qarğışına görə, hər 20 ildən bir seçilən prezident vəzifəsində ölməli idi. 1840-cı ildə Vilyam Henri Harrisonla başlayan zəncirin son qurbanı Con Kennedi olmuşdu. Bu zəncir 1980-ci ildə seçilən və sui-qəsddən sağ qurtulan Ronald Reyqan tərəfindən qırılmışdı. Soljenitsın "QULAQ arxipelaqı" əsərində yazırdı ki, Stalinin çıxışından sonra alqışlamağı ilk dayandıran şəxs işdən azad olunur və hətta həbs edilirdi. Bir dəfə qorxudan 11 dəqiqə davam edən alqışı dayandıran ilk şəxs də məhz bu taleyi yaşamışdı.`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 23,
+      question: `"Prison Break" serialının epizodlarından birində qəhrəman polisləri aldatmaq üçün boyanmış ALFA-dan istifadə edir. Bir məhkəmə prosesində iddiaçı ALFA ilə qarşı tərəfin vəkilinə hücum edib, "Yalanlarını ancaq bu təmizləyər!" deyə qışqırır. ALFA-nı II növ təyini söz birləşməsi ilə yazın.`,
+      answer: `Su tapançası`,
+      criteria: `Yalnız dəqiq cavablar`,
+      comment: `"Prison Break" serialında Maykl Skolfild su tapançasını qara rəngə boyayaraq ona həqiqi silah görünüşü verir. Lakin əşya yerə düşəndə çıxardığı səs onun əslində su tapançası olduğunu üzə çıxarır. Digər tərəfdə, bir məhkəmə prosesində iddiaçı su tapançası ilə vəkilə hücum edib, "Yalanlarını ancaq bu təmizləyər!" deyə su sıxır və qışqırır. Bu hərəkət də məhkəməyə silah gətirmək kimi qiymətləndirilir.`,
+      source: `Prison Break, 2-ci mövsüm, 2-ci bölüm`,
+      author: `Əlizadə Onur`
+    },
+    {
+      id: 24,
+      reqImg: `https://cdn.phototourl.com/free/2026-09-12-bb78722d-d1cc-488f-967f-231de9a4858d.jpg`,
+      question: `Siz rekvizitdə bir romantik-komediya filminin afişasını görürsünüz. Dizaynerlər GİZLƏNMİŞLƏRİ adət etdiyimizdən fərqli olaraq gəlinliyin üzərinə yazıblar. Həmin afişanı filmin sonunda da görə biləcəyinizi nəzərə alaraq, GİZLƏNMİŞLƏRİ yazın.`,
+      answer: `Film titrləri`,
+      criteria: `Film məlumatları və digər uyğun cavablar`,
+      comment: `Adətən aktyor adları və digər məlumatlar afişanın yuxarı və ya aşağı hissəsində yerləşdirilir. Bu afişada isə onlar gəlinliyin üzərinə yazılıb. Həmin posterin titrlərə görə filmin sonunda göstərilməsi də sizin üçün ipucu idi. Filmin sonunda filmin ərsəyə gəlməsində iştirak edən heyət yazılır.`,
+      source: `<a href='https://cdn.phototourl.com/free/2026-09-12-f4235c3a-8913-409b-be7e-9753e742376e.jpg' target='_blank'>Link</a>`,
+      author: `Abbaslı Nigar`
+    }
   ]
 };
 
