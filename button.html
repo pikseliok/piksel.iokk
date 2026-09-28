@@ -252,6 +252,93 @@ footer{
   .brand-badge{width:34px;height:34px;margin-bottom:5px}  
   .brand-title{font-size:18px}  
 }  
+  /* =========================================================
+   FADE-IN + YUXARI QALXMA ANİMASİYASI
+========================================================= */
+
+@keyframes pageFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* İlk açılışda səhifədəki elementlər */
+.page > *,
+.page main .screen.active > .card > * {
+  animation: pageFadeUp .65s cubic-bezier(.22,.8,.25,1) both;
+}
+
+/* Ardıcıllıq — yuxarıdakı əvvəl, aşağıdakı sonra */
+.top-nav {
+  animation-delay: .05s;
+}
+
+.screen.active > .card > *:nth-child(1) {
+  animation-delay: .10s;
+}
+
+.screen.active > .card > *:nth-child(2) {
+  animation-delay: .16s;
+}
+
+.screen.active > .card > *:nth-child(3) {
+  animation-delay: .22s;
+}
+
+.screen.active > .card > *:nth-child(4) {
+  animation-delay: .28s;
+}
+
+.screen.active > .card > *:nth-child(5) {
+  animation-delay: .34s;
+}
+
+.screen.active > .card > *:nth-child(6) {
+  animation-delay: .40s;
+}
+
+.screen.active > .card > *:nth-child(7) {
+  animation-delay: .46s;
+}
+
+.screen.active > .card > *:nth-child(8) {
+  animation-delay: .52s;
+}
+
+.screen.active > .card > *:nth-child(9) {
+  animation-delay: .58s;
+}
+
+.screen.active > .card > *:nth-child(10) {
+  animation-delay: .64s;
+}
+
+.screen.active > .card > *:nth-child(11) {
+  animation-delay: .70s;
+}
+
+.screen.active > .card > *:nth-child(12) {
+  animation-delay: .76s;
+}
+
+/* Sonradan yeni ekran açıldıqda animasiyanın yenidən başlaması */
+.screen.active > .card > * {
+  animation-name: pageFadeUp;
+  animation-duration: .65s;
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page > *,
+  .screen.active > .card > * {
+    animation: none !important;
+  }
+}
 </style>  </head>  <body>  <div class="page">    <nav class="top-nav" aria-label="Əsas naviqasiya">  
     <div class="nav-links">  
       <a class="nav-link" href="index.html">Əsas Səhifə</a>  
