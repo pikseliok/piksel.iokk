@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>Taymer - πksel.iok</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --red:#ff3b30;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Poppins",sans-serif;
+  overflow-x:hidden;
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column;
+}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+button,a{font:inherit}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
+
+/* ---------- NAVIGATION (eyni) ---------- */
+.top-nav{
+  height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  box-shadow:0 10px 28px rgba(0,20,100,.08);
+  transition:background var(--transition),box-shadow var(--transition);
+}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition);
+}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* ---------- TAYMER KARTI ---------- */
+.card{
+  width:100%;max-width:540px;margin:18px auto 40px;
+  border-radius:31px;padding:32px 24px 36px;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  position:relative;overflow:hidden;
+  transition:background var(--transition),color var(--transition);
+}
+.dark .card{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+  color:var(--dark-ink);
+}
+.blur-wrap{transition:filter .4s ease}
+.card.confirming .blur-wrap{filter:blur(7px);pointer-events:none}
+
+.title-sub{text-align:center;font-weight:700;font-size:clamp(14px,2.5vw,17px);line-height:1.3;letter-spacing:-.2px}
+.title-sub2{text-align:center;font-weight:500;font-size:clamp(12px,2vw,15px);margin-bottom:6px}
+.title-main{text-align:center;font-weight:700;font-size:clamp(28px,5vw,40px);letter-spacing:-1px;margin-bottom:22px}
+
+/* Rejim düymələri */
+.mode-row{display:flex;gap:10px;justify-content:center;margin-bottom:26px;width:100%}
+.mode-btn{
+  flex:1;padding:11px 8px;border:2px solid currentColor;border-radius:999px;
+  background:transparent;color:inherit;cursor:pointer;text-align:center;
+  font-weight:600;font-size:clamp(11px,2.2vw,14px);letter-spacing:-.1px;
+  transition:transform .25s ease,background .25s ease,color .25s ease;
+}
+.mode-btn:hover{transform:translateY(-2px)}
+.mode-btn:active{transform:scale(.96)}
+.mode-btn.active{background:var(--ink);color:var(--deep);border-color:var(--ink);font-weight:700}
+.dark .mode-btn.active{background:var(--dark-ink);color:var(--dark-light);border-color:var(--dark-ink)}
+
+/* Sferа */
+.dial-outer{width:100%;max-width:340px;margin:0 auto;position:relative}
+.dial-outer::before{content:"";display:block;padding-top:100%}
+.dial-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.dial-bg1{fill:#00072C}
+.dial-bg2{fill:#001E6F}
+.tick{stroke:#9DC3FF;stroke-width:3;stroke-linecap:round;transition:opacity .4s ease}
+.tick.red{stroke:var(--red)}
+.tick.hidden-tick{opacity:0}
+.marker{stroke:var(--red);stroke-width:6;stroke-linecap:round}
+
+.dial-center{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9DC3FF}
+.dial-number{
+  font-weight:500;font-size:clamp(52px,16vw,84px);color:#9DC3FF;
+  line-height:1;margin-bottom:20px;pointer-events:none;
+}
+
+.dial-controls{display:flex;align-items:center;justify-content:center;height:48px;width:100%;position:relative}
+.icon-btn{
+  border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  width:48px;height:48px;padding:0;color:#9DC3FF;transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+.icon-btn:hover{transform:scale(1.1)}
+.dial-controls.state-idle #playBtn{display:flex;position:absolute;left:50%;transform:translateX(-50%) scale(1);opacity:1;pointer-events:auto}
+.dial-controls.state-idle #playBtn:hover{transform:translateX(-50%) scale(1.1)}
+.dial-controls.state-idle #pauseBtn,
+.dial-controls.state-idle #resetBtn{display:none;opacity:0;pointer-events:none}
+.dial-controls.state-running #playBtn{display:none;opacity:0;pointer-events:none}
+.dial-controls.state-running{gap:24px}
+.dial-controls.state-running #pauseBtn,
+.dial-controls.state-running #resetBtn{display:flex;opacity:1;pointer-events:auto;transform:scale(1)}
+
+.play-shape{width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid currentColor;margin-left:4px}
+.pause-shape{display:flex;gap:6px}
+.pause-shape span{width:7px;height:24px;background:currentColor;border-radius:2px;display:block}
+.reset-shape{width:22px;height:22px;background:var(--red);border-radius:5px}
+
+/* Təsdiq qutusu */
+.confirm-box{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.85);
+  background:var(--dark-light);color:var(--deep);
+  border-radius:24px;padding:22px 20px;width:80%;max-width:280px;text-align:center;
+  box-shadow:0 17px 35px rgba(0,20,110,.3);
+  opacity:0;pointer-events:none;transition:opacity .35s ease,transform .35s ease;z-index:5;
+}
+.dark .confirm-box{background:var(--dark-bg);color:var(--dark-light)}
+.confirm-box.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.confirm-text{font-weight:700;font-size:16px;margin-bottom:16px;letter-spacing:-.2px}
+.confirm-buttons{display:flex;gap:10px;justify-content:center}
+.confirm-btn{flex:1;padding:10px 0;border:none;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;transition:transform .25s ease}
+.confirm-btn:hover{transform:translateY(-2px)}
+.confirm-yes{background:var(--deep);color:var(--dark-light)}
+.dark .confirm-yes{background:var(--dark-light);color:var(--dark-bg)}
+.confirm-no{background:var(--red);color:#fff}
+
+/* ---------- FOOTER (eyni) ---------- */
+footer{
+  width:100%;
+  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  color:var(--ink);min-height:170px;padding:27px 20px 24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;
+  transition:background var(--transition),color var(--transition);
+}
+.dark footer{
+  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+  color:var(--dark-ink);
+}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,
+.mode-btn:focus-visible,.icon-btn:focus-visible,.confirm-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
+@media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding-top:11px}
+  .top-nav{height:52px;padding-left:18px;padding-right:60px}
+  .nav-links{gap:34px}
+  .nav-link{font-size:15px}
+  .theme-toggle{width:39px;height:39px;right:8px}
+  .theme-icon{width:22px;height:22px}
+  .card{border-radius:29px;margin-top:16px}
+  footer{min-height:185px;padding-left:12px;padding-right:12px}
+  .footer-line{font-size:14px}
+}
+@media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .nav-links{gap:25px}
+  .nav-link{font-size:13px}
+  .top-nav{height:48px}
+  .theme-toggle{width:36px;height:36px;right:6px}
+  .theme-icon{width:20px;height:20px}
+  .card{padding:28px 16px 32px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav class="top-nav" aria-label="Əsas naviqasiya">
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    </button>
+  </nav>
+
+  <main>
+    <div class="card" id="card">
+      <div class="blur-wrap">
+        <div class="title-sub">"Nə? Harada? Nə Zaman?"</div>
+        <div class="title-sub2">intellektual oyunu üçün</div>
+        <div class="title-main">TAYMER</div>
+
+        <div class="mode-row" id="modeRow">
+          <button class="mode-btn active" data-mode="klasik">KLASİK</button>
+          <button class="mode-btn" data-mode="duplet">DUPLET</button>
+          <button class="mode-btn" data-mode="blits">BLİTS</button>
+        </div>
+
+        <div class="dial-outer">
+          <svg class="dial-svg" viewBox="0 0 300 300">
+            <circle class="dial-bg1" cx="150" cy="150" r="140"></circle>
+            <circle class="dial-bg2" cx="150" cy="150" r="112"></circle>
+            <line class="marker" x1="150" y1="8" x2="150" y2="42"></line>
+            <g id="ticksGroup"></g>
+          </svg>
+          <div class="dial-center">
+            <div class="dial-number" id="secondsDisplay">60</div>
+
+            <div class="dial-controls state-idle" id="dialControls">
+              <button class="icon-btn" id="playBtn" title="Başla"><span class="play-shape"></span></button>
+              <button class="icon-btn" id="pauseBtn" title="Pauza"><span class="pause-shape"><span></span><span></span></span></button>
+              <button class="icon-btn" id="resetBtn" title="Sıfırla"><span class="reset-shape"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirm-box" id="confirmBox">
+        <div class="confirm-text">Vaxt sıfırlansın?</div>
+        <div class="confirm-buttons">
+          <button class="confirm-btn confirm-yes" id="confirmYes">Hə</button>
+          <button class="confirm-btn confirm-no" id="confirmNo">Yox</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/piksel.iok"
+     target="_blank" rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a class="footer-line footer-link"
+     href="https://www.instagram.com/onurelzh"
+     target="_blank" rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+</footer>
+
+<script>
+  /* ================= TEMA (saytla eyni) ================= */
+  const themeToggle = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+
+  function sunIcon(){
+    return `
+      <circle cx="16" cy="16" r="6" fill="currentColor"/>
+      <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+        <path d="M16 2.7v3"/><path d="M16 26.3v3"/>
+        <path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/>
+        <path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/>
+        <path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/>
+      </g>`;
+  }
+  function moonIcon(){
+    return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
+  }
+  function updateThemeIcon(){
+    const dark = document.body.classList.contains("dark");
+    themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
+    themeToggle.setAttribute("aria-label", dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+  }
+  function setTheme(dark){
+    document.body.classList.toggle("dark", dark);
+    try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(e){}
+    updateThemeIcon();
+  }
+  function initTheme(){
+    let saved = null;
+    try{ saved = localStorage.getItem("piksel-theme"); }catch(e){}
+    if(saved === "dark") return setTheme(true);
+    if(saved === "light") return setTheme(false);
+    setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  themeToggle.addEventListener("click", () => setTheme(!document.body.classList.contains("dark")));
+  initTheme();
+
+  /* ================= TAYMER (dəyişməyib) ================= */
+  const MODE_TOTALS = { klasik: 60, duplet: 30, blits: 20 };
+
+  let currentMode = 'klasik';
+  let total = MODE_TOTALS[currentMode];
+  let secondsLeft = total;
+  let intervalId = null;
+  let paused = false;
+  let running = false;
+
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function beep(durationMs, freq) {
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const now = audioCtx.currentTime;
+    const dur = durationMs / 1000;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.22, now + 0.015);
+    gain.gain.setValueAtTime(0.22, now + Math.max(dur - 0.04, 0.02));
+    gain.gain.linearRampToValueAtTime(0, now + dur);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + dur + 0.03);
+  }
+
+  const ticksGroup = document.getElementById('ticksGroup');
+  const secondsDisplay = document.getElementById('secondsDisplay');
+  const dialControls = document.getElementById('dialControls');
+  const playBtn = document.getElementById('playBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const modeRow = document.getElementById('modeRow');
+  const card = document.getElementById('card');
+  const confirmBox = document.getElementById('confirmBox');
+  const confirmYes = document.getElementById('confirmYes');
+  const confirmNo = document.getElementById('confirmNo');
+
+  function buildTicks() {
+    ticksGroup.innerHTML = '';
+    const cx = 150, cy = 150;
+    const outerR = 138, innerR = 122;
+    const redZone = Math.min(10, total - 1);
+    for (let i = 1; i <= total - 1; i++) {
+      const angle = i * (360 / total);
+      const rad = (angle - 90) * Math.PI / 180;
+      const x1 = cx + innerR * Math.cos(rad);
+      const y1 = cy + innerR * Math.sin(rad);
+      const x2 = cx + outerR * Math.cos(rad);
+      const y2 = cy + outerR * Math.sin(rad);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('data-mark', i);
+      line.classList.add('tick');
+      if (i <= redZone) line.classList.add('red');
+      ticksGroup.appendChild(line);
+    }
+  }
+
+  function refreshTicks() {
+    const lines = ticksGroup.querySelectorAll('.tick');
+    lines.forEach(line => {
+      const mark = parseInt(line.getAttribute('data-mark'), 10);
+      if (secondsLeft < mark) line.classList.add('hidden-tick');
+      else line.classList.remove('hidden-tick');
+    });
+  }
+
+  function updateDisplay() {
+    secondsDisplay.textContent = secondsLeft;
+    refreshTicks();
+  }
+
+  function showIdleControls() {
+    dialControls.className = 'dial-controls state-idle';
+  }
+
+  function showRunningControls() {
+    dialControls.className = 'dial-controls state-running';
+  }
+
+  function setPauseIcon(isPaused) {
+    pauseBtn.innerHTML = isPaused
+      ? '<span class="play-shape"></span>'
+      : '<span class="pause-shape"><span></span><span></span></span>';
+  }
+
+  function resetState(newTotal) {
+    clearInterval(intervalId);
+    intervalId = null;
+    running = false;
+    paused = false;
+    total = newTotal;
+    secondsLeft = total;
+    buildTicks();
+    updateDisplay();
+    showIdleControls();
+    setPauseIcon(false);
+  }
+
+  function tick() {
+    secondsLeft--;
+    updateDisplay();
+    if (secondsLeft === 10) beep(2000, 1000);
+    if (secondsLeft === 3 || secondsLeft === 2 || secondsLeft === 1) beep(180, 1300);
+    if (secondsLeft <= 0) {
+      clearInterval(intervalId);
+      intervalId = null;
+      beep(2000, 700);
+      setTimeout(() => {
+        running = false;
+        secondsLeft = total;
+        buildTicks();
+        updateDisplay();
+        showIdleControls();
+        setPauseIcon(false);
+      }, 2000);
+    }
+  }
+
+  function startTimer() {
+    ensureAudio();
+    running = true;
+    paused = false;
+    secondsLeft = total;
+    buildTicks();
+    updateDisplay();
+    beep(2000, 1000);
+    showRunningControls();
+    intervalId = setInterval(tick, 1000);
+  }
+
+  function togglePause() {
+    if (!running) return;
+    if (paused) {
+      paused = false;
+      setPauseIcon(false);
+      intervalId = setInterval(tick, 1000);
+    } else {
+      paused = true;
+      setPauseIcon(true);
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  function openConfirm() {
+    card.classList.add('confirming');
+    confirmBox.classList.add('show');
+  }
+
+  function closeConfirm() {
+    card.classList.remove('confirming');
+    confirmBox.classList.remove('show');
+  }
+
+  playBtn.addEventListener('click', startTimer);
+  pauseBtn.addEventListener('click', togglePause);
+  resetBtn.addEventListener('click', openConfirm);
+
+  confirmNo.addEventListener('click', closeConfirm);
+  confirmYes.addEventListener('click', () => {
+    closeConfirm();
+    resetState(total);
+  });
+
+  modeRow.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mode-btn');
+    if (!btn) return;
+    modeRow.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.getAttribute('data-mode');
+    resetState(MODE_TOTALS[currentMode]);
+  });
+
+  buildTicks();
+  updateDisplay();
+</script>
+</body>
+</html>
