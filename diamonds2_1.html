@@ -1925,5 +1925,48 @@ initTheme();
   
 renderTourButtons();  
 renderQuestions();  
-</script>  </body>  
+</script> <script>
+(function () {
+  function run() {
+    if (!document.body.animate) return;
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    var vh = window.innerHeight * 1.1;
+    var SKIP = /^(SCRIPT|STYLE|NOSCRIPT|FOOTER|LINK|META|BR|HR)$/;
+    var TEXT = /^(P|H1|H2|H3|H4|H5|H6|LI|IMG|BUTTON|A|SVG|TABLE|FIGURE|INPUT|SELECT|TEXTAREA|LABEL)$/;
+    var list = [];
+
+    function hasBox(cs) {
+      return (cs.backgroundColor !== "rgba(0, 0, 0, 0)" && cs.backgroundColor !== "transparent") ||
+             cs.backgroundImage !== "none" || cs.boxShadow !== "none" ||
+             parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderBottomWidth) > 0;
+    }
+
+    function walk(el) {
+      Array.prototype.forEach.call(el.children, function (c) {
+        if (SKIP.test(c.tagName.toUpperCase()) || c.closest("footer")) return;
+        var cs = getComputedStyle(c), r = c.getBoundingClientRect();
+        if (cs.display === "none" || cs.visibility === "hidden" || (r.width === 0 && r.height === 0)) return;
+        if (c.children.length === 0 || TEXT.test(c.tagName.toUpperCase()) || hasBox(cs)) {
+          if (r.top < vh && r.bottom > 0) list.push(c);
+        } else {
+          walk(c);
+        }
+      });
+    }
+
+    walk(document.body);
+
+    list.forEach(function (el, i) {
+      el.animate(
+        [{ opacity: 0, translate: "0 22px" }, { opacity: 1, translate: "0 0" }],
+        { duration: 500, delay: Math.min(i * 70, 700), easing: "cubic-bezier(.22,.8,.25,1)", fill: "backwards" }
+      );
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+  else run();
+})();
+</script> </body>  
 </html>
