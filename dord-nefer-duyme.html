@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>Düymə sistemi (4 komanda) - πksel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
+  --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --red:#ff3b30;--err:#ff8a82;
+  --g-blue:linear-gradient(135deg,#4E73D7,#1E4DC7 55%,#2C62D7);
+  --g-pink:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8);
+  --g-green:linear-gradient(135deg,#0FCB6E,#0BB55F 55%,#049A52);
+  --g-orange:linear-gradient(135deg,#D2603C,#E8692A 55%,#FF6A14);
+}
+body.dark{--err:#c4160c}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+body{min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;width:100%;display:flex;flex-direction:column;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button,input{font-family:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
+
+/* NAV */
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;min-width:44px;padding:0;margin:0;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+
+/* PANEL */
+#app{width:100%;max-width:540px;margin:18px auto 40px}
+.screen{display:none;width:100%}
+.screen.active{display:flex}
+.card{width:100%;min-height:min(72dvh,640px);border-radius:31px;padding:26px 24px 28px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);display:flex;flex-direction:column;overflow:hidden;position:relative;transition:background var(--transition),color var(--transition)}
+.dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+
+.brand{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
+.brand-badge{width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.brand-badge img{width:100%;height:100%;object-fit:contain;display:block}
+.brand-title{font-size:22px;font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.6px}
+.brand-tagline{font-size:13px;font-weight:500;text-align:center;line-height:1.2;margin-top:2px}
+.subtitle{text-align:center;font-size:12px;font-weight:600;opacity:.8;margin:4px 0 10px}
+
+input{width:100%;border:2px solid currentColor;background:rgba(157,195,255,.1);color:inherit;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:500;outline:none;margin-bottom:10px;transition:background .25s ease}
+.dark input{background:rgba(0,7,44,.08)}
+input::placeholder{color:inherit;opacity:.55}
+input:focus{background:rgba(157,195,255,.2)}
+.dark input:focus{background:rgba(0,7,44,.15)}
+
+button{width:100%;border:2px solid transparent;border-radius:999px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;color:var(--deep);background:var(--ink);white-space:normal;line-height:1.25;transition:transform .25s ease,opacity .25s ease,background .25s ease}
+.dark button{color:var(--dark-light);background:var(--dark-ink)}
+button:hover{transform:translateY(-2px)}
+button:active{transform:scale(.97)}
+button.secondary{background:transparent;border:2px solid currentColor}
+.card button.secondary{color:var(--ink)}
+.dark .card button.secondary{color:var(--dark-ink)}
+button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+
+.room-code{text-align:center;font-size:26px;font-weight:800;letter-spacing:1px;margin:4px 0 6px;cursor:pointer;user-select:none;-webkit-user-select:none}
+
+/* KOMANDALAR */
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+.team{border-radius:22px;padding:10px 8px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;transition:opacity .3s ease}
+.team.blue,.rank-row.blue,.big-buzz.blue{background:var(--g-blue)}
+.team.pink,.rank-row.pink,.big-buzz.pink{background:var(--g-pink)}
+.team.green,.rank-row.green,.big-buzz.green{background:var(--g-green)}
+.team.orange,.rank-row.orange,.big-buzz.orange{background:var(--g-orange)}
+.team-name{font-size:14px;font-weight:700;color:#F5F7FA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:calc(100% - 26px)}
+.score{font-size:34px;font-weight:800;color:#F5F7FA;margin-top:2px;line-height:1}
+.kick-btn{position:absolute;top:7px;right:7px;width:22px;height:22px;min-width:22px;border-radius:50%;padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;justify-content:center}
+.dark .kick-btn{color:#fff;background:rgba(255,255,255,.2)}
+.kick-btn:hover{transform:none}
+.kick-btn:active{transform:scale(.9)}
+.kick-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:60;background:rgba(0,7,44,0);pointer-events:none}
+.kick-modal{opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;box-shadow:0 17px 35px rgba(0,20,110,.3)}
+.dark .kick-modal{background:var(--dark-bg);color:var(--dark-light)}
+.kick-modal-text{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:14px;word-break:break-word;letter-spacing:-.2px}
+.kick-modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kick-modal-buttons button{margin-top:0}
+.kick-modal-buttons button.yes{background:var(--deep);color:var(--dark-light)}
+.dark .kick-modal-buttons button.yes{background:var(--dark-light);color:var(--dark-bg)}
+.kick-modal-buttons button.no{background:var(--red);color:#fff}
+.dark .kick-modal-buttons button.no{color:#fff}
+
+/* RAUND SEÇİMİ */
+.dd{position:relative;margin-top:2px}
+button.dd-btn{position:relative;background:rgba(157,195,255,.1);color:var(--ink);border:2px solid currentColor;margin-top:0;padding:10px 40px;font-size:clamp(16px,5vw,21px);font-weight:700}
+.dark button.dd-btn{background:rgba(0,7,44,.08);color:var(--dark-ink)}
+button.dd-btn i{position:absolute;right:22px;top:50%;transform:translateY(-58%);font-style:normal;transition:transform .3s ease}
+.dd.open button.dd-btn i{transform:translateY(-42%) rotate(180deg)}
+.dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:var(--dark-light);color:var(--deep);border-radius:22px;padding:6px;box-shadow:0 12px 28px rgba(0,20,110,.3)}
+.dark .dd-menu{background:var(--dark-bg);color:var(--dark-light)}
+button.dd-item{background:transparent;color:inherit;margin:0;padding:11px;border-radius:16px;font-size:14px}
+.dark button.dd-item{background:transparent;color:inherit}
+button.dd-item.on{background:rgba(0,30,111,.14)}
+.dark button.dd-item.on{background:rgba(157,195,255,.18)}
+.vals{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0 4px}
+button.val-btn{margin:0;padding:10px 0 8px;border-radius:22px;background:transparent;color:var(--ink);border:2px solid currentColor;display:flex;flex-direction:column;align-items:center;line-height:1}
+.dark button.val-btn{background:transparent;color:var(--dark-ink)}
+button.val-btn b{font-size:clamp(15px,4.6vw,22px);font-weight:800}
+button.val-btn span{font-size:clamp(9px,2.6vw,12px);font-weight:600;margin-top:5px;letter-spacing:.5px}
+button.val-btn.on{background:var(--ink);color:var(--deep);border-color:transparent}
+.dark button.val-btn.on{background:var(--dark-ink);color:var(--dark-light)}
+
+/* SIRALAMA */
+.rank{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px;min-height:60px}
+.rank-empty{text-align:center;font-size:12px;font-weight:500;opacity:.75;padding:14px 0}
+.rank-row{display:flex;align-items:center;gap:6px;border:2px solid currentColor;border-radius:999px;padding:3px 4px 3px 16px;min-height:46px;transition:opacity .25s ease}
+.rank-row.in{animation:rowIn .25s ease both}
+.rank-row.out{animation:rowOut .3s ease forwards}
+.rank-row.dim{opacity:.5}
+@keyframes rowIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes rowOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-22px)}}
+.rk-n{font-size:22px;font-weight:800;color:#F5F7FA;min-width:38px}
+.rk-name{flex:1;text-align:center;font-size:17px;font-weight:700;color:#F5F7FA;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-sp{min-width:38px}
+button.rk-btn{width:40px;min-width:40px;height:34px;margin:0;padding:0;border-radius:13px;font-size:22px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
+button.rk-btn:hover{transform:none}
+
+/* BUZZ */
+.question-value{text-align:center;font-size:12px;font-weight:500;opacity:.9;margin-bottom:10px}
+.question-value strong{font-size:17px;font-weight:700}
+.big-buzz{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(90px,18vh,140px);border-radius:30px;margin:0 0 10px;font-weight:800;border:0;padding:8px;overflow:hidden;flex:1;color:#F5F7FA;touch-action:manipulation}
+.big-buzz:hover{transform:none}
+.big-buzz:active{transform:scale(.97)}
+.dark .big-buzz{color:#F5F7FA}
+.big-buzz.pressed:disabled{opacity:1}
+.big-buzz.locked{background:rgba(157,195,255,.16);color:var(--ink);border:2px solid currentColor;opacity:.75}
+.dark .big-buzz.locked{background:rgba(0,7,44,.1);color:var(--dark-ink)}
+.bl-big{display:block;width:100%;text-align:center;line-height:1.05;font-size:clamp(30px,10vh,58px)}
+.bl-sm{display:block;width:100%;text-align:center;line-height:1.15;font-size:clamp(12px,3.6vw,17px);margin-top:2px}
+
+.info{text-align:center;font-size:11px;font-weight:500;opacity:.85;margin-top:6px;line-height:1.3}
+.hidden{display:none!important}
+.error{color:var(--err);text-align:center;margin-top:8px;font-size:12px;font-weight:600}
+.connection{text-align:center;font-size:10px;margin-top:6px;font-weight:600;opacity:.8}
+.connection.off{color:var(--err);opacity:1}
+
+.mode-select{display:flex;flex-direction:column;gap:8px;margin:8px 0 6px}
+.mode-option{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
+.mode-option input[type="radio"]{width:16px;height:16px;margin:0;padding:0;flex-shrink:0;accent-color:var(--ink);background:none;border-radius:50%}
+.dark .mode-option input[type="radio"]{accent-color:var(--dark-ink)}
+.mode-option span{flex:1}
+button.info-btn{width:22px;height:22px;min-width:22px;padding:0;margin:0;border-radius:50%;font-size:11px;font-weight:800;line-height:18px;background:transparent;border:2px solid currentColor;flex-shrink:0}
+.card button.info-btn{color:var(--ink)}
+.dark .card button.info-btn{color:var(--dark-ink)}
+button.info-btn:hover{transform:none}
+.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.4;margin-top:4px}
+.dark .info-bubble{background:var(--dark-bg);color:var(--dark-light)}
+
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+@media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding-top:11px}
+  .top-nav{height:52px;padding-left:18px;padding-right:60px}
+  .nav-links{gap:34px}.nav-link{font-size:15px}
+  .theme-toggle{width:39px;height:39px;min-width:39px;right:8px}.theme-icon{width:22px;height:22px}
+  #app{margin-top:16px}
+  .card{border-radius:29px;padding:22px 18px 24px}
+  footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}
+}
+@media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}
+  .theme-toggle{width:36px;height:36px;min-width:36px;right:6px}.theme-icon{width:20px;height:20px}
+  .card{padding:20px 14px 22px}
+}
+@media(max-height:680px){.brand-badge{width:34px;height:34px;margin-bottom:5px}.brand-title{font-size:18px}}
+
+/* AÇILIŞ ANİMASİYASI */
+@keyframes pageFadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.page>*,.screen.active>.card>*{animation:pageFadeUp .65s cubic-bezier(.22,.8,.25,1) both}
+.top-nav{animation-delay:.05s}
+.screen.active>.card>*:nth-child(1){animation-delay:.10s}
+.screen.active>.card>*:nth-child(2){animation-delay:.16s}
+.screen.active>.card>*:nth-child(3){animation-delay:.22s}
+.screen.active>.card>*:nth-child(4){animation-delay:.28s}
+.screen.active>.card>*:nth-child(5){animation-delay:.34s}
+.screen.active>.card>*:nth-child(6){animation-delay:.40s}
+.screen.active>.card>*:nth-child(7){animation-delay:.46s}
+.screen.active>.card>*:nth-child(8){animation-delay:.52s}
+.screen.active>.card>*:nth-child(9){animation-delay:.58s}
+.screen.active>.card>*:nth-child(10){animation-delay:.64s}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}.page>*,.screen.active>.card>*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<nav class="top-nav" aria-label="Əsas naviqasiya">
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Əsas Səhifə</a>
+    <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+  </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+    <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+  </button>
+</nav>
+<main>
+<div id="app">
+
+<!-- ANA -->
+<div id="homeScreen" class="screen active">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-title">Düymə sistemi</div>
+      <div class="brand-tagline">4 komanda</div>
+    </div>
+    <div style="flex:1"></div>
+    <button onclick="showScreen('hostCreateScreen')">APARICI</button>
+    <button class="secondary" onclick="showScreen('playerJoinScreen')">OYUNÇU</button>
+  </div>
+</div>
+
+<!-- HOST CREATE -->
+<div id="hostCreateScreen" class="screen">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-title">Düymə sistemi</div>
+      <div class="brand-tagline">4 komanda</div>
+    </div>
+    <div class="subtitle">APARICI PANELİ:</div>
+    <input id="hostName" placeholder="Aparıcının adı">
+    <div class="mode-select">
+      <label class="mode-option">
+        <input type="radio" name="gameMode" value="physical" onchange="gameMode='physical'">
+        <span>Oyun əyanidir</span>
+        <button type="button" class="info-btn" onclick="showModeInfo('physical')">i</button>
+      </label>
+      <label class="mode-option">
+        <input type="radio" name="gameMode" value="online" checked onchange="gameMode='online'">
+        <span>Oyun onlayndır</span>
+        <button type="button" class="info-btn" onclick="showModeInfo('online')">i</button>
+      </label>
+    </div>
+    <div id="modeInfoBubble" class="info-bubble hidden"></div>
+    <div style="flex:1"></div>
+    <button onclick="createRoom()">OTAQ YARAT</button>
+    <button class="secondary" onclick="goHome()">GERİ</button>
+    <div id="hostCreateError" class="error"></div>
+  </div>
+</div>
+
+<!-- HOST -->
+<div id="hostScreen" class="screen">
+  <div class="card">
+    <div id="hostTeams" class="teams"></div>
+    <div class="dd" id="dd">
+      <button type="button" class="dd-btn" onclick="toggleDD(event)"><span id="ddLabel">BƏLLİ RAUND</span><i>⌄</i></button>
+      <div id="ddMenu" class="dd-menu hidden"></div>
+    </div>
+    <div id="hostVals" class="vals"></div>
+    <div class="subtitle">πksel.iok</div>
+    <div id="hostRank" class="rank"></div>
+    <div style="flex:1"></div>
+    <button class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
+    <div class="connection" id="hostConnection">● Firebase bağlantısı</div>
+    <div class="info">OTAQ KODU<div id="hostRoomCode" class="room-code" onclick="copyRoomCode()">------</div></div>
+    <div id="kickOverlay" class="kick-overlay">
+      <div class="kick-modal" id="kickModal">
+        <div class="kick-modal-text" id="kickModalText"></div>
+        <div class="kick-modal-buttons">
+          <button class="yes" onclick="kickConfirm(true)">BƏLİ</button>
+          <button class="no" onclick="kickConfirm(false)">XEYR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER JOIN -->
+<div id="playerJoinScreen" class="screen">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-title">Düymə sistemi</div>
+      <div class="brand-tagline">4 komanda</div>
+    </div>
+    <div class="subtitle">OYUNÇU GİRİŞİ</div>
+    <input id="roomInput" maxlength="6" placeholder="6 simvollu otaq kodu">
+    <input id="teamNameInput" placeholder="Komanda adı">
+    <div style="flex:1"></div>
+    <button onclick="joinRoom()">OTAĞA QOŞUL</button>
+    <button class="secondary" onclick="goHome()">GERİ</button>
+    <div id="joinError" class="error"></div>
+  </div>
+</div>
+
+<!-- PLAYER -->
+<div id="playerScreen" class="screen">
+  <div class="card">
+    <div class="question-value"><span id="playerRound">BƏLLİ RAUND</span> &nbsp;•&nbsp; Dəyər <strong>+<span id="playerValue">100</span></strong></div>
+    <button id="buzzButton" class="big-buzz" onpointerdown="playerBuzz(event)"><span class="bl-big">BAS!</span></button>
+    <div id="playerTeams" class="teams"></div>
+    <div id="playerRank" class="rank"></div>
+    <div class="connection" id="playerConnection">● Firebase bağlantısı</div>
+  </div>
+</div>
+
+</div>
+</main>
+</div>
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+/* TEMA */
+const themeToggle=document.getElementById("themeToggle"),themeIcon=document.getElementById("themeIcon");
+function sunIcon(){return `<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>`}
+function moonIcon(){return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`}
+function updateThemeIcon(){const d=document.body.classList.contains("dark");themeIcon.innerHTML=d?moonIcon():sunIcon();themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
+function setTheme(d){document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}updateThemeIcon()}
+function initTheme(){let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}
+  if(s==="dark")return setTheme(true);if(s==="light")return setTheme(false);
+  setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+initTheme();
+
+/* FIREBASE (breyn rinqlə eyni layihə, otaqlar ayrı "rooms4" qovluğundadır) */
+const firebaseConfig={
+  apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",
+  authDomain:"piksel-breyn-rinq.firebaseapp.com",
+  databaseURL:"https://piksel-breyn-rinq-default-rtdb.firebaseio.com",
+  projectId:"piksel-breyn-rinq",
+  storageBucket:"piksel-breyn-rinq.firebasestorage.app",
+  messagingSenderId:"284823608972",
+  appId:"1:284823608972:web:58dfcbcbfde0119affa5a9",
+  measurementId:"G-GVZ4MN579R"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+const ROOMS="rooms4/";
+const KICK_REDIRECT="button.html";
+
+/* SABİTLƏR */
+const JOIN_ORDER=["blue","pink","green","orange"];   /* qoşulma sırası = rəng */
+const SHOW_ORDER=["blue","green","pink","orange"];   /* ekranda yerləşmə (2x2) */
+const ROUNDS=[
+  {n:"BƏLLİ RAUND",m:100},
+  {n:"ŞƏRTLİ RAUND",m:200},
+  {n:"SİRLİ RAUND",m:300},
+  {n:"FƏRDİ RAUND",m:400}
+];
+const ORD=["","1-ci","2-ci","3-cü","4-cü"];
+const el=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* GLOBAL */
+let roomCode=null,role=null,team=null,roomRef=null,currentRoom=null,myTeamName=null;
+let audioContext=null,gameMode="online",lastQLen=0;
+let kickTarget=null,kickBusy=false,kickOverlayOpen=false;
+let infoT1=null,infoT2=null;
+
+/* ROOM HELPERS */
+function eff(r){return (r.queue||[]).filter(k=>r[k])}
+function answerer(r){const w=r.wrong||{};return eff(r).find(k=>!w[k])||null}
+function valueOf(r){return ROUNDS[r.round||0].m*((r.step||0)+1)}
+function teamCount(r){return JOIN_ORDER.filter(k=>r[k]).length}
+
+/* SCREEN */
+function showScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));el(id).classList.add("active")}
+function goHome(){stopListening();roomCode=role=team=currentRoom=null;showScreen("homeScreen")}
+
+function showModeInfo(mode){
+  const b=el("modeInfoBubble");
+  b.textContent=mode==="physical"
+    ?"Düymə səsləri qarışıqlığın qarşısını almaq üçün yalnız APARICININ cihazından eşidiləcək."
+    :"Düymə səsləri hər KOMANDANIN öz, APARICININ da öz cihazından eşidiləcək.";
+  clearTimeout(infoT1);clearTimeout(infoT2);
+  b.classList.remove("hidden");b.style.display="block";b.style.transition="opacity .4s ease";b.style.opacity="0";
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.opacity="1"}));
+  infoT1=setTimeout(()=>{b.style.transition="opacity .6s ease";b.style.opacity="0";
+    infoT2=setTimeout(()=>{b.classList.add("hidden");b.style.display=""},600)},3000);
+}
+
+/* SƏS */
+function unlockAudio(){try{if(!audioContext)audioContext=new(window.AudioContext||window.webkitAudioContext)();if(audioContext.state==="suspended")audioContext.resume()}catch(e){}}
+document.addEventListener("pointerdown",unlockAudio,{passive:true});
+function audioAllowed(){return !(currentRoom&&currentRoom.soundMode==="physical"&&role!=="host")}
+function buzzSound(){
+  try{
+    if(!audioAllowed())return;unlockAudio();const ctx=audioContext;if(!ctx)return;
+    const now=ctx.currentTime;
+    [1568,1976].forEach((f,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain(),t=now+i*.08;
+      o.type="sine";o.frequency.setValueAtTime(f,t);
+      g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.28,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+.22);
+      o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.25);
+    });
+  }catch(e){}
+}
+
+/* SERVER TIME */
+let offsetReady=false,offsetRes=[],serverOffset=0;
+function waitForOffset(){return offsetReady?Promise.resolve():new Promise(r=>offsetRes.push(r))}
+db.ref(".info/serverTimeOffset").on("value",s=>{const v=s.val();if(typeof v==="number")serverOffset=v;offsetReady=true;offsetRes.forEach(r=>r());offsetRes=[]});
+
+/* OTAQ KODU */
+function generateRoomCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s}
+function copyRoomCode(){
+  if(!roomCode)return;const e=el("hostRoomCode"),code=roomCode;
+  const done=()=>{e.textContent="KOPYALANDI";setTimeout(()=>{e.textContent=code},1000)};
+  const fb=()=>{const t=document.createElement("textarea");t.value=code;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();try{document.execCommand("copy")}catch(x){}t.remove();done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(code).then(done).catch(fb);else fb();
+}
+
+/* HOST CREATE */
+async function createRoom(){
+  unlockAudio();
+  const name=el("hostName").value.trim(),err=el("hostCreateError");err.textContent="";
+  if(!name){err.textContent="Aparıcının adını yazın.";return}
+  await waitForOffset();
+  try{
+    let code=null;
+    for(let i=0;i<10;i++){const c=generateRoomCode();const s=await db.ref(ROOMS+c).once("value");if(!s.exists()){code=c;break}}
+    if(!code)throw new Error("Otaq kodu yaradıla bilmədi.");
+    await db.ref(ROOMS+code).set({
+      createdAt:firebase.database.ServerValue.TIMESTAMP,
+      soundMode:gameMode,host:{name:name,connected:true},
+      score:{blue:0,pink:0,green:0,orange:0},
+      round:0,step:0,clearSeq:0
+    });
+    roomCode=code;role="host";
+    el("hostRoomCode").textContent=code;
+    buildHostStatic();
+    showScreen("hostScreen");
+    startListening();
+  }catch(e){err.textContent="Xəta: "+e.message}
+}
+
+/* PLAYER JOIN */
+async function claimTeam(code,key,value){
+  try{const r=await db.ref(ROOMS+code+"/"+key).transaction(c=>c===null?value:undefined);return !!r.committed}catch(e){return false}
+}
+async function resetSlot(code,key){
+  try{await db.ref(ROOMS+code).transaction(r=>{
+    if(!r)return r;
+    r.queue=(r.queue||[]).filter(k=>k!==key);if(!r.queue.length)delete r.queue;
+    if(r.wrong){delete r.wrong[key];if(!Object.keys(r.wrong).length)delete r.wrong}
+    r.score=r.score||{};r.score[key]=0;
+    return r;
+  })}catch(e){}
+}
+async function joinRoom(){
+  unlockAudio();
+  const code=el("roomInput").value.trim().toUpperCase(),teamName=el("teamNameInput").value.trim(),err=el("joinError");err.textContent="";
+  if(code.length!==6){err.textContent="Otaq kodu 6 simvol olmalıdır.";return}
+  if(!teamName){err.textContent="Komanda adını yazın.";return}
+  await waitForOffset();
+  try{
+    let joined=null;
+    for(let a=0;a<4&&!joined;a++){
+      const room=(await db.ref(ROOMS+code).once("value")).val();
+      if(!room){err.textContent="Belə otaq yoxdur.";return}
+      if(JOIN_ORDER.some(k=>room[k]&&room[k].name.trim().toLowerCase()===teamName.toLowerCase())){
+        err.textContent="Bu komanda adı artıq istifadə olunub, fərqli ad seçin.";return}
+      const free=JOIN_ORDER.find(k=>!room[k]);
+      if(!free){err.textContent="Bu otaqda artıq 4 komanda var.";return}
+      if(await claimTeam(code,free,{name:teamName,connected:true}))joined=free;
+    }
+    if(!joined){err.textContent="Qoşulmaq mümkün olmadı, yenidən cəhd edin.";return}
+    await resetSlot(code,joined);
+    roomCode=code;role="player";team=joined;myTeamName=teamName;
+    buildPlayerStatic();
+    showScreen("playerScreen");
+    startListening();
+  }catch(e){err.textContent="Xəta: "+e.message}
+}
+
+/* ATILMA (oyunçu tərəfi) */
+function kickedOut(){
+  const was=role==="player";
+  stopListening();roomCode=role=team=currentRoom=null;
+  if(was)location.replace(KICK_REDIRECT);
+}
+
+/* LISTENER */
+function startListening(){
+  stopListening();lastQLen=0;lastClear=null;prevKeys=[];
+  roomRef=db.ref(ROOMS+roomCode);
+  roomRef.on("value",snap=>{
+    const room=snap.val();
+    if(!room){if(role==="player")kickedOut();return}
+    if(role==="player"){const m=room[team];if(!m||m.name!==myTeamName){kickedOut();return}}
+    currentRoom=room;setConnection(true);
+    if(role==="host")renderHost(room);else renderPlayer(room);
+    renderRank(room);
+    const q=eff(room).length;
+    if(q>lastQLen)buzzSound();
+    lastQLen=q;
+  },()=>setConnection(false));
+}
+function stopListening(){if(roomRef){roomRef.off();roomRef=null}clearTimeout(rankTimer);rankTimer=null}
+
+/* ÜMUMİ İNTERFEYS */
+function teamsHTML(p){
+  return SHOW_ORDER.map(k=>`<div class="team ${k}" id="${p}_${k}">${p==="h"?`<button type="button" class="kick-btn" id="kick_${k}" onclick="confirmKick('${k}')">✕</button>`:""}<div class="team-name" id="${p}n_${k}">Gözləyir...</div><div class="score" id="${p}s_${k}">0</div></div>`).join("");
+}
+function buildHostStatic(){
+  el("hostTeams").innerHTML=teamsHTML("h");
+  el("ddMenu").innerHTML=ROUNDS.map((r,i)=>`<button type="button" class="dd-item" onclick="setRound(${i})">${r.n}</button>`).join("");
+}
+function buildPlayerStatic(){el("playerTeams").innerHTML=teamsHTML("p")}
+function renderTeams(room,p){
+  SHOW_ORDER.forEach(k=>{
+    const t=room[k];
+    el(p+"n_"+k).textContent=t?t.name:"Gözləyir...";
+    el(p+"s_"+k).textContent=(room.score&&room.score[k])||0;
+    el(p+"_"+k).style.opacity=t?1:.45;
+  });
+}
+
+/* HOST RENDER */
+function renderHost(room){
+  renderTeams(room,"h");
+  SHOW_ORDER.forEach(k=>{el("kick_"+k).style.display=room[k]?"flex":"none"});
+  const r=room.round||0,s=room.step||0;
+  el("ddLabel").textContent=ROUNDS[r].n;
+  document.querySelectorAll(".dd-item").forEach((b,i)=>b.classList.toggle("on",i===r));
+  el("hostVals").innerHTML=[0,1,2,3,4].map(i=>`<button type="button" class="val-btn${i===s?" on":""}" onclick="setStep(${i})"><b>${ROUNDS[r].m*(i+1)}</b><span>XAL</span></button>`).join("");
+}
+function toggleDD(e){e.stopPropagation();el("ddMenu").classList.toggle("hidden");el("dd").classList.toggle("open",!el("ddMenu").classList.contains("hidden"))}
+document.addEventListener("click",()=>{const m=el("ddMenu");if(m){m.classList.add("hidden");el("dd").classList.remove("open")}});
+
+/* PLAYER RENDER */
+function setBuzz(cls,big,sm){
+  const b=el("buzzButton");
+  b.className="big-buzz "+cls;
+  b.innerHTML=`<span class="bl-big">${big}</span>`+(sm?`<span class="bl-sm">${sm}</span>`:"");
+}
+function renderPlayer(room){
+  renderTeams(room,"p");
+  el("playerRound").textContent=ROUNDS[room.round||0].n;
+  el("playerValue").textContent=valueOf(room);
+  const b=el("buzzButton"),q=eff(room),pos=q.indexOf(team)+1,ans=answerer(room),wrong=(room.wrong||{})[team];
+  b.style.opacity="";
+  if(teamCount(room)<2){b.disabled=true;setBuzz("locked","",  "RƏQİB GÖZLƏNİLİR");el("buzzButton").firstChild.style.display="none";return}
+  if(pos){
+    b.disabled=true;
+    setBuzz(team+" pressed",ORD[pos],wrong?"CAVAB HÜQUQU YOXDUR":(ans===team?"CAVAB SİZİNDİR":"BASDINIZ"));
+    if(wrong)b.style.opacity=".6";
+  }else{b.disabled=false;setBuzz(team,"BAS!","")}
+}
+
+/* SIRALAMA (aparıcıda da, oyunçuda da) */
+let rankTimer=null,lastClear=null,prevKeys=[];
+function renderRank(room){
+  if(rankTimer)return;
+  const box=el(role==="host"?"hostRank":"playerRank");
+  const seq=room.clearSeq||0;
+  if(lastClear!==null&&seq!==lastClear&&prevKeys.length){
+    box.querySelectorAll(".rank-row").forEach(r=>r.classList.add("out"));
+    lastClear=seq;prevKeys=[];
+    rankTimer=setTimeout(()=>{rankTimer=null;if(currentRoom)drawRank(currentRoom)},300);
+    return;
+  }
+  lastClear=seq;drawRank(room);
+}
+function drawRank(room){
+  const box=el(role==="host"?"hostRank":"playerRank");if(!box)return;
+  const q=eff(room),ans=answerer(room),w=room.wrong||{};
+  if(!q.length){box.innerHTML=`<div class="rank-empty">Hələ heç kim basmayıb</div>`;prevKeys=[];return}
+  box.innerHTML=q.map((k,i)=>{
+    const isNew=i>=prevKeys.length;
+    const ctl=role==="host"
+      ?`<button type="button" class="rk-btn" ${k===ans?"":"disabled"} onclick="plus('${k}')">+</button><button type="button" class="rk-btn" ${k===ans?"":"disabled"} onclick="minus('${k}')">−</button>`
+      :`<span class="rk-sp"></span>`;
+    return `<div class="rank-row ${k}${isNew?" in":""}${w[k]?" dim":""}"><span class="rk-n">${i+1}.</span><span class="rk-name">${esc(room[k].name)}</span>${ctl}</div>`;
+  }).join("");
+  prevKeys=q.slice();
+}
+
+/* OYUNÇU BASMASI — sıra Firebase-in tranzaksiya sırası ilə müəyyən olunur (eyni saniyədə də dəqiq) */
+let buzzBusy=false;
+function playerBuzz(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  if(role!=="player"||!team||!roomCode||buzzBusy)return;
+  if(currentRoom&&eff(currentRoom).includes(team))return;
+  buzzBusy=true;unlockAudio();
+  const me=team;
+  db.ref(ROOMS+roomCode).transaction(room=>{
+    if(!room)return room;
+    if(!room[me])return;
+    if(teamCount(room)<2)return;
+    const q=(room.queue||[]).filter(k=>room[k]);
+    if(q.includes(me))return;
+    q.push(me);room.queue=q;return room;
+  }).catch(()=>{}).finally(()=>{buzzBusy=false});
+}
+
+/* APARICI FƏALİYYƏTLƏRİ */
+function hostTx(fn){if(role!=="host"||!roomCode)return;db.ref(ROOMS+roomCode).transaction(fn).catch(()=>{})}
+function plus(k){
+  hostTx(r=>{
+    if(!r||answerer(r)!==k)return r&&undefined;
+    r.score=r.score||{};r.score[k]=(r.score[k]||0)+valueOf(r);
+    delete r.queue;delete r.wrong;
+    r.step=Math.min((r.step||0)+1,4);
+    r.clearSeq=(r.clearSeq||0)+1;
+    return r;
+  });
+}
+function minus(k){
+  hostTx(r=>{
+    if(!r||answerer(r)!==k)return r&&undefined;
+    r.score=r.score||{};r.score[k]=(r.score[k]||0)-valueOf(r);
+    r.wrong=r.wrong||{};r.wrong[k]=true;
+    return r;
+  });
+}
+function resetButtons(){
+  hostTx(r=>{
+    if(!r)return r;
+    if(!r.queue&&!r.wrong)return;
+    delete r.queue;delete r.wrong;r.clearSeq=(r.clearSeq||0)+1;return r;
+  });
+}
+function setRound(i){if(role==="host")db.ref(ROOMS+roomCode).update({round:i,step:0})}
+function setStep(i){if(role==="host")db.ref(ROOMS+roomCode).update({step:i})}
+
+/* ATMA (aparıcı tərəfi) */
+function confirmKick(key){
+  if(!currentRoom||!currentRoom[key])return;
+  kickTarget=key;kickOverlayOpen=true;
+  const o=el("kickOverlay"),m=el("kickModal");
+  el("kickModalText").textContent=currentRoom[key].name+" ÇIXARMAQ İSTƏYİRSİZ?";
+  o.style.display="flex";o.style.pointerEvents="auto";
+  o.style.transition="background .2s ease, backdrop-filter .2s ease, -webkit-backdrop-filter .2s ease";
+  m.style.transition="opacity .5s ease, transform .5s ease";
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    o.style.background="rgba(0,7,44,.3)";o.style.backdropFilter="blur(8px)";o.style.webkitBackdropFilter="blur(8px)";
+    m.style.opacity="1";m.style.transform="scale(1)";
+  }));
+}
+function closeKickOverlay(keep){
+  const o=el("kickOverlay"),m=el("kickModal");
+  m.style.transition="opacity .3s ease";m.style.opacity="0";
+  o.style.background="rgba(0,7,44,0)";o.style.backdropFilter="none";o.style.webkitBackdropFilter="none";
+  setTimeout(()=>{o.style.display="none";o.style.pointerEvents="none";m.style.transform="scale(.85)";kickOverlayOpen=false;if(!keep)kickTarget=null},300);
+}
+async function kickConfirm(yes){
+  if(kickBusy)return;
+  if(!yes){closeKickOverlay(false);return}
+  kickBusy=true;const t=kickTarget;closeKickOverlay(true);
+  try{if(t&&roomCode){await db.ref(ROOMS+roomCode+"/"+t).remove();await resetSlot(roomCode,t)}}catch(e){}
+  finally{kickBusy=false;kickTarget=null}
+}
+
+/* BAĞLANTI */
+function setConnection(on){
+  const e=el(role==="host"?"hostConnection":"playerConnection");if(!e)return;
+  if(on){e.className="connection";e.textContent="● Firebase bağlantısı aktivdir"}
+  else{e.className="connection off";e.textContent="○ Xətli/Oflayn (Yenidən qoşulur...)"}
+}
+window.addEventListener("beforeunload",()=>{
+  const r=roomCode,t=team,ro=role;stopListening();
+  if(ro==="player"&&r&&t){db.ref(ROOMS+r+"/"+t).remove()}
+});
+</script>
+</body>
+</html>
