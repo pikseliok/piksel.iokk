@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="az"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>πksel.iok - Kuantum paketi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+html{scroll-behavior:smooth}
+html,body{width:100%;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}button{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+.main-container{width:100%;display:flex;flex-direction:column;gap:16px;position:relative;margin-top:18px;padding-bottom:56px}
+.blur-content{display:flex;flex-direction:column;gap:16px}
+.info-card,.tours-card,.q-card{width:100%;border-radius:28px;padding:24px 26px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition),box-shadow .3s ease,transform .3s ease}
+.dark .info-card,.dark .tours-card,.dark .q-card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.game-title{font-size:30px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.7px;margin-bottom:16px}
+.dark .game-title,.dark .info-row,.dark .q-text,.dark .ans-row,.dark .ans-label{color:var(--dark-ink)}
+.info-row{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:5px}.info-row:last-child{margin-bottom:0}
+.info-label{font-weight:700}.info-val{font-weight:400}
+.tour-buttons,.battle-buttons,.sub-round-wrapper,.sub-battle-buttons{display:flex;flex-direction:column;gap:8px}
+.battle-buttons,.sub-battle-buttons{padding-left:12px}
+.tour-btn,.battle-btn,.sub-round-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:11px 16px;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;text-align:left;transition:all .25s ease;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:space-between}
+.battle-btn,.sub-round-btn{padding:10px 16px;font-size:13px}
+.dark .tour-btn,.dark .battle-btn,.dark .sub-round-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.10)}
+.tour-btn.active,.battle-btn.active,.sub-round-btn.active{background:linear-gradient(135deg,var(--bg) 0%,#7baaff 100%);color:var(--deep);border-color:rgba(255,255,255,.4)}
+.dark .tour-btn.active,.dark .battle-btn.active,.dark .sub-round-btn.active{background:linear-gradient(135deg,var(--dark-bg) 0%,#001254 100%);color:var(--dark-light);border-color:rgba(0,7,44,.3)}
+.round-arrow{width:10px;height:10px;fill:currentColor;transition:transform .3s ease;flex-shrink:0}
+.tour-btn.active .round-arrow,.sub-round-btn.active .round-arrow{transform:rotate(180deg)}
+.battle-panel,.sub-battle-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0}
+.round-wrapper.active>.battle-panel{max-height:2000px;opacity:1;margin-top:8px}
+.sub-round-wrapper.active>.sub-battle-panel{max-height:500px;opacity:1;margin-top:8px}
+.global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:14px 16px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.10);transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease;-webkit-tap-highlight-color:transparent}
+.dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}
+.questions-container{display:flex;flex-direction:column;gap:16px}
+.q-text{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:14px}.q-text b{font-weight:700}
+.toggle-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--bg) 0%,#7baaff 100%);color:var(--deep);border:1px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .25s ease,color .25s ease,transform .2s ease}
+.dark .toggle-btn{background:linear-gradient(135deg,var(--dark-bg) 0%,#001254 100%);color:var(--dark-light);border:1px solid rgba(0,7,44,.3)}
+.toggle-btn:hover{transform:translateY(-1px)}
+.arrow-icon{width:10px;height:10px;fill:currentColor;transition:transform .3s ease}
+.ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}
+.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}
+.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:12px;padding-top:12px}
+.q-card.active .arrow-icon{transform:rotate(180deg)}
+.ans-row{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:7px}.ans-row:last-child{margin-bottom:0}
+.ans-label{font-weight:700;color:var(--ink)}
+.author-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.copy-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease;-webkit-tap-highlight-color:transparent}
+.dark .copy-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
+.copy-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.28)}.dark .copy-btn:hover{background:rgba(0,7,44,.2)}
+.copy-btn.copied{background:linear-gradient(135deg,var(--bg) 0%,#7baaff 100%);color:var(--deep)}
+.dark .copy-btn.copied{background:linear-gradient(135deg,var(--dark-bg) 0%,#001254 100%);color:var(--dark-light)}
+.copy-icon{width:16px;height:16px;display:block}.copy-icon .check-path{display:none}
+.copy-btn.copied .copy-icon .clip-path{display:none}.copy-btn.copied .copy-icon .check-path{display:block}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (max-width:700px){.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:52px;padding-left:18px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}.info-card,.tours-card,.q-card{border-radius:22px;padding:18px}.game-title{font-size:22px}footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
+@media (max-width:420px){.page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}.game-title{font-size:20px}}
+</style></head>
+<body>
+<div class="page">
+<nav class="top-nav" aria-label="Əsas naviqasiya"><div class="nav-links"><a class="nav-link" href="index.html">Əsas Səhifə</a><a class="nav-link active" href="packages.html">Sual Paketləri</a></div>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç"><svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg></button></nav>
+<div class="main-container"><div class="blur-content">
+<div class="info-card"><div class="game-title">Kuantum paketi - Breyn Rinq</div>
+<div class="info-row"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Kuantum İntellektual Oyunlar Klubu</span></div>
+<div class="info-row"><span class="info-label">Redaktor:</span> <span class="info-val">Kərimli Kərim</span></div>
+<div class="info-row"><span class="info-label">Müəllif(lər):</span> <span class="info-val">Kərimli Kərim, Səmədov İslam, Yusifov Zeynal, Nəhmətli Turqut, Hüseynli Qabil</span></div>
+<div class="info-row"><span class="info-label">Oynanıldığı tarix:</span> <span class="info-val">28.02.2026</span></div>
+<div class="info-row"><span class="info-label">Əlavə edildiyi tarix:</span> <span class="info-val">28.09.2026</span></div></div>
+<div class="tours-card"><div class="tour-buttons" id="tourButtons"></div></div>
+<button class="global-toggle-btn" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
+<div class="questions-container" id="questionsContainer"></div>
+</div></div></div>
+<footer><div class="footer-line">İntellektuallar üçün hər şey...</div>
+<a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+<a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a></footer>
+<script>
+const K="K. K.",Z="Zeynal Yusifov",Q="Qabil Hüseynli",T="Turqut Nəhmətli",S="Səmədov İslam",KK="Kərimli Kərim";
+const N=null;
+const mk=rows=>rows.map((r,i)=>({id:i+1,question:r[0],answer:r[1],author:r[2],criteria:r[3]||"",comment:r[4]||""}));
+const D={
+g1:[[`Bunun fərqli versiyalarından birinin posterində mərkəzdə bayquş yerləşib, yanlarda yaşıl və qırmızı dairələr var. Söhbət nədən gedir?`,`Breyn Rinq [oyunu]`,K],
+[`Yamamoto demişdi: “Biz sadəcə yuxuda olan bir nəhəngi oyatdıq və onu dəhşətli bir qətiyyətlə doldurduq”. Onun yuxuda olan nəhəng deyərkən nəyi nəzərdə tutduğunu tapın.`,`ABŞ`,K,`Amerika Birləşmiş Ştatları, Birləşmiş Ştatlar, Amerika`,`Adın verilməsi sizi Yaponiyaya çıxara bilərdi.`],
+[`Maraqlıdır ki, məşhur almanın qəbrini ziyarət etmək üçün pul ödəmək lazımdır. Bunun haqqındakı bir sıra məqalələr bu halı nəyin qələbəsinin aşkar göstəricisi adlandırır?`,`Kapitalizmin`,Q,N,`Sualda Karl Marksdan danışılırdı.`],
+[`XVII əsrdə ABŞ-də onlar çox vaxt “Friman” soyadını daşıyırdılar. Kimlər?`,`Əvvəllər qul olub sonradan azadlıq qazanmış şəxslər.`,Q],
+[`“Hewlett-Packard” [Hyu-lit Pekırd] şirkətinin təsisçiləri şirkətin adının necə olacağına qərar verərkən qəpik ilə püşk atmışdılar. Onlar nəyi dəqiqləşdirmək üçün bu yolu seçmişdilər?`,`Kimin adının birinci gələcəyinə`,T,N,`Brendin adı iki nəfərin adının birləşməsidir.`]],
+g2:[[`28 iyun 2009-cu ildə Stiven Hokinq gələcəkdən gələn zaman səyyahları üçün yığıncağa başçılıq edirdi. Bəs, bu yığıncağa neçə səyyah gəlmişdi?`,`0`,T,N,`Təbii ki, zamanda səyahət mümkün olmadığı üçün yığıncağa qatılan da olmamışdı.`],
+[`ONUN 70 illik yubileyinə görə verilən hədiyyələrin siyahısı o qədər uzun idi ki, qəzetlər bu siyahını 1949-cu ilin dekabrından, 1953-cü ilin martınadək çap etmişdilər. ONUN kim olduğunu tapın.`,`Stalin`,T,N,`Bu qədər diqqəti təbii ki, həmin dövrdə dövlət başçısı olan şəxsə göstərirdilər.`],
+[`Mark Zukerberq özü haqqında olan “Sosial şəbəkə” filminə qarşı olub. Buna görə də filmin BUNA sahib olmaması təəccüblü deyil. Nəyə?`,`[Rəsmi] Feyzbuk səhifəsinə`,T],
+[`1940-cı ildə Edinburqda keçirilən bir futbol matçında çoxlu duman səbəbindən hər yer tam görünmürdü. Ancaq matçın radio şərhçisinə tapşırılmışdı ki, duman barədə heç nə danışmasın. Bəs bunun səbəbi nə idi?`,`Radionu dinləyən almanlar duman olduğundan xəbər tutmasın deyə.`,K,`Mənaya uyğun cavablar`],
+[`1958-ci ildə Brüsseldə yerli hakimiyyət öz müstəmləkəsi olan Konqonun da yardımı ilə qeyri-adi zoopark sərgisi keçirmişdi. Bəs bu sərgi digərlərindən nə ilə fərqlənirdi?`,`İnsanlar nümayiş olunurdu`,S]],
+g3:[[`Bir karikaturada o, lampadan çıxan cindən fəsini çıxartmasını diləyir. Kim?`,`[Mustafa Kamal] Atatürk`,K,N,`Karikatura 1925-ci ildə qəbul edilən papaq inqilabı haqqında idi.`],
+[`Rusiyanın Qroznı şəhərində ötən ilin dekabr ayında bir abidə ucaldıldı. Siz deyin, bu abidə nəyə həsr olunub?`,`AZAL təyyarəsinin qəzasına.`,Z,N,`2024-cü ildə qəzaya uğramış təyyarə Bakı-Qroznı reysi üzrə uçurdu.`],
+[`1897-ci ildə ABŞ-da ilk BUNLAR bir atraksion kimi quraşdırılmışdı və onlara “Sehrli Pilləkən” deyirdilər. Söhbət nələrdən gedir?`,`Eskalator`,Z],
+[`Bir neçə il əvvəl baş tutmuş Mançester Siti və Everton arasında oyundan sonra matçı analiz edən saytda meydanda ən çox ONUN məsafə qət etməsinin təəccüblü olduğu deyilir. Siz isə heç olmasa ONUN soyadını tapın.`,`[Kayl] Uoker`,S,N,`Walker sözü ingilis dilində piyada gəzən mənasına gəlir.`],
+[`Bir internet zarafatına qulaq asın: Vegetarianlığa şiddətlə qarşı olan bir adama "Əgər bütün heyvanlar yox olsaydı, acından ölərdinmi?" sualı verilir. Adam ölməyəcəyini deyir və belə cavab verir. Necə?`,`Vegetarianları yeyərdim.`,Q]],
+g4:[[`Şəhəri işğal edəndən sonra ingilislər hollandların müdafiə üçün tikdiyi DİVARI məhv edib yerinə müasir dövrdə məşhurlaşan bir küçə salırlar. Söhbətin hansı şəhərdən getdiyini deyin.`,`Nyu-York`,K,`Nyu-Amsterdam`,`Əvvəllər həmin yerdə divar olduğu üçün indi o küçəni “Uoll Strit” adlandırırlar.`],
+[`Müqəddəs Nikolay kilsə tarixində uşaqların himayədarı və möcüzəyaradan hesab olunurdu. Deyilənlərə görə, o, müflis olmuş bir zənginin üç qızına cehiz hədiyyə etmişdi və bu, məşhur ənənənin əsasını qoymuşdu. Bəs müqəddəs Nikolay kimin prototipi hesab olunur?`,`Santa Klaus`,Q],
+[`Atlantik okeanında yerləşən Yüksəliş adasındakı siçanlar quş yumurtalarını yeyirdilər və bu təbii tarazlığı pozurdu. Bundan sonra, insanlar buraya pişikləri gətirdilər ki, siçanları ovlasınlar. Bəs bu dəfə hansı problem yarandı?`,`Pişiklər də quş yumurtalarını yeyirdilər`,K],
+[`1890-cı ildə bir qadın qarşısına qoyduğu məqsədi 72 gündə yerinə yetirdi. Bəs onun məqsədi kimi keçmək idi?`,`Filias Foq`,Z,N,`Söhbət dünya səyahətindən gedirdi. Jül Vernin qəhrəmanı bunu 80 günə etmişdi.`],
+[`Finlandiyada bir nəfər yol hərəkəti qaydalarını pozduğu üçün cərimə olunub. Qayda pozuntusu ciddi olmasa da, O 121 min avro cərimə ödəyib. Nə üçün?`,`Finlandiyada cərimələr şəxsin maaşına görə verilir`,S,N,`Bu adam milyonçu idi, ona görə də belə böyük miqdarda cərimə ödəməli olub.`]],
+g5:[[`Bir dəfə bir qrup haker qəzəblənərək “Papa John’s”un veb-saytına hücum etmişdi. Bəs onların qəzəblənməsinin səbəbi nə idi?`,`Pizzanın gec gəlməsi.`,K,`Sifarişlərinin gecikməsi, Yeməklərinin gec gəlməsi`],
+[`Amerikan ordusunda tünd rəngli corablar qadağandır, əvəzinə ağ rəngli corab geyinilməlidir. Bunun iki səbəbi var. Birincisi, qara corablar kiri gizlədir deyə əsgərlər bu corabları uzun müddət yumadan geyinirdilər. Bəs ikinci səbəb nədir?`,`Qan izini gizlədir`,KK],
+[`iPhone markalı telefonlarda Siriyə səslənib “Lumos” sözünü işlətsəniz, telefonunuzun fənəri açılacaq. Siz isə xüsusi isimdən istifadə etməklə deyin, “Lumos” nədir?`,`Harry Potter dünyasında işıq yandıran sehr.`,N],
+[`Surreal Cereal markası məhsullarını Ronaldo, Maykl Cordan və Dueyn Conson kimi ulduzlara reklam etdirmək istəsə də, onlara verə biləcək milyonları yox idi. Buna baxmayaraq, həmin marka adı çəkilən şəxsləri reklamlarında oynatmağı bacardı. Bu necə mümkün oldu?`,`Həmin ad-soyadları daşıyan adi insanları tapıb reklamlarına çəkdilər.`,N],
+[`Qədim yunan filosofu Heraklit, bir dəfə ciddi bir xəstəliyi dərisinə inək peyini çəkib günün altında uzanaraq müalicə etməyə çalışmışdı. Siz isə deyin, növbəti gün onunla nə baş verdi?`,`Öldü`,T,N,`Başa düşdüyünüz kimi bu üsul heç də ağlabatan deyildi.`]],
+g6:[[`1960-cı ildə ABŞ-də bir ilk yaşandı. Bir qız məktəbdə təhsil almağa başladı. Amma bu qıza dərs keçməyə yalnız bir müəllim razı olmuşdu və heç kim onunla eyni sinifdə olmaq istəmirdi. Bəs bu qızın özəlliyi nə idi?`,`Qızın afroamerikalı olması.`,Z,N,`Rubi Brices ABŞ-da tamamilə ağdərililər üçün nəzərdə tutulan məktəbdə təhsil alan ilk afroamerikalı uşaq kimi tarixə düşmüşdür.`],
+[`2022/2023 mövsümünün son iki həftəsinə girəndə Barselona artıq çempionluğu rəsmiləşdirmişdi. Levandovskinin isə 23 qolu var idi. Barcelona prezidenti Laporta hansı səbəbdən Levandovskidən daha çox qol vurmamasını tələb etmişdi?`,`Keçmiş komandasına bonus ödəməmək üçün`,Z,`Mənaya uyğun cavablar`,`Futbolçuların müqavilələrində adətən belə şərtlər olur ki, müəyyən sayda qola çatanda əvvəlki kluba bonus ödənsin.`],
+[`Conni Dep "Karib dənizinin quldurları" filmində Cek Sərçə roluna hazırlaşarkən "Rolling Stones" qrupunun solisti Kit Riçardsdan ilham almışdı. Bəs, Riçardsı daha sonralar hansı rolda görə bilərik?`,`Cek Sərçənin atası`,T,N,`Conni Depin film boyu hərəkətləri elə Keys Riçardsa bənzədiyinə görə növbəti filmdə Riçardsa Cek Sərçənin atası rolu verilmişdi.`],
+[`Yapon restoranlarının girişində yerləşdirilən ənənəvi noren pərdələrini müştərilər yeməkdən sonra əllərini silmək üçün istifadə edirlər. Bəs noren pərdəsinin kirli olmağı restorana necə fayda verir?`,`Pərdənin kirli olduğunu görən insanlar restoranın müştərilər tərəfindən çox ziyarət olunduğunu görür və müştərilər cəlb olunur.`,Z],
+[`“Date everything” [deyt evrisinq] oyununda evdə olan cansız əşyalarla münasibət qurmaq mümkündür. Bu oyunda Mac adlı personaj komputerdir. Onun tatusunda hansı iki simvolun təkrarlandığını deyin.`,`1, 0`,K]],
+g7:[[`Bir dəfə Zinəddin Zidandan soruşurlar ki, səninlə digər oyunçular arasındakı fərq nədir? O deyir ki, yaxşı bir futbolçu top ona gəlmədən nə edəcəyini bilir, mən isə hətta... Zidanın fikrini tamamlayın.`,`Pas verəcəyim şəxsin nə edəcəyini bilirdim.`,Z],
+[`Bir dəfə Türkiyədə texniki xəta səbəbindən dəlilər xəstəxanasından 423 nəfər xəstə qaçır. Baş həkim onları geri qaytarmaq üçün qeyri-adi üsula əl atır: küçədə “qatar” kimi hərəkət edir və xəstələri ardınca aparır. Bu plan işə yarayır. Lakin hadisədən sonra üzə çıxan bir fakt insanları daha da heyrətləndirir. Bu nə idi?`,`Xəstəxanaya gələnlərin sayı artmışdı.`,Z,N,`Xəstəxanadan 423 nəfərin qaçmasına baxmayaraq, həkimin bu oyunu nəticəsində ümumilikdə 612 nəfər xəstəxanaya gəlmişdi.`],
+[`Olimpiya medalçısı qadın idmançı İbtihaj Muhammad uşaq vaxtlarında oynadığı oyuncaqlarla bağlı narazılıqlar yaşamışdı. 2017-ci ildə ona Barbi kuklası təqdim edildi. Bu kuklanı xüsusi edən nə idi?`,`Kukla hicablı idi.`,Z,N,`Qadının adından onun müsəlman olduğunu anlamaq olardı. O, uşaq vaxtı hicablı kuklaların olmamasından şikayətlənmiş, hətta öz kuklalarına hicab tikmişdi.`],
+[`2023-cü ilin iyulunda Los-Ancelesdə bir küçə 2 yerə ayrılmışdı: bir tərəf çəhrayı, digər tərəf isə qara rəngli aksesuarlar ilə bəzədilmişdi. Buna səbəb nə idi?`,`“Oppenheymer” və “Barbi” filmləri`,S,N,`Hər iki film 21 iyulda kinoteatrda premyera edildi. 9 iyuldan etibarən isə Hollivud Bulvarı küçəsi 2 yerə ayrılmışdı`],
+[`İkinci Dünya müharibəsi dövründə almanlar ingilisləri aldatmaq üçün gerçəyə bənzəyən taxta təyyarələr düzəltmişdilər. Bəs bundan xəbər tutan ingilislər nə edir?`,`Taxta bombalar atırlar`,Z,N,`Almanlar ingilislərin təyyarələri görüb, bombalayacaqlarını düşünmüşdülər. Ancaq ingilislər bu plandan xəbərdar olduğu üçün üzərində "hər hərəkətiniz izlənir" yazılan saxta bomba atmışdılar.`]],
+g8:[[`Dallas İctimai Kitabxanasından illər öncə Xuan Xose Arevalonun "Köpək balıqları və sardinalar" kitabı götürülüb və hələ də qaytarılmayıb. Bu kitabı götürənin kim olduğunu deyin.`,`Li Harvi Osvald`,T,N,`Li Harvi Osvald şübhə çəkməmək üçün bir müddət kitabxanadan kitablar götürürdü və onlardan birini qaytarmamışdı.`],
+[`Polyak yazıçısı Boleslav Prusun heykəlinin pyedestalı qeyri-ənənəvi şəkildə alçaqdır. Buna səbəb yazıçının nədən əziyyət çəkməsi olub?`,`Akrofobiya`,S,`yüksəklik qorxusu`],
+[`Nəyə görə Yapon kəndliləri kollektiv şikayətə imza atanda bunu elə edirdilər ki, hamısının çəkdiyi imzalar ümumilikdə dairəvi olsun?`,`Birinci kimin imza atdığı məlum olmasın deyə`,N],
+[`18-ci əsrin sonlarında Latın Amerikasının böyük bir hissəsinə hakimlik edən Fransa bir məhsulun satışından çoxlu gəlir əldə etmişdi. Buna səbəb hansı hadisə idi?`,`Boston çay qonaqlığı`,S,N,`Bu hadisədən sonra bir çox amerikalı çay əvəzinə kofeni üstün tutdu. Bundan faydalanan isə böyük kofe ehtiyatı olan Latın Amerikasında koloniyaları olan Fransa oldu.`],
+[`Mikayıl Müşfiq bir məclisdə quru və ilhamsız yazılmış bir şeir söyləyir. Qulaq asanlar şairdən təəccüblə soruşur ki, "Bu cəfəngiyyatı niyə əzbərləmisən?". Mikayıl Müşfiq cavabında nə deyir?`,`Əzbərləmişəm ki, buna oxşar şeir yazmayım.`,Z]],
+g9:[[`Quranda Nəml surəsinin 30-cu ayəsində Süleyman peyğəmbərin Səba məlikəsi Bilqeysə yazdığı məktubdan bəhs olunur. Digər surələrdən fərqli olaraq, bu surədə nəyin sayı 2-dir?`,`Bismillah`,Z,N,`Quranda Bismillah yalnız surələrin əvvəlində yer alır. Nəml surəsində isə Süleyman peyğəmbərin yazdığı məktub da Bismillahla başladığı üçün bu surədə iki Bismillah mövcuddur.`],
+[`Bir mənbədə deyilir ki, Pep Quardiola dünyanın ən çox qazanan baş məşqçilərindən biridir. Buna baxmayaraq o, demək olar ki, hər zaman eyni tərzdə geyinir və diqqətini tamamilə işinə yönəldir. Bəs Quardiola özünə nümunə olaraq kimin fəlsəfəsini götürür?`,`Stiv Cobs`,N],
+[`Bir filmin qəhrəmanı istintaq sırasında özünə verilən suallara “gözəl bir kəpənək”, “gözəl çiçəklər”, “buludlar” cavablarını verir. Personajın özünə götürdüyü ləqəbi bir soyadla deyin.`,`Rorşarx`,N,N,`Qaçaq həyatında özünə Rorşarx ləqəbini götürən qəhrəmana ironik şəkildə Rorşarx testi edilir, göstərilən kartlarda nə gördüyü soruşulurdu.`],
+[`“Fantazmın maskası” animasiya filmində Betmen sevdiyi qızın başqa bir oğlanın əlindən tutduğunu görür və elə bu səhnədə təsadüfi deyil ki, yağış yağır. Bəs, bu səhnədə yağış detalı, nəyi gizlətmək məqsədi ilə əlavə olunmuşdu?`,`Betmenin göz yaşlarını`,T,N,`Rejissorlar izləyicilərin Betmeni ağlayarkən görməyini istəmirdi.`],
+[`Qədim misirlilər əkin vaxtını müəyyən etmək üçün bir təqvim yaratmışdılar. Bu təqvim 3 fəsilə bölünürdü. Bəs təqvim nəyin əsasında hazırlanmışdı?`,`Nil çayının daşması.`,Z]],
+g10:[[`“Big Bertha” adlı dişi inək 46 il yaşamaqla dünyanın ən yaşlı inəyi kimi Ginnesin rekordlar kitabına düşüb. Amma onun Ginnesin rekordlar kitabında adı ikinci dəfə də xatırlanır. Bu dəfə hansı rekord ilə?`,`Ən çox balalayan`,T,N,`Sualda Bertanın dişi olduğu qeyd olunmuşdu, bu sizə ipucu ola bilərdi. Həmçinin o normal inəkdən 2 dəfə çox yaşayıb.`],
+[`Bir zarafatı dinləyin: bir nəzəriyyəyə görə, əgər kimsə bir gün kainatın sirlərini aşkar etsə, o zaman kainat məhv olacaq və daha qarışıq, anlaşıla bilməyən kainat onu əvəz edəcək. Başqa bir nəzəriyyəyə görə isə… cümləni tamamlayın.`,`Bu artıq baş verib`,Q],
+[`“Breaking Bad” serialının bir bölümü “Fly” (milçək) adlanır. Bölüm bir çox izləyicilər tərəfindən mənasız və məntiqi sonluğa çıxmayan hesab olunmuşdu. Maraqlıdır ki, həmin bölümdən bir bölüm əvvəlki seriyanın adında o xatırlanır. Kim?`,`Franz Kafka`,Q],
+[`2010-cu illərin başında xüsusi bir narkotik vasitənin manufakturasında müəyyən bir dəyişiklik həyata keçirilmək populyarlaşdı. Biz sizdən həmin dəyişikliyin nə olduğunu yox, buna səbəb olanı deyməyinizi istəyirik`,`Breaking Bad serialı`,Q],
+[`Maraqlıdır ki, NASA uzun müddət Cənubi Amerikada araşdırmalar aparıb. Onlar burada yerləşən hansı toponim üzərində Mars planetində yaşamaqla bağlı simulyasiya təşkil etmişdi?`,`Atakama səhrası`,S]],
+g11:[[`Bir məqalədə yazır ki, İsa Məsih haqqında tam əminliklə deyə biləcəyimiz iki şey var. Bu, onun doğumu və ölümü yox, başqa iki şeydir. Nələr?`,`Vəftizi və çarmıxa çəkilməsi`,Q],
+[`Məhbubə Mehdiyeva BUNUN adının mənşəyini izah edərkən deyir ki, ad dəf etmək sözündən yaranıb və BUNUN məqsədini açıq şəkildə ifadə edir. Söhbət 1905-ci ildə yaradılan nədən gedir?`,`Difai`,K],
+[`Hansı şirkətin məşhur qurucusunun qızının adı “Eve”, yəni “Həvva”dır?`,`Apple`,K],
+[`2017-ci ildə italyan bir astronavt tərəfindən Beynəlxalq Kosmik Stansiyada bir tədbir keçirilib. Astronavtın istəyinə əsasən NASA kosmosa bəzi inqrediyentlər göndərib. Siz isə bu hadisənin kosmosda ilk nə kimi tarixə düşdüyünü tapın.`,`Pizza partisi`,Z,`Pizza sözü üzrə məntiqə uyğun cavablar`],
+[`Tsutomu Yamaquçi ömrünün son illərini birmənalı olaraq nüvə silahına qarşı aktivist kimi keçirib. Bəs Yamaquçi nəyə görə tarixə düşüb?`,`Hər iki atom bombasından sağ çıxıb.`,S,N,`Rəsmi olaraq bunu edən yeganə şəxsdir.`]],
+g12:[[`Bir ispan mahnısı Manuela adlı şəxsin gündəlik həyatından bəhs edir. Sonrakı misrada onun nəyi sevdiyini adı ilə qafiyələnən sözlə deyin`,`Paella`,S,N,`Paella İspaniyanın milli yeməyidir. Manuelanın paellanı sevdiyi deyilir`],
+[`Rəvayətə görə kim bu sözləri dedikdən sonra zəhər içərək intihar edib? “Məni günahlandıranların sizin üzərinizdəki təsirini ölçə, anlaya bilmirəm. Lakin mənə yönləndirilən ittihamlar o dərəcədə inandırıcı idi ki, dinlədikcə, az qala, kim olduğumu unudacaqdım”`,`Sokrat`,K,N,`Siz sokrat müdafiəsindən bir hissəni eşitdiniz.`],
+[`Maraqlıdır ki, 19-cu əsrdə Kaliforniyada qızıl hərisliyi dövründə qızıl hətta bundan belə ucuz idi. Nədən?`,`Su.`,K,N,`“Sudan da ucuz” məşhur ifadədir`],
+[`II Kir Babilə hücum edərkən hökmdarın ağ atını Diyala çayında boğur. Bəs hökmdar bu hadisədən sonra qəzəblənərək nəyi əmr edir?`,`Çaydan çoxlu kanal çəkilməsi.`,Z,`Çayın qurudulması`,`Hadisədən sonra hökmdar çayı “cəzalandırmaq” istəyir və Diyala çayından 360 kanal çəkdirərək onun suyunu qurudur.`],
+[`18-ci əsrdə İngiltərədə zooparklara giriş haqqı olaraq müəyyən sayda heyvan gətirmək tələb olunurdu. Məsələn, 1 it və 1 pişik gətirən ziyarətçi zooparka qəbul olunurdu. Bəs gətirilən heyvanlar nə məqsədlə istifadə olunurdu?`,`Heyvanları yemləmək`,K]],
+e1:[[`Futbol üzrə Argentina milli komandasının baş məşqçisi Lionel Skaloninin 2026-cı il Dünya Çempionatının püşkatma mərasiminə gəlməsinin səbəbini izah edin.`,`Ötən mundialda qazandıqları Dünya çempionatının kubokunu qaytarmaq üçün.`,K,N,`Dünya çempionatlarının kubokları qalib gələn millidən geri alınır və növbəti mundialda işlədilir. Simvolik də olsa Scaloni kuboku qaytarmaq üçün gəlmişdi.`],
+[`Bəs nəyə görə 2026 və 2030-cu illərdəki mundialları Argentina millisi qazansa, Scaloni 2034-cü ilin püşkatmasına gəlməli olmayacaq?`,`Argentina 5-ci dəfə çempion olduğu üçün kuboku birdəfəlik saxlama hüququ əldə edəcək.`,K,`Argentina ardıcıl 3-cü dəfə çempion olduğu üçün kuboku birdəfəlik saxlama hüququ əldə edəcək.`,`(Tapılmasa şərh oxunsun): Ardıcıl üç dəfə və ya ümumilikdə beş dəfə mundial qalibi olan millilərə kubok birdəfəlik verilir. Argentina əgər növbəti iki mundialı qazansa, həm ardıcıl üçüncü dəfə qazandığı üçün, həm də ümumilikdə 5 dəfə qazandığı üçün kuboka birdəfəlik sahib olmaq hüququ qazanacaq. Bu iki cavabdan hər biri düzgün cavab kimi qəbul olunurdu.`],
+[`Cavabda bir alman sözü tələb olunur. Stolüstü oyunları sevən bir internet istifadəçisi Avstriyada məcburi səsvermə və bərbad siyasi namizədlərin mövcud olması səbəbindən seçicilərin nə ilə üz-üzə olduğunu deyirdi?`,`Suqsvanq`,Q,N,`Suqsvanq şahmat və bir sıra stolüstü oyunlarda yaranmış elə vəziyyətdir ki, istənilən növbəti gediş gedişi edənin vəziyyətini pisləşdirir. İstifadəçi də seçicilərin içində olduğu vəziyyəti buna bənzədir.`],
+[`Alan Tussen ötən əsrin məşhur cazmenlərindən hesab olunur. Onun adını daşıyan musiqi məktəbi hansı ABŞ ştatında yerləşir?`,`Nyu-Orlean`,S,N,`Bu ştat cazın vətəni hesab edilir.`],
+[`Qroningendə təhsil alan yüksək tir akrobatı Epke Zonderlanda yerli publika tərəfindən verilən ləqəbi iki sözlə deyin.`,`Uçan hollandiyalı`,S,N,`Qroniqen Hollandiya şəhəridir.`]],
+e2:[[`1911-ci ildə Fransada 60 detektiv eyni bir iş üzərində çalışmağa başlamışdı. Siz isə onların axtardığı adamın adını deyin.`,`[Vinçenzo] Peruccia`,Z,N,`Luvr muzeyindən “Mona Liza” tablosunu oğurlayan şəxsdir.`],
+[`Bir versiyaya görə o Sankt-Peterburqda musiqi təhsili alarkən çoxlu quşlara ev sahibliyi etdiyi gölün ətrafında tez-tez gəzintiyə çıxarmış. Bir dəfə bacısı uşağı ondan gəzintidə gördükləri barədə bir tamaşa hazırlanmasını istəyir. Söhbət kimdən gedir?`,`[Pyotr İliç] Çaykovski`,S,N,`Bəstəkarın məşhur “Qu gölü” adlı baleti bu cür yaranıb.`],
+[`The New York Times jurnalı 1997-ci ildə vəfat edən Şahzadə Diana üçün toplaşan insanları, eyni əsrdə Parisdə toplaşan məyus insanların sayı ilə müqayisə etmişdi. Bəs həmin hadisə neçənci ildə baş verib?`,`1911`,Z,N,`Həmin il Luvr muzeyindən "Mona Liza" tablosu oğurlanmışdı.`],
+[`Bəzən savannada olan heyvanların zebra sürüləri tərəfindən zərərsizləşdirildiyini görmək olar. Zebralar otyeyəndir və döyüşdən çəkinirlər. Yunan mənşəli sözlə cavab verin: Bəs onlar heyvanları nəyin sayəsində zərərsizləşdirirlər?`,`Hipnoz`,S,N,`Ağ-qara rəngli olan zebralar potensial ov olmasına baxmayaraq ovçu ətrafında dövrə vuraraq onu hipnoz edir`],
+[`Dəqiq cavab tələb olunur. 1966-cı ildə ABŞ-də Rocer Lozer adlı 4 yaşlı qızcığaz, az qala dənizdə batacaqdı. Onu ölümdən Elis Bleyz adlı bir qadın xilas edir. 1974-cü ildə isə Rocer Lozer eyni dənizdə batan başqa bir adamı xilas edir. Maraqlıdır ki, həmin adam kimin əri idi?`,`Elis Bleyz`,T,N,`Qızcığaz onu xilas edən qadının yoldaşını xilas etmişdi.`]],
+e3:[[`20 il əvvəl Barcelona, Real Madridin 1 milyard dəyərində olan heyətinə 3-0 hesabı ilə qalib gəlmişdi. Bu yaxınlarda isə Barcelona klubu El Clasico üçün xüsusi bir forma təqdim etdi. Formada həmin matça aid nələr qeyd olunub?`,`Vurulan qolların dəqiqələri`,Z],
+[`1961-ci ildə Filadelfiyada alış-veriş səbəbindən yaranan tıxac, hətta insanların xəsarət alması ilə nəticələnmişdi. 2 sözlə cavab verin. Bu hadisə qəzetlərdə bizə tanış olan hansı başlıq altında paylaşılmışdı?`,`Qara cümə`,Z,`Black friday`,`Qara cümə termini də elə bu hadisədən sonra yaranıb.`],
+[`1966-cı ildə İngiltərədə maraqlı bir hadisə baş verdi. Nümayiş üçün sərgilənən dəyərli bir şey itdi və polisin bütün cəhdlərinə baxmayaraq tapıla bilmədi. Sonra bir it həmin dəyərli şeyi küçədə, qəzetə bükülü halda tapdı. Aylar sonra İngiltərəyə təqdim olundu. İtən şeyin nə olduğunu tapın.`,`Dünya çempionatının kuboku`,Z],
+[`Pakistanda yaşayan Səttar Buşk adlı bir vətəndaş kiçik biznes sahibi idi. O, ötən onillikdə məhkəməyə verilmiş və qalib çıxmışdı. Onu məhkəməyə verənin nə olduğunu deyin.`,`Starbucks`,Z],
+[`Maraqlıdır ki, bu şəxs Şimali Qafqazda baş verən Rus–dağlı müharibəsi zamanı dağlılara əsir düşmüş, lakin sonradan sərbəst buraxılmışdır. Bu hadisənin təsiri ilə o, öz əsərlərindən birində yaratdığı əsas obrazı dağlılara həsr etmişdir. Söhbət kimdən gedir?`,`Lev Tolstoy`,Z,N,`Maraqlıdır ki, Tolstoy rus ordusunda zabit kimi xidmət etdiyi dövrdə dağlılara əsir düşmüşdür. Hər bir rus əsgərini öldürən dağlılar Tolstoya mərhəmət göstərərək onu azad etmişdilər. Bu hadisə yazıçının yaradıcılığına ciddi təsir etmiş və sonralar Dağıstanda baş verən hadisələri əks etdirən “Hacı Murad” əsərini yazmasına səbəb olmuşdur.`]],
+e4:[[`Bir çoxları Van Qoqun 1890-cı ildə çəkdiyi “Məhbusların gəzintisi” adlı qravüründəki məhkumların sayının simvolik olduğunu düşünsə də, bunun tək səbəbi Qustav Dorenin əsərinin bənzəri olmasıdır. Bəs, versiyalardan birinə görə bu qravürdəki məhbusların sayı əslində nəyi simvolizə edir?`,`Van Qoqun intihar yaşını`,T,N,`1890-cı ildə Van Qoq intihar etmişdi və 37 yaşında idi. Bir çoxları zənn edirdi ki, Van Qoq intiharını öncədən planladığı üçün 37 nəfər məhbus təsvir etmişdi.`],
+[`Santos klubunun əfsanəvi kapitanı olan Zito hətta Pelenin də kapitanı olub. Onun şərəfinə nəyin üzərində “Z” hərfi qeyd olunub?`,`Kapitanlıq sarğısı`,Z],
+[`2 sözlə cavab verin: 15 Aprel yanğını səbəbilə çoxlu zərər görmüş və dəyişikliklərə məruz qalmış Paris Notr-Dam kilsəsi bir məqalədə nəyə bənzədilmişdir?`,`Teseyin gəmisi`,Z],
+[`Hyu Biver 1951-ci ildə tanışı ilə birlikdə ova çıxır. Ovda onların arasında qızılı cüllütün, yoxsa şotland tetra quşunun daha sürətlə uçması barədə mübahisə yaranır. Bəs bundan sonra o, nəyi yaratmaq fikrinə düşür?`,`Ginnesin rekordlar kitabı`,Z],
+[`Eckkam dağı Alyaskanın Kruzof adasının cənubunda yerləşən sönmüş vulkandır. 1974-cü ildə yerli sakinlərdən biri həmin dağa yığdığı 70 təkəri yandırır. Siz isə bu hadisənin hansı tarixdə baş verdiyini tapın.`,`1 Aprel`,Z]],
+e5:[[`Bu kitabın versiyalardan birində səhifələr elə maddə ilə örtülüb ki, ancaq istilik artdıqda maddə silinir və kitabı oxumaq mümkün olur. Söhbət hansı kitabdan gedir?`,`Faranheyt 451`,K],
+[`Salvador Dali deyirdi: “Portret çəkəndə çəkdiyim rəsmin modelə bənzəməsinə əmək sərf etmirəm. Çünki…” Onun ifadəsini tamamlayın.`,`Çünki model zamanla mənim çəkdiyim portretə oxşayacaq.`,K],
+[`Bir animasiya filminin personajı Nəsimi ilə Babəki səhv salır və səbəb kimi ONUN adını çəkir. 1948-ci il Ağsuda anadan olan ONUN kim olduğunu deyin.`,`Rasim Balayev`,K,N,`Aktyor həm Babək, həm də Nəsimi obrazını canlandırıb.`],
+[`1935-ci ilin avqust ayında Bakı Sovetinin Rəyasət heyəti Şıx kəndindəki 'Bibi ibadət evi'nin bağlanması haqqında qərar qəbul edir. Bəs bundan 1 ay sonra hansı tikilinin sökülməsi barədə qərar qəbul edilir?`,`Bibiheybət məscidi`,K],
+[`İspaniyadakı Kordova kilsəsi əvvəllər böyük məscid, sonra yaşayış binası, sonra isə kilsə kimi istifadə edilmişdi. Bu haqda danışılan məqalədə başqa hansı tikili xatırlanır?`,`Ayasofya`,S,N,`Ayasofya da əvvəl kilsə, sonra məscid, sonra muzey və sonra yenə məscid olub.`]],
+e6:[[`Karikaturalardan birində dərisinin üzərində BU formada xətlər olan zebra başqa bir normal zebraya deyir ki, inkişaf etməlisən. Bu, yəni nə?`,`QR-Kod`,K,N,`Karikaturada zebranın zolaqları barkoda bənzəmişdi və digər daha inkişaf etmiş zebrada qr-kod xətləri var idi`],
+[`İngilisdilli ölkələrdəki Olivia, Miranda və Jessica adları ilə Azərbaycandakı Almaz, Sevil və Oqtay kimi adların hansı ortaq cəhəti var?`,`Onları ilk dəfə bir yazıçı əsərdə işlədib və ad kimi dilə qazandırıb.`,KK,`Adları ilk dəfə əsərdə çəkilib`,`Birinci tərəfdə adı çəkilənlər Şekspir, ikinci tərəfdə adı çəkilənlər isə Cəfər Cabbarlı tərəfindən işlədilmiş, daha sonra isə ad kimi dilə daxil olmuşdu. “Almaz”, “Sevil”, “Oqtay Eloğlu” Cəfər Cabbarlının məşhur əsərləridir.`],
+[`Maraqlıdır ki, II Dünya müharibəsi dövründə ABŞ generalları Yaponiya üzərində psixoloji üstünlük əldə etmək üçün Fudziyamanı qara rəngə boyamaq fikrinə düşsələr də, sonradan plan həyata keçirilmədi, çünki o qənaətə gəldilər ki, rəngləmə prosesini təkrar-təkrar etmək lazım gələcək. Niyə?`,`Qar yağır və yeni qar örtüyü rəngi gizlədir.`,Q],
+[`Ötən illərdə qarşılaşmış Liverpul-Vilyareal komandalarının matçında 0-0 olan hesab tablosunu şərh edən şəxsin hansı yunan sözünü xatırladığını tapın.`,`Palindrom`,Z,N,`Liv 0 - 0 Vil`],
+[`Neapol oğurluğun tez-tez baş verdiyi şəhərlərdən biridir və burada maşın oğurluğu heç kəsi təəccübləndirməz. Lakin 1986-cı ildə bir nəfərin maşını oğurlanır, ertəsi gün isə üzr mesajı ilə birgə evinin qarşısına geri qaytarılır. Bəs bu maşın kimin idi?`,`Maradona`,Z]],
+e7:[[`Hələ uşaq yaşlarından xüsusi zəkasıyla seçilən O, beş yaşına kimi bir çox ölkələrin paytaxtlarını və bayraqlarını, 422 Norveç bələdiyəsinin gerbini əzbərləmişdi. Onun kim olduğunu deyin.`,`[Maqnus] Karlsen`,KK],
+[`1858-ci ildə isti hava və təmizlənməmiş insan tullantıları səbəbindən tarixə Böyük London Qoxusu adı ilə keçən bir hadisə baş tutdu. London küçələrini pis qoxu bürümüşdü. Bəs bu hadisə London şəhərində nəyin yaranmasına təkan verdi?`,`Kanalizasiya`,K],
+[`1604-cü ildə Kral Ceyms buna qarşı yazdığı essesində bunu “Burun üçün nifrət, beyin üçün zərərli və təhlükəli” adlandıraraq cəhənnəmlə müqayisə etmişdi. Nəyi?`,`Siqaret`,K,`tütün`],
+[`Amerikada yayımlanan və məktəbə yenicə gedən uşaqlar üçün məlumatlandırıcı Sesame Street verilişinin planına görə hər mövsümdə 25 seriya olacaqdı. Bəs nəyə görə təşkilatçılar israr edir ki, hər mövsümdə 26 bölüm olsun?`,`Uşaqlar hər bölümdə ingilis əlifbasındakı bir hərfi öyrənəcəkdilər.`,K,`Hər bölümə bir hərf həsr olunacaqdı, Hər bölüm bir hərfə görə adlandırılacaqdı və mənaya, məntiqə uyğun cavablar`],
+[`Qızdırma və vakuum kimi üsullarla insanın tər və sidiyini təmizləyən qurğu hansı müəssisədə yerləşir?`,`Beynəlxalq kosmik stansiya`,K,`ICS`]],
+e8:[[`Korrupsiya ilə mübarizə üçün Stalinə təklif edilir ki, rüşvətxorluğun qarşısını almaq üçün 35 milyard rubl pul ayırmaq lazımdır. Bəs Stalin əvəzində 2 yeni nə üçün pul ayırmağın daha münasib olacağını bildirir?`,`Məzarlıq`,K,`Qəbiristanlıq`],
+[`2021-ci il Monako Qran Prisində Mercedes komandasının sürücüsü Valtteri Bottas 31-ci döngədən əvvəl 2-ci pillədə gedirdi. Lakin yarışın sonunda nəticə cədvəlində o, ən sonuncu yerdə qərarlaşdı. Bəs bu yarışda hansı antirekord müəyyən edildi?`,`Ən uzun pit-stop rekordu.`,Z],
+[`Orta əsrlərdə ərəb bədəvilər bir şəxsin dilinə qızmar bıçaq toxunduraraq onun dilinin quru olub-olmadığını müəyyən edirdilər. Bəs bu metod tarixdəki ilk nə hesab edilir?`,`Yalan testi`,K,`Yalan dedektoru/maşını, Poliqraf`,`Əgər həmin şəxs yalan danışırdısa stress hissi keçirirdi və dili quruyurdu. Qızmar bıçaq dilini yandırırdı.`],
+[`Leninə aid edilən fikri tamamlayın: Ən son asılan kapitalist məhz BUNU satan olacaq. Nəyi?`,`İp/kəndir satan`,Q],
+[`“Truman Şou” filmində personajın real dünyada yaşamadığına işarə olaraq personaj səhər yeməyindən sonra BUNU qəbul edir. BUNU deyin.`,`D vitamini`,K]],
+q1:[[`Səudiyyə Ərəbistanında oynayan bəzi futbolçular, orada çıxış etmələrinə baxmayaraq, qonşu ölkələrdə yaşayır və oyunlara həmin ölkələrdən gəlirlər. Niyə?`,`Çünki Səudiyyə Ərəbistanında evli olmayan şəxslərin eyni evdə yaşaması qadağandır. Buna görə bəzi futbolçular qonşu ölkələrdə qalmağa üstünlük verirlər.`,Z,`Mənaya uyğun cavablar`],
+[`12 ardıcıl kamera yan yana qoyulur. At qaçmağa başlayır və şəkillər çəkilir. Daha sonra bu şəkillər birləşdirilir və tarixin ilk videolarından biri yaranır. Bu proses sayəsində hansı suala cavab tapılır?`,`At qaçarkən dörd ayağı da havada qala bilərmi?`,K,`Mənaya uyğun cavablar`,`Sualın cavabı “hə” oldu`],
+[`Şimal və cənub yarımkürələrdəki tornadolar arasında olan hansı fərq Venera və digər planetlər arasında da var?`,`Fırlanma istiqaməti`,K,`Mənaya uyğun və cavabı düzgün məntiqlə izah edən cavablar.`],
+[`Şumerlərə məxsus Uruk məbədində aparılan tədqiqatlara görə, ilk iki mərtəbənin qara, üçüncü mərtəbənin qırmızı, yuxarı mərtəbənin göy, damın isə qızılı rəngdə olduğu və hər bir rəngin özünəməxsus məna kəsb etdiyi aşkar olunub. Siz isə qızılı rəngin nəyi bildirdiyini tapın.`,`Günəş`,Z],
+[`19-cu əsrin sonunda Almaniyada bir laboratoriyada flüoresan ekran açıq qalır. Ona qoşulan borudan qeyri-adi işıq qırılmasını müşahidə edən Vilhelmdə yeni ixtirası haqqında təsəvvür yaranır. Siz isə Vilhelmin soyadını deyin.`,`Rentgen`,S,N,`Wilhelm ekrana baxdıqda öz sümüklərini görür və bu tarixə x şüalarının kəşfi kimi düşür. Hadisənin 19-cu əsrin sonunda Almaniyada olması sizə ipucu ola bilərdi.`]],
+q2:[[`Onun adı haqqında olan versiyalardan birində insanları ürkütdüyü üçün bu adı aldığı deyilir. Digər bir versiyada isə onun insanları müdafiə etdiyi deyilir. Söhbət kimdən gedir?`,`Dədə Qorqud`,K],
+[`Təsadüfi deyil ki, BU Vinsent Konnar tərəfindən, onun sevimli komiksi olan “Watchmen” seriyasından ilhamlanaraq yaradılıb. Vinsent düşünürdü ki, “Times New Roman” komikslər üçün çox rəsmidir. Söhbətin nədən getdiyini deyin.`,`“Comic Sans” fontu`,T,N,`Daha çox qeyri-ciddi, yumoristik yazılarda istifadə olunan bu font, elə komiksdən ilhamlanaraq yaradılıb.`],
+[`1946-cı ildə Torontoda ilk basketbol çempionatı keçirildi. Bu çempionatda bir qəribə qayda və bu qaydaya aid olan 203 ədədi var idi. Həmin qayda nədən ibarət idi?`,`Boyu 203 santimetrdən aşağı olanlar iştirak edə bilməzdi`,K,`İştirak üçün ən az 203 santimetr boy lazım idi.`],
+[`1942-ci ildə Bakıda doğulan hansı şəxs haqqında məqalənin adı belə idi: “Səsində vətənin qüruru vardı”`,`Müslüm Maqomayev.`,K],
+[`İlk vaxtlar bunların üzərində 'Mind your business' yazılırdı. Bəs indi nə yazılır?`,`“In god we trust”`,K,N,`Söhbət ABŞ dollarından gedirdi.`]],
+q3:[[`Edqar Allan Ponun yaşadığı ərazi o qədər kasıb idi ki, məktəb şagirdləri dərsliklərlə təmin edə bilmirdi. Bəs onların riyaziyyat müəllimi şagirdlərin hesablama apara bilməsi üçün dərsi harada keçirdi?`,`Qəbiristanlıq`,Z,`Məzarlıq`,`Onlar ölən adamların neçə il yaşadığını hesablayırdılar.`],
+[`Bir lətifədə Lenin ölümünə az qalmış Stalindən onun ölümündən sonra nə olacağını soruşanda Stalin deyir: SSRİ-nin yeni lideri mən olacağam. Lenin cavabında: bəs insanlar sənin ardınca gəlmək istəməsələr? Stalinin cavabı nə olur?`,`Onda həmin insanlar sənin ardınca gedərlər.`,K],
+[`1874-cü il Oksfordşirdə doğulan hansı məşhur şəxs öz vərdişini Kubada olarkən qazanmışdır?`,`[Vinston] Çörçill`,K,N,`Siqar çəkmə vərdişini Kubada olarkən qazanmışdı.`],
+[`Tarixdə ünvansız olması səbəbilə ən çox baxılmaqdan imtina edilən məhkəmə iddiaları ONA yönəldilib. ONU deyin.`,`Tanrı`,Q],
+[`Ötən əsrin ortalarında ABŞ-də bir müddətliyinə hamburger üçün alternativ addan istifadə olunmağa başlandı: azadlıq steykləri. Bəs bunun səbəbi nə idi?`,`İkinci dünya müharibəsi səbəbindən alman sözü olan hamburgerdən istifadə olunmurdu. ABŞ Almaniyayla müharibədə idi.`,Q,`Yuxarıdakı cümlələrdən hər hansı biri.`]],
+q4:[[`Bir zarafatda deyilir ki, Austin Bold futbol klubu adını tarixə belə yazdırıb. Necə?`,`Qalın hərflərlə`,K],
+[`Bob Marlinin həyatın bütün çətinliklərinə baxmayaraq ümidini itirməməsi və hər şeyə müsbət tərəfdən baxması haqqında danışılan məqalədə bir personaj da xatırlanır. Hansı?`,`Polyanna`,K],
+[`2000-ci ildə Şükrü Saracoğlu Stadionunda filial açmaq istəyən McDonald’s şirkətinə klub rəhbərliyi bir şərtlə icazə vermişdi. Bu şərt nə idi?`,`Rəngləri sarı-qırmızı olan McDonald’s loqosunun rənginin dəyişdirilməsi.`,Z],
+[`Bir internet zarafatında deyilir ki, Vatikan milli komandası qitədə ən güclüsüdür, çünki qapını BUNLAR mühafizə edir. Bəs BUNLARIN adına hansı ölkənin adı daxildir?`,`İsveçrə`,N,N,`Söhbət Vatikandan gedirdi. Bildiyimiz kimi, Vatikanı İsveçrə qvardiyası qoruyur. Zarafatda da deyilir ki ölkənin milli komandasının qapısını da onlar qoruyur, çünki Vatikan milli komandası peşəkar deyil.`],
+[`15-ci əsrin əvvəllərində Avropada gümüş sikkələri bildirmək üçün “taler” ifadəsi işlənilirdi. Bəs taler sözünə nəyin etimologiyasında rast gəlmək mümkündür?`,`Dollar`,K]],
+h1:[[`Versiyalardan birinə görə, vəba yayılan dövrlərdə Polşa monarxının nəyi qadağan etməsi ölkədə xəstəliyin daha az yayılmasına səbəb olmuşdu?`,`Pişiklərin öldürülməsi`,Q],
+[`Bir italyan zarafatında şokoladlar arasında olan müharibəni Mars başladır, fasiləni isə Kit-kat təmin edir. Bəs sülhü hansı marka təmin edir?`,`Nestle`,S,N,`Bu şokolad markasının loqosunda ağ göyərçin var.`],
+[`Mixail Şumaxer qalib gəldiyi oyunlardan sonra adəti üzrə həmişə şampan partladırdı. Yalnız bir neçə dəfə, müsəlman ölkəsində keçirilən yarışlarda qələbəni gül suyu ilə qeyd edib. Bəs 1994-cü ildə Avropada keçirilən qran-pridə ilk dəfə dünya çempionu olmasına baxmayaraq nə üçün qələbəsini qeyd etməmişdi?`,`Ayrton Sennanın ölümü`,S,`Roland Ratzenberqin ölümü`],
+[`Şair Əmir Pəhləvan tərəfindən yazılan bu şeir kimə həsr olunub? Xilas etdin alovlanan diyarı, / Çətin anda bura saldın güzarı, / Darvazası, həm kilidi, açarı, / Sən qalib ordunun komutanısan!`,`Nuru Paşa`,K,N,`Son sətirdəki komutan sözü onun türk olduğuna işarə idi.`],
+[`19-cu əsrdə Türkiyənin Bursa şəhərində yaşayan bir şəxs quzu ətini daha dadlı etmək üçün sümüklərdən təmizləyir və nazik şəkildə kəsir. Bəs həmin şəxsin adı nə idi?`,`İskəndər`,K,N,`Məşhur İskəndər yeməyi elə onu ilk düzəldən şəxsin şərəfinə adlandırılıb.`]],
+h2:[[`İnsanın boynunda yerləşən və kəllə sümüyünü daşıyan fəqərə hansı mifoloji qəhrəmanın adını daşıyır?`,`Atlas`,K,`Atlant`,`Mifologiyada göy üzünü öz çiyinlərində daşıdığı deyilən Atlasın adı kəllə sümüyünü daşıyan boyun fəqərəsinə verilmişdi.`],
+[`2024/2025-ci mövsümdə Arsenalın futbolçusu Oleksandr Zinçenko əvvəlcə 35 nömrəli formanı geyinirdi. Lakin mövsümün gedişində xüsusi səbəblərə görə nömrəsini 17-yə dəyişdi. Bu dəyişikliyindən sonra klub rəhbərliyi azarkeşlərə xoş bir jest etdi. Bu jest nədən ibarət idi?`,`35 nömrəli Zinçenko forması alan azarkeşlərin formaları pulsuz olaraq 17 nömrəsinə dəyişdirildi.`,Z],
+[`Hinduizmin müqəddəs mətni Mahabharatada yazılmışdı: “Kaal — yəni Zaman — mənəm; dünyaların məhv edicisiyəm və indi də onları udmaq üçün ortaya çıxmışam.” Bəs ötən əsrin ortalarında kim Mahabharata ilə yaxından maraqlanırdı?`,`[Robert] Oppenheimer`,K,N,`Bu kitabdan təsirlənərək sonradan o öz məşhur “indi mən ölüm oldum, dünyaların məhv edicisi” sitatını demişdi.`],
+[`Az əhaliyə sahib İslandiyada olan bir mobil tətbiqdən evlənməzdən öncə bütün cütlüklər istifadə etməlidir. Bəs onlar bu mobil tətbiq ilə nəyi təyin edirlər?`,`Qohum olub-olmadıqlarını`,S,N,`İslandiyanın əhalisi azdır, buna görə də bəzən cütlüklər xəbərləri belə olmadan bir-biri ilə qohum çıxırlar. Ölkədə isə qohumluğu olan şəxslərin evlənməsi qadağandır.`],
+[`1916-cı ildə ABŞ Konstitusiyasına bir düzəliş təklifi irəli sürülüb: Bir hərbi əməliyyata başlamaq qərarı ümummilli səsvermə ilə qəbul edilməli idi. Bəs “bəli” səsi verən hər bir şəxs avtomatik olaraq nə etməli idi?`,`Orduya qatılmalı idi.`,K,`Məntiqə uyğun cavablar.`]],
+h3:[[`Drakula – 72; Şerlok Holms – 66; Tarzan – 60. Eşitdikləriniz nəyi ifadə edir?`,`Obrazların yer aldığı filmlər.`,T,N,`Bu obrazlar ən çox filmdə yer alan ədəbi personajlardır.`],
+[`Koronavirus dövründə Niderlandda xərçəng xəstəsi uşaqlara maddi dəstək məqsədilə 15000 ədəd oyuncaq ayı alındı. Bəs bu ayılar sonra harada toplandı?`,`Stadionda`,Z,N,`Həmin ərəfələrdə stadionlara azarkeşlərin girişinə icazə verilmədiyi üçün, boş tribunalar həmin oyuncaq ayılarla doldurulmuşdu.`],
+[`Xalq arasında onun falçı və ya ruh çağıran olması barədə fərziyyələr var idi. 31 oktyabrda ölməsi isə bu versiyalara bir qədər də güc vermişdi. Söhbət Budapeşt doğumlu kimdən gedir?`,`Harri Hudini`,S,`Erik Vays`,`Məşhur sehrbazın etdiyi hərəkətləri necə etdiyini qavramayan insanlar onun ruhlarla əlaqədə olduğunu iddia edirdi.`],
+[`Maraqlıdır ki, son çıxışından əvvəl yaralanmasına baxmayaraq səhnəyə çıxıb tamaşasını reallaşdıran Harri Hudini bu hadisədən bir müddət sonra vəfat edir. Siz isə onun həyat fəlsəfəsində hansı ingilis ifadəsinə yer verdiyini deyin.`,`Show must go on`,S,`Şou davam etməlidir`],
+[`16-cı əsrdə Məkkədə axşam keçirilən dini məclislər zamanı bəzən insanlar aktiv olub siyasi məsələlər barədə mübahisə edirdilər. Bundan sonra hökumət nəyi qadağan etdi?`,`Qəhvə`,S,`Kofe`]],
+t1:[[`2025-ci ildə çəkilmiş bir animasiya filmində, ssenariyə görə boyları balaca olmalı olan obrazlar balaca olmayan aktyorlar tərəfindən canlandırılıb. Bəs bu film hansı nağıl əsasında hazırlanmışdı?`,`Ağbəniz və yeddi cırtdan`,Z,`Fərqli dillərdə olan cavablar`],
+[`Uolt Disney bir qəhrəmanı yaradarkən uzun illər dünyanın ən gözəl qadınlarından biri sayılan Hedi Lamarrdan ilham almışdı. Söhbət hansı qəhrəmandan gedir?`,`Ağbəniz`,Z,`Fərqli dillərdə olan cavablar`],
+[`Şanxay hava limanında maraqlı bir hadisə baş verib. Üz tanıma sistemi dəfələrlə yoxlanışa rəğmən qadını tanıya bilməyib. Bəs bundan sonra polislər qadından nə etməsini istəyib?`,`Makiyajını silməsini`,Z],
+[`Rusiyada yerləşən bir körpünün 233 metr olmasına baxmayaraq, körpünün bir tərəfindən digər tərəfinə keçənə qədər 1 saat keçir. Bu necə baş verir?`,`Körpünün iki tərəfi fərqli saat qurşaqlarındadır.`,K,`Mənaya uyğun cavablar`],
+[`1961-ci ildə çəkilən bir filmin hadisələri əsasən mühakimə prosesi ətrafında cərəyan edir. Bu filmin adında hansı Avropa şəhəri var?`,`Nürnberq`,K,N,`Söhbət “Nürnberq məhkəməsi” filmindən gedirdi.`]],
+t2:[[`İngilis futbolçuları arasında bir adət mövcuddur: Belə ki, bir futbolçu ilk dəfə İngiltərə milli komandasında çıxış edəndə ona kepka hədiyyə edilir. Kepkanın üstündə isə müxtəlif ədədlər yazılır. Bəs, bu ədəd nəyi ifadə edir?`,`Həmin futbolçunun milli komanda tarixində neçənci oyunçu olduğu`,T],
+[`Futbolun ilk dövrlərində komandaların fərqli formaları yox idi. Çox komandanın forması eyni rəngdə olduğundan oyun zamanı qarışıqlıq yarana bilərdi. Bəs bu səbəbdən əsasən İngiltərədə nə edirdilər?`,`Fərqli rənglərdə kepkalar taxırdılar`,Z],
+[`1978-ci ilə aid bu filmimizin minimalistik posterində süpürgə şəklini görmək olar. Söhbət hansı filmdən gedir?`,`Qayınana`,K,N,`Gəlin mənim süpürgəmdir, harda qoydum, orada da durmalıdır.`],
+[`Bəs hansı filmin minimalist posterində ətrafında qətran olan ağcaqanadı görmək olar?`,`Yura dövrünün parkı`,K,N,`Həmin filmdə hadisələr ağcaqanadın qanından dinozavr DNT-sinin çıxarılmasıyla başlayır.`],
+[`Futbol oyunlarının birində birinci hissədə Manuel Noyerin qoruduğu qapının toru cırılır. Bunu görən biri deyir ki, indi o qapının torunu düzəltməyə ehtiyac yoxdur, bunu ikinci hissədə edərsiz. O öz fikrini necə izah edir?`,`Onsuz da Manuel Neuer bu qapını çox yaxşı qoruyacaqdı və top tora getməyəcəkdi. İkinci hissədə isə qapılar dəyişir.`,K,`Məntiqə uyğun cavablar. Sayılmasın: sadəcə “İkinci hissədə qapılar dəyişir”, “O qapını Neuer qoruyurdu”`]],
+f1:[[`Barmen və bir müştərinin dialoquna qulaq asın. "Buz kimi soyudulana qədər çox yaxşı çalxalayın, sonra böyük və nazik bir dilim limon qabığı əlavə edin. Bu içki mənim öz kəşfimdir. Yaxşı bir ad düşünəndə onu patentləşdirəcəyəm." Söhbətin hansı içkidən getdiyini tapın.`,`Vesper`,Z,N,`Yan Fleminqin Kazino Royal romanında Ceyms Bond yeni kəşf elədiyi içkiyə “Vesper” adını verir.`],
+[`Dilimizə "fransız çıxışı" kimi tərcümə olunan "French exit" ifadəsi heç kimə xəbər vermədən anidən məclisi tərk etmək mənasına gəlir. Təxminən 20 il əvvəl baş vermiş bir hadisəyə aid karikaturada bir şəxsi və "French exit" yazısını görmək olar. Kimi?`,`[Zinəddin] Zidan`,Q],
+[`Oikumena yelkənli yaxtası Aralıq dənizinin qədim xəritələrindən istifadə edərək məşhur bir marşrutu təkrarlayır. Yaxtanın marşrutunda Malta adasından tutmuş Çanaqqala boğazına qədər məntəqələr var. Bu yaxtanın kimin marşrutunu təkrar etdiyini saitlə başlayan sözlə deyin.`,`Odissey`,K],
+[`Harri Potterin anası və həyat yoldaşının çox bənzər olmağı haqqında olan zarafatda hansı Vyana doğumlu şəxsin adı çəkilir?`,`[Siqmund] Freyd`,K,N,`Onun məşhur "ilk eşq valideynlərə qarşı olur" düşüncəsinə görə.`],
+[`U-2 hərbi təyyarəsinin dövrünün təyyarələrindən daha yüksəkdə uçmağı və gümüşü qanadlarına yansıyan işığın tez-tez qırılması haqqında olan mənbədə hansı abbreviatura xatırlanır?`,`UFO`,K,N,`U-2 təyyarəsi yüksəkdən uçurdu və qanadına düşən işıq tez-tez yanıb sönürdü. Buna görə də təyyarəni görən insanlar uçan naməlum obyekt gördüklərini nəql edirdilər.`]],
+f2:[[`Komediyaçı Les Dauson bir şousunda deyirdi ki, cavan vaxtlarında məişət əşyaları sataraq dolanırdı. Bəs onun əvvəlki fikrinə hansı əlavəsiylə məlum olur ki, onun maddi vəziyyəti həmin vaxtlar çox pis olub?`,`O öz evindəki əşyaları satırdı.`,Q],
+[`Orta əsrlərdə kilsələrin pəncərələri Günəşin mövqeyinə əsasən hesablanırdı. Ruhanilərin nitqi zamanı isə gün işığı “İncil”in üzərinə düşürdü. Bu cür memarlıq üslubuna səbəb nə idi?`,`İncilin üzərinə düşən işıqdan istifadə edən ruhanilər insanlara kitabın müqəddəs, kilsənin isə xüsusi yer olduğuna inandırırdı`,S],
+[`Əslində, bu ifadənin yaranması təəccüblü deyil ki, fransız dilindən tərcümədə “Kömək edin!” mənasını verən “M’aider” ([Medi]) sözü ilə bağlıdır. Komandalarınızı xilas etmək istəyirsinizsə, deyin, söhbət hansı ifadədən gedir.`,`Mayday`,T,N,`Zənn edilənin əksinə bu ifadənin 1 may tarixi ilə əlaqəsi yoxdur.`],
+[`19-cu əsrin sonlarında Konqoda yetəri qədər işləməyən kölələrin əlləri kəsilirdi. Bu işgəncədən o qədər çox istifadə olunurdu ki, kəsik əllər Konqonun yerli nəyinə çevrilirdi?`,`Valyuta`,K,`Pul vahidi`],
+[`Bir yapon atalar sözündə deyilir ki, usta olmaq üçün iki şey etməlisən. Birincisi, öz ustanı keçməlisən. Bəs ikincisi?`,`Səni keçəcək tələbə yetişdirməlisən`,KK,`Mənaya uyğun cavablar`]],
+f3:[[`Tarixin ən böyük təyyarə qəzalarından biri kimi qeydə alınan Amerika Hava Yolları 191 səfər sayılı uçuşu hansı ayda baş tutmuşdu?`,`May.`,K,N,`Bir neçə sual əvvəl Mayday siqnalı haqqında sual var idi.`],
+[`17-ci əsrdə Misirdə istehsal edilən toz dərmanı tez bir zamanda Avropada məşhurlaşdı. Həkimlərin dediyinə görə bu dərmanı istifadə edən şəxslər daha uzun müddət yaşayacaqdı. Dərman nədən hazırlanırdı?`,`Mumiya`,S],
+[`Birinci dünya müharibəsində Cek adlı meymun düşmən əsgərini görəndə əllərini bir-birinə vurub qəribə səslər çıxarıb öz ordusunu xəbərdar edirdi. Bu haqda danışan məqalədə 2010-cu illərə aid hansı animasiya xatırlanır?`,`Oyuncaq hekayəsi`,S,`Toy story`,`Filmdə əlində zəng ilə dayanmış gözətçi meymun var. Onun işi oradan qaçmaq istəyənləri yüksək səslə qışqıraraq ifşa etməkdir.`],
+[`Bildiyiniz kimi, şahmat oyununda ümumilikdə 32 fiqur olur. Bəs niyə bir sıra şahmat taxtaları satışa çıxarılan zaman içində 34 fiqur olur?`,`İkinci vəzir çıxılan hallar üçün bir ağ vəzir, bir qara vəzir əlavə yerləşdirilir.`,Q],
+[`19-cu əsrdə Londonda bir qadın həyat yoldaşının gündəliyini tapır. Gündəlikdə onu öldürməyin 14 yolunun detallı şəkildə yazıldığını görən qadın həyat yoldaşını öldürmüşdü. Polis bu hadisəni araşdırır və bu hərəkətin özünümüdafiə olduğuna qərar verərək qadını həbs etmir. Bəs bu hadisənin çox dəhşətli hadisə kimi qəbul edilməsinin səbəbi nə idi?`,`Gündəliyi qadın özü yazmışdı`,K,N,`Qadın əvvəlcədən cinayəti planlamışdı və ərinin adından gündəlik yazaraq hadisəyə özünümüdafiə donunu geyindirmişdi. Yeri gəlmişkən, bu məsələ hadisədən 100 il sonra ortaya çıxdığı üçün məlum olan ən mükəmməl cinayət olaraq qəbul edilir.`]],
+x:[[`2022-ci ildə Yaponiyanın Azərbaycandakı səfirinin Naftalana səfərindən sonra, şəhərdə nə əkilib?`,`Sakura ağacı`,Z],
+[`Alimlər Avropada xüsusi bir göbələk növü aşkar ediblər və onların radiosintez prosesi ilə qidalandığını aşkar ediblər. Bəs bu göbələk növü hansı şəhərdə aşkar edilib?`,`Çernobıl`,Q,`Pripyat`],
+[`Tonyukuk abidəsi II Göytürk dövlətinin mahir vəziri, məsləhətçisi Tonyukukun şərəfinə qoyulub. Bəs bu abidə hansı çayın sahilində yerləşir?`,`Orxon çayı`,Z,N,`Orxon-Yenisey abidələri Orxon çayının sahilində yerləşir.`],
+[`Bir filmdə düşmən tərəfindən əsir alınmış gənclər, ağızları bağlı şəkildə kamera ilə öz dövlətlərinə göstərilərkən, gənclərdən biri ağıllı bir hərəkət edir və onların yerini tapırlar. Həmin gənc nə etmişdi?`,`Morze əlifbası ilə mesaj göndərir.`,N],
+[`V for Vendetta filminin epizodlarından birində personaj latın dilində belə bir ifadə işlədir: “Həqiqətin gücü ilə mən yaşayaraq, kainatı fəth etdim.” Bəs bu cümlənin orijinalının özəlliyi nədədir?`,`Cümlədəki bütün sözlər V hərfi ilə başlayır`,K],
+[`O, 2018/2019 mövsümünün 37-ci həftəsində baş tutan matçdakı məşhur epizod haqqında demişdi: "Mən karyeramın bu yerinə qədər gəlməmişəm ki, gənc oyunçular mənə zərbə vurub-vurmamağım haqqında göstəriş versin." Söhbət kimdən gedir?`,`Vinsent Kompani`,T,N,`O bildirmişdi ki, hər kəsin "Vurma" dediyini eşidirdim, amma inanc məni buna vadar etdi.`],
+[`Madam Bluden adlı şəxsin dəfnindən bir gün sonra yaxınlıqda oynayan uşaqlar qəbirdən səs gəldiyini eşidir. Sonra məzarı açanda qadının artıq öldüyünü, ancaq diri olaraq basdırıldığını başa düşdülər. Onlar necə bu qənaətə gəlmişdilər?`,`Tabutda dırnaq və cızıq izləri var idi`,S],
+[`Kristofer Nolan 2014-cü ildə film çəkilişlərindən əlavə 200.000 dollar pul əldə etmişdi. O bu qədər pulu hansı qida məhsulunun satışından əldə etmişdi?`,`Qarğıdalı`,S,N,`Rejissor İnterstellar filminə görə 200 hektarlıq qarğıdalı tarlası hazırlatmışdı.`],
+[`Temperatur şkalalarında 0 dərəcə, adətən, universal qaydalarla bağlı olur. Məsələn, Selsi şkalasında bu suyun donma temperaturu, Kelvin şkalasında istilik mübadiləsinin dayanmasıdır. Qəribədir ki, Farenheyt şkalasının 0 dərəcəsi xüsusi bir göstərici deyil, bunu necə izah edə bilərsiniz?`,`Şkalada 0 dərəcə, sadəcə olaraq, Fahrenheitin laboratoriya şəraitində ala bildiyi ən aşağı temperatur idi`,Q],
+[`1930-cu ildə BBC radiosu xəbər buraxılışlarının birində məşhur elanı vermiş, daha sonra isə təxminən 15 dəqiqə boyunca efirə musiqi verilmişdir. Söhbət hansı elandan gedir?`,`Bu gün üçün xəbər yoxdur`,Q,`Bu gün önəmli heç nə baş verməyib`],
+[`Bir zarafatda soruşulur ki, Santa Klaus niyə məhz kişidir. Cavabında isə deyilir: çünki heç bir qadın hər yeni ildə BUNU etməzdi. Nəyi?`,`Hər il eyni paltarı geyinməzdi.`,T],
+[`Pol Sezan onun rəsmlərini ilk dəfə görəndə demişdi: “Açığı, çox bəyənmədim, sanki, bu əsərləri bir dəli çəkib.” Söhbət kimdən gedir?`,`Vinsent Van Qoq`,T,N,`Bildiyimiz kimi, Van Qoq psixoloji problemlərdən əziyyət çəkib.`],
+[`Bir dəfə braziliyalı bir milyarder yarım milyon dollar dəyərində olan avtomobilini basdıracağını açıqladı. İstifadəyə yararlı bir şeyin dəfn edilməsi cəmiyyətdə ciddi tənqidlərə səbəb oldu. Lakin avtomobil torpağa endirilərkən mərasim dayandırıldı və bu addımın maarifləndirmə məqsədi daşıdığı məlum oldu. Siz isə növbəti aydan Braziliyada nəyin sayının 30 faiz artdığını tapın.`,`Orqan donoru`,Z,N,`Milyarder belə demişdi: “Dəyişdirilə bilən bir avtomobili dəfn etdiyim üçün məni qınayırsınız, amma insanlara həyat verə biləcək orqanları öldükdən sonra torpağa basdırırsınız.”`],
+[`Maraqlıdır ki, insanlar BUNUN ən başında deyillər. Ortalara yaxın, donuzlar və bəzi balıq növləriylə eyni səviyyədədirlər. Söhbət nədən gedir?`,`Qida zənciri`,K],
+[`İtalyan müğənni Adriano Çelentano ötən əsrin 70-ci illərində həmvətənlərinin istənilən ingilis dilli mahnını bəyənəcəyini sübut etmək üçün, maraqlıdır ki, bunu etmişdi və istəyinə çatmışdı. O nə etmişdi?`,`Sözləri tam mənasız olan, ingilis dili kimi səslənən mahnı yazmışdı`,Q],
+[`Çarli Çaplin danışmadan, sadəcə hərəkət və mimikaları ilə izləyicini düşüncəyə qərq edirdi. Bəs onun "Müasir zamanlar" filminə əsasən 2008-ci ildə hansı animasiya çəkildi?`,`Wall•E`,S,N,`Valli animasiyasında baş personaj danışa bilmir, ancaq hərəkəti ilə sanki izləyiciyə öz hisslərindən bəhs edir. Filmin adı da sizə yardım edə bilərdi.`],
+[`"Oyun kartlarının sirri" kitabından bir hissəyə qulaq asın: "İnsan qəribə varlıqdır. Əgər üzərində həyat olan bir planet kəşf edilsəydi, hamı çox təəccüblənərdi, lakin BU heç kimi təəccübləndirmir." Diqqət sual! Bəs nə heç kimi təəccübləndirmir?`,`Öz planetində həyatın mövcudluğu`,T,`Öz planetinin mövcudluğu`,`İnsanlar heç düşünmür ki, bizim planetimizdə həyat var.`],
+[`Osmanlı Rəssamlar Cəmiyyəti tərəfindən dərc olunan qəzetin 17-ci nömrəsində bu tablonun adı "Tısbağalar və adam" olaraq keçir. Bəs, bu tablo kimə aiddir?`,`Osman Hamdi bəy`,T,N,`Söhbət "Tısbağa tərbiyəçisi" rəsm əsərindən gedirdi.`],
+[`Van Qoqun Arl şəhərində uzun müddət yaşaması məşhur faktdır. O burada öz otağından əlavə, başqa bir otağı da xüsusi hazırlamışdı. Siz isə deyin, O bu otaqda kimin gəlib qalacağını xəyal edirdi.`,`Pol Qoqen`,T,N,`O Parisdə Qoqenlə tanış olmuş və onunla yaxın dost olduqdan sonra Arl şəhərinə köçmüşdü.`],
+[`Filipp Peti 1949-cu ildə Fransada anadan olmuş kəndirbazdır. Bəs biz onu 1974-cü ildə etdiyi hansı məşhur hərəkətə görə tanıyırıq?`,`Əkiz qüllələri arasında [kəndirlə] gəzib`,Z],
+[`2015-ci ildə yayımlanmış "Gəzinti" filmi 1949-cu ildə doğulmuş hansı fransız haqqındadır?`,`Filipp Peti`,Z,N,`1974-cü ildə əkiz qüllələri arasında gəzən şəxsdir.`]]
+};
+const setsData={};for(const k in D)setsData[k]=mk(D[k]);
+
+const RN=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+const L=n=>RN.slice(0,n).map(r=>r+" Döyüş");
+const ROUNDS=[
+{id:"g",t:"Qrup oyunları",b:L(12)},
+{id:"e",t:"1/8 Final",b:L(8)},
+{id:"q",t:"1/4 Final",b:L(4)},
+{id:"h",t:"Yarımfinal",b:L(3)},
+{id:"t",t:"III Yer Uğrunda Döyüş",b:L(2)},
+{id:"f",t:"Final",b:L(3)},
+{id:"x",t:"Əlavə suallar",direct:1}];
+let currentSet="g1",allExpanded=false;
+const ARROW='<svg class="round-arrow" viewBox="0 0 8 8"><path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/></svg>';
+function buildTours(){
+ const box=document.getElementById("tourButtons");
+ box.innerHTML=ROUNDS.map((r,ri)=>{
+  const bb=(label,key)=>`<button class="battle-btn" onclick="loadSet('${key}',this)">${label}</button>`;
+  let inner="";
+  if(r.b) inner=`<div class="battle-buttons">${r.b.map((l,i)=>bb(l,r.id+(i+1))).join("")}</div>`;
+  else if(r.games) inner=`<div class="battle-buttons">${r.games.map((g,gi)=>`<div class="sub-round-wrapper" id="sub-${r.id}${gi}"><button class="sub-round-btn" onclick="toggleSub('sub-${r.id}${gi}')"><span>${g[0]}</span>${ARROW}</button><div class="sub-battle-panel"><div class="sub-battle-buttons">${g[1].map((l,bi)=>bb(l,r.id+(gi+1)+"_"+(bi+1))).join("")}</div></div></div>`).join("")}</div>`;
+  const head=`<button class="tour-btn" onclick="${r.direct?`loadDirect('${r.id}',this)`:`toggleRound('round-${r.id}')`}"><span>${r.t}</span>${r.direct?"":ARROW}</button>`;
+  return `<div class="round-wrapper" id="round-${r.id}">${head}${r.direct?"":`<div class="battle-panel">${inner}</div>`}</div>`;
+ }).join("");
+}
+function clearActive(){document.querySelectorAll(".battle-btn,.tour-btn").forEach(b=>{if(!b.closest(".round-wrapper.active")||b.classList.contains("battle-btn"))b.classList.remove("active")})}
+function loadSet(key,btn){currentSet=key;allExpanded=false;document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər";document.querySelectorAll(".battle-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderQuestions();}
+function loadDirect(id,btn){document.querySelectorAll(".round-wrapper").forEach(r=>{r.classList.remove("active");r.querySelector(".tour-btn").classList.remove("active")});document.querySelectorAll(".battle-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");btn.parentElement.classList.add("active");currentSet=id;allExpanded=false;document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər";renderQuestions();notifyParentHeight();}
+function toggleRound(id){const w=document.getElementById(id),was=w.classList.contains("active");document.querySelectorAll(".round-wrapper").forEach(r=>{r.classList.remove("active");r.querySelector(".tour-btn").classList.remove("active")});if(!was){w.classList.add("active");w.querySelector(".tour-btn").classList.add("active")}notifyParentHeight();}
+function toggleSub(id){const w=document.getElementById(id);w.classList.toggle("active");w.querySelector(".sub-round-btn").classList.toggle("active");notifyParentHeight();}
+function renderQuestions(){
+ const c=document.getElementById("questionsContainer");c.innerHTML="";
+ const qs=setsData[currentSet]||[];
+ if(!qs.length){c.innerHTML='<div class="q-card"><div class="q-text" style="margin:0">Bu döyüşün sualları tezliklə əlavə olunacaq.</div></div>';notifyParentHeight();return}
+ qs.forEach((it,i)=>{
+  const card=document.createElement("div");card.className="q-card";card.id="q-card-"+i;
+  const row=(l,v)=>v?`<div class="ans-row"><span class="ans-label">${l}:</span> ${v}</div>`:"";
+  card.innerHTML=`<div class="q-text"><b>${it.id}.</b> ${it.question}</div>
+  <button class="toggle-btn" onclick="toggleSingleCard(${i})"><span>Cavabı göstər</span><svg class="arrow-icon" viewBox="0 0 8 8"><path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/></svg></button>
+  <div class="ans-panel">${row("Cavab",it.answer)}${row("Sayılma meyarı",it.criteria)}${row("Şərh",it.comment)}${row("Mənbə",it.source)}
+  <div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${it.author}</span><button class="copy-btn" type="button" onclick="copyQuestion(${i},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
+  c.appendChild(card)});
+ notifyParentHeight();}
+function copyQuestion(i,btn){const it=setsData[currentSet][i];let t=`${it.id}. ${it.question.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"")}\n\nCavab: ${it.answer}`;if(it.criteria)t+=`\nSayılma meyarı: ${it.criteria}`;if(it.comment)t+=`\nŞərh: ${it.comment}`;t+=`\nMüəllif: ${it.author}`;
+ const ok=()=>{btn.classList.add("copied");clearTimeout(btn._t);btn._t=setTimeout(()=>btn.classList.remove("copied"),1600)};
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok).catch(()=>fb(t,ok));else fb(t,ok);}
+function fb(t,done){const h=document.createElement("textarea");h.value=t;h.style.cssText="position:fixed;opacity:0";document.body.appendChild(h);h.select();try{document.execCommand("copy");done()}catch(e){}document.body.removeChild(h)}
+function toggleSingleCard(i){const c=document.getElementById("q-card-"+i);c.classList.toggle("active");c.querySelector(".toggle-btn span").textContent=c.classList.contains("active")?"Cavabı gizlə":"Cavabı göstər";notifyParentHeight();}
+function toggleAllAnswers(){allExpanded=!allExpanded;document.querySelectorAll(".q-card").forEach(c=>{const s=c.querySelector(".toggle-btn span");if(!s)return;c.classList.toggle("active",allExpanded);s.textContent=allExpanded?"Cavabı gizlə":"Cavabı göstər"});document.getElementById("globalToggleBtn").textContent=allExpanded?"Bütün cavabları gizlə":"Bütün cavabları göstər";notifyParentHeight();}
+const themeToggle=document.getElementById("themeToggle"),themeIcon=document.getElementById("themeIcon");
+const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>';
+const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
+function setTheme(d){document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}themeIcon.innerHTML=d?moon:sun;themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
+themeToggle.addEventListener("click",()=>{setTheme(!document.body.classList.contains("dark"));notifyParentHeight()});
+(function(){let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}setTheme(s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches))})();
+function notifyParentHeight(){setTimeout(()=>{window.parent.postMessage({frameHeight:(document.documentElement.scrollHeight||document.body.scrollHeight)+20},"*")},350)}
+buildTours();
+document.getElementById("round-g").classList.add("active");
+document.querySelector("#round-g .tour-btn").classList.add("active");
+document.querySelector("#round-g .battle-btn").classList.add("active");
+renderQuestions();
+</script>
+<script>
+(function(){if(!document.body||!document.body.animate)return;if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+var SKIP=/^(SCRIPT|STYLE|NOSCRIPT|FOOTER|LINK|META|BR|HR|TEXTAREA)$/;
+function fade(l){l.forEach(function(el,i){el.animate([{opacity:0,translate:"0 22px"},{opacity:1,translate:"0 0"}],{duration:500,delay:Math.min(i*70,700),easing:"cubic-bezier(.22,.8,.25,1)",fill:"backwards"})})}
+var vh=window.innerHeight*1.1,list=[];
+Array.prototype.forEach.call(document.querySelectorAll(".top-nav,.info-card,.tours-card,.global-toggle-btn,.q-card"),function(c){var r=c.getBoundingClientRect();if(r.top<vh&&r.bottom>0)list.push(c)});fade(list);
+var ready=false;setTimeout(function(){ready=true},50);
+new MutationObserver(function(m){if(!ready)return;var q=[];m.forEach(function(x){Array.prototype.forEach.call(x.addedNodes,function(n){if(n.nodeType===1&&x.target.id==="questionsContainer")q.push(n)})});if(q.length)requestAnimationFrame(function(){fade(q.slice(0,12))})}).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+</body></html>
