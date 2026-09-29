@@ -235,7 +235,7 @@ function renderList(){
   const box=$("list");box.innerHTML="";
   if(!type)return;
   const now=Date.now(),T=TYPES[type];
-  const live=ads.filter(a=>now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
+  const g=String(items[idx]?items[idx].ad:"").trim();const live=ads.filter(a=>String(a.game).trim()===g&&now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
   const mine=live.filter(a=>a.mine&&a.type===type),oth=live.filter(a=>a.type===T.other);
   if(mine.length){box.appendChild(el("p","empty","Sənin elanın:"));mine.forEach((a,i)=>box.appendChild(adEl(a,i)))}
   box.appendChild(el("p","empty",T.list+":"));
@@ -248,7 +248,7 @@ function typeTitle(t){
   clearTimeout(typeTimer);const box=$("ptitle");box.textContent="";let i=0;
   (function s(){if(i<t.length){box.textContent+=t[i++];typeTimer=setTimeout(s,35)}})();
 }
-function setGame(){$("game").value=items.length?items[idx].ad:"";setContact()}
+function setGame(){$("game").value=items.length?items[idx].ad:"";setContact();if(type&&panel.classList.contains("open"))renderList()}
 function setErr(id,m){const f=$(id);f.classList.toggle("bad",!!m);f.querySelector(".err").textContent=m||""}
 function nameErr(v){if(/[^\p{L}\s.'-]/u.test(v))return "Adınızı düzgün yazın";if(v.length<6)return "Tam yazın";return ""}
 function phoneErr(v){return /^\+?[\d\s()-]+$/.test(v)&&v.length>=9&&v.length<=14?"":"Əlaqə nömrənizi düzgün yazın"}
