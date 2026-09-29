@@ -100,12 +100,13 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 .dark .kick-modal-buttons button.no{color:#fff}
 
 /* RAUND SEÇİMİ */
-.dd{position:relative;margin-top:2px}
+.dd{position:relative;z-index:100;margin-top:2px}
+.dd-menu{isolation:isolate}
 button.dd-btn{position:relative;background:rgba(157,195,255,.1);color:var(--ink);border:2px solid currentColor;margin-top:0;padding:10px 40px;font-size:clamp(16px,5vw,21px);font-weight:700}
 .dark button.dd-btn{background:rgba(0,7,44,.08);color:var(--dark-ink)}
 button.dd-btn i{position:absolute;right:22px;top:50%;transform:translateY(-58%);font-style:normal;transition:transform .3s ease}
 .dd.open button.dd-btn i{transform:translateY(-42%) rotate(180deg)}
-.dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:var(--dark-light);color:var(--deep);border-radius:22px;padding:6px;box-shadow:0 12px 28px rgba(0,20,110,.3)}
+.dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:101;background:var(--dark-light);color:var(--deep);border-radius:22px;padding:6px;box-shadow:0 12px 28px rgba(0,20,110,.3)}
 .dark .dd-menu{background:var(--dark-bg);color:var(--dark-light)}
 button.dd-item{background:transparent;color:inherit;margin:0;padding:11px;border-radius:16px;font-size:14px}
 .dark button.dd-item{background:transparent;color:inherit}
