@@ -3,69 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#9DC3FF">
 <title>πksel.iok - Elanlar</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--tr:650ms cubic-bezier(.22,.8,.25,1);
---btn1:#C4DBFF;--btn2:#A9CBFF;--btnt:#001E6F;--err:#FFB4B4}
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dbg:#00072C;--dlight:#9DC3FF;--dbright:#6FA5FC;--btn1:#C4DBFF;--btn2:#A9CBFF;--btnt:#001E6F;--err:#FFB4B4}
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
-body.dark{background:var(--dark-bg);color:var(--dark-ink);--btn1:#0B2A7A;--btn2:#001E6F;--btnt:#9DC3FF;--err:#9B0022}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",Arial,sans-serif;overflow-x:hidden;transition:background .6s,color .6s}
+body.dark{background:var(--dbg);color:var(--dbg);--btn1:#0B2A7A;--btn2:#001E6F;--btnt:#9DC3FF;--err:#9B0022}
 button,input{font:inherit}
 a{color:inherit;text-decoration:none}
 .page{width:min(95vw,1000px);margin:0 auto;padding:12px 0 40px}
-.reveal{opacity:0;transform:translateY(34px);animation:up .85s cubic-bezier(.18,.8,.24,1) forwards}
+@keyframes up{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+.reveal{animation:up .85s cubic-bezier(.18,.8,.24,1) both}
 .r1{animation-delay:.05s}.r2{animation-delay:.14s}.r3{animation-delay:.23s}
-@keyframes up{to{opacity:1;transform:none}}
-.grad{background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);transition:background var(--tr),color var(--tr)}
-.dark .grad{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
-.top-nav{height:60px;border-radius:40px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.grad{background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink)}
+.dark .grad{background:linear-gradient(135deg,var(--dlight),var(--dbright) 50%,var(--dlight));color:var(--dbg)}
+.top-nav{height:60px;border-radius:40px;display:flex;align-items:center;justify-content:center;position:relative}
 .nav-links{display:flex;gap:58px}
-.nav-link{font-size:20px;font-weight:500;white-space:nowrap;position:relative}
-.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s}
-.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
-.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.nav-link{font-size:20px;font-weight:500;white-space:nowrap}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:var(--bg)}
+.dark .theme-toggle{background:var(--dbg);color:var(--dlight)}
 .theme-icon{width:25px;height:25px}
-.section-title{text-align:center;color:var(--deep);font-size:clamp(18px,3vw,26px);line-height:1.2;font-weight:700;letter-spacing:-.5px;margin:22px 0 14px;transition:color var(--tr)}
-.dark .section-title{color:var(--dark-light)}
+.section-title{text-align:center;color:var(--deep);font-size:clamp(18px,3vw,26px);font-weight:700;margin:22px 0 14px}
+.dark .section-title{color:var(--dlight)}
 .stage{display:flex;align-items:center;gap:8px}
 .arrow{flex:0 0 clamp(40px,6vw,56px);height:clamp(56px,9vw,72px);border:0;cursor:pointer;color:var(--btnt);border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--btn1),var(--btn2));box-shadow:0 6px 16px rgba(0,20,110,.15);transition:transform .2s,box-shadow .2s}
 .arrow:hover{transform:scale(1.06)}
 .arrow:active,.arrow.pr{transform:scale(.86);box-shadow:inset 0 3px 8px rgba(0,20,110,.3)}
 .arrow svg{width:clamp(16px,2.6vw,24px);height:auto;aspect-ratio:30/44}
-.board{flex:1;min-width:0;border-radius:31px;padding:16px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.board{flex:1;min-width:0;border-radius:31px;padding:16px;container-type:inline-size}
 .view{overflow:hidden}
 .track{display:flex;transition:transform .6s cubic-bezier(.22,.8,.25,1)}
-.slide{min-width:100%;display:grid;grid-template-columns:36% 1fr;gap:14px;align-items:stretch}
-.poster{aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--ink);color:var(--deep);display:grid;place-items:center;text-align:center;font-weight:700;font-size:13px;padding:6px}
-.dark .poster{background:var(--dark-bg);color:var(--dark-light)}
+.slide{min-width:100%;display:grid;grid-template-columns:34% 1fr;gap:clamp(10px,3cqw,22px);align-items:start}
+.poster{width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--ink);color:var(--deep);display:grid;place-items:center;text-align:center;font-weight:700;font-size:clamp(11px,2.6cqw,17px);padding:6px}
+.dark .poster{background:var(--dbg);color:var(--dlight)}
 .poster img{width:100%;height:100%;object-fit:cover;display:block}
-.info{display:flex;flex-direction:column;min-width:0;justify-content:space-between;gap:6px}
-.info .n{font-weight:700;line-height:1.15;letter-spacing:-.4px;overflow-wrap:anywhere}
-.info .l{line-height:1.35;overflow-wrap:anywhere}
-.fee{align-self:flex-end;background:var(--ink);color:var(--deep);border-radius:40px;font-weight:600;white-space:nowrap}
-.dark .fee{background:var(--dark-bg);color:var(--dark-light)}
-.actions{display:grid;gap:10px;margin-top:14px}
-.abtn{display:block;text-align:center;border:0;cursor:pointer;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));border-radius:40px;padding:12px 10px;font-size:16px;font-weight:700;letter-spacing:-.3px;transition:transform .3s,box-shadow .3s}
-.abtn:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 10px 22px rgba(0,20,110,.18)}
+.info{display:flex;flex-direction:column;min-width:0;justify-content:space-between;gap:6px;align-self:stretch}
+.info .n{font-weight:700;line-height:1.15;overflow-wrap:anywhere;font-size:clamp(16px,5cqw,34px)}
+.info .l{line-height:1.35;overflow-wrap:anywhere;font-size:clamp(13px,3.6cqw,24px)}
+.fee{align-self:flex-end;background:var(--ink);color:var(--deep);border-radius:40px;font-weight:600;white-space:nowrap;font-size:clamp(14px,3.4cqw,24px);padding:clamp(7px,1.6cqw,12px) clamp(14px,3cqw,22px)}
+.dark .fee{background:var(--dbg);color:var(--dlight)}
+.actions{display:grid;gap:clamp(10px,2cqw,16px);margin-top:14px}
+.abtn{display:block;text-align:center;border:0;cursor:pointer;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));border-radius:40px;font-weight:700;font-size:clamp(15px,3.4cqw,23px);padding:clamp(12px,2.4cqw,18px) 10px;transition:transform .3s,box-shadow .3s}
+.abtn:hover{transform:translateY(-3px)}
 .abtn.on{outline:3px solid currentColor;outline-offset:-3px}
-.panel{display:grid;grid-template-rows:0fr;opacity:0;transform:translateY(24px);transition:grid-template-rows .6s cubic-bezier(.22,.8,.25,1),opacity .5s ease,transform .6s ease,margin .6s;margin-top:0}
-.panel.open{grid-template-rows:1fr;opacity:1;transform:none;margin-top:16px}
+.panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .6s,opacity .5s,margin .6s}
+.panel.open{grid-template-rows:1fr;opacity:1;margin-top:16px}
 .panel>div{overflow:hidden;min-height:0}
-.pbox{border-radius:31px;padding:22px 20px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.pbox{border-radius:31px;padding:22px 20px;container-type:inline-size}
 .panel.open .pbox>*{animation:up .7s cubic-bezier(.18,.8,.24,1) both}
-.panel.open .pbox>*:nth-child(2){animation-delay:.1s}
-.panel.open .pbox>*:nth-child(3){animation-delay:.15s}
+.panel.open .pbox>*:nth-child(2){animation-delay:.08s}
+.panel.open .pbox>*:nth-child(3){animation-delay:.14s}
 .panel.open .pbox>*:nth-child(4){animation-delay:.2s}
-.panel.open .pbox>*:nth-child(5){animation-delay:.25s}
-.panel.open .pbox>*:nth-child(6){animation-delay:.3s}
-.panel.open .pbox>*:nth-child(n+7){animation-delay:.35s}
-.panel .pbox>*{opacity:0;transform:translateY(34px)}
-.panel.open .pbox>*{opacity:1;transform:none}
-.ptitle{font-size:20px;font-weight:700;letter-spacing:-.5px;min-height:28px;margin-bottom:14px}
+.panel.open .pbox>*:nth-child(5){animation-delay:.26s}
+.panel.open .pbox>*:nth-child(n+6){animation-delay:.32s}
+.ptitle{font-weight:700;min-height:28px;margin-bottom:14px;font-size:clamp(20px,4.6cqw,32px)}
 .ptitle::after{content:"|";margin-left:2px;animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
+.field{display:block;margin-bottom:10px}
+.field span{display:block;font-weight:600;margin:0 0 4px 12px;font-size:clamp(12px,2.6cqw,17px)}
+.field input{width:100%;border:0;outline:0;border-radius:18px;font-weight:500;color:var(--deep);background:var(--ink);font-size:clamp(14px,3cqw,20px);padding:clamp(11px,2cqw,16px) 16px}
+.dark .field input{background:var(--dbg);color:var(--dlight)}
+.field input:focus{box-shadow:0 0 0 3px currentColor}
+.field input[readonly]{opacity:.75}
+.err{display:none;font-style:normal;font-weight:600;margin:4px 0 0 12px;color:var(--err);font-size:clamp(11.5px,2.3cqw,15px)}
+.field.bad .err{display:block}
+.field.bad input{box-shadow:0 0 0 2px var(--err)}
+.hp{position:absolute;left:-9999px;opacity:0}
+.gbox{display:flex;justify-content:center;margin:6px 0;min-height:44px}
+.gbox.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.send{width:100%;margin-top:6px;border:0;cursor:pointer;border-radius:40px;font-weight:700;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));font-size:clamp(16px,3.4cqw,23px);padding:clamp(12px,2.2cqw,17px);transition:transform .3s,opacity .3s}
+.send:hover{transform:translateY(-2px)}
+.send.load{opacity:.7;pointer-events:none}
+.send.ok{transform:scale(1.03);pointer-events:none}
+.lbtn{margin-top:10px;font-size:clamp(15px,3.2cqw,21px)}
+.lwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s,margin .5s}
+.lwrap.open{grid-template-rows:1fr;margin-top:12px}
+.lwrap>div{overflow:hidden;min-height:0}
+.list{display:grid;gap:10px}
+.ad{border-radius:22px;padding:13px 16px;background:var(--ink);color:var(--deep);animation:up .6s both}
+.dark .ad{background:var(--dbg);color:var(--dlight)}
+.ad .b{display:inline-block;font-size:11px;font-weight:700;background:var(--deep);color:var(--ink);border-radius:20px;padding:2px 10px;margin-bottom:5px}
+.dark .ad .b{background:var(--dlight);color:var(--dbg)}
+.ad .t{font-weight:700;font-size:clamp(15px,3.2cqw,21px)}
+.ad .d{line-height:1.4;overflow-wrap:anywhere;font-size:clamp(12.5px,2.7cqw,17px)}
+.del{border:0;cursor:pointer;border-radius:20px;padding:4px 14px;font-weight:700;margin-top:6px;background:var(--deep);color:var(--ink);font-size:clamp(12px,2.4cqw,16px)}
+.dark .del{background:var(--dlight);color:var(--dbg)}
+.empty{text-align:center;font-weight:500;font-size:clamp(13px,2.7cqw,17px)}
+.crow{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+.crow+.crow{margin-top:14px}
+.crow>span{font-weight:600;font-size:clamp(13px,2.8cqw,19px)}
+.cval{display:inline-block;border-radius:40px;padding:8px 18px;font-weight:700;font-size:clamp(14px,3cqw,20px);color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));overflow-wrap:anywhere}
+footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);min-height:150px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;font-size:14px;font-weight:500}
+.dark footer{background:linear-gradient(164deg,var(--dlight),var(--dbright) 50%,var(--dlight));color:var(--dbg)}
+@media(max-width:700px){.page{width:calc(100vw - 24px)}.top-nav{height:52px}.nav-links{gap:34px;padding-right:44px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="top-nav grad reveal r1">
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+    </div>
+    <button class="theme-toggle" id="tt" type="button" aria-label="Rejim"><svg id="ti" class="theme-icon" viewBox="0 0 32 32"></svg></button>
+  </nav>
+  <h2 class="section-title reveal r2">Yaxın tarixlərdə baş tutacaq kuboklar/turnirlər:</h2>
+  <div class="stage reveal r3">
+    <button class="arrow" id="prev" aria-label="Əvvəlki"><svg viewBox="0 0 30 44" fill="none" stroke="currentColor" stroke-width="7"><path d="M25 3 6 22l19 19"/></svg></button>
+    <div class="board grad" id="board">
+      <div class="view"><div class="track" id="track"></div></div>
+      <div class="actions">
+        <button class="abtn" data-type="komanda">Komanda axtaranlar</button>
+        <button class="abtn" data-type="oyuncu">Oyunçu axtaranlar</button>
+        <button class="abtn" id="contactBtn" type="button">Təşkilatçı ilə əlaqə</button>
+      </div>
+    </div>
+    <button class="arrow" id="next" aria-label="Sonrakı"><svg viewBox="0 0 30 44" fill="none" stroke="currentColor" stroke-width="7"><path d="m5 3 19 19L5 41"/></svg></button>
+  </div>
+  <div class="panel" id="panel"><div>
+    <form class="pbox grad" id="form" autocomplete="off" novalidate>
+      <div class="ptitle" id="ptitle"></div>
+      <label class="field" id="fName"><span id="lName"></span><input name="name" maxlength="60"><em class="err"></em></label>
+      <label class="field" id="fTeam" hidden><span>Komanda adı</span><input name="team" maxlength="60"><em class="err"></em></label>
+      <label class="field"><span>Oyun</span><input id="game" name="game" readonly tabindex="-1"></label>
+      <label class="field" id="fPhone"><span id="lPhone"></span><input name="phone" inputmode="tel" maxlength="30"><em class="err"></em></label>
+      <label class="field" id="fInsta"><span id="lInsta"></span><input name="insta" maxlength="60"><em class="err"></em></label>
+      <input class="hp" name="website" tabindex="-1" aria-hidden="true">
+      <div class="gbox" id="gbox"></div>
+      <button class="send" id="send" type="submit">Göndər</button>
+      <button class="send lbtn" id="lbtn" type="button"></button>
+      <div class="lwrap" id="lwrap"><div><div class="list" id="list"></div></div></div>
+    </form>
+  </div></div>
+  <div class="panel" id="cpanel"><div>
+    <div class="pbox grad" id="cbox">
+      <div class="crow"><span>Təşkilatçının Əlaqə nömrəsi:</span><a class="cval" id="cPhone"></a></div>
+      <div class="crow"><span>Təşkilatçının Instagram səhifəsi:</span><a class="cval" id="cInsta" target="_blank" rel="noopener noreferrer"></a></div>
+    </div>
+  </div></div>
+</div>
+<footer>
+  <div>İntellektuallar üçün hər şey...</div>
+  <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const API="https://script.google.com/macros/s/AKfycbwmhNC6zOAiK8yvus88tAmLm5BreL_5QRsCIQRtH3sJnjjqWL0tZMYrOPEhamqtRxx4_A/exec";
+const CLIENT_ID="";
+const ORG_PHONE="";
+const ORG_INSTA="onurelzh";
+const HOURS=26,AUTOPLAY=3000;
+const AUTH=!!(API&&CLIENT_ID);
+const $=id=>document.getElementById(id);
+const demo=[
+ {ad:"Turnirin / Kubokun adı",teskilatci:"Təşkilatçı",muellif:"Müəllif(lər)",vaxt:"Vaxt",yer:"Yer",haqq:"5",afisa:"",nomre:"",instagram:"piksel.iok"},
+ {ad:"İkinci kubok",teskilatci:"πksel",muellif:"Onur Əlizadə",vaxt:"10 oktyabr, 15:00",yer:"Bakı",haqq:"10",afisa:""}
+];
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function replay(box){[...box.children].forEach(e=>{e.style.animation="none";void e.offsetWidth;e.style.animation=""})}
+
+const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3M16 26.3v3M2.7 16h3M26.3 16h3M6.6 6.6l2.1 2.1M23.3 23.3l2.1 2.1M25.4 6.6l-2.1 2.1M8.7 23.3l-2.1 2.1"/></g>';
+const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
+function setTheme(d){document.body.classList.toggle("dark",d);$("ti").innerHTML=d?moon:sun;try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}}
+let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(e){}
+setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches);
+$("tt").onclick=()=>setTheme(!document.body.classList.contains("dark"));
+
+let items=[],idx=0,pos=0,timer,hover=false,busy=false,panelOpen=false;
+const track=$("track"),board=$("board");
+function slide(c){
+  const s=el("div","slide"),p=el("div","poster");
+  if(c.afisa){const i=new Image();i.src=c.afisa;i.alt=c.ad;i.onerror=()=>{i.remove();p.textContent="afişa bura yüklənəcək"};p.appendChild(i)}
+  else p.textContent="afişa bura yüklənəcək";
+  const f=el("div","info"),top=el("div");
+  top.append(el("div","n",c.ad),el("div","l",c.teskilatci),el("div","l",c.muellif),el("div","l",c.vaxt),el("div","l",c.yer));
+  const fee=String(c.haqq==null||c.haqq===""?"0":c.haqq).replace(/[^\d.,]/g,"")||"0";
+  f.append(top,el("div","fee","İştirak ₼ "+fee));
+  s.append(p,f);return s;
+}
+function go(p,anim=true){pos=p;if(!anim){track.style.transition="none"}else{void track.offsetWidth;track.style.transition=""}track.style.transform="translateX("+(-pos*100)+"%)"}
+function build(){
+  idx=0;track.innerHTML="";
+  const l=items.length>1?[items[items.length-1],...items,items[0]]:items;
+  l.forEach(c=>track.appendChild(slide(c)));
+  go(items.length>1?1:0,false);setGame();
+}
+function step(d){if(items.length<2||busy)return;busy=true;idx=(idx+d+items.length)%items.length;go(pos+d);setGame();setTimeout(()=>busy=false,700)}
+track.addEventListener("transitionend",()=>{
+  if(items.length<2)return;
+  if(pos===0)go(items.length,false);else if(pos===items.length+1)go(1,false);
+});
+function sched(){clearTimeout(timer);if(!hover&&!panelOpen)timer=setTimeout(()=>{step(1);sched()},AUTOPLAY)}
+board.addEventListener("mouseenter",()=>{hover=true;clearTimeout(timer)});
+board.addEventListener("mouseleave",()=>{hover=false;sched()});
+function press(b,d){clearTimeout(timer);b.classList.add("pr");setTimeout(()=>{b.classList.remove("pr");step(d);sched()},170)}
+$("prev").onclick=()=>press($("prev"),-1);
+$("next").onclick=()=>press($("next"),1);
+let sx=null;
+board.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;clearTimeout(timer)},{passive:true});
+board.addEventListener("touchend",e=>{if(sx!=null){const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)step(dx<0?1:-1)}sx=null;sched()});
+
+let token=null,myHash=null,ads=[],type=null,typeTimer;
+const TYPES={
+ komanda:{title:"Komanda axtarıram",list:"Komanda axtaranlar",badge:"Komanda axtarır",name:"Ad Soyad",phone:"Oyunçu əlaqə nömrəsi",insta:"Oyunçu Instagram hesabı",team:false},
+ oyuncu:{title:"Oyunçu axtarıram",list:"Oyunçu axtaranlar",badge:"Oyunçu axtarır",name:"Komanda kapitanının adı və soyadı",phone:"Kapitanın əlaqə nömrəsi",insta:"Kapitanın Instagram hesabı",team:true}
+};
+function post(o){return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(o)}).then(r=>r.json())}
+function onCred(r){
+  token=r.credential;$("gbox").style.display="none";
+  post({action:"me",token}).then(d=>{if(d.ok){myHash=d.o;renderList()}}).catch(()=>{});
+}
+function initG(){
+  if(!AUTH||!window.google||!google.accounts)return false;
+  google.accounts.id.initialize({client_id:CLIENT_ID,callback:onCred});
+  google.accounts.id.renderButton($("gbox"),{theme:"outline",size:"large",text:"signin_with",locale:"az"});
+  return true;
+}
+$("gbox").style.display=AUTH?"flex":"none";
+if(AUTH){const t=setInterval(()=>{if(initG())clearInterval(t)},300)}
+
+function adEl(a,i){
+  const e=el("div","ad");e.style.animationDelay=(i*.07)+"s";
+  e.append(el("span","b",TYPES[a.type].badge),el("div","t",a.name));
+  if(a.team)e.appendChild(el("div","d","Komanda: "+a.team));
+  e.append(el("div","d","Oyun: "+a.game),el("div","d","Nömrə: "+a.phone));
+  if(a.insta){
+    const d=el("div","d","Instagram: "),l=el("a",null,"@"+a.insta);
+    l.href="https://www.instagram.com/"+a.insta;l.target="_blank";l.rel="noopener noreferrer";l.style.textDecoration="underline";
+    d.appendChild(l);e.appendChild(d);
+  }
+  if(a.mine||(a.o&&a.o===myHash)){
+    const b=el("button","del","Sil");b.type="button";
+    b.onclick=async()=>{
+      b.textContent="...";
+      try{
+        if(AUTH){const d=await post({action:"delete",token,id:a.id});if(!d.ok)throw 0}
+        e.style.transition="opacity .3s,transform .3s";e.style.opacity=0;e.style.transform="scale(.95)";
+        setTimeout(()=>{ads=ads.filter(x=>x.id!==a.id);renderList()},300);
+      }catch(err){b.textContent="Sil"}
+    };
+    e.appendChild(b);
+  }
+  return e;
+}
+function renderList(){
+  const box=$("list");box.innerHTML="";
+  const now=Date.now();
+  const l=ads.filter(a=>a.type===type&&now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
+  if(!l.length){box.appendChild(el("p","empty","Hələ elan yoxdur."));return}
+  l.forEach((a,i)=>box.appendChild(adEl(a,i)));
+}
+
+const panel=$("panel"),form=$("form"),lwrap=$("lwrap");
+function typeTitle(t){
+  clearTimeout(typeTimer);const box=$("ptitle");box.textContent="";let i=0;
+  (function s(){if(i<t.length){box.textContent+=t[i++];typeTimer=setTimeout(s,35)}})();
+}
+function setGame(){$("game").value=items.length?items[idx].ad:"";setContact()}
+function setErr(id,m){const f=$(id);f.classList.toggle("bad",!!m);f.querySelector(".err").textContent=m||""}
+function nameErr(v){if(/[^\p{L}\s.'-]/u.test(v))return "Adınızı düzgün yazın";if(v.length<6)return "Tam yazın";return ""}
+function phoneErr(v){return /^\+?[\d\s()-]+$/.test(v)&&v.length>=9&&v.length<=14?"":"Əlaqə nömrənizi düzgün yazın"}
+function instaVal(v){return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/[\/?].*$/,"")}
+function setBtns(t){document.querySelectorAll("[data-type]").forEach(x=>x.classList.toggle("on",x.dataset.type===t))}
+document.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{
+  const t=b.dataset.type;
+  if(panel.classList.contains("open")&&type===t){panel.classList.remove("open");setBtns(null);panelOpen=false;sched();return}
+  $("cpanel").classList.remove("open");$("contactBtn").classList.remove("on");
+  type=t;const T=TYPES[t];
+  setBtns(t);form.reset();
+  ["fName","fTeam","fPhone","fInsta"].forEach(id=>setErr(id,""));
+  $("lName").textContent=T.name;$("lPhone").textContent=T.phone;$("lInsta").textContent=T.insta;
+  $("fTeam").hidden=!T.team;$("lbtn").textContent=T.list;
+  lwrap.classList.remove("open");setGame();renderList();
+  panelOpen=true;clearTimeout(timer);
+  panel.classList.add("open");replay(form);typeTitle(T.title);
+  setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
+});
+$("lbtn").onclick=()=>{
+  renderList();lwrap.classList.toggle("open");
+  setTimeout(()=>lwrap.scrollIntoView({behavior:"smooth",block:"nearest"}),300);
+};
+form.addEventListener("input",e=>{const f=e.target.closest(".field");if(f)f.classList.remove("bad")});
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(form.website.value)return;
+  const T=TYPES[type],btn=$("send");
+  const name=form.name.value.trim(),team=form.team.value.trim(),phone=form.phone.value.trim(),insta=instaVal(form.insta.value);
+  const errs={
+    fName:nameErr(name),
+    fTeam:T.team&&!team?"Komanda adını yazın":"",
+    fPhone:phoneErr(phone),
+    fInsta:insta&&!/^[A-Za-z0-9._]{1,30}$/.test(insta)?"Instagram hesabını düzgün yazın":""
+  };
+  Object.entries(errs).forEach(([k,m])=>setErr(k,m));
+  if(Object.values(errs).some(Boolean))return;
+  if(AUTH&&!token){
+    const g=$("gbox");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");
+    btn.textContent="Əvvəlcə Google ilə daxil olun";setTimeout(()=>btn.textContent="Göndər",2500);
+    return;
+  }
+  btn.classList.add("load");btn.textContent="Göndərilir...";
+  const d={action:"add",token,type,name,team:T.team?team:"",game:$("game").value,phone,insta};
+  try{
+    let res={ok:1,id:String(Date.now())};
+    if(AUTH){
+      res=await post(d);
+      if(res.err==="auth"){token=null;$("gbox").style.display="flex";initG();throw "auth"}
+      if(!res.ok)throw 0;
+      if(res.o)myHash=res.o;
+    }
+    ads.unshift({type,name,team:d.team,game:d.game,phone,insta,id:res.id,o:res.o,mine:!AUTH,tarix:new Date().toISOString()});
+    btn.classList.remove("load");btn.classList.add("ok");btn.textContent="Göndərildi ✓";
+    setTimeout(()=>{
+      btn.classList.remove("ok");btn.textContent="Göndər";
+      form.reset();setGame();renderList();lwrap.classList.add("open");
+    },1300);
+  }catch(err){
+    btn.classList.remove("load");
+    btn.textContent=err==="auth"?"Yenidən Google ilə daxil olun":"Xəta, yenidən cəhd edin";
+    setTimeout(()=>btn.textContent="Göndər",2500);
+  }
+});
+
+function setContact(){
+  const c=items[idx]||{};
+  const ph=String(c.nomre||ORG_PHONE||"").trim();
+  const ig=String(c.instagram||ORG_INSTA||"").trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/[\/?].*$/,"");
+  const a=$("cPhone"),b=$("cInsta");
+  a.textContent=ph||"—";if(ph)a.href="tel:"+ph.replace(/[^\d+]/g,"");else a.removeAttribute("href");
+  b.textContent=ig?"@"+ig:"—";if(ig)b.href="https://www.instagram.com/"+ig;else b.removeAttribute("href");
+}
+$("contactBtn").onclick=()=>{
+  const cp=$("cpanel"),cb=$("contactBtn");
+  if(cp.classList.contains("open")){cp.classList.remove("open");cb.classList.remove("on");panelOpen=false;sched();return}
+  panel.classList.remove("open");setBtns(null);
+  setContact();cp.classList.add("open");cb.classList.add("on");replay($("cbox"));
+  panelOpen=true;clearTimeout(timer);
+  setTimeout(()=>cp.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
+};
+
+async function load(){
+  let data={contests:[],ads:[]},why="";
+  try{const r=await fetch(API,{cache:"no-store"});const t=await r.text();try{data=JSON.parse(t)}catch(e){why="Cavab JSON deyil (Apps Script icazə/dağıtım problemi): "+t.slice(0,80)}}catch(e){why="Sorğu bloklandı: "+e.message}
+  items=data.contests||[];
+  ads=data.ads||[];
+  if(!items.length){track.innerHTML='<p class="empty">Kubok yüklənmədi'+(why?"<br><small>"+why.replace(/</g,"&lt;")+"</small>":" (cədvəldə kubok sətri yoxdur)")+'</p>';return}
+  build();sched();
+}
+load();
+</script>
+</body>
+</html>
