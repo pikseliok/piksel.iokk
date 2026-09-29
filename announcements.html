@@ -17,7 +17,7 @@ body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins
 body.dark{background:var(--dark-bg);color:var(--dark-ink);--btn1:#0B2A7A;--btn2:#001E6F;--btnt:#9DC3FF;--err:#9B0022}
 button,input{font:inherit}
 a{color:inherit;text-decoration:none}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 40px}
+.page{width:min(95vw,1000px);margin:0 auto;padding:12px 0 40px}
 .reveal{opacity:0;transform:translateY(34px);animation:up .85s cubic-bezier(.18,.8,.24,1) forwards}
 .r1{animation-delay:.05s}.r2{animation-delay:.14s}.r3{animation-delay:.23s}
 @keyframes up{to{opacity:1;transform:none}}
@@ -30,13 +30,13 @@ a{color:inherit;text-decoration:none}
 .dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-icon{width:25px;height:25px}
-.section-title{text-align:center;color:var(--deep);font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;margin:22px 0 14px;transition:color var(--tr)}
+.section-title{text-align:center;color:var(--deep);font-size:clamp(18px,3vw,26px);line-height:1.2;font-weight:700;letter-spacing:-.5px;margin:22px 0 14px;transition:color var(--tr)}
 .dark .section-title{color:var(--dark-light)}
-.stage{display:flex;align-items:center;gap:4px}
-.arrow{flex:0 0 34px;height:64px;border:0;background:none;cursor:pointer;color:var(--bright);display:grid;place-items:center;transition:transform .25s,color var(--tr)}
-.dark .arrow{color:var(--dark-light)}
-.arrow:hover{transform:scale(1.15)}
-.arrow svg{width:30px;height:44px}
+.stage{display:flex;align-items:center;gap:8px}
+.arrow{flex:0 0 clamp(40px,6vw,56px);height:clamp(56px,9vw,72px);border:0;cursor:pointer;color:var(--btnt);border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--btn1),var(--btn2));box-shadow:0 6px 16px rgba(0,20,110,.15);transition:transform .2s,box-shadow .2s}
+.arrow:hover{transform:scale(1.06)}
+.arrow:active,.arrow.pr{transform:scale(.86);box-shadow:inset 0 3px 8px rgba(0,20,110,.3)}
+.arrow svg{width:clamp(16px,2.6vw,24px);height:auto;aspect-ratio:30/44}
 .board{flex:1;min-width:0;border-radius:31px;padding:16px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
 .view{overflow:hidden}
 .track{display:flex;transition:transform .6s cubic-bezier(.22,.8,.25,1)}
@@ -45,9 +45,9 @@ a{color:inherit;text-decoration:none}
 .dark .poster{background:var(--dark-bg);color:var(--dark-light)}
 .poster img{width:100%;height:100%;object-fit:cover;display:block}
 .info{display:flex;flex-direction:column;min-width:0;justify-content:space-between;gap:6px}
-.info .n{font-size:16px;font-weight:700;line-height:1.15;letter-spacing:-.4px}
-.info .l{font-size:12.5px;line-height:1.35;overflow-wrap:anywhere}
-.fee{align-self:flex-end;background:var(--ink);color:var(--deep);border-radius:40px;padding:7px 14px;font-size:13px;font-weight:600;white-space:nowrap}
+.info .n{font-weight:700;line-height:1.15;letter-spacing:-.4px;overflow-wrap:anywhere}
+.info .l{line-height:1.35;overflow-wrap:anywhere}
+.fee{align-self:flex-end;background:var(--ink);color:var(--deep);border-radius:40px;font-weight:600;white-space:nowrap}
 .dark .fee{background:var(--dark-bg);color:var(--dark-light)}
 .actions{display:grid;gap:10px;margin-top:14px}
 .abtn{display:block;text-align:center;border:0;cursor:pointer;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));border-radius:40px;padding:12px 10px;font-size:16px;font-weight:700;letter-spacing:-.3px;transition:transform .3s,box-shadow .3s}
@@ -57,341 +57,15 @@ a{color:inherit;text-decoration:none}
 .panel.open{grid-template-rows:1fr;opacity:1;transform:none;margin-top:16px}
 .panel>div{overflow:hidden;min-height:0}
 .pbox{border-radius:31px;padding:22px 20px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.panel.open .pbox>*{animation:up .7s cubic-bezier(.18,.8,.24,1) both}
+.panel.open .pbox>*:nth-child(2){animation-delay:.1s}
+.panel.open .pbox>*:nth-child(3){animation-delay:.15s}
+.panel.open .pbox>*:nth-child(4){animation-delay:.2s}
+.panel.open .pbox>*:nth-child(5){animation-delay:.25s}
+.panel.open .pbox>*:nth-child(6){animation-delay:.3s}
+.panel.open .pbox>*:nth-child(n+7){animation-delay:.35s}
+.panel .pbox>*{opacity:0;transform:translateY(34px)}
+.panel.open .pbox>*{opacity:1;transform:none}
 .ptitle{font-size:20px;font-weight:700;letter-spacing:-.5px;min-height:28px;margin-bottom:14px}
 .ptitle::after{content:"|";margin-left:2px;animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
-.field{display:block;margin-bottom:10px}
-.field span{display:block;font-size:12px;font-weight:600;margin:0 0 4px 12px}
-.field input{width:100%;border:0;outline:0;border-radius:18px;padding:11px 14px;font-size:14px;font-weight:500;color:var(--deep);background:var(--ink);transition:box-shadow .25s}
-.dark .field input{background:var(--dark-bg);color:var(--dark-light)}
-.field input:focus{box-shadow:0 0 0 3px currentColor}
-.field input[readonly]{opacity:.75;cursor:default}
-.err{display:none;font-style:normal;font-size:11.5px;font-weight:600;margin:4px 0 0 12px;color:var(--err)}
-.field.bad .err{display:block}
-.field.bad input{box-shadow:0 0 0 2px var(--err)}
-.hp{position:absolute;left:-9999px;opacity:0}
-.gbox{display:flex;justify-content:center;margin:6px 0;min-height:44px}
-.gbox.shake{animation:shake .4s}
-@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-.send{width:100%;margin-top:6px;border:0;cursor:pointer;border-radius:40px;padding:12px;font-size:16px;font-weight:700;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));transition:transform .3s,letter-spacing .4s,opacity .3s}
-.send:hover{transform:translateY(-2px)}
-.send.load{opacity:.7;pointer-events:none;animation:pulse 1s ease-in-out infinite}
-.send.ok{transform:scale(1.03);letter-spacing:1px;pointer-events:none}
-@keyframes pulse{50%{transform:scale(.97)}}
-.lbtn{font-size:15px;margin-top:10px}
-.lwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s ease,margin .5s}
-.lwrap.open{grid-template-rows:1fr;margin-top:12px}
-.lwrap>div{overflow:hidden;min-height:0}
-.list{display:grid;gap:10px}
-.ad{border-radius:22px;padding:13px 16px;background:var(--ink);color:var(--deep);animation:up .6s cubic-bezier(.18,.8,.24,1) both}
-.dark .ad{background:var(--dark-bg);color:var(--dark-light)}
-.ad .b{display:inline-block;font-size:11px;font-weight:700;background:var(--deep);color:var(--ink);border-radius:20px;padding:2px 10px;margin-bottom:5px}
-.dark .ad .b{background:var(--dark-light);color:var(--dark-bg)}
-.ad .t{font-size:15px;font-weight:700}
-.ad .d{font-size:12.5px;line-height:1.4;overflow-wrap:anywhere}
-.del{border:0;cursor:pointer;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;margin-top:6px;background:var(--deep);color:var(--ink)}
-.dark .del{background:var(--dark-light);color:var(--dark-bg)}
-.empty{text-align:center;font-size:13px;font-weight:500}
-/* ölçü uyğunlaşması: telefon və kompüter */
-.board{container-type:inline-size}
-.slide{grid-template-columns:34% 1fr;gap:clamp(10px,3cqw,22px);align-items:start}
-.poster{width:100%;align-self:start;font-size:clamp(11px,2.6cqw,17px)}
-.info{align-self:stretch}
-.info .n{font-size:clamp(14px,4cqw,27px)}
-.info .l{font-size:clamp(12px,3cqw,19px)}
-.fee{font-size:clamp(13px,2.8cqw,19px);padding:clamp(7px,1.6cqw,12px) clamp(14px,3cqw,22px)}
-.abtn{font-size:clamp(15px,3.4cqw,23px);padding:clamp(12px,2.4cqw,18px) 10px}
-.actions{gap:clamp(10px,2cqw,16px)}
-.arrow{flex-basis:clamp(30px,5vw,46px)}
-.arrow svg{width:clamp(26px,4vw,38px);height:auto;aspect-ratio:30/44}
-.pbox{container-type:inline-size}
-.ptitle{font-size:clamp(20px,4.6cqw,32px)}
-.field span{font-size:clamp(12px,2.6cqw,17px)}
-.field input{font-size:clamp(14px,3cqw,20px);padding:clamp(11px,2cqw,16px) 16px}
-.err{font-size:clamp(11.5px,2.3cqw,15px)}
-.send{font-size:clamp(16px,3.4cqw,23px);padding:clamp(12px,2.2cqw,17px)}
-.lbtn{font-size:clamp(15px,3.2cqw,21px)}
-.ad .t{font-size:clamp(15px,3.2cqw,21px)}
-.ad .d{font-size:clamp(12.5px,2.7cqw,17px)}
-.del{font-size:clamp(12px,2.4cqw,16px)}
-.empty{font-size:clamp(13px,2.7cqw,17px)}
-.crow{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
-.crow+.crow{margin-top:14px}
-.crow>span{font-size:clamp(13px,2.8cqw,19px);font-weight:600}
-.cval{display:inline-block;border-radius:40px;padding:8px 18px;font-weight:700;font-size:clamp(14px,3cqw,20px);color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));overflow-wrap:anywhere;transition:transform .3s}
-a.cval[href]:hover{transform:translateY(-2px)}
-footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);min-height:150px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;font-size:14px;font-weight:500;transition:background var(--tr),color var(--tr)}
-.dark footer{background:linear-gradient(164deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
-@media(max-width:700px){.page{width:calc(100vw - 24px)}.top-nav{height:52px}.nav-links{gap:34px;padding-right:44px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
-</head>
-<body>
-<div class="page">
-  <nav class="top-nav grad reveal r1">
-    <div class="nav-links">
-      <a class="nav-link" href="index.html">Əsas Səhifə</a>
-      <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
-    </div>
-    <button class="theme-toggle" id="tt" type="button" aria-label="Rejim"><svg id="ti" class="theme-icon" viewBox="0 0 32 32"></svg></button>
-  </nav>
-
-  <h2 class="section-title reveal r2">Yaxın tarixlərdə baş tutacaq kuboklar/turnirlər:</h2>
-
-  <div class="stage reveal r3">
-    <button class="arrow" id="prev" aria-label="Əvvəlki"><svg viewBox="0 0 30 44" fill="none" stroke="currentColor" stroke-width="7"><path d="M25 3 6 22l19 19"/></svg></button>
-    <div class="board grad" id="board">
-      <div class="view"><div class="track" id="track"></div></div>
-      <div class="actions">
-        <button class="abtn" data-type="komanda">Komanda axtaranlar</button>
-        <button class="abtn" data-type="oyuncu">Oyunçu axtaranlar</button>
-        <button class="abtn" id="contactBtn" type="button">Təşkilatçı ilə əlaqə</button>
-      </div>
-    </div>
-    <button class="arrow" id="next" aria-label="Sonrakı"><svg viewBox="0 0 30 44" fill="none" stroke="currentColor" stroke-width="7"><path d="m5 3 19 19L5 41"/></svg></button>
-  </div>
-
-  <div class="panel" id="panel"><div>
-    <form class="pbox grad" id="form" autocomplete="off" novalidate>
-      <div class="ptitle" id="ptitle"></div>
-      <label class="field" id="fName"><span id="lName"></span><input name="name" maxlength="60"><em class="err"></em></label>
-      <label class="field" id="fTeam" hidden><span>Komanda adı</span><input name="team" maxlength="60"><em class="err"></em></label>
-      <label class="field"><span>Oyun</span><input id="game" name="game" readonly tabindex="-1"></label>
-      <label class="field" id="fPhone"><span id="lPhone"></span><input name="phone" inputmode="tel" maxlength="30"><em class="err"></em></label>
-      <label class="field" id="fInsta"><span id="lInsta"></span><input name="insta" maxlength="60"><em class="err"></em></label>
-      <input class="hp" name="website" tabindex="-1" aria-hidden="true">
-      <div class="gbox" id="gbox"></div>
-      <button class="send" id="send" type="submit">Göndər</button>
-      <button class="send lbtn" id="lbtn" type="button"></button>
-      <div class="lwrap" id="lwrap"><div><div class="list" id="list"></div></div></div>
-    </form>
-  </div></div>
-  <div class="panel" id="cpanel"><div>
-    <div class="pbox grad">
-      <div class="crow"><span>Təşkilatçının Əlaqə nömrəsi:</span><a class="cval" id="cPhone"></a></div>
-      <div class="crow"><span>Təşkilatçının Instagram səhifəsi:</span><a class="cval" id="cInsta" target="_blank" rel="noopener noreferrer"></a></div>
-    </div>
-  </div></div>
-</div>
-
-<footer>
-  <div>İntellektuallar üçün hər şey...</div>
-  <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
-  <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
-</footer>
-
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-const API = "";  // Apps Script Web App linki
-const CLIENT_ID = "";  // Google OAuth Client ID
-const ORG_PHONE = "";  // ehtiyat: Sheet-də yarış üçün nömrə yoxdursa
-const ORG_INSTA = "onurelzh";  // ehtiyat Instagram
-const HOURS = 26;
-const AUTH = !!(API && CLIENT_ID);
-const $ = id => document.getElementById(id);
-const demo = [
-  {ad:"Turnirin / Kubokun adı",teskilatci:"Təşkilatçı",muellif:"Müəllif(lər)",vaxt:"Vaxt",yer:"Yer",haqq:"5",afisa:"",nomre:"+994 50 000 00 00",instagram:"piksel.iok"},
-  {ad:"İkinci kubok",teskilatci:"πksel",muellif:"Onur Əlizadə",vaxt:"10 oktyabr, 15:00",yer:"Bakı",haqq:"10",afisa:""}
-];
-function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-
-/* theme */
-const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3M16 26.3v3M2.7 16h3M26.3 16h3M6.6 6.6l2.1 2.1M23.3 23.3l2.1 2.1M25.4 6.6l-2.1 2.1M8.7 23.3l-2.1 2.1"/></g>';
-const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
-function setTheme(d){document.body.classList.toggle("dark",d);$("ti").innerHTML=d?moon:sun;try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}}
-let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(e){}
-setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches);
-$("tt").onclick=()=>setTheme(!document.body.classList.contains("dark"));
-
-/* carousel */
-let items=[],idx=0,pos=0,timer,hover=false,busy=false,panelOpen=false;
-const track=$("track");
-function slide(c){
-  const s=el("div","slide"),p=el("div","poster");
-  if(c.afisa){const i=new Image();i.src=c.afisa;i.alt=c.ad;i.onerror=()=>{i.remove();p.textContent="afişa bura yüklənəcək"};p.appendChild(i)}
-  else p.textContent="afişa bura yüklənəcək";
-  const f=el("div","info"),top=el("div");
-  top.append(el("div","n",c.ad),el("div","l",c.teskilatci),el("div","l",c.muellif),el("div","l",c.vaxt),el("div","l",c.yer));
-  f.append(top,el("div","fee","İştirak ₼ "+(c.haqq||"0")));
-  s.append(p,f);return s;
-}
-function go(p,anim=true){pos=p;if(!anim){track.style.transition="none"}else{void track.offsetWidth;track.style.transition=""}track.style.transform=`translateX(${-pos*100}%)`}
-function build(){
-  idx=0;track.innerHTML="";
-  const list=items.length>1?[items[items.length-1],...items,items[0]]:items;
-  list.forEach(c=>track.appendChild(slide(c)));
-  go(items.length>1?1:0,false);setGame();
-}
-function step(d){if(items.length<2||busy)return;busy=true;idx=(idx+d+items.length)%items.length;go(pos+d);setGame();setTimeout(()=>busy=false,700)}
-track.addEventListener("transitionend",()=>{
-  if(items.length<2)return;
-  if(pos===0)go(items.length,false);else if(pos===items.length+1)go(1,false);
-});
-function sched(){clearTimeout(timer);if(!hover&&!panelOpen)timer=setTimeout(()=>{step(1);sched()},5000)}
-const board=$("board");
-board.addEventListener("mouseenter",()=>{hover=true;clearTimeout(timer)});
-board.addEventListener("mouseleave",()=>{hover=false;sched()});
-$("prev").onclick=()=>{step(-1);sched()};
-$("next").onclick=()=>{step(1);sched()};
-let sx=null;
-board.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;clearTimeout(timer)},{passive:true});
-board.addEventListener("touchend",e=>{if(sx!=null){const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)step(dx<0?1:-1)}sx=null;sched()});
-
-/* auth + elanlar */
-let token=null,myHash=null,ads=[],type=null,typeTimer;
-const TYPES={
- komanda:{title:"Komanda axtarıram",list:"Komanda axtaranlar",badge:"Komanda axtarır",name:"Ad Soyad",phone:"Oyunçu əlaqə nömrəsi",insta:"Oyunçu Instagram hesabı",team:false},
- oyuncu:{title:"Oyunçu axtarıram",list:"Oyunçu axtaranlar",badge:"Oyunçu axtarır",name:"Komanda kapitanının adı və soyadı",phone:"Kapitanın əlaqə nömrəsi",insta:"Kapitanın Instagram hesabı",team:true}
-};
-function post(o){return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(o)}).then(r=>r.json())}
-function onCred(r){
-  token=r.credential;$("gbox").style.display="none";
-  post({action:"me",token}).then(d=>{if(d.ok){myHash=d.o;renderList()}}).catch(()=>{});
-}
-function initG(){
-  if(!AUTH||!window.google||!google.accounts)return false;
-  google.accounts.id.initialize({client_id:CLIENT_ID,callback:onCred});
-  google.accounts.id.renderButton($("gbox"),{theme:"outline",size:"large",text:"signin_with",locale:"az"});
-  return true;
-}
-$("gbox").style.display=AUTH?"flex":"none";
-if(AUTH){const t=setInterval(()=>{if(initG())clearInterval(t)},300)}
-
-function adEl(a,i){
-  const e=el("div","ad");e.style.animationDelay=(i*.07)+"s";
-  e.append(el("span","b",TYPES[a.type].badge),el("div","t",a.name));
-  if(a.team)e.appendChild(el("div","d","Komanda: "+a.team));
-  e.append(el("div","d","Oyun: "+a.game),el("div","d","Nömrə: "+a.phone));
-  if(a.insta){
-    const d=el("div","d","Instagram: "),l=el("a",null,"@"+a.insta);
-    l.href="https://www.instagram.com/"+a.insta;l.target="_blank";l.rel="noopener noreferrer";l.style.textDecoration="underline";
-    d.appendChild(l);e.appendChild(d);
-  }
-  if(a.mine||(a.o&&a.o===myHash)){
-    const b=el("button","del","Sil");b.type="button";
-    b.onclick=async()=>{
-      b.textContent="...";
-      try{
-        if(AUTH){const d=await post({action:"delete",token,id:a.id});if(!d.ok)throw 0}
-        e.style.transition="opacity .3s,transform .3s";e.style.opacity=0;e.style.transform="scale(.95)";
-        setTimeout(()=>{ads=ads.filter(x=>x.id!==a.id);renderList()},300);
-      }catch(err){b.textContent="Sil"}
-    };
-    e.appendChild(b);
-  }
-  return e;
-}
-function renderList(){
-  const box=$("list");box.innerHTML="";
-  const now=Date.now();
-  const l=ads.filter(a=>a.type===type&&now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
-  if(!l.length){box.appendChild(el("p","empty","Hələ elan yoxdur."));return}
-  l.forEach((a,i)=>box.appendChild(adEl(a,i)));
-}
-
-/* form panel */
-const panel=$("panel"),form=$("form"),lwrap=$("lwrap");
-function typeTitle(t){
-  clearTimeout(typeTimer);const box=$("ptitle");box.textContent="";let i=0;
-  (function s(){if(i<t.length){box.textContent+=t[i++];typeTimer=setTimeout(s,35)}})();
-}
-function setGame(){$("game").value=items.length?items[idx].ad:"";setContact()}
-function setErr(id,m){const f=$(id);f.classList.toggle("bad",!!m);f.querySelector(".err").textContent=m||""}
-function nameErr(v){if(/[^\p{L}\s.'-]/u.test(v))return "Adınızı düzgün yazın";if(v.length<6)return "Tam yazın";return ""}
-function phoneErr(v){return /^\+?[\d\s()-]+$/.test(v)&&v.length>=9&&v.length<=14?"":"Əlaqə nömrənizi düzgün yazın"}
-function instaVal(v){return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/[\/?].*$/,"")}
-function setBtns(t){document.querySelectorAll("[data-type]").forEach(x=>x.classList.toggle("on",x.dataset.type===t))}
-function closePanel(){panel.classList.remove("open");setBtns(null);panelOpen=false;sched()}
-document.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{
-  const t=b.dataset.type;
-  if(panel.classList.contains("open")&&type===t){closePanel();return}
-  $("cpanel").classList.remove("open");$("contactBtn").classList.remove("on");
-  type=t;const T=TYPES[t];
-  setBtns(t);form.reset();
-  ["fName","fTeam","fPhone","fInsta"].forEach(id=>setErr(id,""));
-  $("lName").textContent=T.name;$("lPhone").textContent=T.phone;$("lInsta").textContent=T.insta;
-  $("fTeam").hidden=!T.team;$("lbtn").textContent=T.list;
-  lwrap.classList.remove("open");setGame();renderList();
-  panelOpen=true;clearTimeout(timer);
-  panel.classList.add("open");typeTitle(T.title);
-  setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
-});
-$("lbtn").onclick=()=>{
-  renderList();lwrap.classList.toggle("open");
-  setTimeout(()=>lwrap.scrollIntoView({behavior:"smooth",block:"nearest"}),300);
-};
-form.addEventListener("input",e=>{const f=e.target.closest(".field");if(f)f.classList.remove("bad")});
-form.addEventListener("submit",async e=>{
-  e.preventDefault();
-  if(form.website.value)return;
-  const T=TYPES[type],btn=$("send");
-  const name=form.name.value.trim(),team=form.team.value.trim(),phone=form.phone.value.trim(),insta=instaVal(form.insta.value);
-  const errs={
-    fName:nameErr(name),
-    fTeam:T.team&&!team?"Komanda adını yazın":"",
-    fPhone:phoneErr(phone),
-    fInsta:insta&&!/^[A-Za-z0-9._]{1,30}$/.test(insta)?"Instagram hesabını düzgün yazın":""
-  };
-  Object.entries(errs).forEach(([k,m])=>setErr(k,m));
-  if(Object.values(errs).some(Boolean))return;
-  if(AUTH&&!token){
-    const g=$("gbox");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");
-    btn.textContent="Əvvəlcə Google ilə daxil olun";setTimeout(()=>btn.textContent="Göndər",2500);
-    return;
-  }
-  btn.classList.add("load");btn.textContent="Göndərilir...";
-  const d={action:"add",token,type,name,team:T.team?team:"",game:$("game").value,phone,insta};
-  try{
-    let res={ok:1,id:String(Date.now())};
-    if(AUTH){
-      res=await post(d);
-      if(res.err==="auth"){token=null;$("gbox").style.display="flex";initG();throw "auth"}
-      if(!res.ok)throw 0;
-      if(res.o)myHash=res.o;
-    }
-    ads.unshift({type,name,team:d.team,game:d.game,phone,insta,id:res.id,o:res.o,mine:!AUTH,tarix:new Date().toISOString()});
-    btn.classList.remove("load");btn.classList.add("ok");btn.textContent="Göndərildi ✓";
-    setTimeout(()=>{
-      btn.classList.remove("ok");btn.textContent="Göndər";
-      form.reset();setGame();renderList();lwrap.classList.add("open");
-    },1300);
-  }catch(err){
-    btn.classList.remove("load");
-    btn.textContent=err==="auth"?"Yenidən Google ilə daxil olun":"Xəta, yenidən cəhd edin";
-    setTimeout(()=>btn.textContent="Göndər",2500);
-  }
-});
-
-/* təşkilatçı əlaqəsi */
-function setContact(){
-  const c=items[idx]||{};
-  const ph=String(c.nomre||ORG_PHONE||"").trim();
-  const ig=String(c.instagram||ORG_INSTA||"").trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/^@/,"").replace(/[\/?].*$/,"");
-  const a=$("cPhone"),b=$("cInsta");
-  a.textContent=ph||"—";if(ph)a.href="tel:"+ph.replace(/[^\d+]/g,"");else a.removeAttribute("href");
-  b.textContent=ig?"@"+ig:"—";if(ig)b.href="https://www.instagram.com/"+ig;else b.removeAttribute("href");
-}
-$("contactBtn").onclick=()=>{
-  const cp=$("cpanel"),cb=$("contactBtn");
-  if(cp.classList.contains("open")){
-    cp.classList.remove("open");cb.classList.remove("on");panelOpen=false;sched();return;
-  }
-  panel.classList.remove("open");setBtns(null);
-  setContact();cp.classList.add("open");cb.classList.add("on");
-  panelOpen=true;clearTimeout(timer);
-  setTimeout(()=>cp.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
-};
-
-/* load */
-async function load(){
-  let data={contests:demo,ads:[]};
-  if(API){try{data=await (await fetch(API,{cache:"no-store"})).json()}catch(e){}}
-  items=data.contests&&data.contests.length?data.contests:demo;
-  ads=data.ads||[];
-  build();sched();
-}
-/* Hər yer gəldikdən sonra elanlar görünsün */
-setTimeout(load,700);
-</script>
-</body>
-</html>
