@@ -71,12 +71,8 @@ a{color:inherit;text-decoration:none}
 .field.bad .err{display:block}
 .field.bad input{box-shadow:0 0 0 2px var(--err)}
 .hp{position:absolute;left:-9999px;opacity:0}
-.gbox{display:flex;justify-content:center;margin:6px 0;min-height:44px}
-.gbox.shake{animation:shake .4s}
-@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 .send{width:100%;margin-top:6px;border:0;cursor:pointer;border-radius:40px;font-weight:700;color:var(--btnt);background:linear-gradient(135deg,var(--btn1),var(--btn2));font-size:clamp(16px,3.4cqw,23px);padding:clamp(12px,2.2cqw,17px);transition:transform .3s,opacity .3s}
 .send:hover{transform:translateY(-2px)}
-.send.load{opacity:.7;pointer-events:none}
 .send.ok{transform:scale(1.03);pointer-events:none}
 .lbtn{margin-top:10px;font-size:clamp(15px,3.2cqw,21px)}
 .lwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s,margin .5s}
@@ -116,8 +112,8 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
     <div class="board grad" id="board">
       <div class="view"><div class="track" id="track"></div></div>
       <div class="actions">
-        <button class="abtn" data-type="komanda">Komanda axtaranlar</button>
-        <button class="abtn" data-type="oyuncu">Oyunçu axtaranlar</button>
+        <button class="abtn" data-type="komanda">Komanda axtarıram</button>
+        <button class="abtn" data-type="oyuncu">Oyunçu axtarıram</button>
         <button class="abtn" id="contactBtn" type="button">Təşkilatçı ilə əlaqə</button>
       </div>
     </div>
@@ -132,7 +128,6 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
       <label class="field" id="fPhone"><span id="lPhone"></span><input name="phone" inputmode="tel" maxlength="30"><em class="err"></em></label>
       <label class="field" id="fInsta"><span id="lInsta"></span><input name="insta" maxlength="60"><em class="err"></em></label>
       <input class="hp" name="website" tabindex="-1" aria-hidden="true">
-      <div class="gbox" id="gbox"></div>
       <button class="send" id="send" type="submit">Göndər</button>
       <button class="send lbtn" id="lbtn" type="button"></button>
       <div class="lwrap" id="lwrap"><div><div class="list" id="list"></div></div></div>
@@ -150,19 +145,13 @@ footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--dee
   <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
   <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-const API="https://script.google.com/macros/s/AKfycbwmhNC6zOAiK8yvus88tAmLm5BreL_5QRsCIQRtH3sJnjjqWL0tZMYrOPEhamqtRxx4_A/exec";
-const CLIENT_ID="";
+const API="https://script.google.com/macros/s/AKfycbwN4XLEMdN1bTnOfpqVR-Nh-ILpkhAo08Bi6bbm21jwJB75XrNW3geEivf9ASJPusDv9Q/exec";
+let DEV="";try{DEV=localStorage.getItem("piksel-dev")||"";if(!DEV){DEV=(window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem("piksel-dev",DEV)}}catch(e){DEV=DEV||"dev"+Math.random().toString(36).slice(2)+Date.now()}
 const ORG_PHONE="";
 const ORG_INSTA="onurelzh";
 const HOURS=26,AUTOPLAY=3000;
-const AUTH=!!(API&&CLIENT_ID);
 const $=id=>document.getElementById(id);
-const demo=[
- {ad:"Turnirin / Kubokun adı",teskilatci:"Təşkilatçı",muellif:"Müəllif(lər)",vaxt:"Vaxt",yer:"Yer",haqq:"5",afisa:"",nomre:"",instagram:"piksel.iok"},
- {ad:"İkinci kubok",teskilatci:"πksel",muellif:"Onur Əlizadə",vaxt:"10 oktyabr, 15:00",yer:"Bakı",haqq:"10",afisa:""}
-];
 function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function replay(box){[...box.children].forEach(e=>{e.style.animation="none";void e.offsetWidth;e.style.animation=""})}
 
@@ -207,24 +196,15 @@ let sx=null;
 board.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;clearTimeout(timer)},{passive:true});
 board.addEventListener("touchend",e=>{if(sx!=null){const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)step(dx<0?1:-1)}sx=null;sched()});
 
-let token=null,myHash=null,ads=[],type=null,typeTimer;
+let ads=[],type=null,typeTimer;
 const TYPES={
- komanda:{title:"Komanda axtarıram",list:"Komanda axtaranlar",badge:"Komanda axtarır",name:"Ad Soyad",phone:"Oyunçu əlaqə nömrəsi",insta:"Oyunçu Instagram hesabı",team:false},
- oyuncu:{title:"Oyunçu axtarıram",list:"Oyunçu axtaranlar",badge:"Oyunçu axtarır",name:"Komanda kapitanının adı və soyadı",phone:"Kapitanın əlaqə nömrəsi",insta:"Kapitanın Instagram hesabı",team:true}
+ komanda:{title:"Komanda axtarıram",list:"Oyunçu axtaranlar",other:"oyuncu",badge:"Komanda axtarır",name:"Ad Soyad",phone:"Oyunçu əlaqə nömrəsi",insta:"Oyunçu Instagram hesabı",team:false},
+ oyuncu:{title:"Oyunçu axtarıram",list:"Komanda axtaranlar",other:"komanda",badge:"Oyunçu axtarır",name:"Komanda kapitanının adı və soyadı",phone:"Kapitanın əlaqə nömrəsi",insta:"Kapitanın Instagram hesabı",team:true}
 };
-function post(o){return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(o)}).then(r=>r.json())}
-function onCred(r){
-  token=r.credential;$("gbox").style.display="none";
-  post({action:"me",token}).then(d=>{if(d.ok){myHash=d.o;renderList()}}).catch(()=>{});
-}
-function initG(){
-  if(!AUTH||!window.google||!google.accounts)return false;
-  google.accounts.id.initialize({client_id:CLIENT_ID,callback:onCred});
-  google.accounts.id.renderButton($("gbox"),{theme:"outline",size:"large",text:"signin_with",locale:"az"});
-  return true;
-}
-$("gbox").style.display=AUTH?"flex":"none";
-if(AUTH){const t=setInterval(()=>{if(initG())clearInterval(t)},300)}
+function post(o){o.dev=DEV;return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(o)}).then(r=>r.json())}
+function cacheGet(){try{return JSON.parse(localStorage.getItem("piksel-cache")||"null")}catch(e){return null}}
+function cacheSet(d){try{localStorage.setItem("piksel-cache",JSON.stringify(d))}catch(e){}}
+function save(){cacheSet({contests:items,ads:ads.map(a=>{const c={...a};delete c.p;return c})})}
 
 function adEl(a,i){
   const e=el("div","ad");e.style.animationDelay=(i*.07)+"s";
@@ -236,14 +216,15 @@ function adEl(a,i){
     l.href="https://www.instagram.com/"+a.insta;l.target="_blank";l.rel="noopener noreferrer";l.style.textDecoration="underline";
     d.appendChild(l);e.appendChild(d);
   }
-  if(a.mine||(a.o&&a.o===myHash)){
+  if(a.mine){
     const b=el("button","del","Sil");b.type="button";
     b.onclick=async()=>{
       b.textContent="...";
       try{
-        if(AUTH){const d=await post({action:"delete",token,id:a.id});if(!d.ok)throw 0}
+        if(a.p)await a.p;
+        const d=await post({action:"delete",id:a.id});if(!d.ok)throw 0;
         e.style.transition="opacity .3s,transform .3s";e.style.opacity=0;e.style.transform="scale(.95)";
-        setTimeout(()=>{ads=ads.filter(x=>x.id!==a.id);renderList()},300);
+        setTimeout(()=>{ads=ads.filter(x=>x!==a);save();renderList()},300);
       }catch(err){b.textContent="Sil"}
     };
     e.appendChild(b);
@@ -252,10 +233,14 @@ function adEl(a,i){
 }
 function renderList(){
   const box=$("list");box.innerHTML="";
-  const now=Date.now();
-  const l=ads.filter(a=>a.type===type&&now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
-  if(!l.length){box.appendChild(el("p","empty","Hələ elan yoxdur."));return}
-  l.forEach((a,i)=>box.appendChild(adEl(a,i)));
+  if(!type)return;
+  const now=Date.now(),T=TYPES[type];
+  const live=ads.filter(a=>now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
+  const mine=live.filter(a=>a.mine&&a.type===type),oth=live.filter(a=>a.type===T.other);
+  if(mine.length){box.appendChild(el("p","empty","Sənin elanın:"));mine.forEach((a,i)=>box.appendChild(adEl(a,i)))}
+  box.appendChild(el("p","empty",T.list+":"));
+  if(!oth.length)box.appendChild(el("p","empty","Hələ elan yoxdur."));
+  oth.forEach((a,i)=>box.appendChild(adEl(a,i)));
 }
 
 const panel=$("panel"),form=$("form"),lwrap=$("lwrap");
@@ -288,7 +273,7 @@ $("lbtn").onclick=()=>{
   setTimeout(()=>lwrap.scrollIntoView({behavior:"smooth",block:"nearest"}),300);
 };
 form.addEventListener("input",e=>{const f=e.target.closest(".field");if(f)f.classList.remove("bad")});
-form.addEventListener("submit",async e=>{
+form.addEventListener("submit",e=>{
   e.preventDefault();
   if(form.website.value)return;
   const T=TYPES[type],btn=$("send");
@@ -301,32 +286,17 @@ form.addEventListener("submit",async e=>{
   };
   Object.entries(errs).forEach(([k,m])=>setErr(k,m));
   if(Object.values(errs).some(Boolean))return;
-  if(AUTH&&!token){
-    const g=$("gbox");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");
-    btn.textContent="Əvvəlcə Google ilə daxil olun";setTimeout(()=>btn.textContent="Göndər",2500);
-    return;
-  }
-  btn.classList.add("load");btn.textContent="Göndərilir...";
-  const d={action:"add",token,type,name,team:T.team?team:"",game:$("game").value,phone,insta};
-  try{
-    let res={ok:1,id:String(Date.now())};
-    if(AUTH){
-      res=await post(d);
-      if(res.err==="auth"){token=null;$("gbox").style.display="flex";initG();throw "auth"}
-      if(!res.ok)throw 0;
-      if(res.o)myHash=res.o;
-    }
-    ads.unshift({type,name,team:d.team,game:d.game,phone,insta,id:res.id,o:res.o,mine:!AUTH,tarix:new Date().toISOString()});
-    btn.classList.remove("load");btn.classList.add("ok");btn.textContent="Göndərildi ✓";
-    setTimeout(()=>{
-      btn.classList.remove("ok");btn.textContent="Göndər";
-      form.reset();setGame();renderList();lwrap.classList.add("open");
-    },1300);
-  }catch(err){
-    btn.classList.remove("load");
-    btn.textContent=err==="auth"?"Yenidən Google ilə daxil olun":"Xəta, yenidən cəhd edin";
-    setTimeout(()=>btn.textContent="Göndər",2500);
-  }
+  const ad={type,name,team:T.team?team:"",game:$("game").value,phone,insta,id:"t"+Date.now(),mine:true,tarix:new Date().toISOString()};
+  ads.unshift(ad);
+  ad.p=post({action:"add",type:ad.type,name:ad.name,team:ad.team,game:ad.game,phone:ad.phone,insta:ad.insta})
+    .then(r=>{if(!r.ok)throw r;ad.id=r.id;delete ad.p;save()})
+    .catch(r=>{ads=ads.filter(x=>x!==ad);save();renderList();btn.textContent=r&&r.err==="limit"?"Elan limiti dolub":"Xəta, yenidən cəhd edin";setTimeout(()=>btn.textContent="Göndər",2500)});
+  save();
+  btn.classList.add("ok");btn.textContent="Göndərildi ✓";
+  setTimeout(()=>{
+    btn.classList.remove("ok");btn.textContent="Göndər";
+    form.reset();setGame();renderList();lwrap.classList.add("open");
+  },1000);
 });
 
 function setContact(){
@@ -346,15 +316,27 @@ $("contactBtn").onclick=()=>{
   setTimeout(()=>cp.scrollIntoView({behavior:"smooth",block:"nearest"}),350);
 };
 
+function showMsg(m){track.innerHTML='<p class="empty">'+m+'</p>'}
 async function load(){
-  let data={contests:[],ads:[]},why="";
-  try{const r=await fetch(API,{cache:"no-store"});const t=await r.text();try{data=JSON.parse(t)}catch(e){why="Cavab JSON deyil (Apps Script icazə/dağıtım problemi): "+t.slice(0,80)}}catch(e){why="Sorğu bloklandı: "+e.message}
-  items=data.contests||[];
-  ads=data.ads||[];
-  if(!items.length){track.innerHTML='<p class="empty">Kubok yüklənmədi'+(why?"<br><small>"+why.replace(/</g,"&lt;")+"</small>":" (cədvəldə kubok sətri yoxdur)")+'</p>';return}
-  build();sched();
+  const c=cacheGet();
+  if(c&&c.contests&&c.contests.length){items=c.contests;ads=c.ads||[];build();sched()}
+  let data=null,why="";
+  try{
+    const r=await fetch(API+"?dev="+encodeURIComponent(DEV),{cache:"no-store"});
+    const t=await r.text();
+    try{data=JSON.parse(t)}catch(e){why="Cavab JSON deyil: "+t.slice(0,80)}
+  }catch(e){why="Sorğu bloklandı: "+e.message}
+  if(data){
+    const nc=data.contests||[];
+    const changed=JSON.stringify(nc)!==JSON.stringify(items);
+    ads=data.ads||[];
+    if(changed){items=nc;if(items.length){build();sched()}}
+    save();
+    if(!items.length)showMsg("Hələ kubok əlavə olunmayıb");
+    if(panel.classList.contains("open"))renderList();
+  }else if(!items.length)showMsg("Kubok yüklənmədi<br><small>"+why.replace(/</g,"&lt;")+"</small>");
 }
 load();
 </script>
 </body>
-</html>
+  </html>
