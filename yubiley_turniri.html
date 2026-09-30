@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>πksel.iok - Yubiley Turniri</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+  --mode-bg-light:linear-gradient(135deg,#9DC3FF 0%,#8DB8F5 50%,#9DC3FF 100%);
+  --mode-bg-dark:linear-gradient(135deg,#00072C 0%,#001044 50%,#00072C 100%);
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+html{scroll-behavior:smooth}
+html,body{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition);-webkit-tap-highlight-color:transparent}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block;overflow:visible}
+.main-container{width:100%;display:flex;flex-direction:column;gap:16px;position:relative;margin-top:18px;padding-bottom:56px}
+.blur-content{display:flex;flex-direction:column;gap:16px;transition:filter .5s cubic-bezier(.25,1,.5,1);will-change:filter}
+body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
+.info-card,.tours-card,.q-card{width:100%;border-radius:28px;padding:24px 26px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition),box-shadow .3s ease,transform .3s ease}
+.dark .info-card,.dark .tours-card,.dark .q-card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.game-title{font-size:30px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.7px;margin-bottom:16px}
+.dark .game-title{color:var(--dark-ink)}
+.info-row{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:5px}
+.dark .info-row{color:var(--dark-ink)}
+.info-row:last-child{margin-bottom:0}
+.info-label{font-weight:700}
+.info-val{font-weight:400}
+.tour-buttons{display:flex;flex-direction:column;gap:8px}
+.tour-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:12px 16px;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;text-align:left;transition:background .35s ease,color .35s ease,border .35s ease,transform .25s ease,box-shadow .25s ease;-webkit-tap-highlight-color:transparent}
+.dark .tour-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.10)}
+.tour-btn.active{background:var(--mode-bg-light);color:var(--deep);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(0,30,111,.08),0 5px 14px rgba(0,20,100,.08)}
+.dark .tour-btn.active{background:var(--mode-bg-dark);color:var(--dark-light);border-color:rgba(157,195,255,.12);box-shadow:inset 0 0 0 1px rgba(157,195,255,.08),0 5px 14px rgba(0,0,0,.16)}
+.tour-btn:active{transform:scale(.985)}
+.global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:14px 16px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.10);transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease;-webkit-tap-highlight-color:transparent}
+.dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}
+.questions-container{display:flex;flex-direction:column;gap:16px}
+.q-text{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:14px}
+.dark .q-text{color:var(--dark-ink)}
+.q-text b{font-weight:700}
+.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:10px}
+.req-img{width:100%;max-width:240px;border-radius:12px;cursor:pointer;display:block;transform-origin:center center;transition:transform .5s cubic-bezier(.25,1,.5,1),box-shadow .5s ease;will-change:transform;position:relative;z-index:1}
+.toggle-btn{display:inline-flex;align-items:center;gap:7px;background:var(--mode-bg-light);color:var(--deep);border:none;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .35s ease,color .35s ease,transform .2s ease,box-shadow .25s ease}
+.dark .toggle-btn{background:var(--mode-bg-dark);color:var(--dark-light)}
+.toggle-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(0,20,100,.12)}
+.dark .toggle-btn:hover{box-shadow:0 5px 14px rgba(0,0,0,.18)}
+.arrow-icon{width:10px;height:10px;fill:currentColor;transition:transform .3s ease}
+.ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}
+.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}
+.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:12px;padding-top:12px}
+.q-card.active .arrow-icon{transform:rotate(180deg)}
+.ans-row{font-size:14px;font-weight:500;color:var(--ink);line-height:1.55;margin-bottom:7px}
+.dark .ans-row{color:var(--dark-ink)}
+.ans-row:last-child{margin-bottom:0}
+.ans-label{font-weight:700}
+.dark .ans-label{color:var(--dark-ink)}
+.ans-row a{color:var(--ink);text-decoration:underline;word-break:break-all}
+.dark .ans-row a{color:var(--dark-ink)}
+.author-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.copy-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease;-webkit-tap-highlight-color:transparent}
+.dark .copy-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
+.copy-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.28)}
+.dark .copy-btn:hover{background:rgba(0,7,44,.2)}
+.copy-btn.copied{background:var(--mode-bg-light);color:var(--deep)}
+.dark .copy-btn.copied{background:var(--mode-bg-dark);color:var(--dark-light)}
+.copy-icon{width:16px;height:16px;display:block}
+.copy-icon .check-path{display:none}
+.copy-btn.copied .copy-icon .clip-path{display:none}
+.copy-btn.copied .copy-icon .check-path{display:block}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.q-card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media (max-width:700px){.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:52px;padding-left:18px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}.info-card,.tours-card,.q-card{border-radius:22px;padding:18px 18px}.game-title{font-size:22px}footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
+@media (max-width:420px){.page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}.game-title{font-size:20px}}
+@keyframes sitePageFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+body > *:not(footer),body > *:not(footer) *{animation:sitePageFadeUp .45s cubic-bezier(.22,.8,.25,1) backwards}
+body > .req-img,.theme-toggle,.theme-toggle *{animation:none!important}
+footer,footer *{animation:none!important}
+@media (prefers-reduced-motion:reduce){body > *:not(footer),body > *:not(footer) *{animation:none!important}}
+</style>
+</head>
+
+<body>
+<div class="page">
+<nav class="top-nav" aria-label="Əsas naviqasiya">
+<div class="nav-links">
+<a class="nav-link" href="index.html">Əsas Səhifə</a>
+<a class="nav-link active" href="packages.html">Sual Paketləri</a>
+</div>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+<svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+</button>
+</nav>
+
+  <div class="main-container" id="mainContainer">
+
+    <div class="blur-content">
+
+      <div class="info-card">
+
+        <div class="game-title">
+          Yubiley turniri
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Təşkilatçı:</span>
+          <span class="info-val">Paradoks İntellektual Oyunlar Klubu</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Redaktor:</span>
+          <span class="info-val"></span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Müəllif(lər):</span>
+          <span class="info-val">
+            Məmmədli Nurşad, Bəylərov Kamal, Cəfərzadə Yəhya, Məmmədov Şəmil, Vəlili Murad
+          </span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Oynadığı tarix:</span>
+          <span class="info-val"></span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Əlavə olunduğu tarix:</span>
+          <span class="info-val">01.10.2026</span>
+        </div>
+
+      </div>
+
+<div class="tours-card">
+<div class="tour-buttons">
+<button class="tour-btn active" onclick="loadTour(1)">I tur</button>
+<button class="tour-btn" onclick="loadTour(2)">II tur</button>
+<button class="tour-btn" onclick="loadTour(3)">III tur</button>
+</div>
+</div>
+
+<button class="global-toggle-btn" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
+<div class="questions-container" id="questionsContainer"></div>
+
+</div>
+</div>
+</div>
+
+<footer>
+<div class="footer-line">İntellektuallar üçün hər şey...</div>
+<a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+<a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const toursData = {
+1:[
+{id:1,question:`Bu həftə ABŞ prezidenti D.Tramp yüzlərlə şəxsin qarşısında iki İKSin həyatını əfv etməsi ölkədəki bir çox veqanın etirazına səbəb olub və bu qərar ikiüzlülük adlandırılıb. İKSlə əvəz olunan 2 sözü yazın.`,answer:`Hind toyuğu`,comment:`Hər il noyabr ayının sonlarında Ağ evdə təşkil olunan Şükran günü ziyafətində hind toyuğu yeyilir. Ötən əsrin ortalarından etibarən bir çox ABŞ prezidentinin hind toyuqlarını “əfv etməsi” adət halını almışdır. Veqanlar isə yalnız iki yox, bütün hind toyuqlarının “əfv edilməsini” tələb edirdi.`,author:`Məmmədli Nurşad`},
+{id:2,question:`Türk reper Ekincan Arslan istənilən halda beat’ə ehtiyacının olmadığını, çünki beynində hər zaman İKSin olduğunu deyir. İKSi eyni hərflə başlayıb bitən 1 sözlə yazın.`,answer:`Metronom`,author:`Bəylərov Kamal`},
+{id:3,question:`İkinci Dünya müharibəsi illərində Almaniyanın əks-kəşfiyyat rəisi Vilhelm Kanaris restoranında ofisiant işləmək üçün bir neçə qadını işə götürməyi əmr etmişdi. Əvvəlki cümlədə buraxılmış qısa sözü yazın.`,answer:`Kar`,comment:`Kəşfiyyat rəisinin restoranı alman zabitlərin toplaşdığı əsas yerlərdən idi. Orada edilən məxfi söhbətlərin yayılmaması üçün o, bu yola əl atmışdı.`,author:`Məmmədov Şəmil`},
+{id:4,question:`Bir internet istifadəçisi “Old money” tərzinə üstünlük verənlərin əsasən orta təbəqəyə məxsus olduqlarını və onların sanki BUNU etdiyini deyir. BUNUNLA əvəz olunan biri xarici mənşəli 2 sözü yazın.`,answer:`Zəngin cosplayi`,comment:`Bu internet istifadəçisinə görə maddi vəziyyəti aşağı olan insanlar zəngin kimi görünmək üçün “old money” tərzində geyinməyə üstünlük verirdilər.`,author:`Bəylərov Kamal`},
+{id:5,question:`“True Detective” serialında getdiyi hər obyektdə dəftərinə qeydlər yazan personaja verilən ləqəb ALFAdır. Bir yumoristik animasiyada iqtisadiyyatı iflas edən dövlətdə yaşayan vətəndaşların qapısını hər səhər ALFAnın döydüyü qeyd olunur. ALFAnı 2 sözlə yazın.`,answer:`Vergi məmuru`,criteria:`Vergi işçisi (tərkibində “vergi” olan, məntiqə uyğun cavablar)`,author:`Vəlili Murad`},
+{id:6,question:`Bir saytda qəribə də olsa son zamanlarda yetkinlər arasında İKSin populyarlıq qazandığı deyilir. Satıcıların fikrincə İKS yuxunu yaxşılaşdırır və siqareti atmağa köməklik edir. Orta əsrlərdə İKSin əvəzinə pambıq parçalar və heyvan dərisindən olan kisələrdən istifadə edilirdi. İKSi incə saitli bir sözlə deyin.`,answer:`Əmzik`,author:`Cəfərzadə Yəhya`},
+{id:7,question:`Mövzumuza davam edək. 2016-cı ildə uzun müddətli müalicələrdən sonra dünyasını dəyişən Johan Cruyff’un məzarının üzərinə minlərlə əmzik qoyulmuşdur. Əvvəlki cümlədə iki söz bir sözlə əvəzlənib. Əvəzlənən sözləri yazın.`,answer:`Chupa Chups`,comment:`Chupa Chups brendinin ispan dilindəki mənası “əmmək” deməkdir. 1991-ci ildə siqareti tərgidən Johan Cruyff ömrünün sonuna qədər Chupa Chups yemişdir.`,author:`Bəylərov Kamal`},
+{id:8,question:`George Orwellin “1984” əsərinin oxucusu əsərdəki insanların durmadan izlənildiyinə işarə edərək onların azad cəmiyyətdə yox, sanki ALFAda olduğunu deyir. ALFAnı fəlsəfəyə ilk dəfə gətirənin Jeremy Bentham olduğunu bilərək, cavabı yunan mənşəli sözlə yazın.`,answer:`Panoptikon`,author:`Vəlili Murad`},
+{id:9,question:`“Galatasaray” və “Liverpool” arasında keçən qarşılaşmada şərhçi meydanda olan əzimkar mübarizədən danışarkən oyunu BURAXILMIŞ İKİ SÖZə bənzədir. BURAXILMIŞ İKİ SÖZ haqqında olan məqalələrin birinə 1453-cü ildə rast gələ bilərik. BURAXILMIŞ İKİ SÖZ ilə əvəz etdiyimiz 2-ci növ təyini söz birləşməsini cavab kartlarınıza yazın.`,answer:`İstanbul döyüşü`,author:`Məmmədov Şəmil`},
+{id:10,question:`1501-ci ilin isti yaz günlərinin birində Bakı qalasının mühafizəçilərindən biri uzaqdan gələn ALFAları qırmızı ilana bənzətmişdi. Şah Abbas hakimiyyətə gəldikdən sonra ALFAları 4 yerə ayırdı. ALFAnı eyni iki hərflə başlayan iki sözlə yazın.`,answer:`Səfəvi sərkərdələri`,comment:`Başlarına qızıl çalma bağlayan Səfəvi sərkərdələrini görən mühafizəçilər onları qırmızı ilana bənzətmişdir. Şah Abbas hakimiyyətə gəldikdən sonra orduda köklü islahatlar apararaq sərkərdələri 4 fərqli ixtisasa bölmüşdür.`,author:`Vəlili Murad`},
+{id:11,question:`Diqqət! 11-ci sual. Bir sosial media istifadəçisinin dediyinə görə, elə xalqlar var ki, onları öz torpaqlarında məğlub etmək mümkün deyildir. Həmin xalqlar öz ərazisində döyüşərkən sanki bu mifoloji personaja çevrilirlər. Söhbətin hansı mifoloji personajdan getdiyini yazın.`,answer:`Antey`,comment:`11-ci sualın olması sizi Antey cavabına apara bilərdi, çünki Heraklın 11-ci qəhrəmanlığı Anteyi məğlub etmək idi.`,author:`Cəfərzadə Yəhya`},
+{id:12,question:`Donald Tramp klublararası dünya çempionatı kubokunun Ağ evdə saxlanacağını bildirdikdən sonra çap olunan məqalədə müəllif onu ABŞ-nin ALFA prezidenti adlandırıb. ALFAnın digər adlarından biri isə pika-pikadır. ALFAnı saitləri eyni olan bir sözlə yazın.`,answer:`Sağsağan`,comment:`İngilis mifinə görə sağsağanlar parlaq və qızıl əşyaları oğurlayırdı. İngilis futbol klubu “Chelsea”-nin 2025-ci ildə qazandığı kubok isə ABŞ prezidenti D.Tramp tərəfindən “oğurlanmışdır”.`,author:`Məmmədli Nurşad`}
+],
+2:[
+{id:1,question:`“Birdman” filmində aktyor olan Riqan adlı personaj artıq unudulduğunu, insanların onu çətinliklə xatırladığını deyir və adının yalnız İKSlərdə çəkildiyini qeyd edir. Biz də onun adını İKSdə çəkdik. İKSi bir neçə sözlə yazın.`,answer:`İntellektual oyunlar`,criteria:`Bilik yarışı (dəqiq oyun adları qəbul edilmir)`,author:`Bəylərov Kamal`},
+{id:2,question:`1953-cü ildə Vernon Parton tərəfindən ixtira edilən Alisa şahmatı standart şahmat taxtası ilə oynanılmağı ilə tarixə düşüb. Əvvəlki cümlədə bir söz buraxılıb, buraxılmış sözü yazın.`,answer:`İki`,comment:`“Alisa möcüzələr ölkəsində” əsərinə uşaqlıqda heyran olduğunu qeyd edən V.Parton Alisanın güzgüdən keçib alternativ dünyada şahmat oynamağını bir növ “reallaşdırıb”.`,author:`Məmmədli Nurşad`},
+{id:3,question:`Bir xəbər saytında “TransAstra” şirkətinin yeni ixtirasının həm asteroidləri tuta, həm də Yerin orbitindəki artan tullantıları toplaya biləcəyi deyilir və bu ixtira “kosmik İKS” adlandırılır. “Family Guy” cizgi serialının personajı İKSi istifadə etməyinin müsbət cəhəti kimi rahatlıqla yüksək səslə deyinə bildiyini deyir. İKSi bir mürəkkəb sözlə yazın.`,answer:`Tozsoran`,comment:`Sözü gedən mənbədə bu ixtira orbitdəki tullantıları toplaya bildiyi üçün kosmik tozsorana bənzədilmişdir. İkinci hissədə isə personaj tozsoranın səsi sayəsində rahatca ucadan deyinə bildiyini deyir.`,author:`Bəylərov Kamal`},
+{id:4,question:`Bir yumoristik videoçarxda riskli bir suala məharətlə cavab verən şəxs haqqında onun cavab verərkən özünü məhv edə biləcəyi və sanki onun İKSdə tanqo etdiyi deyilir. Başqa bir mənbədə vətəndaşlarının böyük bir hissəsinin bədən üzvünü itirdiyi Kamboca da İKSə bənzədilir. İKSi istənilən dildə yazın.`,answer:`Mina tarlası`,author:`Cəfərzadə Yəhya`},
+{id:5,reqImg:`https://cdn.phototourl.com/member/2026-09-30-ec65a7bb-91d0-47e3-85a3-a741c4b7483f.jpg`,question:`Rekvizitdə gördüyünüz 1947-ci ildə Kopenhagen şəhərinin genişləndirilməsi üçün hazırlanmış İKS planıdır. İKSi tapdınızsa şəhərin kazinolar olan hissəsinə verilən adı 2 sözlə yazın.`,answer:`Çəçələ barmaq`,comment:`Bu plana “Barmaqlar” adı verilmişdi. Dünyanın bir çox ölkəsində olduğu kimi Danimarkada da çəçələ barmaqdan mərc üçün istifadə edirlər.`,author:`Məmmədli Nurşad`},
+{id:6,question:`II Əbdülhəmid Ərəb xəlifəsi ilə şam yeməyi yeyərkən onun əslində saxtakar olduğunu xəlifənin tez-tez İKSdən istifadə etməsindən anlayır. 1571-ci ildə 2-ci Səlimin başçılıq etdiyi ordu ilə döyüşdən sonra Migel de Servantes İKSdən ömürlük istifadə edə bilməmişdir. İKS ilə əvəz etdiyimiz iki sözü yazın.`,answer:`Sol əlindən`,author:`Məmmədli Nurşad`},
+{id:7,question:`Bir filmdə cinayət işinə görə Los-Ancelesdən Alyaskaya gedən polisin insomnia olmasına səbəb kimi İKSlər göstərilir. İKSin oksimoron olduğunu bilərək cavabı 2 sözlə yazın.`,answer:`Bəyaz gecələr`,comment:`Bildiyiniz kimi Şimal qütbünə yaxın bəzi bölgələrdə günəş demək olar ki, batmır. Bu təbiət hadisəsinə də “Bəyaz gecələr” deyilir.`,source:`“Insomnia” filmi`,author:`Bəylərov Kamal`},
+{id:8,question:`<i>Aparıcı üçün qeyd: Sual oxunmazdan əvvəl oyunçulara orfoqrafik səhv olan cavabların qəbul edilməyəcəyini çatdırsın.</i><br><br>Bir zarafatda ALFA haqqında danışarkən onu buxarlı lokomotivə bənzədərək deyilir ki, həm müasirlikdən uzaqdır, həm də narahat edici səslər çıxarır. ALFA adlı mənbəmizin 1978-ci ilə aid olduğunu bilərək ALFAnı yazın.`,answer:`Qayınana`,comment:`Yaşlı və deyingən qayınana hərəkətlərinə görə buxarlı lokomotivə bənzədilir. 1978-ci ildə nümayiş etdirilən filmimizin adı “Qaynana” formasında yazılmışdır və bu səhv uzun illər müzakirələrə səbəb olmuşdur.`,author:`Məmmədli Nurşad`},
+{id:9,question:`“Liverpool” və “Manchester City” klubları arasında baş tutan görüşdə Virgil van Dijkın kritik müdaxilələri haqqında danışan şərhçi onu BURAXILMIŞ İKİ SÖZ adlandırır. BURAXILMIŞ İKİ SÖZ haqqında olan məqalədən Xosrov bəy Sultanov, Fətəli xan Xoyski və Səməd bəy Mehmandarov haqqında olan məqalələrə keçid edə bilərik. BURAXILMIŞ İKİ SÖZü qonşu hərflərlə yazın.`,answer:`Müdafiə naziri`,author:`Məmmədli Nurşad`},
+{id:10,question:`Bir mənbədə insanların matriksdə yaşadığı və İKSdə gördüklərinin həqiqəti əks etdirmədiyi deyilir. Bir cizgi serialda işlətdiyi telefonun çox köhnə olduğunu deyən personaj həmin telefonun reklamını İKSdə də görə biləcəklərini qeyd edir. İKS ilə əvəz olunan 2 sözü cavab kartlarınıza yazın.`,answer:`Mağara divarı`,comment:`Birinci hissədə söhbət Platonun mağara alleqoriyasından gedirdi.`,author:`Bəylərov Kamal`},
+{id:11,question:`Şahzadə Diana paparaziləri üstələmək üçün maşından düşdükdən sonra BUNU EDİRDİ. BUNU ETMƏYİ ehtiva edən X haqqında məqalədə “Billie Jean” mahnısı haqqında məqaləyə də keçid vardır. BUNU ETMƏKLƏ əvəz olunan bir neçə sözü cavab kartınıza yazın.`,answer:`Geri-geri yerimək`,comment:`Şahzadə Diana maşından düşdükdən sonra geri-geri yeriyərək kameralardan qaçmağa çalışırdı. İkinci hissədə isə söhbət məşhur “Ay yerişi” rəqsindən gedirdi.`,author:`Bəylərov Kamal`},
+{id:12,question:`David Grossmanın əsərinin qəhrəmanı maraqlıdır ki, İKS zamanı anasının yoxluğunu xatırlayır. Qədim Roma amfiteatrlarında izləyicilərin qəflətən və sürətli şəkildə tamaşalardan çıxmaları üçün planlanan keçidin adı dilimizə İKS kimi tərcümə olunur. İKS ilə əvəz olunan sözü yazın.`,answer:`Qusma`,comment:`“Bir at bara girib” romanında personaj qusanda anasının onun başını tutmasını xatırlayır. 19-cu əsrə qədər hesab edilirdi ki, amfiteatrlarda “qusma otağı” mövcud idi. Daha sonra məlum olmuşdur ki, “vomitorium” sadəcə təcili çıxış qapısına verilən addır.`,author:`Məmmədli Nurşad`}
+],
+3:[
+{id:1,question:`Geoloq Cozef Kirşvinkin irəli sürdüyü hipotezə görə 600 milyon il əvvəl Yer kürəsi tamamilə donub. Alim bu hipotezə İKS dünya adını verib. Yaponiya, Finlandiya, Norveç, İsveç kimi ölkələrdə məşhur olan “Yukigassen” oyununda iştirakçıların əsas silahı İKSdir. İKS ilə əvəzlənən 2 sözü yazın.`,answer:`Qar topu`,author:`Məmmədli Nurşad`},
+{id:2,question:`Duplet<br><br>1. Bir mənbədə derbilərdə uğur əldə etmiş komandanın rəhbərlərinin hətta İKSlərə belə müsahibə verdiyi deyilir. İKSi samitlə başlayan 2 sözlə yazın.<br><br>2. Eyni mənbədə derbilərdə məğlub olmuş komandanın rəhbərlərinin hətta stadionu tərk etdiyi deyilir. Eşitdiyiniz cümlədə 2 söz buraxılıb. Həmin sözləri yazın.`,answer:`1. Təhlükəsizlik kamerası<br>2. Arxa qapıdan`,comment:`1-ci hissədə qalib olan komanda rəhbərlərinin hətta təhlükəsizlik kameralarına belə müsahibə verdiyi deyilir. 2-ci hissədə isə kameralardan qaçmaq istəyən klub rəhbərlərinin arxa qapıdan istifadə edərək stadionu tərk etdiklərindən söhbət gedirdi.`,author:`Bəylərov Kamal`},
+{id:3,question:`İnsan azadlığına verdiyi töhfələrə görə seçilən ABŞ İstiqlaliyyət Bəyannaməsində tarixdə ilk dəfə insana BUNU axtarmaq hüququ verilib. Rejissoru Ramiz Əzizbəyli olan filmimizdə baş personaj film ərzində BUNU qafiyələndirməkdə çətinlik çəkir. BUNUNLA əvəz olunan sözü yazın.`,answer:`Xoşbəxtlik`,author:`Məmmədli Nurşad`},
+{id:4,question:`1956-cı ildə Avstraliyada keçirilən Olimpiya oyunlarında SSRİ və Macarıstan arasındakı su polosu oyunu tarixə ən gərgin matç kimi düşüb. Baş verən hadisələrdən sonra matç BURAXILMIŞ İKİ SÖZ adlandırılıb. BURAXILMIŞ İKİ SÖZü James Watkinsin çəkdiyi qorxu janrında olan filmin adında da görə bilərik. BURAXILMIŞ İKİ SÖZü ikinci növ təyini söz birləşməsi ilə yazın.`,answer:`Qan gölü`,author:`Məmmədli Nurşad`},
+{id:5,question:`Bir paradoksa görə, nə qədər BUNU etsəniz də yenə eyni yerə qayıdacaqsınız. Maraqlıdır ki, “Liftçi qız” filmində baş personaj sadəcə 1 dəfə BUNU edir. BUNU etməklə əvəz olunmuş 2 sözü cavab kartlarınıza yazın.`,answer:`Pilləkən qalxmaq`,comment:`Birinci hissədə söhbət Penrouz pilləkəni və ya digər adı ilə desək, pilləkən paradoksundan gedirdi. Liftçi qız kimi işləyən baş personaj isə film boyunca sadəcə bir dəfə pilləkənlə qalxır.`,author:`Bəylərov Kamal`},
+{id:6,reqImg:`https://cdn.phototourl.com/member/2026-09-30-1e118eeb-d8a2-47e4-8476-5b9052116a75.jpg`,question:`Rekvizitdə rəqiblərinə hər zaman məzəli atmacalar atan “Family Guy” cizgi serialının İKS küçəsində keçən bir səhnəsi göstərilib. İKSi 2 sözlə cavab kartlarınıza yazın.`,answer:`Looney Tunes`,comment:`Gördüyünüz səhnədə “Looney Tunes” cizgi serialının Koyot və Road Runner olan seriyalarına alüziya etmişdir.`,author:`Bəylərov Kamal`},
+{id:7,question:`Rekvizit: “Thank you for all. You are amazing.”<br><br>Rekvizitdə bir filmdə yaşlandığına görə məşhurluğu azalan bir xanıma göndərilən ad günü təbrikini görürsünüz. Personajın təbriki gördükdən sonra kədərləndiyini bilərək rekvizitdə etdiyimiz dəyişikliyi bərpa edin.`,answer:`was`,author:`Cəfərzadə Yəhya`},
+{id:8,question:`İkinci Dünya müharibəsi illərində alman hərbçiləri kəşfiyyat məqsədi ilə Böyük Britaniyaya xeyli sayda kəşfiyyatçı göndərib. Həmin kəşfiyyatçılar yaxşı işləsələr də, yerli qayda-qanunları ətraflı bilməmələri onların gizli kimliyini aşkara çıxarıb. Kəşfiyyatçıları ələ verən əsas səbəb isə onların tez-tez İKSdən istifadəsi idi. İKS ilə əvəz olunan bir neçə sözü yazın.`,answer:`Yolun sağ zolağı`,criteria:`Mənaca oxşar cavablar`,author:`Məmmədov Şəmil`},
+{id:9,question:`Verdiyi absurd qərarlarla seçilən Şimali Koreya prezidenti Kim Çen In ötən günlərdə artıq onların da edam edilməsi haqqında yeni fərman imzalayıb. Atatürkün vəfatından sonra onun ən yaxın silahdaşlarından olan Salih Bozok da onların sırasına qoşulub. ONLARLA əvəz edilən bir neçə sözü yazın.`,answer:`İntihar edib sağ qalanlar`,author:`Məmmədli Nurşad`},
+{id:10,question:`Qolodomora aid bir məqalədə aclığın həm əxlaqi, həm fiziki mübarizə olduğu deyilir. Bu dövrdə yazılan məktubda BUNDAN imtina edən valideynlərin uşağından daha tez öldüyü vurğulanır. BUNU qərb mənşəli bir sözlə yazın.`,answer:`Hannibalizm`,author:`Cəfərzadə Yəhya`},
+{id:11,question:`Fridrix Bodenştedt haqqında olan məqalədə bu Azərbaycan şairinə də keçid var. Yazıçı Əlisa Nicatın onun haqqındakı romanı “Gəncəli müdrik” adlanır. Sözü gedən şəxsin adında bir titul olduğunu bilərək yazın.`,answer:`Mirzə Şəfi Vazeh`,author:`Vəlili Murad`},
+{id:12,question:`Bu canlı haqqında danışan bir təbiətşünas onun nərgizgülü ilə oxşar xüsusiyyətlərə malik olduğunu vurğulayır. Biz bu canlını yaxın vaxtlarda çıxan “Reze Arc” anime filminin bir panelində də görə bilərik. Cavabı eyni hərflə başlayan iki sözlə yazın.`,answer:`Kral kəpənəyi`,author:`Vəlili Murad`}
+]
+};
+
+let currentTour=1;
+let allExpanded=false;
+let activeZoomedImg=null;
+let activeClone=null;
+
+const themeToggle=document.getElementById("themeToggle");
+const themeIcon=document.getElementById("themeIcon");
+
+function sunIcon(){return `<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M16 3.5v3.2"/><path d="M16 25.3v3.2"/><path d="M3.5 16h3.2"/><path d="M25.3 16h3.2"/><path d="M7.2 7.2l2.3 2.3"/><path d="M22.5 22.5l2.3 2.3"/><path d="M24.8 7.2l-2.3 2.3"/><path d="M9.5 22.5l-2.3 2.3"/></g>`}
+function moonIcon(){return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`}
+function updateThemeIcon(){const dark=document.body.classList.contains("dark");themeIcon.innerHTML=dark?moonIcon():sunIcon();themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
+function setTheme(dark){document.body.classList.toggle("dark",dark);try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(err){}updateThemeIcon()}
+function initTheme(){let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(err){}if(saved==="dark"){setTheme(true);return}if(saved==="light"){setTheme(false);return}const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;setTheme(prefersDark)}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+initTheme();
+
+function loadTour(tourNum){
+removeZoom();currentTour=tourNum;allExpanded=false;
+document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər";
+document.querySelectorAll(".tour-btn").forEach((btn,index)=>{btn.classList.toggle("active",index+1===tourNum)});
+renderQuestions();window.scrollTo(0,0);
+}
+
+function renderQuestions(){
+const container=document.getElementById("questionsContainer");container.innerHTML="";
+(toursData[currentTour]||[]).forEach((item,index)=>{
+const card=document.createElement("div");card.className="q-card";card.id=`q-card-${index}`;
+const reqImgHTML=item.reqImg?`<div class="req-img-wrapper"><img src="${item.reqImg}" class="req-img" onclick="toggleZoom(this,event)"></div><br><br>`:"";
+const criteriaHTML=item.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${item.criteria}</div>`:"";
+const commentHTML=item.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${item.comment}</div>`:"";
+const extraImageHTML=item.extraImage?`<div class="req-img-wrapper" style="margin-top:8px;margin-bottom:8px;"><img src="${item.extraImage}" class="req-img" onclick="toggleZoom(this,event)"></div>`:"";
+const sourceHTML=item.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${item.source}</div>`:"";
+card.innerHTML=`<div class="q-text"><b>${item.id}.</b> ${reqImgHTML}${item.question}</div>
+<button class="toggle-btn" onclick="toggleSingleCard(${index})"><span>Cavabı göstər</span><svg class="arrow-icon" viewBox="0 0 8 8"><path d="M0 2h8v1H0zM1 3h6v1H1zM2 4h4v1H2zM3 5h2v1H3z"/></svg></button>
+<div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${item.answer}</div>${criteriaHTML}${commentHTML}${extraImageHTML}${sourceHTML}
+<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${item.author}</span>
+<button class="copy-btn" type="button" onclick="copyQuestion(${index},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
+container.appendChild(card);
+});
+}
+
+function toggleSingleCard(index){const card=document.getElementById(`q-card-${index}`);const btnText=card.querySelector(".toggle-btn span");card.classList.toggle("active");btnText.textContent=card.classList.contains("active")?"Cavabı gizlə":"Cavabı göstər"}
+function toggleAllAnswers(){allExpanded=!allExpanded;document.querySelectorAll(".q-card").forEach(card=>{card.classList.toggle("active",allExpanded);card.querySelector(".toggle-btn span").textContent=allExpanded?"Cavabı gizlə":"Cavabı göstər"});document.getElementById("globalToggleBtn").textContent=allExpanded?"Bütün cavabları gizlə":"Bütün cavabları göstər"}
+function questionHtmlToText(html){return html.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").trim()}
+function buildQuestionText(item){let text=`${item.id}. ${questionHtmlToText(item.question)}`;text+=`\n\nCavab: ${questionHtmlToText(item.answer)}`;if(item.criteria)text+=`\nSayılma meyarı: ${item.criteria}`;if(item.comment)text+=`\nŞərh: ${questionHtmlToText(item.comment)}`;if(item.source)text+=`\nMənbə: ${questionHtmlToText(item.source)}`;text+=`\nMüəllif: ${item.author}`;return text}
+function copyQuestion(index,btn){const item=(toursData[currentTour]||[])[index];if(!item)return;const text=buildQuestionText(item);function showCopied(){btn.classList.add("copied");clearTimeout(btn._copyTimer);btn._copyTimer=setTimeout(()=>btn.classList.remove("copied"),1600)}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(showCopied).catch(()=>fallbackCopy(text,showCopied))}else fallbackCopy(text,showCopied)}
+function fallbackCopy(text,onDone){const helper=document.createElement("textarea");helper.value=text;helper.style.position="fixed";helper.style.opacity="0";document.body.appendChild(helper);helper.select();try{document.execCommand("copy");onDone()}catch(err){}document.body.removeChild(helper)}
+
+function toggleZoom(imgEl,event){
+event.stopPropagation();if(activeZoomedImg===imgEl){removeZoom();return}removeZoom();
+const rect=imgEl.getBoundingClientRect();const clone=imgEl.cloneNode(true);clone.removeAttribute("onclick");
+clone.style.position="fixed";clone.style.top=rect.top+"px";clone.style.left=rect.left+"px";clone.style.width=rect.width+"px";clone.style.height=rect.height+"px";clone.style.margin="0";clone.style.maxWidth="none";clone.style.zIndex="9999";clone.style.transformOrigin="center center";clone.style.transition="transform .5s cubic-bezier(.25,1,.5,1),box-shadow .5s ease";clone.style.borderRadius="10px";clone.style.cursor="pointer";clone.style.filter="none";clone.onclick=e=>{e.stopPropagation();removeZoom()};
+document.body.appendChild(clone);imgEl.style.visibility="hidden";document.body.classList.add("img-zoomed");
+requestAnimationFrame(()=>{clone.style.transform="scale(1.2)";clone.style.boxShadow="0 10px 30px rgba(0,0,0,.25)"});
+activeZoomedImg=imgEl;activeClone=clone;
+}
+function removeZoom(){if(activeClone){const cloneToRemove=activeClone;const imgToRestore=activeZoomedImg;cloneToRemove.style.transform="scale(1)";cloneToRemove.style.boxShadow="none";setTimeout(()=>{cloneToRemove.remove();if(imgToRestore)imgToRestore.style.visibility="visible"},500);activeClone=null}activeZoomedImg=null;document.body.classList.remove("img-zoomed")}
+document.addEventListener("click",e=>{if(activeZoomedImg&&e.target!==activeClone)removeZoom()});
+loadTour(1);
+document.addEventListener("DOMContentLoaded",()=>{const elements=[];document.querySelectorAll("body > *:not(footer),body > *:not(footer) *").forEach(el=>{if(el.closest("footer")||el.closest(".theme-toggle")||el.tagName==="SCRIPT"||el.tagName==="STYLE"||el.offsetParent===null)return;elements.push(el)});elements.forEach((el,index)=>{el.style.animationDelay=`${Math.min(index*.025,.7)}s`})});
+</script>
+</body>
+</html>
