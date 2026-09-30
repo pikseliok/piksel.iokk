@@ -686,8 +686,13 @@ function highlight(text, q){
 }
 
 function authorCompare(a, b){
-  const result = a.name.localeCompare(b.name, "az");
-  return ascending ? result : -result;
+  const diff = b.packages.length - a.packages.length;
+
+  if(diff !== 0){
+    return ascending ? diff : -diff;
+  }
+
+  return a.name.localeCompare(b.name, "az");
 }
 
 
