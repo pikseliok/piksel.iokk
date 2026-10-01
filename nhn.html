@@ -144,6 +144,7 @@ setMode('host');
 /* ---------- Əlaqə ---------- */
 let ws,me,S,room,stream,off=0,muted=false,lastEnds=0;
 const pcs={},auds={};
+let ICE=[{urls:'stun:stun.l.google.com:19302'}];
 const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 
@@ -161,6 +162,11 @@ $('go').onclick=async()=>{
   }
   try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
   catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
+  try{
+    const r=await fetch('https://piksel-nhn.pikseliok.workers.dev/turn');
+    const j=await r.json();
+    if(j.iceServers&&j.iceServers.length)ICE=j.iceServers;
+  }catch(e){}
   ws=new WebSocket(WS+room);
   ws.onmessage=e=>{
     const m=JSON.parse(e.data);
@@ -192,13 +198,13 @@ function hear(id){
 }
 function applyMute(){for(const id in auds)auds[id].muted=!hear(id)}
 function mk(id){
-  const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+  const pc=new RTCPeerConnection({iceServers:ICE});
   pc._q=[];
   stream.getTracks().forEach(t=>pc.addTrack(t,stream));
   pc.onicecandidate=e=>e.candidate&&send({t:'signal',to:id,data:{ice:e.candidate}});
   pc.ontrack=e=>{
     let a=auds[id];
-    if(!a){a=auds[id]=new Audio();a.autoplay=true}
+    if(!a){a=auds[id]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
     a.srcObject=e.streams[0];a.play().catch(()=>{$('bSound').hidden=false});applyMute();
   };
   pc.onconnectionstatechange=showNet;
