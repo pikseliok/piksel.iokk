@@ -1,6 +1,23 @@
 export default {
   async fetch(req, env) {
-    const m = new URL(req.url).pathname.match(/^\/room\/([A-Za-z0-9]{4,8})$/);
+    const url = new URL(req.url);
+    if (url.pathname === '/turn') {
+      const h = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' };
+      try {
+        const r = await fetch(
+          `https://rtc.live.cloudflare.com/v1/turn/keys/${env.TURN_KEY_ID}/credentials/generate-ice-servers`,
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${env.TURN_KEY_TOKEN}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ttl: 86400 })
+          }
+        );
+        return new Response(await r.text(), { headers: h });
+      } catch (e) {
+        return new Response('{}', { headers: h });
+      }
+    }
+    const m = url.pathname.match(/^\/room\/([A-Za-z0-9]{4,8})$/);
     if (!m) return new Response('piksel-nhn işləyir');
     if (req.headers.get('Upgrade') !== 'websocket')
       return new Response('WebSocket lazımdır', { status: 426 });
