@@ -101,7 +101,9 @@ footer{margin-top:20px;background:linear-gradient(100deg,var(--deep),var(--brigh
   <div class="row" style="justify-content:center">
     <button class="btn" id="bTalk" hidden>Aparıcı ilə danışmaq istəyirəm</button>
     <button class="btn" id="bMute">Mikrofonu söndür</button>
+    <button class="btn" id="bSound" hidden>Səsi aç</button>
   </div>
+  <div class="sm" id="net" style="text-align:center;margin-top:10px"></div>
 </div>
 </div>
 
@@ -197,10 +199,20 @@ function mk(id){
   pc.ontrack=e=>{
     let a=auds[id];
     if(!a){a=auds[id]=new Audio();a.autoplay=true}
-    a.srcObject=e.streams[0];a.play().catch(()=>{});applyMute();
+    a.srcObject=e.streams[0];a.play().catch(()=>{$('bSound').hidden=false});applyMute();
   };
+  pc.onconnectionstatechange=showNet;
   pcs[id]=pc;return pc;
 }
+function showNet(){
+  if(!S)return;
+  const names={};S.teams.forEach(t=>t.members.forEach(m=>names[m.id]=m.name));
+  names[S.hostId]='Aparıcı';
+  const tr={connected:'qoşuldu',connecting:'qoşulur',new:'başlayır',failed:'alınmadı',disconnected:'kəsildi',closed:'bağlandı'};
+  const l=Object.keys(pcs).map(id=>(names[id]||id)+': '+(tr[pcs[id].connectionState]||pcs[id].connectionState));
+  $('net').textContent=l.length?'Səs əlaqəsi: '+l.join(' | '):'Səs əlaqəsi hələ yoxdur';
+}
+$('bSound').onclick=()=>{for(const id in auds)auds[id].play().catch(()=>{});$('bSound').hidden=true};
 function drop(id){
   if(pcs[id]){pcs[id].close();delete pcs[id]}
   if(auds[id]){auds[id].srcObject=null;delete auds[id]}
@@ -217,7 +229,7 @@ async function reconcile(){
       send({t:'signal',to:p.id,data:{sdp:pc.localDescription}});
     }
   }
-  applyMute();
+  applyMute();showNet();
 }
 async function onSignal(from,d){
   const pc=pcs[from]||mk(from);
