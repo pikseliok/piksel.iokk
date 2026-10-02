@@ -7,110 +7,164 @@
 <title>NHN otağı - πksel.iok</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC}
-*{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s,color .65s;-webkit-font-smoothing:antialiased}
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);--red:#ff3b30}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
 body.dark{background:var(--dark-bg);color:var(--dark-ink)}
-button,input,textarea{font:inherit}
+button,input,textarea,a{font:inherit}
 a{color:inherit;text-decoration:none}
 [hidden]{display:none!important}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 40px}
-.top-nav{height:60px;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep))}
-.dark .top-nav,.dark .card,.dark footer{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light))}
-.nav-links{display:flex;gap:58px}
-.nav-link{font-size:20px;font-weight:500;white-space:nowrap}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
 .dark .nav-link{color:var(--dark-ink)}
-.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
 .dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
-.theme-icon{width:25px;height:25px}
-h1{text-align:center;color:var(--deep);font-size:28px;font-weight:700;letter-spacing:-.8px;margin:26px 0 14px}
-.dark h1{color:var(--dark-light)}
-.card{border-radius:31px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);padding:24px 26px;margin-top:14px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
-.dark .card{color:var(--dark-ink)}
-.sm{font-size:13px;font-weight:500;opacity:.85;margin-top:6px;line-height:1.4}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.btn{border:0;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer;background:var(--ink);color:var(--deep);transition:transform .2s,opacity .2s}
-.dark .btn{background:var(--dark-ink);color:var(--dark-light)}
-.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.4;cursor:default;transform:none}
-.btn.on{outline:3px solid currentColor;outline-offset:2px}
-.btn.big{padding:12px 24px;font-size:16px}
-input,textarea{width:100%;border:0;border-radius:18px;padding:11px 16px;margin-top:10px;background:var(--ink);color:var(--deep);font-weight:500;outline:none}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+h1{text-align:center;color:var(--deep);font-size:clamp(20px,5.2vw,30px);font-weight:700;line-height:1.35;letter-spacing:-.5px;margin:26px 0 14px}
+.dark h1,.dark .note{color:var(--dark-light)}
+.note{color:var(--deep);text-align:center;font-size:13px;font-weight:500;margin-top:8px;line-height:1.4}
+.card{width:100%;border-radius:31px;padding:22px 24px;margin-top:14px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition),color var(--transition)}
+.dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.sm{font-size:13px;font-weight:500;opacity:.9;margin-top:6px;line-height:1.45}
+.center{text-align:center}
+.big{font-weight:700;font-size:clamp(26px,7vw,38px);line-height:1.2;letter-spacing:-.5px}
+.code{font-weight:700;letter-spacing:3px}
+/* giriş */
+#lobby{margin-top:24px;padding:26px 24px 30px}
+#lobby .big{font-size:clamp(22px,5.8vw,32px);margin-bottom:26px}
+.pill{display:block;width:100%;border:0;border-radius:999px;padding:clamp(18px,5vw,30px) 10px;margin-top:clamp(14px,3.5vw,24px);background:var(--ink);color:var(--deep);font-weight:800;font-size:clamp(24px,6.5vw,38px);cursor:pointer;transition:transform .25s ease,outline .1s}
+.dark .pill{background:var(--dark-ink);color:var(--dark-light)}
+.pill:hover{transform:translateY(-2px)}.pill:active{transform:scale(.97)}
+.pill.on{outline:3px solid currentColor;outline-offset:3px}
+input,textarea{width:100%;border:0;border-radius:20px;padding:12px 18px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:500;outline:none}
 .dark input,.dark textarea{background:var(--dark-ink);color:var(--dark-light)}
 textarea{resize:vertical;min-height:70px}
-.code{font-weight:700;font-size:22px;letter-spacing:3px}
-.timer{font-size:56px;font-weight:700;text-align:center;letter-spacing:-2px;line-height:1.1}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.team{border-top:2px solid rgba(157,195,255,.25);padding-top:12px;margin-top:12px}
-.dark .team{border-color:rgba(0,7,44,.2)}
-.team:first-child{border:0;margin-top:0;padding-top:0}
-.th{display:flex;justify-content:space-between;font-size:18px}
-.mem{margin-top:6px;font-size:15px;font-weight:500}
-.ans{margin-top:8px;font-weight:600;word-break:break-word}
-footer{margin-top:20px;background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);padding:26px 20px;text-align:center;font-size:15px;font-weight:500;line-height:1.7}
-.dark footer{color:var(--dark-ink)}
-@media(max-width:700px){.page{width:calc(100vw - 44px)}.top-nav{height:52px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}h1{font-size:22px}.card{padding:20px}.timer{font-size:46px}}
+.info{margin-top:34px;font-size:clamp(12px,3.2vw,15px);font-weight:400;line-height:1.5;text-align:center}
+.info p+p{margin-top:16px}
+/* düymələr */
+.pbtn{border:0;border-radius:999px;padding:8px 30px;margin:10px auto 0;display:block;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);font-weight:600;font-size:clamp(17px,4.6vw,22px);cursor:pointer;transition:transform .25s ease,opacity .25s}
+.dark .pbtn{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
+.pbtn:hover{transform:translateY(-2px)}.pbtn:disabled{opacity:.4;cursor:default;transform:none}
+.pbtn.sq{width:56px;height:56px;padding:0;display:grid;place-items:center;margin:0}
+.pbtn.s{font-size:15px;padding:8px 20px}
+.mic{width:28px;height:28px}
+.ctrl{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:18px}
+/* taymer */
+.tgrid{display:grid;grid-template-columns:36% 1fr;gap:14px;align-items:center}
+.tgrid.solo{grid-template-columns:1fr}
+.modes{display:flex;flex-direction:column;gap:12px}
+.mode-btn{padding:clamp(10px,3vw,16px) 4px;border:2px solid currentColor;border-radius:999px;background:transparent;color:inherit;cursor:pointer;font-weight:600;font-size:clamp(11px,3.4vw,17px);transition:transform .25s ease,background .25s ease,color .25s ease}
+.mode-btn:hover{transform:translateY(-2px)}
+.mode-btn.active{background:var(--ink);color:var(--deep);border-color:var(--ink);font-weight:700}
+.dark .mode-btn.active{background:var(--dark-ink);color:var(--dark-light);border-color:var(--dark-ink)}
+.dial-outer{width:100%;max-width:340px;margin:0 auto;position:relative}
+.dial-outer::before{content:"";display:block;padding-top:100%}
+.dial-svg{position:absolute;inset:0;width:100%;height:100%}
+.dial-bg1{fill:#00072C}.dial-bg2{fill:#001E6F}
+.tick{stroke:#9DC3FF;stroke-width:3;stroke-linecap:round;transition:opacity .4s ease}
+.tick.red{stroke:var(--red)}.tick.hidden-tick{opacity:0}
+.marker{stroke:var(--red);stroke-width:6;stroke-linecap:round}
+.dial-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9DC3FF;pointer-events:none}
+.dial-number{font-weight:500;font-size:clamp(44px,14vw,84px);line-height:1}
+/* komanda kartları */
+.tcard{margin-top:14px;border-radius:31px;padding:18px 24px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition)}
+.dark .tcard{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+.tt{font-weight:700;font-size:clamp(18px,5vw,28px);line-height:1.25;word-break:break-word}
+.tans{font-weight:700;font-size:clamp(18px,5vw,28px);line-height:1.3;margin-top:6px;word-break:break-word}
+.chev{width:34px;height:34px;flex:none;transition:transform .3s}
+.tcard.open .chev{transform:rotate(180deg)}
+.tbody{display:none;margin-top:12px;border-top:2px solid rgba(157,195,255,.3);padding-top:10px;font-size:15px;font-weight:500}
+.dark .tbody{border-color:rgba(0,7,44,.25)}
+.tcard.open .tbody{display:block}
+.mem{margin-top:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mini{border:0;border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px;cursor:pointer;background:var(--ink);color:var(--deep)}
+.dark .mini{background:var(--dark-ink);color:var(--dark-light)}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media(max-width:700px){.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:52px;padding-left:18px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}.card{border-radius:29px;padding:20px}footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
+@media(max-width:420px){.page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}}
 </style>
 </head>
 <body>
 <div class="page">
-<nav class="top-nav">
+<nav class="top-nav" aria-label="Əsas naviqasiya">
   <div class="nav-links"><a class="nav-link" href="index.html">Əsas Səhifə</a><a class="nav-link" href="contact.html">Bizimlə Əlaqə</a></div>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş"><svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32"></svg></button>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş"><svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg></button>
 </nav>
-<h1>NHN səsli otağı</h1>
 
 <section class="card" id="lobby">
-  <div class="tabs">
-    <button class="btn on" data-m="host">Aparıcıyam</button>
-    <button class="btn" data-m="cap">Kapitanam</button>
-    <button class="btn" data-m="pl">Oyunçuyam</button>
+  <div class="big center">"Nə? Harada? Nə Zaman?"<br>Səsli otaq</div>
+  <button class="pill" data-m="host">APARICI</button>
+  <button class="pill" data-m="cap">KAPİTAN</button>
+  <button class="pill" data-m="pl">OYUNÇU</button>
+  <div id="form" hidden>
+    <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden>
+    <input id="fTeam" placeholder="Komanda adı" hidden>
+    <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden>
+    <input id="fName" placeholder="Adın">
+    <button class="pbtn" id="go" style="margin-top:16px">Daxil ol</button>
   </div>
-  <div class="sm" id="hint">Otaq yaradırsan. Düyməyə basanda mikrofona icazə ver.</div>
-  <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden>
-  <input id="fTeam" placeholder="Komanda adı" hidden>
-  <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden>
-  <input id="fName" placeholder="Adın" hidden>
-  <div class="row"><button class="btn big" id="go">Otaq yarat</button></div>
+  <div class="info"><p>Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.</p><p>Kapitanlar öz komanda kodunu oyunçularına verməlidir.</p></div>
 </section>
 
 <div id="game" hidden>
-  <section class="card"><div id="head"></div><div class="sm" id="spk"></div></section>
-  <section class="card"><div class="timer" id="timer">--:--</div><div class="sm" id="phase" style="text-align:center"></div></section>
-
-  <section class="card" id="hostbox" hidden>
-    <b>Aparıcı paneli</b>
-    <input id="secs" type="number" min="5" max="600" value="60" placeholder="Müzakirə vaxtı (saniyə)">
-    <div class="row">
-      <button class="btn" id="bBegin">Oyuna başla</button>
-      <button class="btn" id="bAsk">Sualı oxudum, taymeri başlat</button>
-      <button class="btn" id="bNext">Növbəti sual</button>
-      <button class="btn" id="bEnd">Danışığı bitir</button>
+  <h1>"Nə? Harada? Nə Zaman?"<br>Səsli otaq</h1>
+  <section class="card center" id="head"></section>
+  <section class="card">
+    <div class="tgrid" id="tgrid">
+      <div class="modes" id="modes">
+        <button class="mode-btn active" data-mode="klasik">KLASİK</button>
+        <button class="mode-btn" data-mode="duplet">DUPLET</button>
+        <button class="mode-btn" data-mode="blits">BLİTZ</button>
+      </div>
+      <div class="dial-outer">
+        <svg class="dial-svg" viewBox="0 0 300 300"><circle class="dial-bg1" cx="150" cy="150" r="140"/><circle class="dial-bg2" cx="150" cy="150" r="112"/><line class="marker" x1="150" y1="8" x2="150" y2="42"/><g id="ticks"></g></svg>
+        <div class="dial-center"><div class="dial-number" id="num">60</div></div>
+      </div>
     </div>
   </section>
 
+  <button class="pbtn" id="bStart" hidden>Vaxtı başlat</button>
+  <button class="pbtn" id="bEnd" hidden></button>
+  <div class="note" id="phase"></div>
+  <div class="note" id="spk"></div>
+
   <section class="card" id="ansbox" hidden>
-    <b>Komandanın yekun cavabı</b>
-    <textarea id="aText" maxlength="300" placeholder="Müzakirədən sonra cavabı bura yaz"></textarea>
-    <div class="row"><button class="btn" id="aSend">Aparıcıya göndər</button><span class="sm" id="aInfo"></span></div>
+    <b>Komandanın cavabı</b>
+    <div id="aFields"></div>
+    <div class="sm">Göndər düyməsi yoxdur. Vaxt bitəndə yazdığın cavab avtomatik aparıcıya gedəcək.</div>
   </section>
 
-  <section class="card"><div id="teams"></div></section>
+  <div id="teams"></div>
 
-  <div class="row" style="justify-content:center">
-    <button class="btn" id="bTalk" hidden>Aparıcı ilə danışmaq istəyirəm</button>
-    <button class="btn" id="bMute">Mikrofonu söndür</button>
-    <button class="btn" id="bSound" hidden>Səsi aç</button>
+  <div class="ctrl">
+    <button class="pbtn sq" id="bMute" aria-label="Mikrofon"></button>
+    <button class="pbtn s" id="bTalk" hidden>Aparıcı ilə danışmaq istəyirəm</button>
+    <button class="pbtn s" id="bSound" hidden>Səsi aç</button>
   </div>
-  <div class="sm" id="net" style="text-align:center;margin-top:10px"></div>
+  <div class="note" id="net"></div>
 </div>
 </div>
 
 <footer>
-  <div>İntellektuallar üçün hər şey...</div>
-  <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a><br>
-  <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
 <script>
@@ -122,33 +176,32 @@ const send=o=>ws&&ws.readyState===1&&ws.send(JSON.stringify(o));
 /* ---------- Tema ---------- */
 const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>';
 const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
-function setTheme(d){document.body.classList.toggle('dark',d);localStorage.setItem('piksel-theme',d?'dark':'light');$('themeIcon').innerHTML=d?moon:sun}
-setTheme(localStorage.getItem('piksel-theme')==='dark');
+function setTheme(d){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}$('themeIcon').innerHTML=d?moon:sun}
+let sv=null;try{sv=localStorage.getItem('piksel-theme')}catch(e){}
+setTheme(sv?sv==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches));
 $('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'));
 
 /* ---------- Giriş ---------- */
 let mode='host';
-const hints={host:'Otaq yaradırsan. Düyməyə basanda mikrofona icazə ver.',cap:'Aparıcının verdiyi otaq kodunu, komanda adını və öz adını yaz.',pl:'Kapitanın verdiyi komanda kodunu və öz adını yaz.'};
-const goText={host:'Otaq yarat',cap:'Komandanı yarat',pl:'Komandaya qoşul'};
 function setMode(m){
   mode=m;
-  document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m&&m!=='host'));
+  $('form').hidden=m==='host';
   $('fRoom').hidden=$('fTeam').hidden=m!=='cap';
   $('fCode').hidden=m!=='pl';
-  $('fName').hidden=m==='host';
-  $('hint').textContent=hints[m];$('go').textContent=goText[m];
+  $('go').textContent=m==='cap'?'Komandanı yarat':'Komandaya qoşul';
 }
-document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
-setMode('host');
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==='host')start()});
 
 /* ---------- Əlaqə ---------- */
-let ws,me,S,room,stream,off=0,muted=false,lastEnds=0;
+let ws,me,S,room,stream,off=0,muted=false;
 const pcs={},auds={};
 let ICE=[{urls:'stun:stun.l.google.com:19302'}];
 const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+$('go').onclick=()=>start();
 
-$('go').onclick=async()=>{
+async function start(){
   let first;
   if(mode==='host'){room=Array.from({length:5},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join('');first={t:'host'}}
   else if(mode==='cap'){
@@ -160,6 +213,7 @@ $('go').onclick=async()=>{
     if(raw.length<8||!$('fName').value.trim())return alert('Komanda kodunu və adını yaz');
     room=raw.slice(0,-4);first={t:'player',code:raw.slice(-4),name:$('fName').value};
   }
+  ensureAudio();
   try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
   catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
   try{
@@ -177,7 +231,7 @@ $('go').onclick=async()=>{
     else if(m.t==='closed'){alert('Aparıcı otaqdan çıxdı');location.reload()}
   };
   ws.onclose=()=>{if(S){alert('Əlaqə kəsildi');location.reload()}};
-};
+}
 
 /* ---------- Səs (WebRTC) ---------- */
 function peers(){
@@ -253,65 +307,150 @@ async function onSignal(from,d){
   }catch(e){}
 }
 
-/* ---------- Ekran ---------- */
-function render(){
-  const h=S.role==='host',cap=S.role==='captain';
-  $('lobby').hidden=true;$('game').hidden=false;
-  const myT=S.teams.find(t=>t.members.some(m=>m.id===me));
-  $('head').innerHTML=h
-    ?`<b>Otaq kodu:</b> <span class="code">${room}</span><div class="sm">Bu kodu kapitanlara ver. Komanda kodlarını aşağıda görürsən.</div>`
-    :`<b>${esc(myT&&myT.name)}</b> komandası (${cap?'kapitan':'oyunçu'})<div class="sm">Komanda kodu: <span class="code">${room}${myT?myT.code:''}</span><br>Bu kodu komanda yoldaşlarına ver.</div>`;
-  $('hostbox').hidden=!h;$('ansbox').hidden=!cap;$('bTalk').hidden=!cap;
-  const ph=S.phase;
-  if(h){
-    $('bBegin').hidden=ph!=='lobby';$('bBegin').disabled=S.teams.length<2;
-    $('bAsk').hidden=ph!=='idle';
-    $('bNext').hidden=!(ph==='running'||ph==='ended');
-    $('bEnd').hidden=!S.speaker;$('secs').hidden=ph==='lobby';
-  }
-  if(cap){
-    const on=ph==='running';
-    $('aText').disabled=$('aSend').disabled=!on;
-    if(on&&S.endsAt!==lastEnds){lastEnds=S.endsAt;$('aText').value='';$('aInfo').textContent=''}
-    const mm=myT&&myT.members.find(m=>m.id===me);
-    $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
-    $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, aparıcının cavabını gözlə':'Aparıcı ilə danışmaq istəyirəm';
-  }
-  const spName=S.teams.flatMap(t=>t.members).find(m=>m.id===S.speaker);
-  $('spk').textContent=S.speaker===me?'Aparıcı səni dinləyir. Səsini hamı eşidir.':spName?`${spName.name} aparıcı ilə danışır, hamı eşidir.`:'';
-  $('phase').textContent={lobby:'Komandalar qoşulur. Aparıcı oyunu başladacaq.',idle:'Aparıcı sualı oxuyur.',running:'Müzakirə gedir. Yalnız komandanın içində danışın.',ended:'Vaxt bitdi. Aparıcı cavabları yoxlayır.'}[ph]||'';
-  $('teams').innerHTML=S.teams.length?S.teams.map(t=>
-    `<div class="team"><div class="th"><b>${esc(t.name)}</b><span>${t.score} xal</span></div>`+
-    (h?`<div class="sm">Komanda kodu: <span class="code" style="font-size:16px">${room}${t.code}</span></div>`:'')+
-    t.members.map(m=>`<div class="mem">${esc(m.name)}${m.captain?' (kapitan)':''}${m.id===S.speaker?' 🎙':''}${m.wants?' ✋':''}${h&&m.wants?` <button class="btn" data-a="grant" data-id="${m.id}">Qəbul et</button>`:''}</div>`).join('')+
-    (h&&t.answered?`<div class="ans">Cavab: ${esc(t.answer)}</div>`:(!h&&t.answered&&(ph==='running'||ph==='ended')?'<div class="sm">Cavab göndərildi</div>':''))+
-    (h&&ph!=='lobby'?`<div class="row"><button class="btn" data-a="pt" data-c="${t.code}" data-d="1">+1 xal</button><button class="btn" data-a="pt" data-c="${t.code}" data-d="-1">−1</button></div>`:'')+
-    '</div>').join(''):'<div class="sm">Hələ komanda yoxdur.</div>';
-  applyMute();
+/* ---------- Taymer (siferblat) ---------- */
+const TOT={klasik:60,duplet:30,blits:20},NEED={klasik:1,duplet:2,blits:3};
+let hostMode='klasik',curTot=60,dTotal=0,lastEnds=0,seg=0,rm='klasik',lastLeft=-1,prevPh='',sentFor=0;
+let audioCtx=null;
+function ensureAudio(){
+  try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}catch(e){}
 }
-$('teams').onclick=e=>{
-  const b=e.target.closest('[data-a]');if(!b)return;
-  if(b.dataset.a==='grant')send({t:'talkgrant',id:b.dataset.id});
-  if(b.dataset.a==='pt')send({t:'score',code:b.dataset.c,delta:Number(b.dataset.d)});
-};
-$('bBegin').onclick=()=>send({t:'begin'});
-$('bAsk').onclick=()=>send({t:'ask',seconds:Number($('secs').value)||60});
-$('bNext').onclick=()=>send({t:'next'});
-$('bEnd').onclick=()=>send({t:'talkend'});
-$('bTalk').onclick=()=>send({t:'talkreq'});
-$('aSend').onclick=()=>{send({t:'answer',text:$('aText').value});$('aInfo').textContent='Göndərildi. Vaxt bitənə qədər dəyişə bilərsən.'};
-$('bMute').onclick=()=>{
-  muted=!muted;
-  stream.getAudioTracks().forEach(t=>t.enabled=!muted);
-  $('bMute').textContent=muted?'Mikrofonu aç':'Mikrofonu söndür';
+function beep(ms,freq){
+  if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain(),n=audioCtx.currentTime,d=ms/1000;
+  o.type='sine';o.frequency.value=freq;
+  g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(.22,n+.015);
+  g.gain.setValueAtTime(.22,n+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(0,n+d);
+  o.connect(g).connect(audioCtx.destination);o.start(n);o.stop(n+d+.03);
+}
+function build(total){
+  if(dTotal===total)return;dTotal=total;
+  const g=$('ticks');g.innerHTML='';
+  const red=Math.min(10,total-1);
+  for(let i=1;i<total;i++){
+    const r=(i*(360/total)-90)*Math.PI/180,l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',150+122*Math.cos(r));l.setAttribute('y1',150+122*Math.sin(r));
+    l.setAttribute('x2',150+138*Math.cos(r));l.setAttribute('y2',150+138*Math.sin(r));
+    l.setAttribute('data-mark',i);l.classList.add('tick');if(i<=red)l.classList.add('red');
+    g.appendChild(l);
+  }
+}
+function paint(left){
+  $('num').textContent=left;
+  $('ticks').querySelectorAll('.tick').forEach(l=>l.classList.toggle('hidden-tick',left<+l.getAttribute('data-mark')));
+}
+$('modes').onclick=e=>{
+  const b=e.target.closest('.mode-btn');if(!b||!S||S.role!=='host'||S.phase==='running')return;
+  hostMode=b.dataset.mode;
+  document.querySelectorAll('.mode-btn').forEach(x=>x.classList.toggle('active',x===b));
 };
 setInterval(()=>{
   if(!S)return;
-  if(S.phase==='running'){
-    const left=Math.max(0,Math.ceil((S.endsAt-(Date.now()+off))/1000));
-    $('timer').textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');
-  }else $('timer').textContent=S.phase==='ended'?'Vaxt bitdi':'--:--';
+  const ph=S.phase,h=S.role==='host';
+  let left,tot;
+  if(ph==='running'){tot=curTot;left=Math.max(0,Math.ceil((S.endsAt-(Date.now()+off))/1000))}
+  else if(ph==='ended'){tot=curTot;left=0}
+  else{tot=h?TOT[hostMode]:curTot;left=tot}
+  build(tot);paint(left);
+  if(ph==='running'&&left!==lastLeft){
+    lastLeft=left;
+    if(left===10)beep(2000,1000);
+    if(left>=1&&left<=3)beep(180,1300);
+    /* son seqmentin sonunda cavab avtomatik göndərilir */
+    if(left<=1&&S.role==='captain'&&seg>=NEED[rm]&&sentFor!==S.endsAt){sentFor=S.endsAt;sendAns()}
+  }
+  if(prevPh==='running'&&ph==='ended')beep(2000,700);
+  prevPh=ph;
 },250);
+
+/* ---------- Cavab xanaları ---------- */
+function buildFields(m){
+  const n=NEED[m];
+  $('aFields').innerHTML=n===1
+    ?'<textarea class="af" maxlength="300" placeholder="Cavabı bura yaz"></textarea>'
+    :Array.from({length:n},(_,i)=>`<input class="af" maxlength="150" placeholder="${i+1}-ci sualın cavabı">`).join('');
+}
+function sendAns(){
+  const v=[...document.querySelectorAll('#aFields .af')].map(e=>e.value.trim());
+  send({t:'answer',text:v.length>1?v.map((x,i)=>(i+1)+') '+x).join('\n'):v[0]||''});
+}
+$('aFields').addEventListener('input',()=>{if(S&&S.phase==='running')sendAns()});
+buildFields('klasik');
+
+/* ---------- Ekran ---------- */
+const open={};
+const mic=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
+$('bMute').innerHTML=mic(false);
+function render(){
+  const h=S.role==='host',cap=S.role==='captain',ph=S.phase;
+  $('lobby').hidden=true;$('game').hidden=false;
+  const myT=S.teams.find(t=>t.members.some(m=>m.id===me));
+  /* yeni müzakirə seqmenti */
+  if(ph==='running'&&S.endsAt!==lastEnds){
+    lastEnds=S.endsAt;
+    const dur=Math.round((S.endsAt-S.now)/1000),m=dur>=45?'klasik':dur>=25?'duplet':'blits';
+    if(m!==rm||seg>=NEED[m]){seg=0;buildFields(m)}
+    rm=m;seg++;curTot=TOT[m];
+    if(cap)sendAns();
+  }
+  const done=ph==='ended'&&seg>=NEED[rm];
+  $('head').innerHTML=h
+    ?`<div class="big">Otaq kodu:<br><span class="code">${room}</span></div><div class="sm">Bu kodu kapitanlara ver</div>`
+    :`<div class="big">${esc(myT&&myT.name)} komandası</div><div class="sm">${cap?'Kapitan':'Oyunçu'} · Komanda kodu: <span class="code">${room}${myT?myT.code:''}</span><br>Bu kodu komanda yoldaşlarına ver.</div>`;
+  $('modes').hidden=!h;$('tgrid').classList.toggle('solo',!h);
+  $('ansbox').hidden=!cap;$('bTalk').hidden=!cap;
+  const sp=S.teams.flatMap(t=>t.members).find(m=>m.id===S.speaker);
+  if(h){
+    const b=$('bStart');
+    b.hidden=ph==='running';
+    b.textContent=ph==='lobby'?'Oyuna başla':'Vaxtı başlat';
+    b.disabled=ph==='lobby'&&S.teams.length<2;
+    $('bEnd').hidden=!S.speaker;
+    $('bEnd').textContent=(sp?sp.name:'…')+' ilə danışığı bitir';
+  }
+  if(cap){
+    const on=ph==='running'||(ph==='ended'&&seg<NEED[rm]);
+    document.querySelectorAll('#aFields .af').forEach(e=>e.disabled=!on);
+    const mm=myT&&myT.members.find(m=>m.id===me);
+    $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
+    $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, cavabı gözlə':'Aparıcı ilə danışmaq istəyirəm';
+  }
+  $('spk').textContent=S.speaker===me?'Aparıcı səni dinləyir. Səsini hamı eşidir.':sp?`${sp.name} aparıcı ilə danışır, hamı eşidir.`:'';
+  $('phase').textContent={lobby:'Komandalar qoşulur. Aparıcı oyunu başladacaq.',idle:'Aparıcı sualı oxuyur.',running:'Müzakirə gedir. Yalnız komandanın içində danışın.',ended:seg<NEED[rm]?'Aparıcı növbəti sualı oxuyur.':'Vaxt bitdi. Aparıcı cavabları yoxlayır.'}[ph]||'';
+  const chev='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square"><path d="M4 8l8 8 8-8"/></svg>';
+  $('teams').innerHTML=S.teams.length?S.teams.map(t=>{
+    const ans=done&&t.answered?esc(t.answer).replace(/\n/g,' • '):'...........';
+    return `<div class="tcard${open[t.code]?' open':''}"><div class="thead" data-tg="${t.code}"><div><div class="tt">"${esc(t.name)}" komandası</div><div class="tans">${h?'Cavab: '+ans:t.score+' xal'}</div></div>${chev}</div><div class="tbody">`+
+    `<div>${t.score} xal${h?` · Kod: <span class="code">${room}${t.code}</span>`:''}</div>`+
+    t.members.map(m=>`<div class="mem">${esc(m.name)}${m.captain?' (kapitan)':''}${m.id===S.speaker?' 🎙':''}${m.wants?' ✋':''}${h&&m.wants?` <button class="mini" data-a="grant" data-id="${m.id}">Qəbul et</button>`:''}</div>`).join('')+
+    (h&&ph!=='lobby'?`<div class="row"><button class="mini" data-a="pt" data-c="${t.code}" data-d="1">+1 xal</button><button class="mini" data-a="pt" data-c="${t.code}" data-d="-1">−1</button></div>`:'')+
+    '</div></div>';
+  }).join(''):'<div class="note">Hələ komanda yoxdur.</div>';
+  applyMute();
+}
+$('teams').onclick=e=>{
+  const b=e.target.closest('[data-a]');
+  if(b){
+    if(b.dataset.a==='grant')send({t:'talkgrant',id:b.dataset.id});
+    if(b.dataset.a==='pt')send({t:'score',code:b.dataset.c,delta:Number(b.dataset.d)});
+    return;
+  }
+  const t=e.target.closest('[data-tg]');
+  if(t){open[t.dataset.tg]=!open[t.dataset.tg];render()}
+};
+$('bStart').onclick=()=>{
+  ensureAudio();
+  if(S.phase==='lobby')return send({t:'begin'});
+  if(S.phase==='ended')send({t:'next'});
+  send({t:'ask',seconds:TOT[hostMode]});
+};
+$('bEnd').onclick=()=>send({t:'talkend'});
+$('bTalk').onclick=()=>send({t:'talkreq'});
+$('bMute').onclick=()=>{
+  muted=!muted;
+  stream.getAudioTracks().forEach(t=>t.enabled=!muted);
+  $('bMute').innerHTML=mic(muted);
+  $('bMute').setAttribute('aria-label',muted?'Mikrofon bağlıdır':'Mikrofon açıqdır');
+};
 </script>
 </body>
 </html>
