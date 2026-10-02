@@ -5,980 +5,3260 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
 <title>NHN otağı - πksel.iok</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);--red:#ff3b30}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
-body.dark{background:var(--dark-bg);color:var(--dark-ink)}
-button,input,textarea,a{font:inherit}
-a{color:inherit;text-decoration:none}
-[hidden]{display:none!important}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
-.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition)}
-.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
-.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
-.dark .nav-link{color:var(--dark-ink)}
-.nav-link:hover{transform:translateY(-1px)}
-.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
-.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
-.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
-.theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.theme-icon{width:25px;height:25px;display:block}
-h1{text-align:center;color:var(--deep);font-size:clamp(20px,5.2vw,30px);font-weight:700;line-height:1.35;letter-spacing:-.5px;margin:26px 0 14px}
-.dark h1,.dark .note{color:var(--dark-light)}
-.note{color:var(--deep);text-align:center;font-size:13px;font-weight:500;margin-top:8px;line-height:1.4}
-.card{width:100%;border-radius:31px;padding:22px 24px;margin-top:14px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition),color var(--transition)}
-.dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
-.sm{font-size:13px;font-weight:500;opacity:.9;margin-top:6px;line-height:1.45}
-.center{text-align:center}
-.big{font-weight:700;font-size:clamp(26px,7vw,38px);line-height:1.2;letter-spacing:-.5px}
-.code{font-weight:700;letter-spacing:3px}
-/* giriş */
-#lobby{margin-top:24px;padding:26px 24px 30px}
-#lobby .big{font-size:clamp(22px,5.8vw,32px);margin-bottom:26px}
-.pill{display:block;width:100%;height:60px;border:0;border-radius:999px;padding:0 10px;margin-top:16px;background:var(--ink);color:var(--deep);font-weight:800;font-size:27px;cursor:pointer;transition:transform .25s ease,outline .1s}
-@media(max-width:700px){.pill{height:52px;font-size:24px}}@media(max-width:420px){.pill{height:48px;font-size:22px}}
-.dark .pill{background:var(--dark-ink);color:var(--dark-light)}
-.pill:hover{transform:translateY(-2px)}.pill:active{transform:scale(.97)}
-.pill.on{outline:3px solid currentColor;outline-offset:3px}
-input,textarea{width:100%;border:0;border-radius:20px;padding:12px 18px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:500;outline:none}
-.dark input,.dark textarea{background:var(--dark-ink);color:var(--dark-light)}
-textarea{resize:vertical;min-height:70px}
-.info{margin-top:34px;font-size:clamp(12px,3.2vw,15px);font-weight:400;line-height:1.5;text-align:center}
-.info p+p{margin-top:16px}
-/* düymələr */
-.pbtn{border:0;border-radius:999px;padding:8px 30px;margin:10px auto 0;display:block;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);font-weight:600;font-size:clamp(17px,4.6vw,22px);cursor:pointer;transition:transform .25s ease,opacity .25s}
-.dark .pbtn{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
-.pbtn:hover{transform:translateY(-2px)}.pbtn:disabled{opacity:.4;cursor:default;transform:none}
-.pbtn.sq{width:56px;height:56px;padding:0;display:grid;place-items:center;margin:0}
-.pbtn.s{font-size:15px;padding:8px 20px}
-.mic{width:28px;height:28px}
-.ctrl{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:18px}
-/* taymer */
-.tgrid{display:grid;grid-template-columns:36% 1fr;gap:14px;align-items:center}
-.tgrid.solo{grid-template-columns:1fr}
-.modes{display:flex;flex-direction:column;gap:12px}
-.mode-btn{padding:clamp(10px,3vw,16px) 4px;border:2px solid currentColor;border-radius:999px;background:transparent;color:inherit;cursor:pointer;font-weight:600;font-size:clamp(11px,3.4vw,17px);transition:transform .25s ease,background .25s ease,color .25s ease}
-.mode-btn:hover{transform:translateY(-2px)}
-.mode-btn.active{background:var(--ink);color:var(--deep);border-color:var(--ink);font-weight:700}
-.dark .mode-btn.active{background:var(--dark-ink);color:var(--dark-light);border-color:var(--dark-ink)}
-.dial-outer{width:100%;max-width:340px;margin:0 auto;position:relative}
-.dial-outer::before{content:"";display:block;padding-top:100%}
-.dial-svg{position:absolute;inset:0;width:100%;height:100%}
-.dial-bg1{fill:#00072C}.dial-bg2{fill:#001E6F}
-.tick{stroke:#9DC3FF;stroke-width:3;stroke-linecap:round;transition:opacity .4s ease}
-.tick.red{stroke:var(--red)}.tick.hidden-tick{opacity:0}
-.marker{stroke:var(--red);stroke-width:6;stroke-linecap:round}
-.dial-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9DC3FF;pointer-events:none}
-.dial-number{font-weight:500;font-size:clamp(44px,14vw,84px);line-height:1}
-/* komanda kartları */
-.tcard{margin-top:12px;border-radius:26px;padding:14px 20px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition)}
-.dark .tcard{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
-.thead{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
-.tt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:clamp(15px,4.2vw,19px);line-height:1.3;word-break:break-word}
-.sc{font-weight:500;font-size:13px;opacity:.85}
-.hand{border:0;border-radius:50%;width:32px;height:32px;flex:none;font-size:17px;cursor:pointer;background:var(--ink);color:var(--deep)}
-.dark .hand{background:var(--dark-ink);color:var(--dark-light)}
-.chev{flex:none;transition:transform .35s ease}
-.tcard.open .chev{transform:rotate(180deg)}
-.trow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-weight:600;font-size:clamp(13px,3.6vw,16px)}
-.ans{word-break:break-word}
-.tbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
-.tcard.open .tbody{grid-template-rows:1fr}
-.tin{overflow:hidden;min-height:0}
-.tpad{margin-top:12px;border-top:2px solid rgba(157,195,255,.3);padding-top:10px;font-size:15px;font-weight:500}
-.dark .tpad{border-color:rgba(0,7,44,.25)}
-.mem{margin-top:6px}
-.mini{border:0;border-radius:999px;padding:5px 14px;font-weight:700;font-size:13px;cursor:pointer;background:var(--ink);color:var(--deep)}
-.dark .mini{background:var(--dark-ink);color:var(--dark-light)}
-.rise{opacity:0;animation:rise .65s cubic-bezier(.22,.8,.25,1) forwards;animation-delay:calc(var(--i)*90ms)}
-@keyframes rise{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
-footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
-.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
-.footer-line{font-size:15px;line-height:1.45;font-weight:500}
-.footer-link{transition:opacity .25s ease,transform .25s ease}
-.footer-link:hover{opacity:.72;transform:translateY(-1px)}
-:focus-visible{outline:3px solid currentColor;outline-offset:4px}
-@media(max-width:700px){.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:52px;padding-left:18px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}.card{border-radius:29px;padding:20px}footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
-@media(max-width:420px){.page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}}
+:root{
+  --bg:#9DC3FF;
+  --ink:#9DC3FF;
+  --deep:#001E6F;
+  --bright:#002E92;
+  --dark-bg:#00072C;
+  --dark-ink:#00072C;
+  --dark-light:#9DC3FF;
+  --dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --red:#ff3b30
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent
+}
+
+html{
+  scroll-behavior:smooth
+}
+
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Poppins",sans-serif;
+  overflow-x:hidden;
+  transition:background .65s ease,color .65s ease;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column
+}
+
+body.dark{
+  background:var(--dark-bg);
+  color:var(--dark-ink)
+}
+
+button,input,textarea,a{
+  font:inherit
+}
+
+a{
+  color:inherit;
+  text-decoration:none
+}
+
+[hidden]{
+  display:none!important
+}
+
+.page{
+  width:min(95vw,820px);
+  margin:0 auto;
+  padding:12px 0 30px;
+  flex:1 0 auto
+}
+
+/* =========================
+   NAVİQASİYA
+========================= */
+
+.top-nav{
+  height:60px;
+  width:100%;
+  border-radius:40px;
+  padding:0 14px 0 26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  box-shadow:0 10px 28px rgba(0,20,100,.08);
+  transition:background var(--transition)
+}
+
+.dark .top-nav{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:58px;
+  height:100%
+}
+
+.nav-link{
+  position:relative;
+  color:var(--ink);
+  font-size:20px;
+  font-weight:500;
+  white-space:nowrap;
+  transition:transform .25s ease,opacity .25s ease
+}
+
+.dark .nav-link{
+  color:var(--dark-ink)
+}
+
+.nav-link:hover{
+  transform:translateY(-1px)
+}
+
+/* GÜNƏŞ / AY — QORUNUR */
+
+.theme-toggle{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:50%;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  color:var(--deep);
+  background:rgba(157,195,255,.98);
+  transition:transform .3s ease,background var(--transition),color var(--transition)
+}
+
+.dark .theme-toggle{
+  background:var(--dark-bg);
+  color:var(--dark-light)
+}
+
+.theme-toggle:hover{
+  transform:translateY(-50%) scale(1.08)
+}
+
+.theme-toggle:active{
+  transform:translateY(-50%) scale(.95)
+}
+
+.theme-icon{
+  width:25px;
+  height:25px;
+  display:block
+}
+
+/* =========================
+   BAŞLIQLAR
+========================= */
+
+h1{
+  text-align:center;
+  color:var(--deep);
+  font-size:clamp(20px,5.2vw,30px);
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:-.5px;
+  margin:26px 0 14px
+}
+
+.dark h1,
+.dark .note{
+  color:var(--dark-light)
+}
+
+.note{
+  color:var(--deep);
+  text-align:center;
+  font-size:13px;
+  font-weight:500;
+  margin-top:8px;
+  line-height:1.4
+}
+
+/* =========================
+   KARTLAR
+========================= */
+
+.card{
+  width:100%;
+  border-radius:31px;
+  padding:22px 24px;
+  margin-top:14px;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  transition:background var(--transition),color var(--transition)
+}
+
+.dark .card{
+  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
+  color:var(--dark-ink)
+}
+
+.sm{
+  font-size:13px;
+  font-weight:500;
+  opacity:.9;
+  margin-top:6px;
+  line-height:1.45
+}
+
+.center{
+  text-align:center
+}
+
+.big{
+  font-weight:700;
+  font-size:clamp(26px,7vw,38px);
+  line-height:1.2;
+  letter-spacing:-.5px
+}
+
+.code{
+  font-weight:700;
+  letter-spacing:3px
+}
+
+/* =========================
+   GİRİŞ
+========================= */
+
+#lobby{
+  margin-top:24px;
+  padding:26px 24px 30px
+}
+
+#lobby .big{
+  font-size:clamp(22px,5.8vw,32px);
+  margin-bottom:26px
+}
+
+.pill{
+  display:block;
+  width:100%;
+  height:60px;
+  border:0;
+  border-radius:999px;
+  padding:0 10px;
+  margin-top:16px;
+  background:var(--ink);
+  color:var(--deep);
+  font-weight:800;
+  font-size:27px;
+  cursor:pointer;
+  transition:transform .25s ease,outline .1s
+}
+
+@media(max-width:700px){
+  .pill{
+    height:52px;
+    font-size:24px
+  }
+}
+
+@media(max-width:420px){
+  .pill{
+    height:48px;
+    font-size:22px
+  }
+}
+
+.dark .pill{
+  background:var(--dark-ink);
+  color:var(--dark-light)
+}
+
+.pill:hover{
+  transform:translateY(-2px)
+}
+
+.pill:active{
+  transform:scale(.97)
+}
+
+.pill.on{
+  outline:3px solid currentColor;
+  outline-offset:3px
+}
+
+input,
+textarea{
+  width:100%;
+  border:0;
+  border-radius:20px;
+  padding:12px 18px;
+  margin-top:12px;
+  background:var(--ink);
+  color:var(--deep);
+  font-weight:500;
+  outline:none
+}
+
+.dark input,
+.dark textarea{
+  background:var(--dark-ink);
+  color:var(--dark-light)
+}
+
+textarea{
+  resize:vertical;
+  min-height:70px
+}
+
+.info{
+  margin-top:34px;
+  font-size:clamp(12px,3.2vw,15px);
+  font-weight:400;
+  line-height:1.5;
+  text-align:center
+}
+
+.info p+p{
+  margin-top:16px
+}
+
+/* =========================
+   DÜYMƏLƏR
+========================= */
+
+.pbtn{
+  border:0;
+  border-radius:999px;
+  padding:8px 30px;
+  margin:10px auto 0;
+  display:block;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));
+  color:var(--ink);
+  font-weight:600;
+  font-size:clamp(17px,4.6vw,22px);
+  cursor:pointer;
+  transition:transform .25s ease,opacity .25s
+}
+
+.dark .pbtn{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));
+  color:var(--dark-ink)
+}
+
+.pbtn:hover{
+  transform:translateY(-2px)
+}
+
+.pbtn:disabled{
+  opacity:.4;
+  cursor:default;
+  transform:none
+}
+
+.pbtn.sq{
+  width:56px;
+  height:56px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  margin:0
+}
+
+.pbtn.s{
+  font-size:15px;
+  padding:8px 20px
+}
+
+.mic{
+  width:28px;
+  height:28px
+}
+
+.ctrl{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:18px
+}
+
+/* =========================
+   TIMER
+========================= */
+
+.tgrid{
+  display:grid;
+  grid-template-columns:36% 1fr;
+  gap:14px;
+  align-items:center
+}
+
+.tgrid.solo{
+  grid-template-columns:1fr
+}
+
+.modes{
+  display:flex;
+  flex-direction:column;
+  gap:12px
+}
+
+.mode-btn{
+  padding:clamp(10px,3vw,16px) 4px;
+  border:2px solid currentColor;
+  border-radius:999px;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+  font-weight:600;
+  font-size:clamp(11px,3.4vw,17px);
+  transition:transform .25s ease,background .25s ease,color .25s ease
+}
+
+.mode-btn:hover{
+  transform:translateY(-2px)
+}
+
+.mode-btn.active{
+  background:var(--ink);
+  color:var(--deep);
+  border-color:var(--ink);
+  font-weight:700
+}
+
+.dark .mode-btn.active{
+  background:var(--dark-ink);
+  color:var(--dark-light);
+  border-color:var(--dark-ink)
+}
+
+.dial-outer{
+  width:100%;
+  max-width:340px;
+  margin:0 auto;
+  position:relative
+}
+
+.dial-outer::before{
+  content:"";
+  display:block;
+  padding-top:100%
+}
+
+.dial-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%
+}
+
+.dial-bg1{
+  fill:#00072C
+}
+
+.dial-bg2{
+  fill:#001E6F
+}
+
+.tick{
+  stroke:#9DC3FF;
+  stroke-width:3;
+  stroke-linecap:round;
+  transition:opacity .4s ease
+}
+
+.tick.red{
+  stroke:var(--red)
+}
+
+.tick.hidden-tick{
+  opacity:0
+}
+
+.marker{
+  stroke:var(--red);
+  stroke-width:6;
+  stroke-linecap:round
+}
+
+.dial-center{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#9DC3FF;
+  pointer-events:none
+}
+
+.dial-number{
+  font-weight:500;
+  font-size:clamp(44px,14vw,84px);
+  line-height:1
+}
+
+/* =========================
+   KOMANDA KARTLARI
+========================= */
+
+.tcard{
+  margin-top:12px;
+  border-radius:26px;
+  padding:14px 20px;
+  background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));
+  color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,20,110,.07);
+  transition:background var(--transition)
+}
+
+.dark .tcard{
+  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));
+  color:var(--dark-ink)
+}
+
+.thead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  cursor:pointer
+}
+
+.tt{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  font-weight:700;
+  font-size:clamp(15px,4.2vw,19px);
+  line-height:1.3;
+  word-break:break-word
+}
+
+.sc{
+  font-weight:500;
+  font-size:13px;
+  opacity:.85
+}
+
+.hand{
+  border:0;
+  border-radius:50%;
+  width:32px;
+  height:32px;
+  flex:none;
+  font-size:17px;
+  cursor:pointer;
+  background:var(--ink);
+  color:var(--deep)
+}
+
+.dark .hand{
+  background:var(--dark-ink);
+  color:var(--dark-light)
+}
+
+.chev{
+  flex:none;
+  transition:transform .35s ease
+}
+
+.tcard.open .chev{
+  transform:rotate(180deg)
+}
+
+.trow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+  font-weight:600;
+  font-size:clamp(13px,3.6vw,16px)
+}
+
+.ans{
+  word-break:break-word
+}
+
+.tbody{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .35s ease
+}
+
+.tcard.open .tbody{
+  grid-template-rows:1fr
+}
+
+.tin{
+  overflow:hidden;
+  min-height:0
+}
+
+.tpad{
+  margin-top:12px;
+  border-top:2px solid rgba(157,195,255,.3);
+  padding-top:10px;
+  font-size:15px;
+  font-weight:500
+}
+
+.dark .tpad{
+  border-color:rgba(0,7,44,.25)
+}
+
+.mem{
+  margin-top:6px
+}
+
+.mini{
+  border:0;
+  border-radius:999px;
+  padding:5px 14px;
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  background:var(--ink);
+  color:var(--deep)
+}
+
+.dark .mini{
+  background:var(--dark-ink);
+  color:var(--dark-light)
+}
+
+/* =========================
+   ANİMASİYA
+========================= */
+
+.rise{
+  opacity:0;
+  animation:rise .65s cubic-bezier(.22,.8,.25,1) forwards;
+  animation-delay:calc(var(--i)*90ms)
+}
+
+@keyframes rise{
+  from{
+    opacity:0;
+    translate:0 22px
+  }
+  to{
+    opacity:1;
+    translate:0 0
+  }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  width:100%;
+  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  color:var(--ink);
+  min-height:170px;
+  padding:27px 20px 24px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  text-align:center;
+  transition:background var(--transition),color var(--transition);
+  flex-shrink:0;
+  position:relative;
+  z-index:2
+}
+
+.dark footer{
+  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
+  color:var(--dark-ink)
+}
+
+.footer-line{
+  font-size:15px;
+  line-height:1.45;
+  font-weight:500
+}
+
+.footer-link{
+  transition:opacity .25s ease,transform .25s ease
+}
+
+.footer-link:hover{
+  opacity:.72;
+  transform:translateY(-1px)
+}
+
+/* =========================
+   KOPYALANAN KODLAR
+========================= */
+
+.copy-code{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  cursor:pointer;
+  color:inherit;
+  background:transparent;
+  font-family:"Poppins",sans-serif;
+  transition:opacity .2s ease,transform .2s ease
+}
+
+.copy-code:hover{
+  opacity:.75;
+  transform:translateY(-1px)
+}
+
+.copy-code:active{
+  transform:scale(.96)
+}
+
+.host-room-code{
+  margin-top:5px;
+  font-size:clamp(32px,4vw,52px);
+  line-height:1;
+  font-weight:800;
+  letter-spacing:5px
+}
+
+.captain-code-wrap{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px
+}
+
+.captain-code-label{
+  font-size:11px;
+  font-weight:500;
+  opacity:.7;
+  text-transform:uppercase;
+  letter-spacing:1px
+}
+
+.captain-team-code{
+  font-size:clamp(28px,4vw,44px);
+  line-height:1;
+  font-weight:800;
+  letter-spacing:4px
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media(min-width:701px){
+
+  .page{
+    width:min(92vw,1100px);
+    padding-top:16px;
+    padding-bottom:24px
+  }
+
+  .top-nav{
+    width:100%;
+    height:58px
+  }
+
+  .nav-link{
+    font-size:17px
+  }
+
+  #game{
+    width:100%;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    column-gap:24px;
+    row-gap:12px;
+    align-items:start
+  }
+
+  #game>h1{
+    grid-column:1 / -1;
+    margin:20px 0 2px;
+    font-size:23px
+  }
+
+  /* OTAQ KODU — NAVİQASİYA İLƏ EYNİ EN */
+
+  #head{
+    grid-column:1 / -1;
+    width:100%;
+    margin-top:0;
+    padding:17px 24px;
+    border-radius:25px
+  }
+
+  #head .big{
+    font-size:22px
+  }
+
+  #head .sm{
+    font-size:12px
+  }
+
+  /* SOL — KOMANDALAR */
+
+  #teams{
+    grid-column:1;
+    grid-row:3 / span 4;
+    width:100%;
+    align-self:center
+  }
+
+  #teams .tcard{
+    margin-top:10px;
+    padding:11px 16px;
+    border-radius:21px
+  }
+
+  #teams .tt{
+    font-size:15px
+  }
+
+  #teams .trow{
+    margin-top:7px;
+    font-size:13px
+  }
+
+  #teams .mem{
+    font-size:13px
+  }
+
+  #teams .tpad{
+    font-size:13px
+  }
+
+  /* SAĞ — TIMER */
+
+  #timerCard{
+    grid-column:2;
+    grid-row:3 / span 3;
+    width:100%;
+    align-self:center;
+    padding:17px 20px
+  }
+
+  #timerCard .tgrid{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    align-items:center
+  }
+
+  #timerCard .modes{
+    width:100%;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    order:0
+  }
+
+  #timerCard .mode-btn{
+    flex:1;
+    max-width:145px;
+    padding:9px 12px;
+    font-size:14px
+  }
+
+  #timerCard .dial-outer{
+    order:1;
+    width:min(100%,300px);
+    max-width:300px
+  }
+
+  #timerCard .dial-number{
+    font-size:clamp(48px,6vw,72px)
+  }
+
+  /* TIMER BAŞLAT / BİTİR */
+
+  #bStart,
+  #bEnd{
+    grid-column:2;
+    width:max-content;
+    min-width:170px;
+    justify-self:center;
+    font-size:17px;
+    padding:8px 25px;
+    margin-top:0
+  }
+
+  #bStart{
+    grid-row:6
+  }
+
+  #bEnd{
+    grid-row:7
+  }
+
+  #phase{
+    grid-column:1 / -1;
+    grid-row:8;
+    margin-top:2px
+  }
+
+  #spk{
+    grid-column:1 / -1;
+    grid-row:9
+  }
+
+  #ansbox{
+    grid-column:1;
+    grid-row:7;
+    margin-top:0;
+    padding:17px 20px;
+    border-radius:24px
+  }
+
+  .ctrl{
+    grid-column:1 / -1;
+    grid-row:10;
+    margin-top:3px
+  }
+
+  #net{
+    grid-column:1 / -1;
+    grid-row:11
+  }
+
+  /* GİRİŞ EKRANI */
+
+  #lobby{
+    width:100%;
+    max-width:760px;
+    margin:35px auto 0;
+    padding:25px 30px 28px
+  }
+
+  #lobby .big{
+    font-size:27px;
+    margin-bottom:20px
+  }
+
+  #lobby .pill{
+    height:50px;
+    font-size:20px;
+    margin-top:12px
+  }
+
+  #lobby .info{
+    font-size:13px;
+    margin-top:25px
+  }
+}
+
+/* Böyük monitorlarda da ölçülər həddindən artıq böyümür */
+
+@media(min-width:1200px){
+
+  .page{
+    width:min(90vw,1100px)
+  }
+
+  #timerCard .dial-outer{
+    width:290px
+  }
+
+  #teams .tcard{
+    padding:10px 15px
+  }
+}
+
+/* =========================
+   MOBİL
+========================= */
+
+@media(max-width:700px){
+
+  .page{
+    width:calc(100vw - 44px);
+    padding-top:11px
+  }
+
+  .top-nav{
+    height:52px;
+    padding-left:18px;
+    padding-right:60px
+  }
+
+  .nav-links{
+    gap:34px
+  }
+
+  .nav-link{
+    font-size:15px
+  }
+
+  .theme-toggle{
+    width:39px;
+    height:39px;
+    right:8px
+  }
+
+  .theme-icon{
+    width:22px;
+    height:22px
+  }
+
+  .card{
+    border-radius:29px;
+    padding:20px
+  }
+
+  footer{
+    min-height:185px;
+    padding-left:12px;
+    padding-right:12px
+  }
+
+  .footer-line{
+    font-size:14px
+  }
+
+  #game{
+    display:block
+  }
+
+  #timerCard .modes{
+    gap:7px
+  }
+
+  #timerCard .mode-btn{
+    max-width:none;
+    font-size:11px;
+    padding:9px 5px
+  }
+
+  .host-room-code{
+    font-size:32px
+  }
+
+  .captain-team-code{
+    font-size:29px
+  }
+}
+
+@media(max-width:420px){
+
+  .page{
+    width:calc(100vw - 36px)
+  }
+
+  .nav-links{
+    gap:25px
+  }
+
+  .nav-link{
+    font-size:13px
+  }
+
+  .top-nav{
+    height:48px
+  }
+
+  .theme-toggle{
+    width:36px;
+    height:36px;
+    right:6px
+  }
+
+  .theme-icon{
+    width:20px;
+    height:20px
+  }
+}
+
+:focus-visible{
+  outline:3px solid currentColor;
+  outline-offset:4px
+}
 </style>
 </head>
+
 <body>
+
 <div class="page">
+
 <nav class="top-nav" aria-label="Əsas naviqasiya">
-  <div class="nav-links"><a class="nav-link" href="index.html">Əsas Səhifə</a><a class="nav-link" href="contact.html">Bizimlə Əlaqə</a></div>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş"><svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg></button>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Əsas Səhifə</a>
+    <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+  </div>
+
+  <!-- GÜNƏŞ / AY QORUNUB -->
+  <button
+    class="theme-toggle"
+    id="themeToggle"
+    type="button"
+    aria-label="Rejimi dəyiş">
+    <svg
+      id="themeIcon"
+      class="theme-icon"
+      viewBox="0 0 32 32"
+      aria-hidden="true"></svg>
+  </button>
 </nav>
 
+
+<!-- =========================
+     GİRİŞ
+========================= -->
+
 <section class="card" id="lobby">
-  <div class="big center">"Nə? Harada? Nə Zaman?"<br>Səsli otaq</div>
-  <button class="pill" data-m="host">APARICI</button>
-  <button class="pill" data-m="cap">KAPİTAN</button>
-  <button class="pill" data-m="pl">OYUNÇU</button>
-  <div id="form" hidden>
-    <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden>
-    <input id="fTeam" placeholder="Komanda adı" hidden>
-    <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden>
-    <input id="fName" placeholder="Adın">
-    <button class="pbtn" id="go" style="margin-top:16px">Daxil ol</button>
+
+  <div class="big center">
+    "Nə? Harada? Nə Zaman?"<br>
+    Səsli otaq
   </div>
-  <div class="info"><p>Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.</p><p>Kapitanlar öz komanda kodunu oyunçularına verməlidir.</p></div>
+
+  <button class="pill" data-m="host">
+    APARICI
+  </button>
+
+  <button class="pill" data-m="cap">
+    KAPİTAN
+  </button>
+
+  <button class="pill" data-m="pl">
+    OYUNÇU
+  </button>
+
+  <div id="form" hidden>
+
+    <input
+      id="fRoom"
+      placeholder="Otaq kodu (aparıcıdan al)"
+      hidden>
+
+    <input
+      id="fTeam"
+      placeholder="Komanda adı"
+      hidden>
+
+    <input
+      id="fCode"
+      placeholder="Komanda kodu (kapitandan al)"
+      hidden>
+
+    <input
+      id="fName"
+      placeholder="Adın">
+
+    <button
+      class="pbtn"
+      id="go"
+      style="margin-top:16px">
+      Daxil ol
+    </button>
+
+  </div>
+
+  <div class="info">
+    <p>
+      Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.
+    </p>
+
+    <p>
+      Kapitanlar öz komanda kodunu oyunçularına verməlidir.
+    </p>
+  </div>
+
 </section>
 
+
+<!-- =========================
+     OYUN
+========================= -->
+
 <div id="game" hidden>
-  <h1>"Nə? Harada? Nə Zaman?"<br>Səsli otaq</h1>
+
+  <h1>
+    "Nə? Harada? Nə Zaman?"<br>
+    Səsli otaq
+  </h1>
+
+
+  <!-- OTAQ KODU -->
   <section class="card center" id="head"></section>
-  <section class="card">
+
+
+  <!-- TIMER -->
+  <section class="card" id="timerCard">
+
     <div class="tgrid" id="tgrid">
+
       <div class="modes" id="modes">
-        <button class="mode-btn active" data-mode="klasik">KLASİK</button>
-        <button class="mode-btn" data-mode="duplet">DUPLET</button>
-        <button class="mode-btn" data-mode="blits">BLİTZ</button>
+
+        <button
+          class="mode-btn active"
+          data-mode="klasik">
+          KLASİK
+        </button>
+
+        <button
+          class="mode-btn"
+          data-mode="duplet">
+          DUPLET
+        </button>
+
+        <button
+          class="mode-btn"
+          data-mode="blits">
+          BLİTZ
+        </button>
+
       </div>
+
+
       <div class="dial-outer">
-        <svg class="dial-svg" viewBox="0 0 300 300"><circle class="dial-bg1" cx="150" cy="150" r="140"/><circle class="dial-bg2" cx="150" cy="150" r="112"/><line class="marker" x1="150" y1="8" x2="150" y2="42"/><g id="ticks"></g></svg>
-        <div class="dial-center"><div class="dial-number" id="num">60</div></div>
+
+        <svg
+          class="dial-svg"
+          viewBox="0 0 300 300">
+
+          <circle
+            class="dial-bg1"
+            cx="150"
+            cy="150"
+            r="140"/>
+
+          <circle
+            class="dial-bg2"
+            cx="150"
+            cy="150"
+            r="112"/>
+
+          <line
+            class="marker"
+            x1="150"
+            y1="8"
+            x2="150"
+            y2="42"/>
+
+          <g id="ticks"></g>
+
+        </svg>
+
+        <div class="dial-center">
+          <div
+            class="dial-number"
+            id="num">
+            60
+          </div>
+        </div>
+
       </div>
+
     </div>
+
   </section>
 
-  <button class="pbtn" id="bStart" hidden>Vaxtı başlat</button>
-  <button class="pbtn" id="bEnd" hidden></button>
-  <div class="note" id="phase"></div>
-  <div class="note" id="spk"></div>
 
-  <section class="card" id="ansbox" hidden>
-    <b>Komandanın cavabı</b>
+  <button
+    class="pbtn"
+    id="bStart"
+    hidden>
+    Vaxtı başlat
+  </button>
+
+  <button
+    class="pbtn"
+    id="bEnd"
+    hidden>
+  </button>
+
+  <div
+    class="note"
+    id="phase">
+  </div>
+
+  <div
+    class="note"
+    id="spk">
+  </div>
+
+
+  <!-- CAVAB -->
+  <section
+    class="card"
+    id="ansbox"
+    hidden>
+
+    <b>
+      Komandanın cavabı
+    </b>
+
     <div id="aFields"></div>
-    <div class="sm">Göndər düyməsi yoxdur. Vaxt bitəndə yazdığın cavab avtomatik aparıcıya gedəcək.</div>
+
+    <div class="sm">
+      Göndər düyməsi yoxdur.
+      Vaxt bitəndə yazdığın cavab avtomatik aparıcıya gedəcək.
+    </div>
+
   </section>
 
+
+  <!-- KOMANDALAR -->
   <div id="teams"></div>
 
+
   <div class="ctrl">
-    <button class="pbtn sq" id="bMute" aria-label="Mikrofon"></button>
-    <button class="pbtn s" id="bTalk" hidden>Aparıcı ilə danışmaq istəyirəm</button>
-    <button class="pbtn s" id="bSound" hidden>Səsi aç</button>
+
+    <button
+      class="pbtn sq"
+      id="bMute"
+      aria-label="Mikrofon">
+    </button>
+
+    <button
+      class="pbtn s"
+      id="bTalk"
+      hidden>
+      Aparıcı ilə danışmaq istəyirəm
+    </button>
+
+    <button
+      class="pbtn s"
+      id="bSound"
+      hidden>
+      Səsi aç
+    </button>
+
   </div>
-  <div class="note" id="net"></div>
+
+
+  <div
+    class="note"
+    id="net">
+  </div>
+
 </div>
+
 </div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...</div>
-  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
-  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+
+  <div class="footer-line">
+    İntellektuallar üçün hər şey...
+  </div>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/piksel.iok"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©πksel intellektual oyunlar klubu
+  </a>
+
+  <a
+    class="footer-line footer-link"
+    href="https://www.instagram.com/onurelzh"
+    target="_blank"
+    rel="noopener noreferrer">
+    ©Onur Əlizadə
+  </a>
+
 </footer>
 
+
 <script>
+
 const WS='wss://piksel-nhn.pikseliok.workers.dev/room/';
+
 const $=id=>document.getElementById(id);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const send=o=>ws&&ws.readyState===1&&ws.send(JSON.stringify(o));
 
-/* ---------- Tema ---------- */
-const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>';
-const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
-function setTheme(d){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}$('themeIcon').innerHTML=d?moon:sun}
-let sv=null;try{sv=localStorage.getItem('piksel-theme')}catch(e){}
-setTheme(sv?sv==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches));
-$('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'));
+const esc=s=>String(s??'').replace(
+  /[&<>"]/g,
+  c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;'
+  }[c])
+);
 
-/* ---------- Giriş ---------- */
-let mode='host';
-function setMode(m){
-  mode=m;
-  document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m&&m!=='host'));
-  $('form').hidden=m==='host';
-  $('fRoom').hidden=$('fTeam').hidden=m!=='cap';
-  $('fCode').hidden=m!=='pl';
-  $('go').textContent=m==='cap'?'Komandanı yarat':'Komandaya qoşul';
+const send=o=>
+  ws&&
+  ws.readyState===1&&
+  ws.send(JSON.stringify(o));
+
+
+/* =========================
+   TEMA
+========================= */
+
+const sun=
+'<circle cx="16" cy="16" r="6" fill="currentColor"/>'+
+'<g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">'+
+'<path d="M16 2.7v3"/>'+
+'<path d="M16 26.3v3"/>'+
+'<path d="m2.7 16 3 0"/>'+
+'<path d="m26.3 16-3 0"/>'+
+'<path d="m6.6 6.6 2.1 2.1"/>'+
+'<path d="m23.3 23.3 2.1 2.1"/>'+
+'<path d="m25.4 6.6-2.1 2.1"/>'+
+'<path d="m8.7 23.3-2.1 2.1"/>'+
+'</g>';
+
+const moon=
+'<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
+
+function setTheme(d){
+
+  document.body.classList.toggle('dark',d);
+
+  try{
+    localStorage.setItem(
+      'piksel-theme',
+      d?'dark':'light'
+    );
+  }catch(e){}
+
+  $('themeIcon').innerHTML=d?moon:sun;
 }
-document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==='host')start()});
 
-/* ---------- Əlaqə ---------- */
+let sv=null;
+
+try{
+  sv=localStorage.getItem('piksel-theme');
+}catch(e){}
+
+setTheme(
+  sv
+    ?sv==='dark'
+    :!!(
+      window.matchMedia&&
+      matchMedia('(prefers-color-scheme: dark)').matches
+    )
+);
+
+$('themeToggle').onclick=()=>{
+  setTheme(
+    !document.body.classList.contains('dark')
+  );
+};
+
+
+/* =========================
+   GİRİŞ
+========================= */
+
+let mode='host';
+
+function setMode(m){
+
+  mode=m;
+
+  document
+    .querySelectorAll('[data-m]')
+    .forEach(
+      b=>b.classList.toggle(
+        'on',
+        b.dataset.m===m&&m!=='host'
+      )
+    );
+
+  $('form').hidden=m==='host';
+
+  $('fRoom').hidden=
+  $('fTeam').hidden=
+  m!=='cap';
+
+  $('fCode').hidden=m!=='pl';
+
+  $('go').textContent=
+    m==='cap'
+      ?'Komandanı yarat'
+      :'Komandaya qoş';
+}
+
+document
+  .querySelectorAll('[data-m]')
+  .forEach(
+    b=>b.onclick=()=>{
+      setMode(b.dataset.m);
+
+      if(b.dataset.m==='host')
+        start();
+    }
+  );
+
+
+/* =========================
+   ƏLAQƏ
+========================= */
+
 let ws,me,S,room,stream,off=0,muted=false;
-const pcs={},auds={};
-let ICE=[{urls:'stun:stun.l.google.com:19302'}];
-const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+
+const pcs={};
+const auds={};
+
+let ICE=[
+  {
+    urls:'stun:stun.l.google.com:19302'
+  }
+];
+
+const ALPHA=
+  'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+const norm=s=>
+  String(s||'')
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g,'');
+
 $('go').onclick=()=>start();
 
+
 async function start(){
+
   let first;
-  if(mode==='host'){room=Array.from({length:5},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join('');first={t:'host'}}
-  else if(mode==='cap'){
+
+  if(mode==='host'){
+
+    room=
+      Array.from(
+        {length:5},
+        ()=>ALPHA[
+          Math.floor(
+            Math.random()*ALPHA.length
+          )
+        ]
+      ).join('');
+
+    first={
+      t:'host'
+    };
+
+  }else if(mode==='cap'){
+
     room=norm($('fRoom').value);
-    if(room.length<4||!$('fTeam').value.trim()||!$('fName').value.trim())return alert('Otaq kodunu, komanda adını və adını yaz');
-    first={t:'captain',team:$('fTeam').value,name:$('fName').value};
+
+    if(
+      room.length<4||
+      !$('fTeam').value.trim()||
+      !$('fName').value.trim()
+    ){
+      return alert(
+        'Otaq kodunu, komanda adını və adını yaz'
+      );
+    }
+
+    first={
+      t:'captain',
+      team:$('fTeam').value,
+      name:$('fName').value
+    };
+
   }else{
+
     const raw=norm($('fCode').value);
-    if(raw.length<8||!$('fName').value.trim())return alert('Komanda kodunu və adını yaz');
-    room=raw.slice(0,-4);first={t:'player',code:raw.slice(-4),name:$('fName').value};
+
+    if(
+      raw.length<8||
+      !$('fName').value.trim()
+    ){
+      return alert(
+        'Komanda kodunu və adını yaz'
+      );
+    }
+
+    room=raw.slice(0,-4);
+
+    first={
+      t:'player',
+      code:raw.slice(-4),
+      name:$('fName').value
+    };
   }
+
   ensureAudio();
+
   try{
-    const r=await fetch('https://piksel-nhn.pikseliok.workers.dev/turn');
+
+    const r=
+      await fetch(
+        'https://piksel-nhn.pikseliok.workers.dev/turn'
+      );
+
     const j=await r.json();
-    if(j.iceServers&&j.iceServers.length)ICE=j.iceServers;
+
+    if(
+      j.iceServers&&
+      j.iceServers.length
+    ){
+      ICE=j.iceServers;
+    }
+
   }catch(e){}
-  ws=new WebSocket(WS+room);
+
+  ws=
+    new WebSocket(
+      WS+room
+    );
+
   ws.onmessage=e=>{
+
     const m=JSON.parse(e.data);
-    if(m.t==='hello'){me=m.id;send(first)}
-    else if(m.t==='error'){alert(m.msg);if(!S)location.reload()}
-    else if(m.t==='state'){S=m;off=m.now-Date.now();render();if(stream)reconcile();else if(!micAsk){micAsk=true;getMic()}}
-    else if(m.t==='signal')sig(m.from,m.data);
-    else if(m.t==='closed'){alert('Aparıcı otaqdan çıxdı');location.reload()}
+
+    if(m.t==='hello'){
+
+      me=m.id;
+      send(first);
+
+    }else if(m.t==='error'){
+
+      alert(m.msg);
+
+      if(!S)
+        location.reload();
+
+    }else if(m.t==='state'){
+
+      S=m;
+
+      off=
+        m.now-Date.now();
+
+      render();
+
+      if(stream)
+        reconcile();
+      else if(!micAsk){
+
+        micAsk=true;
+        getMic();
+
+      }
+
+    }else if(m.t==='signal'){
+
+      sig(
+        m.from,
+        m.data
+      );
+
+    }else if(m.t==='closed'){
+
+      alert(
+        'Aparıcı otaqdan çıxdı'
+      );
+
+      location.reload();
+    }
   };
-  ws.onclose=()=>{if(S){alert('Əlaqə kəsildi');location.reload()}};
+
+  ws.onclose=()=>{
+
+    if(S){
+
+      alert(
+        'Əlaqə kəsildi'
+      );
+
+      location.reload();
+    }
+  };
 }
 
-/* ---------- Səs (WebRTC) ---------- */
+
+/* =========================
+   WEBRTC
+========================= */
+
 function peers(){
-  const list=S.teams.flatMap((t,i)=>t.members.map(m=>({id:m.id,tk:i})));
-  if(S.hostId)list.push({id:S.hostId,host:true});
+
+  const list=
+    S.teams.flatMap(
+      (t,i)=>
+        t.members.map(
+          m=>({
+            id:m.id,
+            tk:i
+          })
+        )
+    );
+
+  if(S.hostId)
+    list.push({
+      id:S.hostId,
+      host:true
+    });
+
   return list;
 }
-const myTk=()=>{const p=peers().find(x=>x.id===me);return p?p.tk:-1};
+
+const myTk=()=>{
+
+  const p=
+    peers().find(
+      x=>x.id===me
+    );
+
+  return p?p.tk:-1;
+};
+
 function want(p){
-  if(p.host||S.role==='host')return true;
-  if(p.tk===myTk())return true;
-  return p.id===S.speaker||me===S.speaker;
+
+  if(p.host||S.role==='host')
+    return true;
+
+  if(p.tk===myTk())
+    return true;
+
+  return p.id===S.speaker||
+         me===S.speaker;
 }
+
 function hear(id){
-  if(S.role==='host')return id===S.speaker;
-  const p=peers().find(x=>x.id===id);
-  return id===S.hostId||id===S.speaker||(p&&p.tk===myTk());
+
+  if(S.role==='host')
+    return id===S.speaker;
+
+  const p=
+    peers().find(
+      x=>x.id===id
+    );
+
+  return id===S.hostId||
+         id===S.speaker||
+         (p&&p.tk===myTk());
 }
-function applyMute(){for(const id in auds)auds[id].muted=!hear(id)}
+
+function applyMute(){
+
+  for(const id in auds)
+    auds[id].muted=!hear(id);
+}
+
 function mk(id){
-  const pc=new RTCPeerConnection({iceServers:ICE});
+
+  const pc=
+    new RTCPeerConnection({
+      iceServers:ICE
+    });
+
   pc._q=[];
-  stream.getTracks().forEach(t=>pc.addTrack(t,stream));
-  pc.onicecandidate=e=>e.candidate&&send({t:'signal',to:id,data:{ice:e.candidate}});
+
+  stream
+    .getTracks()
+    .forEach(
+      t=>pc.addTrack(
+        t,
+        stream
+      )
+    );
+
+  pc.onicecandidate=e=>
+    e.candidate&&
+    send({
+      t:'signal',
+      to:id,
+      data:{
+        ice:e.candidate
+      }
+    });
+
   pc.ontrack=e=>{
+
     let a=auds[id];
-    if(!a){a=auds[id]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
-    a.srcObject=e.streams[0];a.play().catch(()=>{$('bSound').hidden=false});applyMute();
+
+    if(!a){
+
+      a=
+        auds[id]=
+        document.createElement('audio');
+
+      a.autoplay=true;
+      a.playsInline=true;
+
+      document.body.appendChild(a);
+    }
+
+    a.srcObject=e.streams[0];
+
+    a.play()
+      .catch(
+        ()=>{
+          $('bSound').hidden=false
+        }
+      );
+
+    applyMute();
   };
-  pc.onconnectionstatechange=showNet;
-  pcs[id]=pc;return pc;
+
+  pc.onconnectionstatechange=
+    showNet;
+
+  pcs[id]=pc;
+
+  return pc;
 }
+
 function showNet(){
-  if(!S)return;
-  const names={};S.teams.forEach(t=>t.members.forEach(m=>names[m.id]=m.name));
+
+  if(!S)
+    return;
+
+  const names={};
+
+  S.teams.forEach(
+    t=>
+      t.members.forEach(
+        m=>{
+          names[m.id]=m.name;
+        }
+      )
+  );
+
   names[S.hostId]='Aparıcı';
-  const tr={connected:'qoşuldu',connecting:'qoşulur',new:'başlayır',failed:'alınmadı',disconnected:'kəsildi',closed:'bağlandı'};
-  const l=Object.keys(pcs).map(id=>(names[id]||id)+': '+(tr[pcs[id].connectionState]||pcs[id].connectionState));
-  $('net').textContent=l.length?'Səs əlaqəsi: '+l.join(' | '):'Səs əlaqəsi hələ yoxdur';
+
+  const tr={
+    connected:'qoşuldu',
+    connecting:'qoşulur',
+    new:'başlayır',
+    failed:'alınmadı',
+    disconnected:'kəsildi',
+    closed:'bağlandı'
+  };
+
+  const l=
+    Object.keys(pcs).map(
+      id=>
+        (names[id]||id)+
+        ': '+
+        (tr[pcs[id].connectionState]||
+         pcs[id].connectionState)
+    );
+
+  $('net').textContent=
+    l.length
+      ?'Səs əlaqəsi: '+l.join(' | ')
+      :'Səs əlaqəsi hələ yoxdur';
 }
-$('bSound').onclick=()=>{for(const id in auds)auds[id].play().catch(()=>{});$('bSound').hidden=true};
+
+$('bSound').onclick=()=>{
+
+  for(const id in auds)
+    auds[id]
+      .play()
+      .catch(()=>{});
+
+  $('bSound').hidden=true;
+};
+
 function drop(id){
-  if(pcs[id]){pcs[id].close();delete pcs[id]}
-  if(auds[id]){auds[id].srcObject=null;delete auds[id]}
+
+  if(pcs[id]){
+
+    pcs[id].close();
+
+    delete pcs[id];
+  }
+
+  if(auds[id]){
+
+    auds[id].srcObject=null;
+
+    delete auds[id];
+  }
 }
+
 async function reconcile(){
-  const list=peers().filter(p=>p.id!==me),ids=list.map(p=>p.id);
-  Object.keys(pcs).forEach(id=>{if(!ids.includes(id))drop(id)});
+
+  const list=
+    peers().filter(
+      p=>p.id!==me
+    );
+
+  const ids=
+    list.map(
+      p=>p.id
+    );
+
+  Object.keys(pcs)
+    .forEach(
+      id=>{
+        if(!ids.includes(id))
+          drop(id);
+      }
+    );
+
   for(const p of list){
-    const has=!!pcs[p.id],w=want(p);
-    if(!w&&has)drop(p.id);
-    else if(w&&!has&&me<p.id){
+
+    const has=!!pcs[p.id];
+    const w=want(p);
+
+    if(!w&&has){
+
+      drop(p.id);
+
+    }else if(
+      w&&!has&&
+      me<p.id
+    ){
+
       const pc=mk(p.id);
-      await pc.setLocalDescription(await pc.createOffer());
-      send({t:'signal',to:p.id,data:{sdp:pc.localDescription}});
+
+      await pc.setLocalDescription(
+        await pc.createOffer()
+      );
+
+      send({
+        t:'signal',
+        to:p.id,
+        data:{
+          sdp:pc.localDescription
+        }
+      });
     }
   }
-  applyMute();showNet();
+
+  applyMute();
+  showNet();
 }
+
 async function onSignal(from,d){
-  const pc=pcs[from]||mk(from);
+
+  const pc=
+    pcs[from]||
+    mk(from);
+
   try{
+
     if(d.sdp){
-      await pc.setRemoteDescription(d.sdp);
-      for(const c of pc._q.splice(0))await pc.addIceCandidate(c);
-      if(d.sdp.type==='offer'){
-        await pc.setLocalDescription(await pc.createAnswer());
-        send({t:'signal',to:from,data:{sdp:pc.localDescription}});
+
+      await pc.setRemoteDescription(
+        d.sdp
+      );
+
+      for(
+        const c of pc._q.splice(0)
+      ){
+
+        await pc.addIceCandidate(c);
       }
+
+      if(
+        d.sdp.type==='offer'
+      ){
+
+        await pc.setLocalDescription(
+          await pc.createAnswer()
+        );
+
+        send({
+          t:'signal',
+          to:from,
+          data:{
+            sdp:pc.localDescription
+          }
+        });
+      }
+
     }else if(d.ice){
-      if(pc.remoteDescription)await pc.addIceCandidate(d.ice);else pc._q.push(d.ice);
+
+      if(
+        pc.remoteDescription
+      ){
+
+        await pc.addIceCandidate(
+          d.ice
+        );
+
+      }else{
+
+        pc._q.push(d.ice);
+      }
     }
+
   }catch(e){}
 }
 
-let micAsk=false,pending=[],lastAnn='',entered=false;
+let micAsk=false;
+
+let pending=[];
+
+let lastAnn='';
+
+let entered=false;
+
+
 async function getMic(){
-  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
-  catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
+
+  try{
+
+    stream=
+      await navigator.mediaDevices
+        .getUserMedia({
+          audio:{
+            echoCancellation:true,
+            noiseSuppression:true
+          }
+        });
+
+  }catch(e){
+
+    return alert(
+      'Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.'
+    );
+  }
+
   await reconcile();
-  pending.splice(0).forEach(([f,d])=>onSignal(f,d));
+
+  pending
+    .splice(0)
+    .forEach(
+      ([f,d])=>
+        onSignal(f,d)
+    );
 }
+
 function sig(from,d){
-  if(d&&d.mode&&TOT[d.mode]){
-    if(S&&S.role!=='host'){
-      if(rm!==d.mode){rm=d.mode;seg=0;buildFields(d.mode)}
-      if(S.phase!=='running')curTot=TOT[d.mode];
+
+  if(
+    d&&
+    d.mode&&
+    TOT[d.mode]
+  ){
+
+    if(
+      S&&
+      S.role!=='host'
+    ){
+
+      if(rm!==d.mode){
+
+        rm=d.mode;
+        seg=0;
+        buildFields(d.mode);
+      }
+
+      if(S.phase!=='running')
+        curTot=TOT[d.mode];
+
       render();
     }
+
     return;
   }
-  if(!stream)pending.push([from,d]);else onSignal(from,d);
-}
-function announce(){
-  if(!S||S.role!=='host')return;
-  const ids=peers().filter(p=>p.id!==me).map(p=>p.id),k=hostMode+ids.join();
-  if(k===lastAnn)return;lastAnn=k;
-  ids.forEach(id=>send({t:'signal',to:id,data:{mode:hostMode}}));
-}
-function stagger(els){els.forEach((e,i)=>{if(!e)return;e.style.setProperty('--i',i);e.classList.add('rise')})}
 
-/* ---------- Taymer (siferblat) ---------- */
-const TOT={klasik:60,duplet:30,blits:20},NEED={klasik:1,duplet:2,blits:3};
-let hostMode='klasik',curTot=60,dTotal=0,lastEnds=0,seg=0,rm='klasik',lastLeft=-1,prevPh='',sentFor=0;
+  if(!stream)
+    pending.push([from,d]);
+  else
+    onSignal(from,d);
+}
+
+function announce(){
+
+  if(
+    !S||
+    S.role!=='host'
+  )
+    return;
+
+  const ids=
+    peers()
+      .filter(
+        p=>p.id!==me
+      )
+      .map(
+        p=>p.id
+      );
+
+  const k=
+    hostMode+
+    ids.join();
+
+  if(k===lastAnn)
+    return;
+
+  lastAnn=k;
+
+  ids.forEach(
+    id=>
+      send({
+        t:'signal',
+        to:id,
+        data:{
+          mode:hostMode
+        }
+      })
+  );
+}
+
+function stagger(els){
+
+  els.forEach(
+    (e,i)=>{
+
+      if(!e)
+        return;
+
+      e.style.setProperty(
+        '--i',
+        i
+      );
+
+      e.classList.add(
+        'rise'
+      );
+    }
+  );
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+const TOT={
+  klasik:60,
+  duplet:30,
+  blits:20
+};
+
+const NEED={
+  klasik:1,
+  duplet:2,
+  blits:3
+};
+
+let hostMode='klasik';
+let curTot=60;
+let dTotal=0;
+let lastEnds=0;
+let seg=0;
+let rm='klasik';
+let lastLeft=-1;
+let prevPh='';
+let sentFor=0;
+
 let audioCtx=null;
+
 function ensureAudio(){
-  try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}catch(e){}
+
+  try{
+
+    if(!audioCtx)
+      audioCtx=
+        new(
+          window.AudioContext||
+          window.webkitAudioContext
+        )();
+
+    if(
+      audioCtx.state==='suspended'
+    )
+      audioCtx.resume();
+
+  }catch(e){}
 }
+
 function beep(ms,freq){
-  if(!audioCtx)return;
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain(),n=audioCtx.currentTime,d=ms/1000;
-  o.type='sine';o.frequency.value=freq;
-  g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(.22,n+.015);
-  g.gain.setValueAtTime(.22,n+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(0,n+d);
-  o.connect(g).connect(audioCtx.destination);o.start(n);o.stop(n+d+.03);
+
+  if(!audioCtx)
+    return;
+
+  const o=
+    audioCtx.createOscillator();
+
+  const g=
+    audioCtx.createGain();
+
+  const n=
+    audioCtx.currentTime;
+
+  const d=ms/1000;
+
+  o.type='sine';
+  o.frequency.value=freq;
+
+  g.gain.setValueAtTime(
+    0,
+    n
+  );
+
+  g.gain.linearRampToValueAtTime(
+    .22,
+    n+.015
+  );
+
+  g.gain.setValueAtTime(
+    .22,
+    n+Math.max(d-.04,.02)
+  );
+
+  g.gain.linearRampToValueAtTime(
+    0,
+    n+d
+  );
+
+  o.connect(g)
+   .connect(
+     audioCtx.destination
+   );
+
+  o.start(n);
+
+  o.stop(
+    n+d+.03
+  );
 }
+
 function build(total){
-  if(dTotal===total)return;dTotal=total;
-  const g=$('ticks');g.innerHTML='';
-  const red=Math.min(10,total-1);
-  for(let i=1;i<total;i++){
-    const r=(i*(360/total)-90)*Math.PI/180,l=document.createElementNS('http://www.w3.org/2000/svg','line');
-    l.setAttribute('x1',150+122*Math.cos(r));l.setAttribute('y1',150+122*Math.sin(r));
-    l.setAttribute('x2',150+138*Math.cos(r));l.setAttribute('y2',150+138*Math.sin(r));
-    l.setAttribute('data-mark',i);l.classList.add('tick');if(i<=red)l.classList.add('red');
+
+  if(dTotal===total)
+    return;
+
+  dTotal=total;
+
+  const g=$('ticks');
+
+  g.innerHTML='';
+
+  const red=
+    Math.min(
+      10,
+      total-1
+    );
+
+  for(
+    let i=1;
+    i<total;
+    i++
+  ){
+
+    const r=
+      (
+        i*
+        (360/total)-
+        90
+      )*
+      Math.PI/180;
+
+    const l=
+      document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'line'
+      );
+
+    l.setAttribute(
+      'x1',
+      150+
+      122*
+      Math.cos(r)
+    );
+
+    l.setAttribute(
+      'y1',
+      150+
+      122*
+      Math.sin(r)
+    );
+
+    l.setAttribute(
+      'x2',
+      150+
+      138*
+      Math.cos(r)
+    );
+
+    l.setAttribute(
+      'y2',
+      150+
+      138*
+      Math.sin(r)
+    );
+
+    l.setAttribute(
+      'data-mark',
+      i
+    );
+
+    l.classList.add(
+      'tick'
+    );
+
+    if(i<=red)
+      l.classList.add(
+        'red'
+      );
+
     g.appendChild(l);
   }
 }
+
 function paint(left){
+
   $('num').textContent=left;
-  $('ticks').querySelectorAll('.tick').forEach(l=>l.classList.toggle('hidden-tick',left<+l.getAttribute('data-mark')));
+
+  $('ticks')
+    .querySelectorAll('.tick')
+    .forEach(
+      l=>
+        l.classList.toggle(
+          'hidden-tick',
+          left<
+          +l.getAttribute(
+            'data-mark'
+          )
+        )
+    );
 }
+
 $('modes').onclick=e=>{
-  const b=e.target.closest('.mode-btn');if(!b||!S||S.role!=='host'||S.phase==='running')return;
-  hostMode=b.dataset.mode;
-  document.querySelectorAll('.mode-btn').forEach(x=>x.classList.toggle('active',x===b));
-  announce();
-};
-setInterval(()=>{
-  if(!S)return;
-  const ph=S.phase,h=S.role==='host';
-  let left,tot;
-  if(ph==='running'){tot=curTot;left=Math.max(0,Math.ceil((S.endsAt-(Date.now()+off))/1000))}
-  else if(ph==='ended'){tot=curTot;left=0}
-  else{tot=h?TOT[hostMode]:curTot;left=tot}
-  build(tot);paint(left);
-  if(ph==='running'&&left!==lastLeft){
-    lastLeft=left;
-    if(left===10)beep(2000,1000);
-    if(left>=1&&left<=3)beep(180,1300);
-    /* son seqmentin sonunda cavab avtomatik göndərilir */
-    if(left<=1&&S.role==='captain'&&seg>=NEED[rm]&&sentFor!==S.endsAt){sentFor=S.endsAt;sendAns()}
-  }
-  if(prevPh==='running'&&ph==='ended')beep(2000,700);
-  prevPh=ph;
-},250);
 
-/* ---------- Cavab xanaları ---------- */
-function buildFields(m){
-  const n=NEED[m];
-  $('aFields').innerHTML=n===1
-    ?'<textarea class="af" maxlength="300" placeholder="Cavabı bura yaz"></textarea>'
-    :Array.from({length:n},(_,i)=>`<input class="af" maxlength="150" placeholder="${i+1}-ci sualın cavabı">`).join('');
-}
-function sendAns(){
-  const v=[...document.querySelectorAll('#aFields .af')].map(e=>e.value.trim());
-  send({t:'answer',text:v.length>1?v.map((x,i)=>(i+1)+') '+x).join('\n'):v[0]||''});
-}
-$('aFields').addEventListener('input',()=>{if(S&&S.phase==='running')sendAns()});
-buildFields('klasik');
+  const b=
+    e.target.closest(
+      '.mode-btn'
+    );
 
-/* ---------- Ekran ---------- */
-const open={};
-const mic=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
-$('bMute').innerHTML=mic(false);
-function render(){
-  const h=S.role==='host',cap=S.role==='captain',ph=S.phase;
-  $('lobby').hidden=true;$('game').hidden=false;
-  if(!entered){entered=true;stagger([...$('game').children])}
-  const myT=S.teams.find(t=>t.members.some(m=>m.id===me));
-  /* yeni müzakirə seqmenti */
-  if(ph==='running'&&S.endsAt!==lastEnds){
-    lastEnds=S.endsAt;
-    const dur=Math.round((S.endsAt-S.now)/1000),m=dur>=45?'klasik':dur>=25?'duplet':'blits';
-    if(m!==rm||seg>=NEED[m]){seg=0;buildFields(m)}
-    rm=m;seg++;curTot=TOT[m];
-    if(cap)sendAns();
-  }
-  const done=ph==='ended'&&seg>=NEED[rm];
-  $('head').innerHTML=h
-    ?`<div class="big">Otaq kodu:<br><span class="code">${room}</span></div><div class="sm">Bu kodu kapitanlara ver</div>`
-    :`<div class="big">${esc(myT&&myT.name)} komandası</div><div class="sm">${cap?'Kapitan':'Oyunçu'} · Komanda kodu: <span class="code">${room}${myT?myT.code:''}</span><br>Bu kodu komanda yoldaşlarına ver.</div>`;
-  $('modes').hidden=!h;$('tgrid').classList.toggle('solo',!h);
-  $('ansbox').hidden=!cap;$('bTalk').hidden=!cap;
-  const sp=S.teams.flatMap(t=>t.members).find(m=>m.id===S.speaker);
-  if(h){
-    const b=$('bStart');
-    b.hidden=ph==='running';
-    b.textContent=ph==='lobby'?'Oyuna başla':'Vaxtı başlat';
-    b.disabled=ph==='lobby'&&S.teams.length<2;
-    $('bEnd').hidden=!S.speaker;
-    $('bEnd').textContent=(sp?sp.name:'…')+' ilə danışığı bitir';
-  }
-  if(cap){
-    const on=ph==='running'||(ph==='ended'&&seg<NEED[rm]);
-    document.querySelectorAll('#aFields .af').forEach(e=>e.disabled=!on);
-    const mm=myT&&myT.members.find(m=>m.id===me);
-    $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
-    $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, cavabı gözlə':'Aparıcı ilə danışmaq istəyirəm';
-  }
-  $('spk').textContent=S.speaker===me?'Aparıcı səni dinləyir. Səsini hamı eşidir.':sp?`${sp.name} aparıcı ilə danışır, hamı eşidir.`:'';
-  $('phase').textContent={lobby:'Komandalar qoşulur. Aparıcı oyunu başladacaq.',idle:'Aparıcı sualı oxuyur.',running:'Müzakirə gedir. Yalnız komandanın içində danışın.',ended:seg<NEED[rm]?'Aparıcı növbəti sualı oxuyur.':'Vaxt bitdi. Aparıcı cavabları yoxlayır.'}[ph]||'';
-  const chev='<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges"><path d="M0 0h2v1H0zM6 0h2v1H6zM1 1h2v1H1zM5 1h2v1H5zM2 2h4v1H2zM3 3h2v1H3z"/></svg>';
-  $('teams').innerHTML=S.teams.length?S.teams.map(t=>{
-    const w=t.members.find(m=>m.wants),show=h&&done&&t.answered;
-    return `<div class="tcard${open[t.code]?' open':''}"><div class="thead" data-tg="${t.code}"><div class="tt">${h&&w?`<button class="hand" data-a="grant" data-id="${w.id}" aria-label="Söz ver">✋</button>`:''}<span>"${esc(t.name)}" komandası</span><span class="sc">${t.score} xal</span></div>${chev}</div>`+
-    (h&&ph!=='lobby'?`<div class="trow"><button class="mini" data-a="pt" data-c="${t.code}" data-d="1">+1</button><button class="mini" data-a="pt" data-c="${t.code}" data-d="-1">−1</button>${show?`<span class="ans">Cavab: ${esc(t.answer).replace(/\n/g,' • ')}</span>`:''}</div>`:'')+
-    `<div class="tbody"><div class="tin"><div class="tpad">`+(h?`<div class="sm" style="margin:0 0 6px">Komanda kodu: <span class="code">${room}${t.code}</span></div>`:'')+
-    t.members.map(m=>`<div class="mem">${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}${m.id===S.speaker?' 🎙':''}</div>`).join('')+
-    '</div></div></div></div>';
-  }).join(''):'<div class="note">Hələ komanda yoxdur.</div>';
-  announce();
-  applyMute();
-}
-$('teams').onclick=e=>{
-  const b=e.target.closest('[data-a]');
-  if(b){
-    if(b.dataset.a==='grant')send({t:'talkgrant',id:b.dataset.id});
-    if(b.dataset.a==='pt')send({t:'score',code:b.dataset.c,delta:Number(b.dataset.d)});
+  if(
+    !b||
+    !S||
+    S.role!=='host'||
+    S.phase==='running'
+  )
     return;
-  }
-  const t=e.target.closest('[data-tg]');
-  if(t){const c=t.parentElement;c.classList.toggle('open');open[t.dataset.tg]=c.classList.contains('open')}
+
+  hostMode=b.dataset.mode;
+
+  document
+    .querySelectorAll('.mode-btn')
+    .forEach(
+      x=>
+        x.classList.toggle(
+          'active',
+          x===b
+        )
+    );
+
+  announce();
 };
-$('bStart').onclick=()=>{
-  ensureAudio();
-  if(S.phase==='lobby')return send({t:'begin'});
-  if(S.phase==='ended')send({t:'next'});
-  send({t:'ask',seconds:TOT[hostMode]});
-};
-$('bEnd').onclick=()=>send({t:'talkend'});
-$('bTalk').onclick=()=>send({t:'talkreq'});
-$('bMute').onclick=()=>{
-  if(!stream)return;muted=!muted;
-  stream.getAudioTracks().forEach(t=>t.enabled=!muted);
-  $('bMute').innerHTML=mic(muted);
-  $('bMute').setAttribute('aria-label',muted?'Mikrofon bağlıdır':'Mikrofon açıqdır');
-};
-stagger([document.querySelector('.top-nav'),$('lobby'),...$('lobby').children]);
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="az">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#9DC3FF">
-<title>NHN otağı - πksel.iok</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);--red:#ff3b30}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
-body.dark{background:var(--dark-bg);color:var(--dark-ink)}
-button,input,textarea,a{font:inherit}
-a{color:inherit;text-decoration:none}
-[hidden]{display:none!important}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
-.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition)}
-.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
-.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
-.dark .nav-link{color:var(--dark-ink)}
-.nav-link:hover{transform:translateY(-1px)}
-.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
-.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
-.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
-.theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.theme-icon{width:25px;height:25px;display:block}
-h1{text-align:center;color:var(--deep);font-size:clamp(20px,5.2vw,30px);font-weight:700;line-height:1.35;letter-spacing:-.5px;margin:26px 0 14px}
-.dark h1,.dark .note{color:var(--dark-light)}
-.note{color:var(--deep);text-align:center;font-size:13px;font-weight:500;margin-top:8px;line-height:1.4}
-.card{width:100%;border-radius:31px;padding:22px 24px;margin-top:14px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition),color var(--transition)}
-.dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
-.sm{font-size:13px;font-weight:500;opacity:.9;margin-top:6px;line-height:1.45}
-.center{text-align:center}
-.big{font-weight:700;font-size:clamp(26px,7vw,38px);line-height:1.2;letter-spacing:-.5px}
-.code{font-weight:700;letter-spacing:3px}
-/* giriş */
-#lobby{margin-top:24px;padding:26px 24px 30px}
-#lobby .big{font-size:clamp(22px,5.8vw,32px);margin-bottom:26px}
-.pill{display:block;width:100%;height:60px;border:0;border-radius:999px;padding:0 10px;margin-top:16px;background:var(--ink);color:var(--deep);font-weight:800;font-size:27px;cursor:pointer;transition:transform .25s ease,outline .1s}
-@media(max-width:700px){.pill{height:52px;font-size:24px}}@media(max-width:420px){.pill{height:48px;font-size:22px}}
-.dark .pill{background:var(--dark-ink);color:var(--dark-light)}
-.pill:hover{transform:translateY(-2px)}.pill:active{transform:scale(.97)}
-.pill.on{outline:3px solid currentColor;outline-offset:3px}
-input,textarea{width:100%;border:0;border-radius:20px;padding:12px 18px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:500;outline:none}
-.dark input,.dark textarea{background:var(--dark-ink);color:var(--dark-light)}
-textarea{resize:vertical;min-height:70px}
-.info{margin-top:34px;font-size:clamp(12px,3.2vw,15px);font-weight:400;line-height:1.5;text-align:center}
-.info p+p{margin-top:16px}
-/* düymələr */
-.pbtn{border:0;border-radius:999px;padding:8px 30px;margin:10px auto 0;display:block;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);font-weight:600;font-size:clamp(17px,4.6vw,22px);cursor:pointer;transition:transform .25s ease,opacity .25s}
-.dark .pbtn{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
-.pbtn:hover{transform:translateY(-2px)}.pbtn:disabled{opacity:.4;cursor:default;transform:none}
-.pbtn.sq{width:56px;height:56px;padding:0;display:grid;place-items:center;margin:0}
-.pbtn.s{font-size:15px;padding:8px 20px}
-.mic{width:28px;height:28px}
-.ctrl{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:18px}
-/* taymer */
-.tgrid{display:grid;grid-template-columns:36% 1fr;gap:14px;align-items:center}
-.tgrid.solo{grid-template-columns:1fr}
-.modes{display:flex;flex-direction:column;gap:12px}
-.mode-btn{padding:clamp(10px,3vw,16px) 4px;border:2px solid currentColor;border-radius:999px;background:transparent;color:inherit;cursor:pointer;font-weight:600;font-size:clamp(11px,3.4vw,17px);transition:transform .25s ease,background .25s ease,color .25s ease}
-.mode-btn:hover{transform:translateY(-2px)}
-.mode-btn.active{background:var(--ink);color:var(--deep);border-color:var(--ink);font-weight:700}
-.dark .mode-btn.active{background:var(--dark-ink);color:var(--dark-light);border-color:var(--dark-ink)}
-.dial-outer{width:100%;max-width:340px;margin:0 auto;position:relative}
-.dial-outer::before{content:"";display:block;padding-top:100%}
-.dial-svg{position:absolute;inset:0;width:100%;height:100%}
-.dial-bg1{fill:#00072C}.dial-bg2{fill:#001E6F}
-.tick{stroke:#9DC3FF;stroke-width:3;stroke-linecap:round;transition:opacity .4s ease}
-.tick.red{stroke:var(--red)}.tick.hidden-tick{opacity:0}
-.marker{stroke:var(--red);stroke-width:6;stroke-linecap:round}
-.dial-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9DC3FF;pointer-events:none}
-.dial-number{font-weight:500;font-size:clamp(44px,14vw,84px);line-height:1}
-/* komanda kartları */
-.tcard{margin-top:12px;border-radius:26px;padding:14px 20px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition)}
-.dark .tcard{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
-.thead{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
-.tt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:clamp(15px,4.2vw,19px);line-height:1.3;word-break:break-word}
-.sc{font-weight:500;font-size:13px;opacity:.85}
-.hand{border:0;border-radius:50%;width:32px;height:32px;flex:none;font-size:17px;cursor:pointer;background:var(--ink);color:var(--deep)}
-.dark .hand{background:var(--dark-ink);color:var(--dark-light)}
-.chev{flex:none;transition:transform .35s ease}
-.tcard.open .chev{transform:rotate(180deg)}
-.trow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-weight:600;font-size:clamp(13px,3.6vw,16px)}
-.ans{word-break:break-word}
-.tbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
-.tcard.open .tbody{grid-template-rows:1fr}
-.tin{overflow:hidden;min-height:0}
-.tpad{margin-top:12px;border-top:2px solid rgba(157,195,255,.3);padding-top:10px;font-size:15px;font-weight:500}
-.dark .tpad{border-color:rgba(0,7,44,.25)}
-.mem{margin-top:6px}
-.mini{border:0;border-radius:999px;padding:5px 14px;font-weight:700;font-size:13px;cursor:pointer;background:var(--ink);color:var(--deep)}
-.dark .mini{background:var(--dark-ink);color:var(--dark-light)}
-.rise{opacity:0;animation:rise .65s cubic-bezier(.22,.8,.25,1) forwards;animation-delay:calc(var(--i)*90ms)}
-@keyframes rise{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
-footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
-.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
-.footer-line{font-size:15px;line-height:1.45;font-weight:500}
-.footer-link{transition:opacity .25s ease,transform .25s ease}
-.footer-link:hover{opacity:.72;transform:translateY(-1px)}
-:focus-visible{outline:3px solid currentColor;outline-offset:4px}
-@media(max-width:700px){.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:52px;padding-left:18px;padding-right:60px}.nav-links{gap:34px}.nav-link{font-size:15px}.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}.card{border-radius:29px;padding:20px}footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
-@media(max-width:420px){.page{width:calc(100vw - 36px)}.nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}}
-</style>
-</head>
-<body>
-<div class="page">
-<nav class="top-nav" aria-label="Əsas naviqasiya">
-  <div class="nav-links"><a class="nav-link" href="index.html">Əsas Səhifə</a><a class="nav-link" href="contact.html">Bizimlə Əlaqə</a></div>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş"><svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg></button>
-</nav>
 
-<section class="card" id="lobby">
-  <div class="big center">"Nə? Harada? Nə Zaman?"<br>Səsli otaq</div>
-  <button class="pill" data-m="host">APARICI</button>
-  <button class="pill" data-m="cap">KAPİTAN</button>
-  <button class="pill" data-m="pl">OYUNÇU</button>
-  <div id="form" hidden>
-    <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden>
-    <input id="fTeam" placeholder="Komanda adı" hidden>
-    <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden>
-    <input id="fName" placeholder="Adın">
-    <button class="pbtn" id="go" style="margin-top:16px">Daxil ol</button>
-  </div>
-  <div class="info"><p>Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.</p><p>Kapitanlar öz komanda kodunu oyunçularına verməlidir.</p></div>
-</section>
+setInterval(()=>{
 
-<div id="game" hidden>
-  <h1>"Nə? Harada? Nə Zaman?"<br>Səsli otaq</h1>
-  <section class="card center" id="head"></section>
-  <section class="card">
-    <div class="tgrid" id="tgrid">
-      <div class="modes" id="modes">
-        <button class="mode-btn active" data-mode="klasik">KLASİK</button>
-        <button class="mode-btn" data-mode="duplet">DUPLET</button>
-        <button class="mode-btn" data-mode="blits">BLİTZ</button>
-      </div>
-      <div class="dial-outer">
-        <svg class="dial-svg" viewBox="0 0 300 300"><circle class="dial-bg1" cx="150" cy="150" r="140"/><circle class="dial-bg2" cx="150" cy="150" r="112"/><line class="marker" x1="150" y1="8" x2="150" y2="42"/><g id="ticks"></g></svg>
-        <div class="dial-center"><div class="dial-number" id="num">60</div></div>
-      </div>
-    </div>
-  </section>
+  if(!S)
+    return;
 
-  <button class="pbtn" id="bStart" hidden>Vaxtı başlat</button>
-  <button class="pbtn" id="bEnd" hidden></button>
-  <div class="note" id="phase"></div>
-  <div class="note" id="spk"></div>
+  const ph=S.phase;
+  const h=S.role==='host';
 
-  <section class="card" id="ansbox" hidden>
-    <b>Komandanın cavabı</b>
-    <div id="aFields"></div>
-    <div class="sm">Göndər düyməsi yoxdur. Vaxt bitəndə yazdığın cavab avtomatik aparıcıya gedəcək.</div>
-  </section>
+  let left,tot;
 
-  <div id="teams"></div>
+  if(ph==='running'){
 
-  <div class="ctrl">
-    <button class="pbtn sq" id="bMute" aria-label="Mikrofon"></button>
-    <button class="pbtn s" id="bTalk" hidden>Aparıcı ilə danışmaq istəyirəm</button>
-    <button class="pbtn s" id="bSound" hidden>Səsi aç</button>
-  </div>
-  <div class="note" id="net"></div>
-</div>
-</div>
+    tot=curTot;
 
-<footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...</div>
-  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
-  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
-</footer>
+    left=
+      Math.max(
+        0,
+        Math.ceil(
+          (
+            S.endsAt-
+            (Date.now()+off)
+          )/1000
+        )
+      );
 
-<script>
-const WS='wss://piksel-nhn.pikseliok.workers.dev/room/';
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const send=o=>ws&&ws.readyState===1&&ws.send(JSON.stringify(o));
+  }else if(ph==='ended'){
 
-/* ---------- Tema ---------- */
-const sun='<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>';
-const moon='<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>';
-function setTheme(d){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}$('themeIcon').innerHTML=d?moon:sun}
-let sv=null;try{sv=localStorage.getItem('piksel-theme')}catch(e){}
-setTheme(sv?sv==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches));
-$('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'));
+    tot=curTot;
+    left=0;
 
-/* ---------- Giriş ---------- */
-let mode='host';
-function setMode(m){
-  mode=m;
-  document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m&&m!=='host'));
-  $('form').hidden=m==='host';
-  $('fRoom').hidden=$('fTeam').hidden=m!=='cap';
-  $('fCode').hidden=m!=='pl';
-  $('go').textContent=m==='cap'?'Komandanı yarat':'Komandaya qoşul';
-}
-document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==='host')start()});
-
-/* ---------- Əlaqə ---------- */
-let ws,me,S,room,stream,off=0,muted=false;
-const pcs={},auds={};
-let ICE=[{urls:'stun:stun.l.google.com:19302'}];
-const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-$('go').onclick=()=>start();
-
-async function start(){
-  let first;
-  if(mode==='host'){room=Array.from({length:5},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join('');first={t:'host'}}
-  else if(mode==='cap'){
-    room=norm($('fRoom').value);
-    if(room.length<4||!$('fTeam').value.trim()||!$('fName').value.trim())return alert('Otaq kodunu, komanda adını və adını yaz');
-    first={t:'captain',team:$('fTeam').value,name:$('fName').value};
   }else{
-    const raw=norm($('fCode').value);
-    if(raw.length<8||!$('fName').value.trim())return alert('Komanda kodunu və adını yaz');
-    room=raw.slice(0,-4);first={t:'player',code:raw.slice(-4),name:$('fName').value};
-  }
-  ensureAudio();
-  try{
-    const r=await fetch('https://piksel-nhn.pikseliok.workers.dev/turn');
-    const j=await r.json();
-    if(j.iceServers&&j.iceServers.length)ICE=j.iceServers;
-  }catch(e){}
-  ws=new WebSocket(WS+room);
-  ws.onmessage=e=>{
-    const m=JSON.parse(e.data);
-    if(m.t==='hello'){me=m.id;send(first)}
-    else if(m.t==='error'){alert(m.msg);if(!S)location.reload()}
-    else if(m.t==='state'){S=m;off=m.now-Date.now();render();if(stream)reconcile();else if(!micAsk){micAsk=true;getMic()}}
-    else if(m.t==='signal')sig(m.from,m.data);
-    else if(m.t==='closed'){alert('Aparıcı otaqdan çıxdı');location.reload()}
-  };
-  ws.onclose=()=>{if(S){alert('Əlaqə kəsildi');location.reload()}};
-}
 
-/* ---------- Səs (WebRTC) ---------- */
-function peers(){
-  const list=S.teams.flatMap((t,i)=>t.members.map(m=>({id:m.id,tk:i})));
-  if(S.hostId)list.push({id:S.hostId,host:true});
-  return list;
-}
-const myTk=()=>{const p=peers().find(x=>x.id===me);return p?p.tk:-1};
-function want(p){
-  if(p.host||S.role==='host')return true;
-  if(p.tk===myTk())return true;
-  return p.id===S.speaker||me===S.speaker;
-}
-function hear(id){
-  if(S.role==='host')return id===S.speaker;
-  const p=peers().find(x=>x.id===id);
-  return id===S.hostId||id===S.speaker||(p&&p.tk===myTk());
-}
-function applyMute(){for(const id in auds)auds[id].muted=!hear(id)}
-function mk(id){
-  const pc=new RTCPeerConnection({iceServers:ICE});
-  pc._q=[];
-  stream.getTracks().forEach(t=>pc.addTrack(t,stream));
-  pc.onicecandidate=e=>e.candidate&&send({t:'signal',to:id,data:{ice:e.candidate}});
-  pc.ontrack=e=>{
-    let a=auds[id];
-    if(!a){a=auds[id]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
-    a.srcObject=e.streams[0];a.play().catch(()=>{$('bSound').hidden=false});applyMute();
-  };
-  pc.onconnectionstatechange=showNet;
-  pcs[id]=pc;return pc;
-}
-function showNet(){
-  if(!S)return;
-  const names={};S.teams.forEach(t=>t.members.forEach(m=>names[m.id]=m.name));
-  names[S.hostId]='Aparıcı';
-  const tr={connected:'qoşuldu',connecting:'qoşulur',new:'başlayır',failed:'alınmadı',disconnected:'kəsildi',closed:'bağlandı'};
-  const l=Object.keys(pcs).map(id=>(names[id]||id)+': '+(tr[pcs[id].connectionState]||pcs[id].connectionState));
-  $('net').textContent=l.length?'Səs əlaqəsi: '+l.join(' | '):'Səs əlaqəsi hələ yoxdur';
-}
-$('bSound').onclick=()=>{for(const id in auds)auds[id].play().catch(()=>{});$('bSound').hidden=true};
-function drop(id){
-  if(pcs[id]){pcs[id].close();delete pcs[id]}
-  if(auds[id]){auds[id].srcObject=null;delete auds[id]}
-}
-async function reconcile(){
-  const list=peers().filter(p=>p.id!==me),ids=list.map(p=>p.id);
-  Object.keys(pcs).forEach(id=>{if(!ids.includes(id))drop(id)});
-  for(const p of list){
-    const has=!!pcs[p.id],w=want(p);
-    if(!w&&has)drop(p.id);
-    else if(w&&!has&&me<p.id){
-      const pc=mk(p.id);
-      await pc.setLocalDescription(await pc.createOffer());
-      send({t:'signal',to:p.id,data:{sdp:pc.localDescription}});
-    }
-  }
-  applyMute();showNet();
-}
-async function onSignal(from,d){
-  const pc=pcs[from]||mk(from);
-  try{
-    if(d.sdp){
-      await pc.setRemoteDescription(d.sdp);
-      for(const c of pc._q.splice(0))await pc.addIceCandidate(c);
-      if(d.sdp.type==='offer'){
-        await pc.setLocalDescription(await pc.createAnswer());
-        send({t:'signal',to:from,data:{sdp:pc.localDescription}});
-      }
-    }else if(d.ice){
-      if(pc.remoteDescription)await pc.addIceCandidate(d.ice);else pc._q.push(d.ice);
-    }
-  }catch(e){}
-}
+    tot=
+      h
+        ?TOT[hostMode]
+        :curTot;
 
-let micAsk=false,pending=[],lastAnn='',entered=false;
-async function getMic(){
-  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
-  catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
-  await reconcile();
-  pending.splice(0).forEach(([f,d])=>onSignal(f,d));
-}
-function sig(from,d){
-  if(d&&d.mode&&TOT[d.mode]){
-    if(S&&S.role!=='host'){
-      if(rm!==d.mode){rm=d.mode;seg=0;buildFields(d.mode)}
-      if(S.phase!=='running')curTot=TOT[d.mode];
-      render();
-    }
-    return;
+    left=tot;
   }
-  if(!stream)pending.push([from,d]);else onSignal(from,d);
-}
-function announce(){
-  if(!S||S.role!=='host')return;
-  const ids=peers().filter(p=>p.id!==me).map(p=>p.id),k=hostMode+ids.join();
-  if(k===lastAnn)return;lastAnn=k;
-  ids.forEach(id=>send({t:'signal',to:id,data:{mode:hostMode}}));
-}
-function stagger(els){els.forEach((e,i)=>{if(!e)return;e.style.setProperty('--i',i);e.classList.add('rise')})}
 
-/* ---------- Taymer (siferblat) ---------- */
-const TOT={klasik:60,duplet:30,blits:20},NEED={klasik:1,duplet:2,blits:3};
-let hostMode='klasik',curTot=60,dTotal=0,lastEnds=0,seg=0,rm='klasik',lastLeft=-1,prevPh='',sentFor=0;
-let audioCtx=null;
-function ensureAudio(){
-  try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}catch(e){}
-}
-function beep(ms,freq){
-  if(!audioCtx)return;
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain(),n=audioCtx.currentTime,d=ms/1000;
-  o.type='sine';o.frequency.value=freq;
-  g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(.22,n+.015);
-  g.gain.setValueAtTime(.22,n+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(0,n+d);
-  o.connect(g).connect(audioCtx.destination);o.start(n);o.stop(n+d+.03);
-}
-function build(total){
-  if(dTotal===total)return;dTotal=total;
-  const g=$('ticks');g.innerHTML='';
-  const red=Math.min(10,total-1);
-  for(let i=1;i<total;i++){
-    const r=(i*(360/total)-90)*Math.PI/180,l=document.createElementNS('http://www.w3.org/2000/svg','line');
-    l.setAttribute('x1',150+122*Math.cos(r));l.setAttribute('y1',150+122*Math.sin(r));
-    l.setAttribute('x2',150+138*Math.cos(r));l.setAttribute('y2',150+138*Math.sin(r));
-    l.setAttribute('data-mark',i);l.classList.add('tick');if(i<=red)l.classList.add('red');
-    g.appendChild(l);
-  }
-}
-function paint(left){
-  $('num').textContent=left;
-  $('ticks').querySelectorAll('.tick').forEach(l=>l.classList.toggle('hidden-tick',left<+l.getAttribute('data-mark')));
-}
-$('modes').onclick=e=>{
-  const b=e.target.closest('.mode-btn');if(!b||!S||S.role!=='host'||S.phase==='running')return;
-  hostMode=b.dataset.mode;
-  document.querySelectorAll('.mode-btn').forEach(x=>x.classList.toggle('active',x===b));
-  announce();
-};
-setInterval(()=>{
-  if(!S)return;
-  const ph=S.phase,h=S.role==='host';
-  let left,tot;
-  if(ph==='running'){tot=curTot;left=Math.max(0,Math.ceil((S.endsAt-(Date.now()+off))/1000))}
-  else if(ph==='ended'){tot=curTot;left=0}
-  else{tot=h?TOT[hostMode]:curTot;left=tot}
-  build(tot);paint(left);
-  if(ph==='running'&&left!==lastLeft){
+  build(tot);
+  paint(left);
+
+  if(
+    ph==='running'&&
+    left!==lastLeft
+  ){
+
     lastLeft=left;
-    if(left===10)beep(2000,1000);
-    if(left>=1&&left<=3)beep(180,1300);
-    /* son seqmentin sonunda cavab avtomatik göndərilir */
-    if(left<=1&&S.role==='captain'&&seg>=NEED[rm]&&sentFor!==S.endsAt){sentFor=S.endsAt;sendAns()}
+
+    if(left===10)
+      beep(2000,1000);
+
+    if(
+      left>=1&&
+      left<=3
+    )
+      beep(180,1300);
+
+    if(
+      left<=1&&
+      S.role==='captain'&&
+      seg>=NEED[rm]&&
+      sentFor!==S.endsAt
+    ){
+
+      sentFor=S.endsAt;
+
+      sendAns();
+    }
   }
-  if(prevPh==='running'&&ph==='ended')beep(2000,700);
+
+  if(
+    prevPh==='running'&&
+    ph==='ended'
+  )
+    beep(2000,700);
+
   prevPh=ph;
+
 },250);
 
-/* ---------- Cavab xanaları ---------- */
+
+/* =========================
+   CAVAB XANALARI
+========================= */
+
 function buildFields(m){
+
   const n=NEED[m];
-  $('aFields').innerHTML=n===1
-    ?'<textarea class="af" maxlength="300" placeholder="Cavabı bura yaz"></textarea>'
-    :Array.from({length:n},(_,i)=>`<input class="af" maxlength="150" placeholder="${i+1}-ci sualın cavabı">`).join('');
+
+  $('aFields').innerHTML=
+    n===1
+      ?
+      '<textarea class="af" maxlength="300" placeholder="Cavabı bura yaz"></textarea>'
+      :
+      Array
+        .from(
+          {length:n},
+          (_,i)=>
+            `<input class="af" maxlength="150" placeholder="${i+1}-ci sualın cavabı">`
+        )
+        .join('');
 }
+
 function sendAns(){
-  const v=[...document.querySelectorAll('#aFields .af')].map(e=>e.value.trim());
-  send({t:'answer',text:v.length>1?v.map((x,i)=>(i+1)+') '+x).join('\n'):v[0]||''});
+
+  const v=
+    [
+      ...document.querySelectorAll(
+        '#aFields .af'
+      )
+    ]
+    .map(
+      e=>e.value.trim()
+    );
+
+  send({
+    t:'answer',
+    text:
+      v.length>1
+        ?v.map(
+          (x,i)=>
+            (i+1)+') '+x
+        ).join('\n')
+        :v[0]||''
+  });
 }
-$('aFields').addEventListener('input',()=>{if(S&&S.phase==='running')sendAns()});
+
+$('aFields').addEventListener(
+  'input',
+  ()=>{
+    if(
+      S&&
+      S.phase==='running'
+    )
+      sendAns();
+  }
+);
+
 buildFields('klasik');
 
-/* ---------- Ekran ---------- */
+
+/* =========================
+   MİKROFON
+========================= */
+
 const open={};
-const mic=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
-$('bMute').innerHTML=mic(false);
+
+const mic=m=>
+`
+<svg
+  class="mic"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.2"
+  stroke-linecap="round"
+  stroke-linejoin="round">
+
+  <rect
+    x="9"
+    y="3"
+    width="6"
+    height="11"
+    rx="3"/>
+
+  <path
+    d="M5 11a7 7 0 0 0 14 0M12 18v3"/>
+
+  ${
+    m
+      ?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>'
+      :''
+  }
+
+</svg>
+`;
+
+$('bMute').innerHTML=
+  mic(false);
+
+
+/* =========================
+   EKRAN
+========================= */
+
 function render(){
-  const h=S.role==='host',cap=S.role==='captain',ph=S.phase;
-  $('lobby').hidden=true;$('game').hidden=false;
-  if(!entered){entered=true;stagger([...$('game').children])}
-  const myT=S.teams.find(t=>t.members.some(m=>m.id===me));
+
+  const h=S.role==='host';
+  const cap=S.role==='captain';
+  const ph=S.phase;
+
+  /*
+    Əsas giriş ekranı yalnız lobby üçündür.
+    Oyuna daxil olduqdan sonra lobby tam gizlənir.
+  */
+
+  $('lobby').hidden=true;
+  $('game').hidden=false;
+
+  if(!entered){
+
+    entered=true;
+
+    stagger([
+      ...$('game').children
+    ]);
+  }
+
+  const myT=
+    S.teams.find(
+      t=>
+        t.members.some(
+          m=>m.id===me
+        )
+    );
+
   /* yeni müzakirə seqmenti */
-  if(ph==='running'&&S.endsAt!==lastEnds){
+
+  if(
+    ph==='running'&&
+    S.endsAt!==lastEnds
+  ){
+
     lastEnds=S.endsAt;
-    const dur=Math.round((S.endsAt-S.now)/1000),m=dur>=45?'klasik':dur>=25?'duplet':'blits';
-    if(m!==rm||seg>=NEED[m]){seg=0;buildFields(m)}
-    rm=m;seg++;curTot=TOT[m];
-    if(cap)sendAns();
+
+    const dur=
+      Math.round(
+        (S.endsAt-S.now)/1000
+      );
+
+    const m=
+      dur>=45
+        ?'klasik'
+        :dur>=25
+          ?'duplet'
+          :'blits';
+
+    if(
+      m!==rm||
+      seg>=NEED[m]
+    ){
+
+      seg=0;
+
+      buildFields(m);
+    }
+
+    rm=m;
+    seg++;
+    curTot=TOT[m];
+
+    if(cap)
+      sendAns();
   }
-  const done=ph==='ended'&&seg>=NEED[rm];
-  $('head').innerHTML=h
-    ?`<div class="big">Otaq kodu:<br><span class="code">${room}</span></div><div class="sm">Bu kodu kapitanlara ver</div>`
-    :`<div class="big">${esc(myT&&myT.name)} komandası</div><div class="sm">${cap?'Kapitan':'Oyunçu'} · Komanda kodu: <span class="code">${room}${myT?myT.code:''}</span><br>Bu kodu komanda yoldaşlarına ver.</div>`;
-  $('modes').hidden=!h;$('tgrid').classList.toggle('solo',!h);
-  $('ansbox').hidden=!cap;$('bTalk').hidden=!cap;
-  const sp=S.teams.flatMap(t=>t.members).find(m=>m.id===S.speaker);
+
+
+  const done=
+    ph==='ended'&&
+    seg>=NEED[rm];
+
+
+  /* =========================
+     OTAQ KODU
+  ========================= */
+
+  $('head').innerHTML=
+
+    h
+
+      ?
+
+      `
+      <div class="big">
+        Otaq kodu:
+      </div>
+
+      <button
+        class="copy-code host-room-code"
+        data-copy="${esc(room)}"
+        title="Kopyalamaq üçün toxun"
+        type="button">
+        ${esc(room)}
+      </button>
+
+      <div class="sm">
+        Kodu kapitanlara ver ·
+        Kopyalamaq üçün kodun üzərinə toxun
+      </div>
+      `
+
+      :
+
+      `
+      <div class="big">
+        ${esc(myT&&myT.name)} komandası
+      </div>
+
+      ${
+        cap&&myT
+
+        ?
+
+        `
+        <div class="captain-code-wrap">
+
+          <div class="captain-code-label">
+            Komanda kodu
+          </div>
+
+          <button
+            class="copy-code captain-team-code"
+            data-copy="${esc(room+myT.code)}"
+            title="Kopyalamaq üçün toxun"
+            type="button">
+            ${esc(room+myT.code)}
+          </button>
+
+          <div class="sm">
+            Kodu komanda yoldaşlarına ver ·
+            Kopyalamaq üçün toxun
+          </div>
+
+        </div>
+        `
+
+        :
+
+        `
+        <div class="sm">
+          Oyunçu · Komanda kodu:
+          <span class="code">
+            ${esc(room+(myT?myT.code:''))}
+          </span>
+        </div>
+        `
+      }
+      `;
+
+
+  /* =========================
+     TIMER
+  ========================= */
+
+  $('modes').hidden=!h;
+
+  $('tgrid').classList.toggle(
+    'solo',
+    !h
+  );
+
+  $('ansbox').hidden=!cap;
+
+  $('bTalk').hidden=!cap;
+
+
+  const sp=
+    S.teams
+      .flatMap(
+        t=>t.members
+      )
+      .find(
+        m=>m.id===S.speaker
+      );
+
+
   if(h){
+
     const b=$('bStart');
-    b.hidden=ph==='running';
-    b.textContent=ph==='lobby'?'Oyuna başla':'Vaxtı başlat';
-    b.disabled=ph==='lobby'&&S.teams.length<2;
-    $('bEnd').hidden=!S.speaker;
-    $('bEnd').textContent=(sp?sp.name:'…')+' ilə danışığı bitir';
+
+    b.hidden=
+      ph==='running';
+
+    b.textContent=
+      ph==='lobby'
+        ?'Oyuna başla'
+        :'Vaxtı başlat';
+
+    b.disabled=
+      ph==='lobby'&&
+      S.teams.length<2;
+
+    $('bEnd').hidden=
+      !S.speaker;
+
+    $('bEnd').textContent=
+      (sp?sp.name:'…')+
+      ' ilə danışığı bitir';
   }
+
+
   if(cap){
-    const on=ph==='running'||(ph==='ended'&&seg<NEED[rm]);
-    document.querySelectorAll('#aFields .af').forEach(e=>e.disabled=!on);
-    const mm=myT&&myT.members.find(m=>m.id===me);
-    $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
-    $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, cavabı gözlə':'Aparıcı ilə danışmaq istəyirəm';
+
+    const on=
+      ph==='running'||
+      (
+        ph==='ended'&&
+        seg<NEED[rm]
+      );
+
+    document
+      .querySelectorAll(
+        '#aFields .af'
+      )
+      .forEach(
+        e=>
+          e.disabled=!on
+      );
+
+    const mm=
+      myT&&
+      myT.members.find(
+        m=>m.id===me
+      );
+
+    $('bTalk').disabled=
+      !!(
+        mm&&
+        mm.wants
+      )||
+      S.speaker===me;
+
+    $('bTalk').textContent=
+      mm&&mm.wants
+        ?'İstək göndərildi, cavabı gözlə'
+        :'Aparıcı ilə danışmaq istəyirəm';
   }
-  $('spk').textContent=S.speaker===me?'Aparıcı səni dinləyir. Səsini hamı eşidir.':sp?`${sp.name} aparıcı ilə danışır, hamı eşidir.`:'';
-  $('phase').textContent={lobby:'Komandalar qoşulur. Aparıcı oyunu başladacaq.',idle:'Aparıcı sualı oxuyur.',running:'Müzakirə gedir. Yalnız komandanın içində danışın.',ended:seg<NEED[rm]?'Aparıcı növbəti sualı oxuyur.':'Vaxt bitdi. Aparıcı cavabları yoxlayır.'}[ph]||'';
-  const chev='<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges"><path d="M0 0h2v1H0zM6 0h2v1H6zM1 1h2v1H1zM5 1h2v1H5zM2 2h4v1H2zM3 3h2v1H3z"/></svg>';
-  $('teams').innerHTML=S.teams.length?S.teams.map(t=>{
-    const w=t.members.find(m=>m.wants),show=h&&done&&t.answered;
-    return `<div class="tcard${open[t.code]?' open':''}"><div class="thead" data-tg="${t.code}"><div class="tt">${h&&w?`<button class="hand" data-a="grant" data-id="${w.id}" aria-label="Söz ver">✋</button>`:''}<span>"${esc(t.name)}" komandası</span><span class="sc">${t.score} xal</span></div>${chev}</div>`+
-    (h&&ph!=='lobby'?`<div class="trow"><button class="mini" data-a="pt" data-c="${t.code}" data-d="1">+1</button><button class="mini" data-a="pt" data-c="${t.code}" data-d="-1">−1</button>${show?`<span class="ans">Cavab: ${esc(t.answer).replace(/\n/g,' • ')}</span>`:''}</div>`:'')+
-    `<div class="tbody"><div class="tin"><div class="tpad">`+(h?`<div class="sm" style="margin:0 0 6px">Komanda kodu: <span class="code">${room}${t.code}</span></div>`:'')+
-    t.members.map(m=>`<div class="mem">${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}${m.id===S.speaker?' 🎙':''}</div>`).join('')+
-    '</div></div></div></div>';
-  }).join(''):'<div class="note">Hələ komanda yoxdur.</div>';
+
+
+  $('spk').textContent=
+    S.speaker===me
+
+      ?
+      'Aparıcı səni dinləyir. Səsini hamı eşidir.'
+
+      :
+      sp
+        ?
+        `${sp.name} aparıcı ilə danışır, hamı eşidir.`
+        :
+        '';
+
+
+  $('phase').textContent=
+    {
+      lobby:
+        'Komandalar qoşulur. Aparıcı oyunu başladacaq.',
+
+      idle:
+        'Aparıcı sualı oxuyur.',
+
+      running:
+        'Müzakirə gedir. Yalnız komandanın içində danışın.',
+
+      ended:
+        seg<NEED[rm]
+          ?
+          'Aparıcı növbəti sualı oxuyur.'
+          :
+          'Vaxt bitdi. Aparıcı cavabları yoxlayır.'
+
+    }[ph]||'';
+
+
+  const chev=
+`
+<svg
+  class="chev"
+  width="22"
+  height="11"
+  viewBox="0 0 8 4"
+  fill="currentColor"
+  shape-rendering="crispEdges">
+
+  <path d="M0 0h2v1H0zM6 0h2v1H6z"/>
+  <path d="M1 1h2v1H1zM5 1h2v1H5z"/>
+  <path d="M2 2h4v1H2z"/>
+  <path d="M3 3h2v1H3z"/>
+
+</svg>
+`;
+
+
+  /* =========================
+     KOMANDALAR
+  ========================= */
+
+  $('teams').innerHTML=
+    S.teams.length
+
+      ?
+
+      S.teams.map(
+        t=>{
+
+          const w=
+            t.members.find(
+              m=>m.wants
+            );
+
+          const show=
+            h&&
+            done&&
+            t.answered;
+
+          return `
+
+          <div
+            class="tcard${open[t.code]?' open':''}">
+
+            <div
+              class="thead"
+              data-tg="${t.code}">
+
+              <div class="tt">
+
+                ${
+                  h&&w
+
+                    ?
+
+                    `
+                    <button
+                      class="hand"
+                      data-a="grant"
+                      data-id="${w.id}"
+                      aria-label="Söz ver">
+                      ✋
+                    </button>
+                    `
+
+                    :
+                    ''
+                }
+
+                <span>
+                  "${esc(t.name)}" komandası
+                </span>
+
+                <span class="sc">
+                  ${t.score} xal
+                </span>
+
+              </div>
+
+              ${chev}
+
+            </div>
+
+
+            ${
+              h&&ph!=='lobby'
+
+                ?
+
+                `
+                <div class="trow">
+
+                  <button
+                    class="mini"
+                    data-a="pt"
+                    data-c="${t.code}"
+                    data-d="1">
+                    +1
+                  </button>
+
+                  <button
+                    class="mini"
+                    data-a="pt"
+                    data-c="${t.code}"
+                    data-d="-1">
+                    −1
+                  </button>
+
+                  ${
+                    show
+
+                      ?
+
+                      `
+                      <span class="ans">
+                        Cavab:
+                        ${esc(t.answer).replace(/\n/g,' • ')}
+                      </span>
+                      `
+
+                      :
+                      ''
+                  }
+
+                </div>
+                `
+
+                :
+                ''
+            }
+
+
+            <div class="tbody">
+
+              <div class="tin">
+
+                <div class="tpad">
+
+                  ${
+                    h
+
+                      ?
+
+                      `
+                      <div
+                        class="sm"
+                        style="margin:0 0 6px">
+
+                        Komanda kodu:
+                        <span class="code">
+                          ${room}${t.code}
+                        </span>
+
+                      </div>
+                      `
+
+                      :
+                      ''
+                  }
+
+                  ${
+                    t.members.map(
+                      m=>
+                        `
+                        <div class="mem">
+
+                          ${
+                            m.captain
+                              ?
+                              '<b>'+
+                              esc(m.name)+
+                              '</b>'
+                              :
+                              esc(m.name)
+                          }
+
+                          ${
+                            m.id===S.speaker
+                              ?
+                              ' 🎙'
+                              :
+                              ''
+                          }
+
+                        </div>
+                        `
+                    ).join('')
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          `;
+        }
+      ).join('')
+
+      :
+
+      `
+      <div class="note">
+        Hələ komanda yoxdur.
+      </div>
+      `;
+
+
   announce();
+
   applyMute();
 }
+
+
+/* =========================
+   KOMANDA DÜYMƏLƏRİ
+========================= */
+
 $('teams').onclick=e=>{
-  const b=e.target.closest('[data-a]');
+
+  const b=
+    e.target.closest(
+      '[data-a]'
+    );
+
   if(b){
-    if(b.dataset.a==='grant')send({t:'talkgrant',id:b.dataset.id});
-    if(b.dataset.a==='pt')send({t:'score',code:b.dataset.c,delta:Number(b.dataset.d)});
+
+    if(
+      b.dataset.a==='grant'
+    ){
+
+      send({
+        t:'talkgrant',
+        id:b.dataset.id
+      });
+    }
+
+    if(
+      b.dataset.a==='pt'
+    ){
+
+      send({
+        t:'score',
+        code:b.dataset.c,
+        delta:Number(
+          b.dataset.d
+        )
+      });
+    }
+
     return;
   }
-  const t=e.target.closest('[data-tg]');
-  if(t){const c=t.parentElement;c.classList.toggle('open');open[t.dataset.tg]=c.classList.contains('open')}
+
+
+  const t=
+    e.target.closest(
+      '[data-tg]'
+    );
+
+  if(t){
+
+    const c=
+      t.parentElement;
+
+    c.classList.toggle(
+      'open'
+    );
+
+    open[t.dataset.tg]=
+      c.classList.contains(
+        'open'
+      );
+  }
 };
+
+
+/* =========================
+   KODU KOPYALA
+========================= */
+
+document.addEventListener(
+  'click',
+  async e=>{
+
+    const b=
+      e.target.closest(
+        '[data-copy]'
+      );
+
+    if(!b)
+      return;
+
+    const value=
+      b.dataset.copy||'';
+
+    try{
+
+      await navigator.clipboard.writeText(
+        value
+      );
+
+      const old=
+        b.textContent;
+
+      b.textContent=
+        'KOPYALANDI ✓';
+
+      setTimeout(
+        ()=>{
+          b.textContent=old;
+        },
+        900
+      );
+
+    }catch(err){
+
+      try{
+
+        const ta=
+          document.createElement(
+            'textarea'
+          );
+
+        ta.value=value;
+
+        ta.style.position='fixed';
+        ta.style.opacity='0';
+
+        document.body.appendChild(ta);
+
+        ta.select();
+
+        document.execCommand(
+          'copy'
+        );
+
+        ta.remove();
+
+        const old=
+          b.textContent;
+
+        b.textContent=
+          'KOPYALANDI ✓';
+
+        setTimeout(
+          ()=>{
+            b.textContent=old;
+          },
+          900
+        );
+
+      }catch(e){}
+    }
+  }
+);
+
+
+/* =========================
+   OYUN DÜYMƏLƏRİ
+========================= */
+
 $('bStart').onclick=()=>{
+
   ensureAudio();
-  if(S.phase==='lobby')return send({t:'begin'});
-  if(S.phase==='ended')send({t:'next'});
-  send({t:'ask',seconds:TOT[hostMode]});
+
+  if(
+    S.phase==='lobby'
+  )
+    return send({
+      t:'begin'
+    });
+
+  if(
+    S.phase==='ended'
+  )
+    send({
+      t:'next'
+    });
+
+  send({
+    t:'ask',
+    seconds:TOT[hostMode]
+  });
 };
-$('bEnd').onclick=()=>send({t:'talkend'});
-$('bTalk').onclick=()=>send({t:'talkreq'});
+
+$('bEnd').onclick=()=>
+  send({
+    t:'talkend'
+  });
+
+$('bTalk').onclick=()=>
+  send({
+    t:'talkreq'
+  });
+
+
 $('bMute').onclick=()=>{
-  if(!stream)return;muted=!muted;
-  stream.getAudioTracks().forEach(t=>t.enabled=!muted);
-  $('bMute').innerHTML=mic(muted);
-  $('bMute').setAttribute('aria-label',muted?'Mikrofon bağlıdır':'Mikrofon açıqdır');
+
+  if(!stream)
+    return;
+
+  muted=!muted;
+
+  stream
+    .getAudioTracks()
+    .forEach(
+      t=>
+        t.enabled=!muted
+    );
+
+  $('bMute').innerHTML=
+    mic(muted);
+
+  $('bMute').setAttribute(
+    'aria-label',
+    muted
+      ?'Mikrofon bağlıdır'
+      :'Mikrofon açıqdır'
+  );
 };
-stagger([document.querySelector('.top-nav'),$('lobby'),...$('lobby').children]);
+
+
+/* =========================
+   İLK ANİMASİYA
+========================= */
+
+stagger([
+  document.querySelector(
+    '.top-nav'
+  ),
+  $('lobby'),
+  ...$('lobby').children
+]);
+
 </script>
+
 </body>
-</html>
+  </html>
