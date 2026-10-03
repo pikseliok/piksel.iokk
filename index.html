@@ -5,1004 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
 <title>πksel.iok - İntellektual sayt</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#9DC3FF;
-  --ink:#9DC3FF;
-  --deep:#001E6F;
-  --bright:#002E92;
-  --dark-bg:#00072C;
-  --dark-ink:#00072C;
-  --dark-light:#9DC3FF;
-  --dark-bright:#6FA5FC;
-  --transition:650ms cubic-bezier(.22,.8,.25,1);
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+/* Ölçülər: Komp+Planşet (701px+) / Telefon (≤700px) / Dar telefon (≤420px) */
 body{
-  min-height:100vh;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:"Poppins",sans-serif;
-  overflow-x:hidden;
-  transition:background .65s ease,color .65s ease;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  --page:#9DC3FF; --c1:#001E6F; --c2:#002E92; --fg:#9DC3FF; --accent:#001E6F;
+  --glow:rgba(0,8,45,.30);
+  --grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%);
 }
-
 body.dark{
-  background:var(--dark-bg);
-  color:var(--dark-ink);
+  --page:#00072C; --c1:#9DC3FF; --c2:#6FA5FC; --fg:#00072C; --accent:#9DC3FF;
+  --glow:rgba(255,255,255,.40);
 }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+button,a{font:inherit}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 32px}
 
-button,a{
-  font:inherit;
-}
+/* ---------- Giriş animasiyası: əvvəl çərçivə, sonra içindəkilər ---------- */
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
-a{
-  color:inherit;
-  text-decoration:none;
-}
+/* ---------- Naviqasiya ---------- */
+.top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.nav-links{display:flex;align-items:center;gap:40px;height:100%}
+.nav-link{position:relative;font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
-.page{
-  width:min(95vw,820px);
-  margin:0 auto;
-  padding:12px 0 0;
-}
+/* ---------- Banner ---------- */
+.hero{margin-top:14px;min-height:138px;border-radius:31px;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 28px 18px 38px;background:var(--grad);box-shadow:0 12px 30px rgba(0,25,120,.08)}
+.hero-copy{flex:1 1 auto;min-width:0}
+.hero-fixed{font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-1px}
+.hero-changing-wrap{height:36px;margin-top:2px;overflow:hidden}
+.hero-changing{display:block;width:100%;white-space:nowrap;overflow:hidden;font-size:29px;line-height:1.25;font-weight:300;font-style:italic;letter-spacing:-.8px}
+.hero-brand{font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-1.2px;white-space:nowrap}
+.hero-qr{flex:0 0 auto;width:118px;height:118px;display:block;animation:qrBreath 5.4s ease-in-out infinite;transition:filter .5s ease}
+.hero-qr img{width:100%;height:100%;display:block;object-fit:contain}
+.hero-qr:hover{filter:brightness(1.08)}
+@keyframes qrBreath{0%,100%{transform:scale(.94)}50%{transform:scale(1.04)}}
 
-/* ---------- GLOBAL ANIMATION ---------- */
-.reveal{
-  opacity:0;
-  transform:translateY(34px);
-  animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards;
-}
+.section-title{text-align:center;color:var(--accent);font-size:24px;line-height:1;font-weight:700;letter-spacing:-.7px;margin-top:24px;transition:color .65s ease}
 
-.reveal.r1{animation-delay:.05s}
-.reveal.r2{animation-delay:.14s}
-.reveal.r3{animation-delay:.23s}
-.reveal.r4{animation-delay:.32s}
-.reveal.r5{animation-delay:.41s}
-.reveal.r6{animation-delay:.50s}
-
-@keyframes revealUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* ---------- NAVIGATION ---------- */
-.top-nav{
-  height:60px;
-  width:100%;
-  border-radius:40px;
-  padding:0 14px 0 26px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
+/* ---------- Kartlar ---------- */
+.cards{margin-top:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{position:relative;min-width:0;overflow:hidden;border-radius:28px;padding:22px 24px;background:var(--grad);color:var(--fg);cursor:pointer;box-shadow:0 10px 25px rgba(0,20,110,.07);display:flex;flex-direction:column;justify-content:flex-start;transition:transform .35s cubic-bezier(.18,.8,.22,1),box-shadow .35s ease}
+.card>*{position:relative;z-index:1}
+/* Mausın ətrafında yumşaq, qeyri-dəqiq formalı rəng dəyişimi */
+.card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
   background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  box-shadow:0 10px 28px rgba(0,20,100,.08);
-  transition:background var(--transition),box-shadow var(--transition);
-}
-
-.dark .top-nav{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-}
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:58px;
-  height:100%;
-}
-
-.nav-link{
-  position:relative;
-  color:var(--ink);
-  font-size:20px;
-  font-weight:500;
-  white-space:nowrap;
-  transition:transform .25s ease,opacity .25s ease;
-}
-
-.dark .nav-link{
-  color:var(--dark-ink);
-}
-
-.nav-link:hover{
-  transform:translateY(-1px);
-}
-
-.nav-link.active::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-7px;
-  height:2px;
-  border-radius:2px;
-  background:currentColor;
-  opacity:.9;
-}
-
-.theme-toggle{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  width:44px;
-  height:44px;
-  border:0;
-  border-radius:50%;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
-  color:var(--deep);
-  background:rgba(157,195,255,.98);
-  transition:transform .3s ease,background var(--transition),color var(--transition);
-}
-
-.dark .theme-toggle{
-  background:var(--dark-bg);
-  color:var(--dark-light);
-}
-
-.theme-toggle:hover{
-  transform:translateY(-50%) scale(1.08);
-}
-
-.theme-toggle:active{
-  transform:translateY(-50%) scale(.95);
-}
-
-.theme-icon{
-  width:25px;
-  height:25px;
-  display:block;
-}
-
-/* ---------- HERO / BANNER-LIKE AREA ---------- */
-.hero{
-  margin-top:16px;
-  width:100%;
-  min-height:224px;
-  border-radius:31px;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-  align-items:center;
-  padding:25px 38px 25px 48px;
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 48%,var(--deep) 100%);
-  box-shadow:0 12px 30px rgba(0,25,120,.08);
-  transition:background var(--transition),box-shadow var(--transition);
-}
-
-.dark .hero{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 48%,var(--dark-light) 100%);
-}
-
-.hero-copy{
-  min-width:0;
-  width:64%;
-  position:relative;
-  z-index:2;
-}
-
-.hero-fixed{
-  color:var(--ink);
-  font-size:37px;
-  line-height:1.05;
-  font-weight:700;
-  letter-spacing:-1.2px;
-}
-
-.dark .hero-fixed{
-  color:var(--dark-ink);
-}
-
-.hero-changing-wrap{
-  height:50px;
-  margin-top:2px;
-  overflow:hidden;
-  position:relative;
-  max-width:100%;
-}
-
-.hero-changing{
-  display:block;
-  width:100%;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:clip;
-  color:var(--ink);
-  font-size:35px;
-  line-height:1.18;
-  font-weight:300;
-  font-style:italic;
-  letter-spacing:-1px;
-  will-change:contents;
-}
-
-.dark .hero-changing{
-  color:var(--dark-ink);
-}
-
-.hero-brand{
-  color:var(--ink);
-  font-size:50px;
-  line-height:.98;
-  font-weight:700;
-  letter-spacing:-2.6px;
-  white-space:nowrap;
-}
-
-.dark .hero-brand{
-  color:var(--dark-ink);
-}
-
-.hero-qr{
-  position:absolute;
-  right:30px;
-  top:50%;
-  width:180px;
-  height:180px;
-  transform:translateY(-50%);
-  display:block;
-  object-fit:contain;
-  cursor:pointer;
-  z-index:3;
-  user-select:none;
-  -webkit-user-drag:none;
-  will-change:transform;
-  animation:qrBreath 5.4s ease-in-out infinite;
-  transition:filter .5s ease;
-}
-
-@keyframes qrBreath{
-  0%,100%{transform:translateY(-50%) scale(.94)}
-  50%{transform:translateY(-50%) scale(1.04)}
-}
-
-.hero-qr img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-}
-
-.hero-qr:hover{
-  filter:brightness(1.08);
-}
-
-/* ---------- SECTION TITLES (Keçidlər / Statistika) ---------- */
-.section-title{
-  text-align:center;
-  color:var(--deep);
-  font-size:28px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:-.8px;
-  margin-bottom:14px;
-  transition:color var(--transition);
-}
-
-.dark .section-title{
-  color:var(--dark-light);
-}
-
-.links-title{
-  margin-top:34px;
-  margin-bottom:0;
-}
-
-/* ---------- CARD SYSTEM ---------- */
-.cards{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1.62fr 1fr;
-  gap:16px;
-}
-
-.card{
-  min-width:0;
-  border-radius:31px;
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
-  color:var(--ink);
-  padding:32px 27px 28px;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-  box-shadow:0 10px 25px rgba(0,20,110,.07);
-  transition:
-    transform .32s cubic-bezier(.18,.8,.22,1),
-    box-shadow .32s ease,
-    background var(--transition),
-    color var(--transition);
-}
-
-.dark .card{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
-  color:var(--dark-ink);
-}
-
-.card::before{
-  content:"";
-  position:absolute;
-  inset:-80% -35%;
-  background:linear-gradient(
-    105deg,
-    transparent 42%,
-    rgba(255,255,255,.10) 50%,
-    transparent 58%
-  );
-  transform:translateX(-55%) rotate(8deg);
-  opacity:0;
-  transition:transform .7s ease,opacity .35s ease;
-  pointer-events:none;
-}
-
-.card:hover{
-  transform:translateY(-5px) scale(1.018);
-  box-shadow:0 17px 35px rgba(0,20,110,.16);
-  z-index:5;
-}
-
-.card:hover::before{
-  transform:translateX(55%) rotate(8deg);
-  opacity:1;
-}
-
-.package-card,
-.author-card{
-  min-height:277px;
-  height:auto;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.announcement-card{
-  grid-column:1 / -1;
-  min-height:136px;
-  height:auto;
-  padding:22px 28px;
-  display:grid;
-  grid-template-columns:44% 2px 1fr;
-  align-items:center;
-  column-gap:18px;
-}
-
-.timer-card,
-.button-card{
-  min-height:234px;
-  height:auto;
-}
-
-/* ---------- CARD CONTENT ---------- */
-.card-head{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-
-.card-icon{
-  width:54px;
-  height:54px;
-  flex:0 0 54px;
-  display:grid;
-  place-items:center;
-  color:currentColor;
-}
-
-.card-icon svg{
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-.card-icon img,
-.brain-logo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-}
-
-.card-icon .icon-night,
-.brain-logo .icon-night{
-  display:none;
-}
-
-.dark .card-icon .icon-day,
-.dark .brain-logo .icon-day{
-  display:none;
-}
-
-.dark .card-icon .icon-night,
-.dark .brain-logo .icon-night{
-  display:block;
-}
-
-.card-title{
-  font-size:28px;
-  line-height:1.05;
-  font-weight:700;
-  letter-spacing:-.8px;
-}
-
-.card-divider{
-  width:100%;
-  height:2px;
-  margin-top:15px;
-  background:currentColor;
-  opacity:.14;
-  border-radius:2px;
-}
-
-.card-description{
-  margin-top:30px;
-  font-size:17px;
-  line-height:1.48;
-  font-weight:500;
-  letter-spacing:-.15px;
-}
-
-.author-card .card-description{
-  margin-top:30px;
-}
-
-.announcement-card .announcement-left{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  padding-right:0;
-}
-
-.announcement-card .card-icon{
-  margin-right:17px;
-}
-
-.announcement-card .card-title{
-  white-space:nowrap;
-}
-
-.announcement-divider{
-  width:2px;
-  height:72%;
-  justify-self:center;
-  align-self:center;
-  background:currentColor;
-  opacity:.16;
-  border-radius:2px;
-}
-
-.announcement-text{
-  padding-left:0;
-  font-size:15px;
-  line-height:1.42;
-  font-weight:500;
-}
-
-.timer-card .card-description,
-.button-card .card-description{
-  margin-top:29px;
-}
-
-/* ---------- BUTTON LOGO ---------- */
-.brain-logo{
-  width:57px;
-  height:52px;
-  position:relative;
-  display:grid;
-  place-items:center;
-}
-
-.brain-logo svg{
-  width:100%;
-  height:100%;
-}
-
-/* ---------- STATS ---------- */
-.statistics{
-  margin-top:56px;
-  padding-bottom:84px;
-}
-
-.stats-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:27px;
-}
-
-.stat-pill{
-  height:38px;
-  border-radius:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:0 10px;
-  color:var(--ink);
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  font-size:20px;
-  line-height:1;
-  font-weight:700;
-  white-space:nowrap;
-  transition:background var(--transition),color var(--transition),transform .25s ease;
-}
-
-.dark .stat-pill{
-  color:var(--dark-ink);
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-}
-
-.stat-pill:hover{
-  transform:translateY(-3px) scale(1.015);
-}
-
-/* ---------- FOOTER ---------- */
-footer{
-  width:100%;
-  background:
-    linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  color:var(--ink);
-  min-height:170px;
-  padding:27px 20px 24px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  text-align:center;
-  transition:background var(--transition),color var(--transition);
-}
-
-.dark footer{
-  background:
-    linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-  color:var(--dark-ink);
-}
-
-.footer-line{
-  font-size:15px;
-  line-height:1.45;
-  font-weight:500;
-}
-
-.footer-link{
-  transition:opacity .25s ease,transform .25s ease;
-}
-
-.footer-link:hover{
-  opacity:.72;
-  transform:translateY(-1px);
-}
-
-/* ---------- ACCESSIBILITY ---------- */
-.card:focus-visible,
-.nav-link:focus-visible,
-.theme-toggle:focus-visible,
-.hero-qr:focus-visible,
-.footer-link:focus-visible{
-  outline:3px solid currentColor;
-  outline-offset:4px;
-}
-
-@media (prefers-reduced-motion:reduce){
-  *,
-  *::before,
-  *::after{
-    scroll-behavior:auto !important;
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-  }
-}
-
-/*
-  The layout deliberately keeps the two-column card arrangement at every
-  viewport width, as requested. Font sizes and spacing scale down only when
-  the screen becomes too narrow, and card heights are allowed to grow so
-  text is never clipped.
-*/
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){
+  .card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+  .card:hover::before{opacity:1}
+}
+.card.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.85fr) 2px minmax(0,1.5fr);align-items:center;column-gap:18px;padding:18px 24px}
+
+.card-head{display:flex;align-items:center;gap:14px;min-width:0}
+.card-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center}
+.card-icon svg,.card-icon img,.brain-logo img{width:100%;height:100%;object-fit:contain;display:block}
+.brain-logo{width:50px;height:46px;flex:0 0 50px;display:grid;place-items:center}
+.icon-night{display:none!important}
+body.dark .icon-day{display:none!important}
+body.dark .icon-night{display:block!important}
+.card-title{font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px}
+.card-divider{width:100%;height:2px;margin-top:12px;background:currentColor;opacity:.14;border-radius:2px}
+.card-description{margin-top:14px;font-size:15px;line-height:1.45;font-weight:500;letter-spacing:-.1px}
+.wide .card-divider{width:2px;height:64px;margin:0;justify-self:center}
+.wide .card-description{margin:0}
+
+/* ---------- Footer ---------- */
+footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+.card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.hero-qr:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ---------- TELEFON ≤700px: bütün kartlar eyni ölçüdə, simmetrik ---------- */
 @media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding:11px 0 26px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;right:6px}
+  .theme-icon{width:21px;height:21px}
 
-  .page{
-    width:calc(100vw - 44px);
-    padding-top:11px;
-  }
+  .hero{margin-top:12px;min-height:118px;gap:8px;padding:14px 14px 14px 20px;border-radius:26px}
+  .hero-fixed{font-size:22px;letter-spacing:-.6px}
+  .hero-changing-wrap{height:27px}
+  .hero-changing{font-size:21px;letter-spacing:-.5px}
+  .hero-brand{font-size:22px;letter-spacing:-.8px}
+  .hero-qr{width:88px;height:88px}
 
-  .top-nav{
-    height:52px;
-    padding-left:18px;
-    padding-right:60px;
-  }
+  .section-title{font-size:17px;margin-top:20px}
+  .cards{margin-top:12px;grid-template-columns:1fr;gap:10px}
 
-  .nav-links{
-    gap:34px;
-  }
+  .cards .card,.cards .card.wide{
+    grid-column:auto;display:grid;grid-template-columns:minmax(0,1fr) 2px minmax(0,1fr);
+    align-items:center;column-gap:10px;height:94px;padding:0 16px;border-radius:22px}
+  .card-head{gap:8px}
+  .card-icon{width:32px;height:32px;flex-basis:32px}
+  .brain-logo{width:36px;height:33px;flex-basis:36px}
+  .card-title{font-size:17px;letter-spacing:-.5px}
+  .cards .card-divider,.cards .wide .card-divider{width:2px;height:62px;margin:0;justify-self:center}
+  .cards .card-description,.cards .wide .card-description{margin:0;font-size:9px;line-height:1.4;letter-spacing:0}
 
-  .nav-link{
-    font-size:15px;
-  }
-
-  .theme-toggle{
-    width:39px;
-    height:39px;
-    right:8px;
-  }
-
-  .theme-icon{
-    width:22px;
-    height:22px;
-  }
-
-  .hero{
-    min-height:225px;
-    padding:24px 28px 24px 30px;
-    border-radius:29px;
-  }
-
-  .hero-copy{
-    width:65%;
-  }
-
-  .hero-fixed{
-    font-size:27px;
-    letter-spacing:-.9px;
-  }
-
-  .hero-changing-wrap{
-    height:38px;
-    margin-top:3px;
-  }
-
-  .hero-changing{
-    font-size:25px;
-    letter-spacing:-.7px;
-  }
-
-  .hero-brand{
-    font-size:37px;
-    letter-spacing:-1.9px;
-  }
-
-  .hero-qr{
-    width:139px;
-    height:139px;
-    right:14px;
-  }
-
-  .section-title{
-    font-size:20px;
-    margin-bottom:12px;
-  }
-
-  .links-title{
-    margin-top:30px;
-  }
-
-  /* =====================================================
-     TELEFON KARTLARI
-     ===================================================== */
-
-  .cards{
-    margin-top:16px;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-  }
-
-  .card{
-    border-radius:24px;
-
-    /* Əsas düzəliş */
-    display:grid;
-    grid-template-columns:42% 2px 1fr;
-    align-items:center;
-
-    column-gap:10px;
-
-    min-height:112px;
-    height:auto;
-
-    padding:18px 20px;
-
-    /* Kart daxilindəki elementlərin mərkəzlənməsi */
-    place-items:center stretch;
-  }
-
-  /* Sol tərəf: ikon + başlıq */
-  .card-head,
-  .announcement-left{
-    width:100%;
-    min-width:0;
-
-    display:flex;
-    align-items:center;
-
-    /* Sol hissənin öz daxilində şaquli mərkəz */
-    justify-content:flex-start;
-
-    gap:9px;
-
-    align-self:center;
-  }
-
-  .card-icon{
-    width:40px;
-    height:40px;
-    flex:0 0 40px;
-
-    display:grid;
-    place-items:center;
-  }
-
-  .card-title,
-  .announcement-card .card-title{
-    font-size:17px;
-    line-height:1.08;
-    letter-spacing:-.6px;
-
-    /* Başlıq da tam şaquli mərkəzdə */
-    align-self:center;
-
-    white-space:normal;
-  }
-
-  /* Ortadakı şaquli xətt */
-  .card-divider,
-  .announcement-divider{
-    width:2px;
-    height:68%;
-
-    margin:0;
-
-    justify-self:center;
-    align-self:center;
-  }
-
-  /* =====================================================
-     SAĞ TƏRƏFDƏKİ AÇIQLAMALAR
-     Buradakı əsas problem düzəldilir.
-     ===================================================== */
-
-  .card-description,
-  .announcement-text{
-    width:100%;
-
-    margin:0;
-
-    padding:0;
-
-    font-size:10.5px;
-    line-height:1.42;
-    font-weight:500;
-
-    letter-spacing:-.1px;
-
-    /* Tam şaquli mərkəz */
-    align-self:center;
-    justify-self:stretch;
-
-    /* Mətnin öz daxilində də mərkəz */
-    display:flex;
-    align-items:center;
-  }
-
-  /* Çoxsətirli mətnlər üçün düzgün mərkəz */
-  .card-description{
-    min-height:0;
-  }
-
-  .announcement-text{
-    min-height:0;
-  }
-
-  /* Müəlliflər kartındakı əvvəlki margin ləğv edilir */
-  .author-card .card-description{
-    margin-top:0;
-  }
-
-  .timer-card .card-description,
-  .button-card .card-description{
-    margin-top:0;
-  }
-
-  /* Announcement kartı da eyni sistemlə işləsin */
-  .announcement-card{
-    grid-column:auto;
-
-    display:grid;
-    grid-template-columns:42% 2px 1fr;
-
-    align-items:center;
-
-    column-gap:10px;
-
-    min-height:112px;
-    height:auto;
-
-    padding:18px 20px;
-  }
-
-  .announcement-card .announcement-left{
-    margin:0;
-    padding:0;
-  }
-
-  .announcement-card .card-icon{
-    margin:0;
-  }
-
-  /* Breyn Rinq logosu */
-  .brain-logo{
-    width:46px;
-    height:43px;
-    flex:0 0 46px;
-
-    display:grid;
-    place-items:center;
-  }
-
-  /* Statistika */
-  .statistics{
-    margin-top:52px;
-    padding-bottom:76px;
-  }
-
-  .stats-row{
-    gap:15px;
-  }
-
-  .stat-pill{
-    height:34px;
-    font-size:14px;
-  }
-
-  footer{
-    min-height:185px;
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .footer-line{
-    font-size:14px;
-  }
+  footer{min-height:96px;padding:16px 12px;gap:5px}
+  .footer-line{font-size:13px}
 }
 
-
-/* =========================================================
-   ÇOX DAR TELEFONLAR
-   ========================================================= */
-
+/* ---------- DAR TELEFON ≤420px ---------- */
 @media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .top-nav{height:42px;padding:0 42px}
+  .nav-links{gap:22px}
+  .nav-link{font-size:11px}
+  .theme-toggle{width:32px;height:32px;right:5px}
+  .theme-icon{width:20px;height:20px}
 
-  .page{
-    width:calc(100vw - 36px);
-  }
+  .hero{min-height:106px;gap:6px;padding:12px 12px 12px 18px}
+  .hero-fixed{font-size:20px}
+  .hero-changing-wrap{height:24px}
+  .hero-changing{font-size:18px}
+  .hero-brand{font-size:20px}
+  .hero-qr{width:76px;height:76px}
 
-  .nav-links{
-    gap:25px;
-  }
+  .section-title{font-size:15px}
+  .cards .card,.cards .card.wide{height:88px;padding:0 13px;column-gap:9px}
+  .card-head{gap:6px}
+  .card-icon{width:28px;height:28px;flex-basis:28px}
+  .brain-logo{width:32px;height:30px;flex-basis:32px}
+  .card-title{font-size:15px}
+  .cards .card-divider,.cards .wide .card-divider{height:58px}
+  .cards .card-description,.cards .wide .card-description{font-size:8px}
 
-  .nav-link{
-    font-size:13px;
-  }
-
-  .top-nav{
-    height:48px;
-  }
-
-  .theme-toggle{
-    width:36px;
-    height:36px;
-    right:6px;
-  }
-
-  .theme-icon{
-    width:20px;
-    height:20px;
-  }
-
-  .hero{
-    padding-left:24px;
-    padding-right:14px;
-  }
-
-  .hero-copy{
-    width:67%;
-  }
-
-  .hero-fixed{
-    font-size:23px;
-  }
-
-  .hero-changing{
-    font-size:21px;
-  }
-
-  .hero-brand{
-    font-size:31px;
-  }
-
-  .hero-qr{
-    width:121px;
-    height:121px;
-    right:8px;
-  }
-
-  .section-title{
-    font-size:18px;
-  }
-
-  /* Telefon kartlarının son mərkəzləşdirməsi */
-  .card,
-  .announcement-card{
-    padding:16px 16px;
-
-    grid-template-columns:42% 2px 1fr;
-
-    column-gap:10px;
-
-    min-height:112px;
-  }
-
-  .card-icon{
-    width:38px;
-    height:38px;
-    flex-basis:38px;
-  }
-
-  .card-title,
-  .announcement-card .card-title{
-    font-size:16px;
-    line-height:1.08;
-  }
-
-  .card-description,
-  .announcement-text{
-    font-size:10.5px;
-    line-height:1.4;
-
-    /* Ən vacib hissə */
-    align-self:center;
-  }
-
-  .brain-logo{
-    width:44px;
-    height:41px;
-    flex-basis:44px;
-  }
-
-  .stat-pill{
-    font-size:12px;
-    padding:0 5px;
-  }
+  footer{min-height:88px}
+  .footer-line{font-size:11px}
 }
 </style>
 </head>
@@ -1010,50 +168,60 @@ footer{
 <body>
 <div class="page">
 
-  <nav class="top-nav reveal r1" aria-label="Əsas naviqasiya">
-    <div class="nav-links">
+  <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+    <div class="nav-links rise">
       <a class="nav-link active" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
 
-    <button class="theme-toggle" id="themeToggle" type="button"
-            aria-label="Gecə rejiminə keç">
-      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+            <rect width="32" height="32" fill="#fff"/>
+            <circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g class="rays">
+          <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        </g>
+        <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+      </svg>
     </button>
   </nav>
 
   <main>
 
-    <section class="hero reveal r2" aria-label="πksel.iok">
-      <div class="hero-copy">
+    <section class="hero frame" style="--i:1" aria-label="πksel.iok">
+      <div class="hero-copy rise">
         <div class="hero-fixed">İntellektuallar üçün</div>
-
         <div class="hero-changing-wrap">
           <span id="changingText" class="hero-changing">Hər şey</span>
         </div>
-
         <div class="hero-brand">πksel-də</div>
       </div>
 
-      <a
-        class="hero-qr"
-        href="https://www.instagram.com/piksel.iok"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="πksel.iok Instagram"
-      >
-        <img id="qrImage"
+      <a class="hero-qr" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer" aria-label="πksel.iok Instagram">
+        <img class="rise" id="qrImage"
              src="https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png"
              alt="πksel.iok Instagram QR kodu">
       </a>
     </section>
 
-    <h2 class="section-title links-title reveal r2">Keçidlər</h2>
+    <h2 class="section-title rise" style="--d:.1s">Keçidlər</h2>
 
     <section class="cards" aria-label="πksel.iok bölmələri">
 
-      <a class="card package-card reveal r3" href="packages.html">
-        <div class="card-head">
+      <!-- 1. Sual Paketləri -->
+      <a class="card frame" style="--i:2" href="packages.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 9.5C4 8.119 5.119 7 6.5 7H12L14.5 10H25.5C26.881 10 28 11.119 28 12.5V23.5C28 24.881 26.881 26 25.5 26H6.5C5.119 26 4 24.881 4 23.5V9.5Z" fill="currentColor"/>
@@ -1061,46 +229,65 @@ footer{
           </span>
           <div class="card-title">Sual Paketləri</div>
         </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Nə? Harada? Nə Zaman?", "Xəmsə", "Breyn Rinq", "Fərdi"
-          intellektual oyunlarının sual paketləri.
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">"Nə? Harada? Nə Zaman?", "Xəmsə", "Breyn Rinq", "Fərdi" intellektual oyunlarının sual paketləri.</p>
       </a>
 
-      <a class="card author-card reveal r4" href="authors.html">
-        <div class="card-head">
+      <!-- 2. Müəlliflər -->
+      <a class="card frame" style="--i:3" href="authors.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
             <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fb5303c34-5ba7-472a-baa1-8b9143bc98cb-1000463113.png" alt="">
             <img class="icon-night" src="https://cdn.phototourl.com/member/2026-09-27-be52e931-8795-498a-850b-3c147010701e.png" alt="">
           </span>
           <div class="card-title">Müəlliflər</div>
         </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          Sual paketləri üçün sual yazan müəlliflər.
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">Sual paketləri üçün sual yazan müəlliflər.</p>
       </a>
 
-      <a class="card announcement-card reveal r5" href="announcements.html">
-        <div class="announcement-left">
+      <!-- 3. Elanlar (uzun) -->
+      <a class="card wide frame" style="--i:4" href="announcements.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
             <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2F59bb8926-a082-49f2-a447-156e514f1e58-1000463110.png" alt="">
             <img class="icon-night" src="https://cdn.phototourl.com/member/2026-09-27-e226602c-76e7-4e29-a532-028e8209fe8c.png" alt="">
           </span>
           <div class="card-title">Elanlar</div>
         </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          Yaxın müddətdə baş tutacaq yarışlar, yarışlara komanda axtaran
-          oyunçular, oyunçu axtaran komandalar üçün elanlar.
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">Yaxın müddətdə baş tutacaq yarışlar, yarışlara komanda axtaran oyunçular, oyunçu axtaran komandalar üçün elanlar.</p>
       </a>
 
-      <a class="card timer-card reveal r6" href="timer.html">
-        <div class="card-head">
+      <!-- 4. Breyn Rinq düyməsi -->
+      <a class="card frame" style="--i:5" href="button.html">
+        <div class="card-head rise">
+          <span class="brain-logo" aria-hidden="true">
+            <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2F1c48531d-a182-4856-a91a-e6300d12f10d-1000463109.png" alt="">
+            <img class="icon-night" src="https://cdn.imagetourls.com/uploads/tyImg/1X3USm5g.png" alt="">
+          </span>
+          <div class="card-title">Breyn Rinq düyməsi</div>
+        </div>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">"Breyn Rinq" intellektual oyunları üçün düymə sistemi.</p>
+      </a>
+
+      <!-- 5. Xəmsə düyməsi -->
+      <a class="card frame" style="--i:6" href="/xemse_duyme.html">
+        <div class="card-head rise">
+          <span class="card-icon" aria-hidden="true">
+            <img class="icon-day" src="https://cdn.phototourl.com/member/2026-09-29-46b707a2-08cd-4897-92cd-de66dcbcaba8.png" alt="">
+            <img class="icon-night" src="https://cdn.phototourl.com/member/2026-09-29-9a2c00a9-efbb-467f-92bc-f0d4977e8862.png" alt="">
+          </span>
+          <div class="card-title">Xəmsə düyməsi</div>
+        </div>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">"Xəmsə" Milli İntellektual Oyunları üçün düymə sistemi.</p>
+      </a>
+
+      <!-- 6. Taymer (uzun) -->
+      <a class="card wide frame" style="--i:7" href="timer.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="16" cy="18" r="10" stroke="currentColor" stroke-width="2"/>
@@ -1111,311 +298,139 @@ footer{
           </span>
           <div class="card-title">Taymer</div>
         </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Nə? Harada? Nə Zaman?" intellektual oyunları üçün taymer
-          (Klassik, Duplet, Blitz).
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">"Nə? Harada? Nə Zaman?" intellektual oyunları üçün taymer (Klassik, Duplet, Blitz).</p>
       </a>
 
-      <a class="card button-card reveal r6" href="button.html">
-        <div class="card-head">
-          <span class="brain-logo" aria-hidden="true">
-            <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2F1c48531d-a182-4856-a91a-e6300d12f10d-1000463109.png" alt="">
-            <img class="icon-night" src="https://cdn.imagetourls.com/uploads/tyImg/1X3USm5g.png" alt="">
-          </span>
-          <div class="card-title">Breyn Rinq düyməsi</div>
-        </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Breyn Rinq" intellektual oyunları üçün düymə sistemi.
-        </p>
-      </a>
-
-      <!-- XƏMSƏ DÜYMƏSİ — YENİ -->
-      <a class="card announcement-card reveal r6" href="/xemse_duyme.html">
-        <div class="announcement-left">
+      <!-- 7. Səsli NHN otağı -->
+      <a class="card frame" style="--i:8" href="/nhn.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
-            <img class="icon-day"
-                 src="https://cdn.phototourl.com/member/2026-09-29-46b707a2-08cd-4897-92cd-de66dcbcaba8.png"
-                 alt="">
-            <img class="icon-night"
-                 src="https://cdn.phototourl.com/member/2026-09-29-9a2c00a9-efbb-467f-92bc-f0d4977e8862.png"
-                 alt="">
-          </span>
-          <div class="card-title">Xəmsə düyməsi</div>
-        </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          "Xəmsə" Milli İntellektual Oyunları üçün düymə sistemi.
-        </p>
-      </a>
-
-          <!-- NHN OTAQ SƏSLI — YENİ -->
-      <a class="card announcement-card reveal r6" href="/nhn.html">
-        <div class="announcement-left">
-          <span class="card-icon" aria-hidden="true">
-            <img class="icon-day"
-                 src="https://cdn.phototourl.com/member/2026-10-03-f22d7b20-febf-47c5-8d60-ad4a296da6df.png"
-                 alt="">
-            <img class="icon-night"
-                 src="https://cdn.phototourl.com/member/2026-10-03-519248d0-8630-4ac1-b052-e0a3b2b7c889.png"
-                 alt="">
+            <img class="icon-day" src="https://cdn.phototourl.com/member/2026-10-03-f22d7b20-febf-47c5-8d60-ad4a296da6df.png" alt="">
+            <img class="icon-night" src="https://cdn.phototourl.com/member/2026-10-03-519248d0-8630-4ac1-b052-e0a3b2b7c889.png" alt="">
           </span>
           <div class="card-title">Səsli NHN otağı</div>
         </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          "Nə? Harada? Nə Zaman?" İntellektual Oyunları üçün səsli oyun sistemi.
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">"Nə? Harada? Nə Zaman?" İntellektual Oyunları üçün səsli oyun sistemi.</p>
       </a>
 
-      <!-- MINIOYUNLAR — YENİ -->
-      <a class="card announcement-card reveal r6" href="/nhn.html">
-        <div class="announcement-left">
+      <!-- 8. Minioyunlar -->
+      <a class="card frame" style="--i:9" href="/nhn.html">
+        <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
-            <img class="icon-day"
-                 src="https://cdn.phototourl.com/member/2026-10-03-71538624-1611-488b-957d-eda1223c95d0.png"
-                 alt="">
-            <img class="icon-night"
-                 src="https://cdn.phototourl.com/member/2026-10-03-1490620b-bbfc-40ee-87a5-4270ed14618c.png"
-                 alt="">
+            <img class="icon-day" src="https://cdn.phototourl.com/member/2026-10-03-71538624-1611-488b-957d-eda1223c95d0.png" alt="">
+            <img class="icon-night" src="https://cdn.phototourl.com/member/2026-10-03-1490620b-bbfc-40ee-87a5-4270ed14618c.png" alt="">
           </span>
           <div class="card-title">Minioyunlar</div>
         </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          Dostlarınızla oynaya biləcəyiniz əyləncəli-intellektual minioyunlar
-        </p>
+        <div class="card-divider rise"></div>
+        <p class="card-description rise">Dostlarınızla oynaya biləcəyiniz əyləncəli-intellektual minioyunlar</p>
       </a>
-  </section>
-<br><br>
- 
+
+    </section>
   </main>
 </div>
 
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...
-   </div>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/piksel.iok"
-     target="_blank"
-     rel="noopener noreferrer">
-    ©πksel intellektual oyunlar klubu
-  </a>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/onurelzh"
-     target="_blank"
-     rel="noopener noreferrer">
-    ©Onur Əlizadə
-  </a>
-
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
 <script>
-/* =========================================================
-   πksel.iok — INDEX
-   Automatic statistics:
-   Each future internal page can mark its records with:
-     [data-package]
-     [data-author]
-     [data-announcement]
-   The index will fetch that page and count them automatically.
-   ========================================================= */
+const DAY_QR="https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png";
+const NIGHT_QR="https://cdn.phototourl.com/member/2026-09-26-389276da-ea79-4b24-a3ce-d41009da09e0.png";
+const words=["Sual Paketləri","Taymer","Düymə sistemi","Yarış elanları","Komanda elanları","Oyunçu elanları"];
 
-const DAY_QR =
-  "https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png";
+const changingText=document.getElementById("changingText");
+const qrImage=document.getElementById("qrImage");
+const themeToggle=document.getElementById("themeToggle");
+const rays=[...document.querySelectorAll(".ray")];
 
-const NIGHT_QR =
-  "https://cdn.phototourl.com/member/2026-09-26-389276da-ea79-4b24-a3ce-d41009da09e0.png";
+let wordIndex=-1,firstRun=true,typingTimer=null,eraseTimer=null;
 
-const words = [
-  "Sual Paketləri",
-  "Taymer",
-  "Düymə sistemi",
-  "Yarış elanları",
-  "Komanda elanları",
-  "Oyunçu elanları"
-];
-
-const changingText = document.getElementById("changingText");
-const qrImage = document.getElementById("qrImage");
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
-
-let wordIndex = -1;
-let firstRun = true;
-let typingTimer = null;
-let eraseTimer = null;
-
-function sunIcon(){
-  return `
-    <circle cx="16" cy="16" r="6" fill="currentColor"/>
-    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
-      <path d="M16 2.7v3"/>
-      <path d="M16 26.3v3"/>
-      <path d="m2.7 16 3 0"/>
-      <path d="m26.3 16-3 0"/>
-      <path d="m6.6 6.6 2.1 2.1"/>
-      <path d="m23.3 23.3 2.1 2.1"/>
-      <path d="m25.4 6.6-2.1 2.1"/>
-      <path d="m8.7 23.3-2.1 2.1"/>
-    </g>`;
+/* ---------- Gün / Ay animasiyası ---------- */
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark
+      ?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]   /* oxlar mərkəzdən uzaqlaşıb itir */
+      :[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];    /* oxlar dairənin içindən çıxır */
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish=()=>a.cancel();
+  });
 }
 
-function moonIcon(){
-  return `
-    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
-          fill="currentColor"/>`;
-}
-
-function updateThemeIcon(){
-  const dark = document.body.classList.contains("dark");
-
-  /* Day mode = sun, night mode = moon, as requested. */
-  themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
-
-  themeToggle.setAttribute(
-    "aria-label",
-    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
-  );
-
-  qrImage.src = dark ? NIGHT_QR : DAY_QR;
-}
-
-function setTheme(dark){
-  document.body.classList.toggle("dark", dark);
-  localStorage.setItem("piksel-theme", dark ? "dark" : "light");
-  updateThemeIcon();
+function setTheme(dark,animate){
+  document.body.classList.toggle("dark",dark);
+  try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}
+  themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  qrImage.src=dark?NIGHT_QR:DAY_QR;
+  if(animate) animateRays(dark);
 }
 
 function initTheme(){
-  const saved = localStorage.getItem("piksel-theme");
-
-  if(saved === "dark"){
-    setTheme(true);
-    return;
-  }
-
-  if(saved === "light"){
-    setTheme(false);
-    return;
-  }
-
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  setTheme(prefersDark);
+  let saved=null;
+  try{saved=localStorage.getItem("piksel-theme")}catch(e){}
+  if(saved==="dark") return setTheme(true,false);
+  if(saved==="light") return setTheme(false,false);
+  setTheme(!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false);
 }
 
-themeToggle.addEventListener("click", () => {
-  setTheme(!document.body.classList.contains("dark"));
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
+
+/* ---------- Kartlarda maus işığı ---------- */
+document.querySelectorAll(".card").forEach(card=>{
+  card.addEventListener("pointermove",e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty("--mx",(e.clientX-r.left)+"px");
+    card.style.setProperty("--my",(e.clientY-r.top)+"px");
+  });
 });
 
-/* ---------- Typewriter ---------- */
-
+/* ---------- Typewriter (dəyişməyib) ---------- */
 function nextWord(){
-  if(firstRun){
-    firstRun = false;
-    wordIndex = 0;
-  }else{
-    const previous = wordIndex;
-    do{
-      wordIndex = Math.floor(Math.random() * words.length);
-    }while(words.length > 1 && wordIndex === previous);
+  if(firstRun){firstRun=false;wordIndex=0;}
+  else{
+    const previous=wordIndex;
+    do{wordIndex=Math.floor(Math.random()*words.length);}while(words.length>1&&wordIndex===previous);
   }
-
   typeWord(words[wordIndex]);
 }
-
 function typeWord(word){
-  clearTimeout(typingTimer);
-  clearTimeout(eraseTimer);
-
-  changingText.textContent = "";
-
-  let i = 0;
-
+  clearTimeout(typingTimer);clearTimeout(eraseTimer);
+  changingText.textContent="";
+  let i=0;
   function typeStep(){
-    if(i < word.length){
-      changingText.textContent += word[i];
-      i++;
-      typingTimer = setTimeout(typeStep, 1000 / Math.max(word.length,1));
+    if(i<word.length){
+      changingText.textContent+=word[i];i++;
+      typingTimer=setTimeout(typeStep,1000/Math.max(word.length,1));
     }else{
-      eraseTimer = setTimeout(() => eraseWord(word), 2000);
+      eraseTimer=setTimeout(()=>eraseWord(word),2000);
     }
   }
-
   typeStep();
 }
-
 function eraseWord(word){
-  let i = word.length;
-
+  let i=word.length;
   function eraseStep(){
-    if(i > 0){
-      i--;
-      changingText.textContent = word.slice(0,i);
-      typingTimer = setTimeout(eraseStep, 1000 / Math.max(word.length,1));
+    if(i>0){
+      i--;changingText.textContent=word.slice(0,i);
+      typingTimer=setTimeout(eraseStep,1000/Math.max(word.length,1));
     }else{
-      eraseTimer = setTimeout(nextWord, 150);
+      eraseTimer=setTimeout(nextWord,150);
     }
   }
-
   eraseStep();
 }
 
-/* ---------- Automatic statistics ---------- */
-
-async function countFromPage(url, selector){
-  try{
-    const response = await fetch(url, {cache:"no-store"});
-    if(!response.ok) throw new Error("Page unavailable");
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html,"text/html");
-    return doc.querySelectorAll(selector).length;
-  }catch(error){
-    return 0;
-  }
-}
-
-async function updateStatistics(){
-  const [packages, authors, announcements] = await Promise.all([
-    countFromPage("packages.html","[data-package]"),
-    countFromPage("authors.html","[data-author]"),
-    countFromPage("announcements.html","[data-announcement]")
-  ]);
-
-  document.getElementById("packageCount").textContent = packages;
-  document.getElementById("authorCount").textContent = authors;
-  document.getElementById("announcementCount").textContent = announcements;
-}
-
 /* ---------- Start ---------- */
-
 initTheme();
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 
-/* First word is ALWAYS Hər şey. */
-setTimeout(() => {
-  typeWord("Hər şey");
-  firstRun = false;
-  wordIndex = -1;
-}, 850);
-
-updateStatistics();
-
-/* Refresh statistics when returning to the page. */
-window.addEventListener("pageshow", updateStatistics);
+/* İlk söz HƏMİŞƏ "Hər şey" olur. */
+setTimeout(()=>{typeWord("Hər şey");firstRun=false;wordIndex=-1;},850);
 </script>
-
 </body>
-  </html>
+</html>
