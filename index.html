@@ -4,1412 +4,373 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
-<title>πksel.iok - İntellektual sayt</title>
-
+<title>πksel.iok - İntellektual XOX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <style>
-:root{
-  --bg:#9DC3FF;
-  --ink:#9DC3FF;
-  --deep:#001E6F;
-  --bright:#002E92;
-  --dark-bg:#00072C;
-  --dark-ink:#00072C;
-  --dark-light:#9DC3FF;
-  --dark-bright:#6FA5FC;
-  --transition:650ms cubic-bezier(.22,.8,.25,1);
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  min-height:100vh;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:"Poppins",sans-serif;
-  overflow-x:hidden;
-  transition:background .65s ease,color .65s ease;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-}
-
-body.dark{
-  background:var(--dark-bg);
-  color:var(--dark-ink);
-}
-
-button,a{
-  font:inherit;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-.page{
-  width:min(95vw,820px);
-  margin:0 auto;
-  padding:12px 0 0;
-}
-
-/* ---------- GLOBAL ANIMATION ---------- */
-.reveal{
-  opacity:0;
-  transform:translateY(34px);
-  animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards;
-}
-
-.reveal.r1{animation-delay:.05s}
-.reveal.r2{animation-delay:.14s}
-.reveal.r3{animation-delay:.23s}
-.reveal.r4{animation-delay:.32s}
-.reveal.r5{animation-delay:.41s}
-.reveal.r6{animation-delay:.50s}
-
-@keyframes revealUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* ---------- NAVIGATION ---------- */
-.top-nav{
-  height:60px;
-  width:100%;
-  border-radius:40px;
-  padding:0 14px 0 26px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  box-shadow:0 10px 28px rgba(0,20,100,.08);
-  transition:background var(--transition),box-shadow var(--transition);
-}
-
-.dark .top-nav{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-}
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:58px;
-  height:100%;
-}
-
-.nav-link{
-  position:relative;
-  color:var(--ink);
-  font-size:20px;
-  font-weight:500;
-  white-space:nowrap;
-  transition:transform .25s ease,opacity .25s ease;
-}
-
-.dark .nav-link{
-  color:var(--dark-ink);
-}
-
-.nav-link:hover{
-  transform:translateY(-1px);
-}
-
-.nav-link.active::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-7px;
-  height:2px;
-  border-radius:2px;
-  background:currentColor;
-  opacity:.9;
-}
-
-.theme-toggle{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  width:44px;
-  height:44px;
-  border:0;
-  border-radius:50%;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
-  color:var(--deep);
-  background:rgba(157,195,255,.98);
-  transition:transform .3s ease,background var(--transition),color var(--transition);
-}
-
-.dark .theme-toggle{
-  background:var(--dark-bg);
-  color:var(--dark-light);
-}
-
-.theme-toggle:hover{
-  transform:translateY(-50%) scale(1.08);
-}
-
-.theme-toggle:active{
-  transform:translateY(-50%) scale(.95);
-}
-
-.theme-icon{
-  width:25px;
-  height:25px;
-  display:block;
-}
-
-/* ---------- HERO / BANNER-LIKE AREA ---------- */
-.hero{
-  margin-top:16px;
-  width:100%;
-  min-height:224px;
-  border-radius:31px;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-  align-items:center;
-  padding:25px 38px 25px 48px;
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 48%,var(--deep) 100%);
-  box-shadow:0 12px 30px rgba(0,25,120,.08);
-  transition:background var(--transition),box-shadow var(--transition);
-}
-
-.dark .hero{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 48%,var(--dark-light) 100%);
-}
-
-.hero-copy{
-  min-width:0;
-  width:64%;
-  position:relative;
-  z-index:2;
-}
-
-.hero-fixed{
-  color:var(--ink);
-  font-size:37px;
-  line-height:1.05;
-  font-weight:700;
-  letter-spacing:-1.2px;
-}
-
-.dark .hero-fixed{
-  color:var(--dark-ink);
-}
-
-.hero-changing-wrap{
-  height:50px;
-  margin-top:2px;
-  overflow:hidden;
-  position:relative;
-  max-width:100%;
-}
-
-.hero-changing{
-  display:block;
-  width:100%;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:clip;
-  color:var(--ink);
-  font-size:35px;
-  line-height:1.18;
-  font-weight:300;
-  font-style:italic;
-  letter-spacing:-1px;
-  will-change:contents;
-}
-
-.dark .hero-changing{
-  color:var(--dark-ink);
-}
-
-.hero-brand{
-  color:var(--ink);
-  font-size:50px;
-  line-height:.98;
-  font-weight:700;
-  letter-spacing:-2.6px;
-  white-space:nowrap;
-}
-
-.dark .hero-brand{
-  color:var(--dark-ink);
-}
-
-.hero-qr{
-  position:absolute;
-  right:30px;
-  top:50%;
-  width:180px;
-  height:180px;
-  transform:translateY(-50%);
-  display:block;
-  object-fit:contain;
-  cursor:pointer;
-  z-index:3;
-  user-select:none;
-  -webkit-user-drag:none;
-  will-change:transform;
-  animation:qrBreath 5.4s ease-in-out infinite;
-  transition:filter .5s ease;
-}
-
-@keyframes qrBreath{
-  0%,100%{transform:translateY(-50%) scale(.94)}
-  50%{transform:translateY(-50%) scale(1.04)}
-}
-
-.hero-qr img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-}
-
-.hero-qr:hover{
-  filter:brightness(1.08);
-}
-
-/* ---------- SECTION TITLES (Keçidlər / Statistika) ---------- */
-.section-title{
-  text-align:center;
-  color:var(--deep);
-  font-size:28px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:-.8px;
-  margin-bottom:14px;
-  transition:color var(--transition);
-}
-
-.dark .section-title{
-  color:var(--dark-light);
-}
-
-.links-title{
-  margin-top:34px;
-  margin-bottom:0;
-}
-
-/* ---------- CARD SYSTEM ---------- */
-.cards{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1.62fr 1fr;
-  gap:16px;
-}
-
-.card{
-  min-width:0;
-  border-radius:31px;
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
-  color:var(--ink);
-  padding:32px 27px 28px;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-  box-shadow:0 10px 25px rgba(0,20,110,.07);
-  transition:
-    transform .32s cubic-bezier(.18,.8,.22,1),
-    box-shadow .32s ease,
-    background var(--transition),
-    color var(--transition);
-}
-
-.dark .card{
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
-  color:var(--dark-ink);
-}
-
-.card::before{
-  content:"";
-  position:absolute;
-  inset:-80% -35%;
-  background:linear-gradient(
-    105deg,
-    transparent 42%,
-    rgba(255,255,255,.10) 50%,
-    transparent 58%
-  );
-  transform:translateX(-55%) rotate(8deg);
-  opacity:0;
-  transition:transform .7s ease,opacity .35s ease;
-  pointer-events:none;
-}
-
-.card:hover{
-  transform:translateY(-5px) scale(1.018);
-  box-shadow:0 17px 35px rgba(0,20,110,.16);
-  z-index:5;
-}
-
-.card:hover::before{
-  transform:translateX(55%) rotate(8deg);
-  opacity:1;
-}
-
-.package-card,
-.author-card{
-  min-height:277px;
-  height:auto;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.announcement-card{
-  grid-column:1 / -1;
-  min-height:136px;
-  height:auto;
-  padding:22px 28px;
-  display:grid;
-  grid-template-columns:44% 2px 1fr;
-  align-items:center;
-  column-gap:18px;
-}
-
-.timer-card,
-.button-card{
-  min-height:234px;
-  height:auto;
-}
-
-/* ---------- CARD CONTENT ---------- */
-.card-head{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-
-.card-icon{
-  width:54px;
-  height:54px;
-  flex:0 0 54px;
-  display:grid;
-  place-items:center;
-  color:currentColor;
-}
-
-.card-icon svg{
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-.card-icon img,
-.brain-logo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-}
-
-.card-icon .icon-night,
-.brain-logo .icon-night{
-  display:none;
-}
-
-.dark .card-icon .icon-day,
-.dark .brain-logo .icon-day{
-  display:none;
-}
-
-.dark .card-icon .icon-night,
-.dark .brain-logo .icon-night{
-  display:block;
-}
-
-.card-title{
-  font-size:28px;
-  line-height:1.05;
-  font-weight:700;
-  letter-spacing:-.8px;
-}
-
-.card-divider{
-  width:100%;
-  height:2px;
-  margin-top:15px;
-  background:currentColor;
-  opacity:.14;
-  border-radius:2px;
-}
-
-.card-description{
-  margin-top:30px;
-  font-size:17px;
-  line-height:1.48;
-  font-weight:500;
-  letter-spacing:-.15px;
-}
-
-.author-card .card-description{
-  margin-top:30px;
-}
-
-.announcement-card .announcement-left{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  padding-right:0;
-}
-
-.announcement-card .card-icon{
-  margin-right:17px;
-}
-
-.announcement-card .card-title{
-  white-space:nowrap;
-}
-
-.announcement-divider{
-  width:2px;
-  height:72%;
-  justify-self:center;
-  align-self:center;
-  background:currentColor;
-  opacity:.16;
-  border-radius:2px;
-}
-
-.announcement-text{
-  padding-left:0;
-  font-size:15px;
-  line-height:1.42;
-  font-weight:500;
-}
-
-.timer-card .card-description,
-.button-card .card-description{
-  margin-top:29px;
-}
-
-/* ---------- BUTTON LOGO ---------- */
-.brain-logo{
-  width:57px;
-  height:52px;
-  position:relative;
-  display:grid;
-  place-items:center;
-}
-
-.brain-logo svg{
-  width:100%;
-  height:100%;
-}
-
-/* ---------- STATS ---------- */
-.statistics{
-  margin-top:56px;
-  padding-bottom:84px;
-}
-
-.stats-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:27px;
-}
-
-.stat-pill{
-  height:38px;
-  border-radius:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:0 10px;
-  color:var(--ink);
-  background:
-    linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  font-size:20px;
-  line-height:1;
-  font-weight:700;
-  white-space:nowrap;
-  transition:background var(--transition),color var(--transition),transform .25s ease;
-}
-
-.dark .stat-pill{
-  color:var(--dark-ink);
-  background:
-    linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-}
-
-.stat-pill:hover{
-  transform:translateY(-3px) scale(1.015);
-}
-
-/* ---------- FOOTER ---------- */
-footer{
-  width:100%;
-  background:
-    linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  color:var(--ink);
-  min-height:170px;
-  padding:27px 20px 24px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  text-align:center;
-  transition:background var(--transition),color var(--transition);
-}
-
-.dark footer{
-  background:
-    linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-  color:var(--dark-ink);
-}
-
-.footer-line{
-  font-size:15px;
-  line-height:1.45;
-  font-weight:500;
-}
-
-.footer-link{
-  transition:opacity .25s ease,transform .25s ease;
-}
-
-.footer-link:hover{
-  opacity:.72;
-  transform:translateY(-1px);
-}
-
-/* ---------- ACCESSIBILITY ---------- */
-.card:focus-visible,
-.nav-link:focus-visible,
-.theme-toggle:focus-visible,
-.hero-qr:focus-visible,
-.footer-link:focus-visible{
-  outline:3px solid currentColor;
-  outline-offset:4px;
-}
-
-@media (prefers-reduced-motion:reduce){
-  *,
-  *::before,
-  *::after{
-    scroll-behavior:auto !important;
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-  }
-}
-
-/*
-  The layout deliberately keeps the two-column card arrangement at every
-  viewport width, as requested. Font sizes and spacing scale down only when
-  the screen becomes too narrow, and card heights are allowed to grow so
-  text is never clipped.
-*/
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);
+--g:linear-gradient(135deg,#001E6F 0%,#002E92 50%,#001E6F 100%);--pg:linear-gradient(135deg,#8E0B45 0%,#D4276F 50%,#8E0B45 100%);--pc:#FFE3EF;--sec:#001E6F}
+body.dark{--g:linear-gradient(135deg,#9DC3FF 0%,#6FA5FC 50%,#9DC3FF 100%);--pg:linear-gradient(135deg,#FFC6DE 0%,#FF8FBE 50%,#FFC6DE 100%);--pc:#2C0016;--sec:#9DC3FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+button,a,input{font:inherit}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.reveal{opacity:0;transform:translateY(34px);animation:revealUp .85s cubic-bezier(.18,.8,.24,1) forwards}
+.reveal.r1{animation-delay:.05s}.reveal.r2{animation-delay:.14s}
+@keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--g);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:25px;height:25px;display:block}
+.section-title{text-align:center;color:var(--sec);font-size:28px;line-height:1;font-weight:700;letter-spacing:-.8px;margin:34px 0 14px;transition:color var(--transition)}
+.card{border-radius:31px;background:var(--g);color:var(--ink);padding:28px 27px;position:relative;overflow:hidden;box-shadow:0 10px 25px rgba(0,20,110,.07);margin-top:16px;transition:background var(--transition),color var(--transition)}
+.dark .card{color:var(--dark-ink)}
+.ct{font-size:28px;line-height:1.05;font-weight:700;letter-spacing:-.8px}
+.cd{margin-top:18px;font-size:17px;line-height:1.48;font-weight:500;letter-spacing:-.15px}
+.card-divider{width:100%;height:2px;margin-top:15px;background:currentColor;opacity:.14;border-radius:2px}
+.lb{display:block;margin:16px 0 8px;font-size:15px;font-weight:600}
+.in{width:100%;height:50px;border-radius:50px;border:2px solid currentColor;background:rgba(255,255,255,.1);color:inherit;padding:0 20px;font-size:18px;font-weight:600;outline:0;margin-top:16px}
+.in::placeholder{color:currentColor;opacity:.55}
+.in:focus{background:rgba(255,255,255,.2)}
+.col{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.btn,.chip,.pill{border:0;cursor:pointer;border-radius:50px;height:44px;padding:0 22px;font-weight:700;font-size:17px;white-space:nowrap;background:var(--g);color:var(--ink);transition:transform .25s ease,opacity .25s ease;display:inline-flex;align-items:center;justify-content:center}
+.dark .btn,.dark .chip,.dark .pill{color:var(--dark-ink)}
+.card .btn,.card .chip{background:rgba(255,255,255,.14);color:inherit;border:2px solid currentColor}
+.card .btn.pk,.card .chip.on{background:var(--pg);color:var(--pc);border-color:transparent}
+.btn:hover:not(:disabled),.chip:hover:not(:disabled){transform:translateY(-2px)}
+.btn:disabled,.chip:disabled{cursor:default}
+.btn.dis{opacity:.4;pointer-events:none}
+.chip{height:38px;padding:0 16px;font-size:15px;font-weight:600}
+.pill{height:38px;margin:16px auto 0;display:flex;width:max-content;max-width:100%;font-size:18px;letter-spacing:1px}
+.hd{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.pl{border-radius:31px;padding:12px 18px;transition:transform .3s ease,box-shadow .3s ease;background:var(--g);color:var(--ink)}
+.dark .pl{color:var(--dark-ink)}
+.pl.p0{background:var(--pg);color:var(--pc)}
+.pl.act{transform:scale(1.04);box-shadow:0 0 0 3px var(--sec),0 12px 26px rgba(0,20,110,.2)}
+.pl span{display:block;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl strong{font-size:30px;line-height:1.1;font-weight:700}
+.st{text-align:center;color:var(--sec);font-weight:600;margin-top:14px}
+.bd{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px auto 0;max-width:420px}
+.c{aspect-ratio:1;border:2px solid var(--sec);border-radius:24px;background:rgba(0,30,111,.1);color:var(--ink);font-size:clamp(44px,17vw,78px);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s ease,background var(--transition)}
+.dark .c{background:rgba(157,195,255,.12);color:var(--dark-ink)}
+.c:hover:not(:disabled){transform:scale(1.04)}
+.c:disabled{cursor:default}
+.c.s0{background:var(--pg);color:var(--pc);border-color:transparent}
+.c.s1{background:var(--g);border-color:transparent;color:var(--ink)}
+.dark .c.s1{color:var(--dark-ink)}
+.ov{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,7,44,.58);backdrop-filter:blur(3px)}
+.ov .card{width:min(92vw,460px);margin:0;max-height:90vh;overflow:auto;text-align:center}
+.q{font-size:26px;font-weight:700;line-height:1.2;letter-spacing:-.6px;margin:14px 0}
+.tb{height:8px;border-radius:8px;background:rgba(255,255,255,.2);overflow:hidden;margin:6px 0 4px}
+.tb i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#FF8FBE,#FF4F93);transition:width .25s linear}
+.tm{font-weight:700;font-size:15px}
+footer{width:100%;margin-top:60px;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.btn:focus-visible,.chip:focus-visible,.c:focus-visible,.pill:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto !important;animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 @media (max-width:700px){
-
-  .page{
-    width:calc(100vw - 44px);
-    padding-top:11px;
-  }
-
-  .top-nav{
-    height:52px;
-    padding-left:18px;
-    padding-right:60px;
-  }
-
-  .nav-links{
-    gap:34px;
-  }
-
-  .nav-link{
-    font-size:15px;
-  }
-
-  .theme-toggle{
-    width:39px;
-    height:39px;
-    right:8px;
-  }
-
-  .theme-icon{
-    width:22px;
-    height:22px;
-  }
-
-  .hero{
-    min-height:225px;
-    padding:24px 28px 24px 30px;
-    border-radius:29px;
-  }
-
-  .hero-copy{
-    width:65%;
-  }
-
-  .hero-fixed{
-    font-size:27px;
-    letter-spacing:-.9px;
-  }
-
-  .hero-changing-wrap{
-    height:38px;
-    margin-top:3px;
-  }
-
-  .hero-changing{
-    font-size:25px;
-    letter-spacing:-.7px;
-  }
-
-  .hero-brand{
-    font-size:37px;
-    letter-spacing:-1.9px;
-  }
-
-  .hero-qr{
-    width:139px;
-    height:139px;
-    right:14px;
-  }
-
-  .section-title{
-    font-size:20px;
-    margin-bottom:12px;
-  }
-
-  .links-title{
-    margin-top:30px;
-  }
-
-  /* =====================================================
-     TELEFON KARTLARI
-     ===================================================== */
-
-  .cards{
-    margin-top:16px;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-  }
-
-  .card{
-    border-radius:24px;
-
-    /* Əsas düzəliş */
-    display:grid;
-    grid-template-columns:42% 2px 1fr;
-    align-items:center;
-
-    column-gap:10px;
-
-    min-height:112px;
-    height:auto;
-
-    padding:18px 20px;
-
-    /* Kart daxilindəki elementlərin mərkəzlənməsi */
-    place-items:center stretch;
-  }
-
-  /* Sol tərəf: ikon + başlıq */
-  .card-head,
-  .announcement-left{
-    width:100%;
-    min-width:0;
-
-    display:flex;
-    align-items:center;
-
-    /* Sol hissənin öz daxilində şaquli mərkəz */
-    justify-content:flex-start;
-
-    gap:9px;
-
-    align-self:center;
-  }
-
-  .card-icon{
-    width:40px;
-    height:40px;
-    flex:0 0 40px;
-
-    display:grid;
-    place-items:center;
-  }
-
-  .card-title,
-  .announcement-card .card-title{
-    font-size:17px;
-    line-height:1.08;
-    letter-spacing:-.6px;
-
-    /* Başlıq da tam şaquli mərkəzdə */
-    align-self:center;
-
-    white-space:normal;
-  }
-
-  /* Ortadakı şaquli xətt */
-  .card-divider,
-  .announcement-divider{
-    width:2px;
-    height:68%;
-
-    margin:0;
-
-    justify-self:center;
-    align-self:center;
-  }
-
-  /* =====================================================
-     SAĞ TƏRƏFDƏKİ AÇIQLAMALAR
-     Buradakı əsas problem düzəldilir.
-     ===================================================== */
-
-  .card-description,
-  .announcement-text{
-    width:100%;
-
-    margin:0;
-
-    padding:0;
-
-    font-size:10.5px;
-    line-height:1.42;
-    font-weight:500;
-
-    letter-spacing:-.1px;
-
-    /* Tam şaquli mərkəz */
-    align-self:center;
-    justify-self:stretch;
-
-    /* Mətnin öz daxilində də mərkəz */
-    display:flex;
-    align-items:center;
-  }
-
-  /* Çoxsətirli mətnlər üçün düzgün mərkəz */
-  .card-description{
-    min-height:0;
-  }
-
-  .announcement-text{
-    min-height:0;
-  }
-
-  /* Müəlliflər kartındakı əvvəlki margin ləğv edilir */
-  .author-card .card-description{
-    margin-top:0;
-  }
-
-  .timer-card .card-description,
-  .button-card .card-description{
-    margin-top:0;
-  }
-
-  /* Announcement kartı da eyni sistemlə işləsin */
-  .announcement-card{
-    grid-column:auto;
-
-    display:grid;
-    grid-template-columns:42% 2px 1fr;
-
-    align-items:center;
-
-    column-gap:10px;
-
-    min-height:112px;
-    height:auto;
-
-    padding:18px 20px;
-  }
-
-  .announcement-card .announcement-left{
-    margin:0;
-    padding:0;
-  }
-
-  .announcement-card .card-icon{
-    margin:0;
-  }
-
-  /* Breyn Rinq logosu */
-  .brain-logo{
-    width:46px;
-    height:43px;
-    flex:0 0 46px;
-
-    display:grid;
-    place-items:center;
-  }
-
-  /* Statistika */
-  .statistics{
-    margin-top:52px;
-    padding-bottom:76px;
-  }
-
-  .stats-row{
-    gap:15px;
-  }
-
-  .stat-pill{
-    height:34px;
-    font-size:14px;
-  }
-
-  footer{
-    min-height:185px;
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .footer-line{
-    font-size:14px;
-  }
-}
-
-
-/* =========================================================
-   ÇOX DAR TELEFONLAR
-   ========================================================= */
-
+.page{width:calc(100vw - 44px);padding-top:11px}
+.top-nav{height:52px;padding-left:18px;padding-right:60px}
+.nav-links{gap:34px}.nav-link{font-size:15px}
+.theme-toggle{width:39px;height:39px;right:8px}.theme-icon{width:22px;height:22px}
+.section-title{font-size:20px}
+.card{border-radius:24px;padding:22px 20px}
+.ct{font-size:22px}.cd{font-size:14px}.q{font-size:22px}
+.pl{border-radius:24px;padding:10px 14px}
+footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}}
 @media (max-width:420px){
-
-  .page{
-    width:calc(100vw - 36px);
-  }
-
-  .nav-links{
-    gap:25px;
-  }
-
-  .nav-link{
-    font-size:13px;
-  }
-
-  .top-nav{
-    height:48px;
-  }
-
-  .theme-toggle{
-    width:36px;
-    height:36px;
-    right:6px;
-  }
-
-  .theme-icon{
-    width:20px;
-    height:20px;
-  }
-
-  .hero{
-    padding-left:24px;
-    padding-right:14px;
-  }
-
-  .hero-copy{
-    width:67%;
-  }
-
-  .hero-fixed{
-    font-size:23px;
-  }
-
-  .hero-changing{
-    font-size:21px;
-  }
-
-  .hero-brand{
-    font-size:31px;
-  }
-
-  .hero-qr{
-    width:121px;
-    height:121px;
-    right:8px;
-  }
-
-  .section-title{
-    font-size:18px;
-  }
-
-  /* Telefon kartlarının son mərkəzləşdirməsi */
-  .card,
-  .announcement-card{
-    padding:16px 16px;
-
-    grid-template-columns:42% 2px 1fr;
-
-    column-gap:10px;
-
-    min-height:112px;
-  }
-
-  .card-icon{
-    width:38px;
-    height:38px;
-    flex-basis:38px;
-  }
-
-  .card-title,
-  .announcement-card .card-title{
-    font-size:16px;
-    line-height:1.08;
-  }
-
-  .card-description,
-  .announcement-text{
-    font-size:10.5px;
-    line-height:1.4;
-
-    /* Ən vacib hissə */
-    align-self:center;
-  }
-
-  .brain-logo{
-    width:44px;
-    height:41px;
-    flex-basis:44px;
-  }
-
-  .stat-pill{
-    font-size:12px;
-    padding:0 5px;
-  }
-}
+.page{width:calc(100vw - 36px)}
+.nav-links{gap:25px}.nav-link{font-size:13px}
+.top-nav{height:48px}.theme-toggle{width:36px;height:36px;right:6px}.theme-icon{width:20px;height:20px}}
 </style>
 </head>
-
 <body>
 <div class="page">
-
   <nav class="top-nav reveal r1" aria-label="Əsas naviqasiya">
     <div class="nav-links">
-      <a class="nav-link active" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
-
-    <button class="theme-toggle" id="themeToggle" type="button"
-            aria-label="Gecə rejiminə keç">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
       <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
     </button>
   </nav>
-
-  <main>
-
-    <section class="hero reveal r2" aria-label="πksel.iok">
-      <div class="hero-copy">
-        <div class="hero-fixed">İntellektuallar üçün</div>
-
-        <div class="hero-changing-wrap">
-          <span id="changingText" class="hero-changing">Hər şey</span>
-        </div>
-
-        <div class="hero-brand">πksel-də</div>
-      </div>
-
-      <a
-        class="hero-qr"
-        href="https://www.instagram.com/piksel.iok"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="πksel.iok Instagram"
-      >
-        <img id="qrImage"
-             src="https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png"
-             alt="πksel.iok Instagram QR kodu">
-      </a>
-    </section>
-
-    <h2 class="section-title links-title reveal r2">Keçidlər</h2>
-
-    <section class="cards" aria-label="πksel.iok bölmələri">
-
-      <a class="card package-card reveal r3" href="packages.html">
-        <div class="card-head">
-          <span class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 9.5C4 8.119 5.119 7 6.5 7H12L14.5 10H25.5C26.881 10 28 11.119 28 12.5V23.5C28 24.881 26.881 26 25.5 26H6.5C5.119 26 4 24.881 4 23.5V9.5Z" fill="currentColor"/>
-            </svg>
-          </span>
-          <div class="card-title">Sual Paketləri</div>
-        </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Nə? Harada? Nə Zaman?", "Xəmsə", "Breyn Rinq", "Fərdi"
-          intellektual oyunlarının sual paketləri.
-        </p>
-      </a>
-
-      <a class="card author-card reveal r4" href="authors.html">
-        <div class="card-head">
-          <span class="card-icon" aria-hidden="true">
-            <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fb5303c34-5ba7-472a-baa1-8b9143bc98cb-1000463113.png" alt="">
-            <img class="icon-night" src="https://cdn.phototourl.com/member/2026-09-27-be52e931-8795-498a-850b-3c147010701e.png" alt="">
-          </span>
-          <div class="card-title">Müəlliflər</div>
-        </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          Sual paketləri üçün sual yazan müəlliflər.
-        </p>
-      </a>
-
-      <a class="card announcement-card reveal r5" href="announcements.html">
-        <div class="announcement-left">
-          <span class="card-icon" aria-hidden="true">
-            <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2F59bb8926-a082-49f2-a447-156e514f1e58-1000463110.png" alt="">
-            <img class="icon-night" src="https://cdn.phototourl.com/member/2026-09-27-e226602c-76e7-4e29-a532-028e8209fe8c.png" alt="">
-          </span>
-          <div class="card-title">Elanlar</div>
-        </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          Yaxın müddətdə baş tutacaq yarışlar, yarışlara komanda axtaran
-          oyunçular, oyunçu axtaran komandalar üçün elanlar.
-        </p>
-      </a>
-
-      <a class="card timer-card reveal r6" href="timer.html">
-        <div class="card-head">
-          <span class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="18" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M16 18V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M12 4H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M25 9L27 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <div class="card-title">Taymer</div>
-        </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Nə? Harada? Nə Zaman?" intellektual oyunları üçün taymer
-          (Klassik, Duplet, Blitz).
-        </p>
-      </a>
-
-      <a class="card button-card reveal r6" href="button.html">
-        <div class="card-head">
-          <span class="brain-logo" aria-hidden="true">
-            <img class="icon-day" src="https://pictureurl.com/api/storage/file?key=u%2Fanon%2F1c48531d-a182-4856-a91a-e6300d12f10d-1000463109.png" alt="">
-            <img class="icon-night" src="https://cdn.imagetourls.com/uploads/tyImg/1X3USm5g.png" alt="">
-          </span>
-          <div class="card-title">Breyn Rinq düyməsi</div>
-        </div>
-        <div class="card-divider"></div>
-        <p class="card-description">
-          "Breyn Rinq" intellektual oyunları üçün düymə sistemi.
-        </p>
-      </a>
-
-      <!-- XƏMSƏ DÜYMƏSİ — YENİ -->
-      <a class="card announcement-card reveal r6" href="/xemse_duyme.html">
-        <div class="announcement-left">
-          <span class="card-icon" aria-hidden="true">
-            <img class="icon-day"
-                 src="https://cdn.phototourl.com/member/2026-09-29-46b707a2-08cd-4897-92cd-de66dcbcaba8.png"
-                 alt="">
-            <img class="icon-night"
-                 src="https://cdn.phototourl.com/member/2026-09-29-9a2c00a9-efbb-467f-92bc-f0d4977e8862.png"
-                 alt="">
-          </span>
-          <div class="card-title">Xəmsə düyməsi</div>
-        </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          "Xəmsə" Milli İntellektual Oyunları üçün düymə sistemi.
-        </p>
-      </a>
-
-          <!-- NHN OTAQ SƏSLI — YENİ -->
-      <a class="card announcement-card reveal r6" href="/nhn.html">
-        <div class="announcement-left">
-          <span class="card-icon" aria-hidden="true">
-            <img class="icon-day"
-                 src="https://cdn.phototourl.com/member/2026-10-03-dfca60e0-88f4-4cca-848d-1aed1a02d217.png"
-                 alt="">
-            <img class="icon-night"
-                 src="https://cdn.phototourl.com/member/2026-10-03-f31dbb28-2963-40a5-b45a-f05573ce2de4.png"
-                 alt="">
-          </span>
-          <div class="card-title">Səsli NHN otağı</div>
-        </div>
-
-        <div class="announcement-divider"></div>
-
-        <p class="announcement-text">
-          "Nə? Harada? Nə Zaman?" İntellektual Oyunları üçün səsli oyun sistemi.
-        </p>
-      </a>
-  </section>
-
-    <section class="statistics reveal r6" aria-label="Statistika">
-      <h2 class="section-title reveal r6">Statistika:</h2>
-
-      <div class="stats-row">
-        <div class="stat-pill">
-          Paket: <span id="packageCount">&nbsp;0</span>
-        </div>
-        <div class="stat-pill">
-          Müəllif: <span id="authorCount">&nbsp;0</span>
-        </div>
-        <div class="stat-pill">
-          Yarış Elanı: <span id="announcementCount">&nbsp;0</span>
-        </div>
-      </div>
-    </section>
-
-  </main>
+  <main id="app" class="reveal r2"></main>
 </div>
-
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...
-   </div>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/piksel.iok"
-     target="_blank"
-     rel="noopener noreferrer">
-    ©πksel intellektual oyunlar klubu
-  </a>
-
-  <a class="footer-line footer-link"
-     href="https://www.instagram.com/onurelzh"
-     target="_blank"
-     rel="noopener noreferrer">
-    ©Onur Əlizadə
-  </a>
-
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
-
 <script>
-/* =========================================================
-   πksel.iok — INDEX
-   Automatic statistics:
-   Each future internal page can mark its records with:
-     [data-package]
-     [data-author]
-     [data-announcement]
-   The index will fetch that page and count them automatically.
-   ========================================================= */
+const TP=[
+{n:"İncəsənət",e:"🎨",p:1,d:`Mona Liza (Mona Lisa)|Leonardo da Vinci/Leonardo
+Sonuncu şam yeməyi (The Last Supper)|Leonardo da Vinci
+Ulduzlu gecə (The Starry Night)|Vincent van Gogh/Van Qoq/Vinsent van Qoq/Qoq
+Günəbaxanlar (Sunflowers)|Vincent van Gogh/Van Qoq/Qoq
+Qışqırıq (The Scream)|Edvard Munch/Munk
+İnci sırğalı qız (Girl with a Pearl Earring)|Johannes Vermeer/Yohannes Vermeer
+Öpüş (The Kiss)|Gustav Klimt/Qustav Klimt
+Qernika (Guernica)|Pablo Picasso/Pikasso
+Adəmin yaradılışı (The Creation of Adam)|Michelangelo/Mikelancelo
+Yaddaşın əbədiliyi (The Persistence of Memory)|Salvador Dali
+Afina məktəbi (The School of Athens)|Raphael/Rafael Sanzio
+Veneranın doğulması (The Birth of Venus)|Sandro Botticelli/Boticelli
+Gecə keşikçiləri (The Night Watch)|Rembrandt
+Su zanbaqları (Water Lilies)|Claude Monet/Klod Mone
+Las Meninas|Diego Velazquez/Dieqo Velaskes
+Amerikan qotikası (American Gothic)|Grant Wood/Qrant Vud
+Meduzanın salı (The Raft of the Medusa)|Theodore Gericault/Jeriko
+Olimpiya (Olympia)|Edouard Manet/Mane
+Kart oynayanlar (The Card Players)|Paul Cezanne/Sezan
+Rəqs (Dance)|Henri Matisse/Anri Matiss
+Kompozisiya VIII (Composition VIII)|Wassily Kandinsky/Kandinski
+İnsan oğlu (The Son of Man)|Rene Magritte/Maqritt
+Gecə quşları (Nighthawks)|Edward Hopper
+Qara kvadrat (Black Square)|Kazimir Malevich/Malevic
+Ağ mərkəz (White Center)|Mark Rothko/Rotko
+Mavi sirk (The Blue Circus)|Marc Chagall/Mark Saqal
+Kristinanın dünyası (Christina's World)|Andrew Wyeth/Uayet
+Azadlıq xalqı idarə edir (Liberty Leading the People)|Eugene Delacroix/Delakrua
+Təəssürat, Günəş doğuşu (Impression, Sunrise)|Claude Monet/Klod Mone
+Təmirçilər|Tahir Salahov/Salahov|4`},
+{n:"İdman",e:"🏅",d:`Lionel Messi|Futbol/Football
+Cristiano Ronaldo|Futbol/Football
+Mahir Emreli|Futbol/Football|4
+Tofiq Bəhramov|Futbol/Football|4
+Michael Jordan|Basketbol/Basketball
+LeBron James|Basketbol/Basketball
+Rafael Ağayev|Karate|4
+Ryo Kiyuna|Karate
+Aleksandr Karelin|Güləş/Wrestling/Güreş
+Namig Abdullayev|Güləş/Wrestling/Güreş|4
+Roger Federer|Tennis/Tenis
+Serena Williams|Tennis/Tenis
+Karch Kiraly|Voleybol/Volleyball
+Wilfredo León|Voleybol/Volleyball
+Magnus Carlsen|Şahmat/Chess/Satranç
+Şəhriyar Məmmədyarov|Şahmat/Chess/Satranç|4
+Lewis Hamilton|Formula 1/F1/Formula
+Michael Schumacher|Formula 1/F1/Formula
+Usain Bolt|Qaçış/Atletika/Running/Koşu
+Michael Phelps|Üzgüçülük/Swimming/Yüzme
+Muhammad Ali|Boks/Boxing
+Mike Tyson|Boks/Boxing
+Teddy Riner|Cüdo/Judo
+Hidayət Heydərov|Cüdo/Judo|4
+Elnur Məmmədli|Cüdo/Judo|4
+Tiger Woods|Qolf/Golf
+Babe Ruth|Beysbol/Baseball
+Sachin Tendulkar|Kriket/Cricket
+Jonah Lomu|Reqbi/Rugby/Ragbi
+Stephen Curry|Basketbol/Basketball`},
+{n:"Tikililər",e:"🏛️",d:`Eyfel qülləsi|Paris
+Kolizey|Roma/Rome
+Tac Mahal|Aqra/Agra
+Bürclər Xəlifə|Dubay/Dubai
+Azadlıq heykəli|Nyu-York/New York
+Ayasofya|İstanbul/Istanbul
+Piza qülləsi|Piza/Pisa
+Müqəddəs Vasili kilsəsi|Moskva/Moscow/Moskova
+Sidney Opera Teatrı|Sidney/Sydney
+Müqəddəs Ailə kilsəsi|Barselona/Barcelona
+Vestminster sarayı|London
+Partenon|Afina/Athens/Atina
+Empayr Steyt Bildinq|Nyu-York/New York
+Petronas qüllələri|Kuala-Lumpur/Kuala Lumpur
+Luvr muzeyi|Paris
+Qadağan olunmuş şəhər sarayı|Pekin/Beijing
+Xilaskar Məsih heykəli|Rio-de-Janeyro/Rio de Janeiro/Rio
+Alhambra sarayı|Qranada/Granada
+Brandenburq qapıları|Berlin
+Praqa qəsri|Praqa/Prague/Prag
+Atomium|Brüssel/Brussels
+Qolden Qeyt körpüsü|San-Fransisko/San Francisco
+Qış sarayı|Sankt-Peterburq/Saint Petersburg/St Petersburg
+Sultan Əhməd məscidi|İstanbul/Istanbul
+Qız qalası|Bakı/Baku|4
+Alov qüllələri|Bakı/Baku|4
+Şirvanşahlar sarayı|Bakı/Baku|4
+Heydər Əliyev Mərkəzi|Bakı/Baku|4
+Şəki xan sarayı|Şəki/Sheki|4
+Mömünə Xatun türbəsi|Naxçıvan/Nakhchivan|4
+Nizami Gəncəvi məqbərəsi|Gəncə/Ganja|4
+Yuxarı Gövhər Ağa məscidi|Şuşa/Shusha|4
+Şamaxı Cümə məscidi|Şamaxı/Shamakhi|4
+Allah-Allah türbəsi|Bərdə/Barda|4`},
+{n:"Valyutalar",e:"💱",d:`Yen|Yaponiya/Japan/Japonya
+Yuan|Çin/China
+Baht|Tailand/Thailand
+Ringgit|Malayziya/Malaysia
+Rupiah|İndoneziya/Indonesia
+Dong|Vyetnam/Vietnam
+Tenge|Qazaxıstan/Kazakhstan
+Lari|Gürcüstan/Georgia
+Dram|Ermənistan/Armenia
+Funt sterlinq|Böyük Britaniya/Britaniya/United Kingdom/İngiltərə
+Zlotı|Polşa/Poland
+Forint|Macarıstan/Hungary
+Koruna|Çexiya/Czechia/Czech Republic
+Hryvnia|Ukrayna/Ukraine
+Real|Braziliya/Brazil
+Bolivar|Venesuela/Venezuela
+Rand|Cənubi Afrika/South Africa
+Naira|Nigeriya/Nigeria
+Pula|Botsvana/Botswana
+Kyat|Myanma/Myanmar
+Taka|Banqladeş/Bangladesh
+Şekel|İsrail/Israel
+Manat (AZN)|Azərbaycan/Azerbaijan|4
+Manat (TMT)|Türkmənistan/Turkmenistan
+Sol|Peru
+Quarani|Paraqvay/Paraguay
+Tögrög|Monqolustan/Mongolia
+Əfqani|Əfqanıstan/Afghanistan
+Birr|Efiopiya/Ethiopia
+Lek|Albaniya/Albania`},
+{n:"Ədəbiyyat",e:"📚",p:1,d:`Cinayət və cəza|Dostoyevski/Dostoevsky
+Anna Karenina|Tolstoy/Lev Tolstoy
+Müharibə və sülh|Tolstoy/Lev Tolstoy
+Usta və Marqarita|Bulqakov/Bulgakov
+Ölü canlar|Qoqol/Gogol
+Yevgeni Onegin|Puşkin/Pushkin
+Hamlet|Şekspir/Shakespeare/William Shakespeare
+Romeo və Culyetta|Şekspir/Shakespeare
+Robinzon Kruzo|Defo/Daniel Defoe
+Oliver Tvist|Dikkens/Dickens/Charles Dickens
+Qürur və qərəz|Ostin/Jane Austen
+Dorian Qreyin portreti|Uayld/Oscar Wilde/Oskar Uayld
+Drakula|Stoker/Bram Stoker
+Xəzinə adası|Stivenson/Robert Louis Stevenson
+Alisa möcüzələr ölkəsində|Kerroll/Lewis Carroll
+Üzüklərin hökmdarı|Tolkin/Tolkien
+Səfillər|Hüqo/Hugo/Viktor Hüqo
+Üç muşketyor|Düma/Dumas/Aleksandr Düma
+Monte-Kristo qrafı|Düma/Dumas/Aleksandr Düma
+Madam Bovari|Flober/Flaubert
+Balaca şahzadə|Sent-Ekzüperi/Saint-Exupery
+Faust|Höte/Goethe/Göte
+Metamorfoz|Kafka/Frans Kafka
+Don Kixot|Servantes/Cervantes
+Pinokkionun macəraları|Kollodi/Collodi
+Tom Soyerin macəraları|Mark Tven/Mark Twain/Twain
+Moby Dik|Melvil/Melville
+Qoca və dəniz|Heminquey/Hemingway
+Böyük Getsbi|Fitscerald/Fitzgerald
+Bülbülü öldürmək|Harper Li/Harper Lee
+Leyli və Məcnun|Nizami Gəncəvi/Nizami/Füzuli/Fuzuli|4
+O olmasın, bu olsun|Üzeyir Hacıbəyli/Hacıbəyli|4
+Arşın mal alan|Üzeyir Hacıbəyli/Hacıbəyli|4
+Ölülər|Cəlil Məmmədquluzadə/Məmmədquluzadə|4
+Müsyö Jordan və dərviş Məstəli şah|Mirzə Fətəli Axundzadə/Axundov|4
+Sevil|Cəfər Cabbarlı/Cabbarlı|4
+Şeyx Sənan|Hüseyn Cavid/Cavid|4
+Cəmilə|Cingiz Aytmatov/Aytmatov|4
+Gün olur əsrə bərabər|Cingiz Aytmatov/Aytmatov|4`}];
+TP.forEach(t=>t.q=t.d.split("\n").map(l=>{const[q,a,w]=l.split("|");return{q,a,w:+w||1}}));
+const $=id=>document.getElementById(id),app=$("app"),E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nm=s=>s.toLowerCase().replace(/ı/g,"i").replace(/ə/g,"e").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/q/g,"g").replace(/w/g,"v").replace(/[^a-z0-9]/g,"");
+function lev(a,b){let p=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let c=[i];for(let j=1;j<=b.length;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]==b[j-1]?0:1));p=c}return p[b.length]}
+const tol=n=>n<=3?0:n<=5?1:n<=9?2:n<=13?3:4;
+function ok(inp,ans,person){const x=nm(inp);if(!x)return false;const C=new Set();ans.split("/").forEach(v=>{C.add(nm(v));if(person)v.split(/[\s-]+/).forEach(t=>{if(nm(t).length>=4)C.add(nm(t))})});return[...C].some(c=>c&&lev(x,c)<=tol(c.length))}
 
-const DAY_QR =
-  "https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png";
+const themeToggle=$("themeToggle"),themeIcon=$("themeIcon");
+const sunI=`<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>`,moonI=`<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
+function setTheme(d){document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}themeIcon.innerHTML=d?moonI:sunI;themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
+themeToggle.onclick=()=>setTheme(!document.body.classList.contains("dark"));
+(()=>{let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}setTheme(s?s=="dark":!!(matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches))})();
 
-const NIGHT_QR =
-  "https://cdn.phototourl.com/member/2026-09-26-389276da-ea79-4b24-a3ce-d41009da09e0.png";
-
-const words = [
-  "Sual Paketləri",
-  "Taymer",
-  "Düymə sistemi",
-  "Yarış elanları",
-  "Komanda elanları",
-  "Oyunçu elanları"
-];
-
-const changingText = document.getElementById("changingText");
-const qrImage = document.getElementById("qrImage");
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
-
-let wordIndex = -1;
-let firstRun = true;
-let typingTimer = null;
-let eraseTimer = null;
-
-function sunIcon(){
-  return `
-    <circle cx="16" cy="16" r="6" fill="currentColor"/>
-    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
-      <path d="M16 2.7v3"/>
-      <path d="M16 26.3v3"/>
-      <path d="m2.7 16 3 0"/>
-      <path d="m26.3 16-3 0"/>
-      <path d="m6.6 6.6 2.1 2.1"/>
-      <path d="m23.3 23.3 2.1 2.1"/>
-      <path d="m25.4 6.6-2.1 2.1"/>
-      <path d="m8.7 23.3-2.1 2.1"/>
-    </g>`;
-}
-
-function moonIcon(){
-  return `
-    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
-          fill="currentColor"/>`;
-}
-
-function updateThemeIcon(){
-  const dark = document.body.classList.contains("dark");
-
-  /* Day mode = sun, night mode = moon, as requested. */
-  themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
-
-  themeToggle.setAttribute(
-    "aria-label",
-    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
-  );
-
-  qrImage.src = dark ? NIGHT_QR : DAY_QR;
-}
-
-function setTheme(dark){
-  document.body.classList.toggle("dark", dark);
-  localStorage.setItem("piksel-theme", dark ? "dark" : "light");
-  updateThemeIcon();
-}
-
-function initTheme(){
-  const saved = localStorage.getItem("piksel-theme");
-
-  if(saved === "dark"){
-    setTheme(true);
-    return;
-  }
-
-  if(saved === "light"){
-    setTheme(false);
-    return;
-  }
-
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  setTheme(prefersDark);
-}
-
-themeToggle.addEventListener("click", () => {
-  setTheme(!document.body.classList.contains("dark"));
-});
-
-/* ---------- Typewriter ---------- */
-
-function nextWord(){
-  if(firstRun){
-    firstRun = false;
-    wordIndex = 0;
-  }else{
-    const previous = wordIndex;
-    do{
-      wordIndex = Math.floor(Math.random() * words.length);
-    }while(words.length > 1 && wordIndex === previous);
-  }
-
-  typeWord(words[wordIndex]);
-}
-
-function typeWord(word){
-  clearTimeout(typingTimer);
-  clearTimeout(eraseTimer);
-
-  changingText.textContent = "";
-
-  let i = 0;
-
-  function typeStep(){
-    if(i < word.length){
-      changingText.textContent += word[i];
-      i++;
-      typingTimer = setTimeout(typeStep, 1000 / Math.max(word.length,1));
-    }else{
-      eraseTimer = setTimeout(() => eraseWord(word), 2000);
-    }
-  }
-
-  typeStep();
-}
-
-function eraseWord(word){
-  let i = word.length;
-
-  function eraseStep(){
-    if(i > 0){
-      i--;
-      changingText.textContent = word.slice(0,i);
-      typingTimer = setTimeout(eraseStep, 1000 / Math.max(word.length,1));
-    }else{
-      eraseTimer = setTimeout(nextWord, 150);
-    }
-  }
-
-  eraseStep();
-}
-
-/* ---------- Automatic statistics ---------- */
-
-async function countFromPage(url, selector){
-  try{
-    const response = await fetch(url, {cache:"no-store"});
-    if(!response.ok) throw new Error("Page unavailable");
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html,"text/html");
-    return doc.querySelectorAll(selector).length;
-  }catch(error){
-    return 0;
-  }
-}
-
-async function updateStatistics(){
-  const [packages, authors, announcements] = await Promise.all([
-    countFromPage("packages.html","[data-package]"),
-    countFromPage("authors.html","[data-author]"),
-    countFromPage("announcements.html","[data-announcement]")
-  ]);
-
-  document.getElementById("packageCount").textContent = packages;
-  document.getElementById("authorCount").textContent = authors;
-  document.getElementById("announcementCount").textContent = announcements;
-}
-
-/* ---------- Start ---------- */
-
-initTheme();
-
-/* First word is ALWAYS Hər şey. */
-setTimeout(() => {
-  typeWord("Hər şey");
-  firstRun = false;
-  wordIndex = -1;
-}, 850);
-
-updateStatistics();
-
-/* Refresh statistics when returning to the page. */
-window.addEventListener("pageshow", updateStatistics);
+let V="home",ME=0,G={ph:"lobby",names:["",""],sc:[0,0],b:[]},S={steal:true,time:20,sel:[0,1,2,3,4]},H={},mq,gt,tr=0,cid=Math.random().toString(36).slice(2,9),code="",END=0,iv,msg="",myName="";
+const NM=i=>E((G.names[i]||"").trim()||(i?"Qonaq":"Ev sahibi"));
+const BR=["wss://broker.emqx.io:8084/mqtt","wss://broker.hivemq.com:8884/mqtt","wss://test.mosquitto.org:8081"],TOP=()=>"piksel-xox/v1/"+code+"/";
+let MQ=[],seen=new Set(),sq=0,lastN=0,lastH=0,lastG=0;
+const send=o=>{const p=JSON.stringify(Object.assign({c:cid,i:cid+(++sq)},o));MQ.forEach(c=>{if(c.connected)c.publish(TOP()+(ME?"g":"h"),p,{qos:1})})};
+const AL="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const btn=(c,f,t)=>`<button class="btn ${c}" onclick="${f}">${t}</button>`;
+function link(ok,fail){if(typeof mqtt=="undefined")return fail("Bağlantı kitabxanası yüklənmədi. İnterneti yoxla və səhifəni yenilə.");
+MQ.forEach(c=>{try{c.end(true)}catch(e){}});MQ=[];const T=TOP(),ot=ME?"h":"g";let done=0;
+const t=setTimeout(()=>{if(!done){done=1;MQ.forEach(c=>{try{c.end(true)}catch(e){}});fail("Serverə qoşulmaq alınmadı. İnterneti yoxla.")}},10000);
+BR.forEach(u=>{const c=mqtt.connect(u,{clientId:"px"+cid+Math.random().toString(36).slice(2,5),keepalive:20,connectTimeout:8000,reconnectPeriod:2000});MQ.push(c);
+c.on("connect",()=>c.subscribe(T+ot,{qos:1},e=>{if(!e&&!done){done=1;clearTimeout(t);ok()}}));
+c.on("message",(tp,m)=>{let d;try{d=JSON.parse(m.toString())}catch(x){return}if(!d||seen.has(d.i))return;seen.add(d.i);if(seen.size>800)seen.clear();hd(d)});
+c.on("error",()=>{})})}
+function mkRoom(){V="game";ME=0;lastN=0;code=[...Array(5)].map(()=>AL[Math.random()*AL.length|0]).join("");
+G={ph:"lobby",names:[myName||"Ev sahibi",""],sc:[0,0],b:Array(9).fill(null),st:Math.random()<.5?0:1,wait:1,n:0};H={};R();
+link(()=>{G.wait=0;R()},m=>{G.wait=0;G.err=m;R()})}
+function gone(){G.gone=1;clearInterval(iv);R()}
+function joinRoom(){const c=($("jc").value||"").trim().toUpperCase();if(c.length<5){msg="Kodu tam yaz.";return R()}
+ME=1;code=c;lastN=0;H={};msg="Qoşulur...";R();
+const to=setTimeout(()=>{if(V!="game"){MQ.forEach(x=>{try{x.end(true)}catch(e){}});msg="Otaq tapılmadı. Kodu yoxla, otaq sahibi səhifəni açıq saxlamalıdır.";V="join";R()}},20000);
+gt=()=>clearTimeout(to);
+link(()=>{const hi=()=>send({t:"hi",n:myName||"Qonaq"});hi();const h=setInterval(()=>{if(V=="game"||ME!=1)clearInterval(h);else hi()},2000)},m=>{clearTimeout(to);msg=m;V="join";R()})}
+function hd(d){if(!d||typeof d!="object")return;
+if(ME){if(d.t!="st")return;lastH=Date.now();if(d.n<=lastN)return;lastN=d.n;const k=JSON.stringify([d.G,d.S],(a,v)=>a=="ms"||a=="n"?0:v),nw=V!="game";if(nw){V="game";gt&&gt()}const same=k==H.k;H.k=k;G=d.G;S=d.S;clearInterval(iv);if(G.ph=="ask"){END=Date.now()+G.ms;iv=setInterval(tick,200)}if(!same||nw)R();return}
+if(d.t=="hi"){if(G.gid&&G.gid!=d.c)return;const f=G.gid==d.c;G.gid=d.c;G.names[1]=String(d.n).slice(0,14);lastG=Date.now();f?pub():sync()}
+else if(d.c==G.gid){lastG=Date.now();if(d.t!="ping")host(d.t,d.x,1)}}
+function pub(){if(ME)return;G.ms=G.ph=="ask"?Math.max(0,END-Date.now()):0;G.n=(G.n||0)+1;send({t:"st",n:G.n,G,S})}
+function sync(){pub();R()}
+setInterval(()=>{if(V!="game")return;if(ME)send({t:"ping"});else if(G.gid)pub();const l=ME?lastH:lastG,w=$("wn");if(w)w.style.display=l&&Date.now()-l>12000?"block":"none"},3000);
+function go(t,x){ME?send({t,x}):host(t,x,0)}
+const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function host(t,x,by){
+if(t=="cell"){if(G.ph!="idle"||G.turn!=by||G.b[x]!=null)return;G.c=x;G.act=by;G.stl=false;offer()}
+else if(t=="pick"){if(G.ph!="pick"||G.act!=by||!G.opts[x]&&G.opts[x]!==0)return;doPick(G.opts[x])}
+else if(t=="ans"){if(G.ph!="ask"||G.act!=by)return;doAns(String(x||""))}}
+function tg(i){if(ME)return;const k=S.sel.indexOf(i);k<0?S.sel.push(i):S.sel.splice(k,1);sync()}
+function cfg(k,v){if(ME)return;S[k]=v;sync()}
+function startGame(){if(ME||!G.gid||S.sel.length<3)return;G.sc=[0,0];round()}
+function round(){if(ME)return;G.b=Array(9).fill(null);G.turn=G.st;G.st=1-G.st;G.ph="idle";G.stl=false;G.w=null;sync()}
+function offer(){G.opts=[...S.sel].sort(()=>Math.random()-.5).slice(0,2);G.ph="pick";sync()}
+function doPick(ti){const t=TP[ti];let p=t.q.filter(x=>!(H.u||(H.u=new Set())).has(x));if(!p.length){t.q.forEach(x=>H.u.delete(x));p=t.q}
+let r=Math.random()*p.reduce((s,x)=>s+x.w,0),it=p[p.length-1];for(const x of p){r-=x.w;if(r<0){it=x;break}}
+H.u.add(it);H.it=it;G.tp=ti;G.q=it.q;END=Date.now()+S.time*1000;G.ph="ask";clearInterval(iv);iv=setInterval(tick,200);sync()}
+function tick(){const l=Math.max(0,END-Date.now()),b=$("bar");if(b){b.style.width=l/(S.time*10)+"%";$("tm").textContent=Math.ceil(l/1000)+" san"}if(!ME&&l<=0&&G.ph=="ask")doAns("")}
+function doAns(v){clearInterval(iv);const r=ok(v,H.it.a,TP[G.tp].p);G.fb={ok:r,a:H.it.a.split("/")[0]};G.ph="fb";sync();setTimeout(after,r?1100:2000)}
+function after(){if(G.fb.ok){G.b[G.c]=G.act;if(!G.stl)G.turn=1-G.turn;return fin()}
+if(S.steal&&!G.stl){G.stl=true;G.act=1-G.act;return offer()}
+if(!G.stl)G.turn=1-G.turn;fin()}
+function fin(){G.stl=false;const b=G.b;for(const l of L)if(b[l[0]]!=null&&b[l[0]]===b[l[1]]&&b[l[1]]===b[l[2]]){G.w=b[l[0]];G.sc[G.w]++;G.ph="end";return sync()}
+if(b.every(v=>v!=null)){G.w=null;G.ph="end";return sync()}G.ph="idle";sync()}
+function cpy(){const b=$("cd"),d=()=>{b.textContent="Kopyalandı ✓";setTimeout(()=>b.textContent="Kod: "+code,1400)};
+(navigator.clipboard?navigator.clipboard.writeText(code):Promise.reject()).then(d,()=>{const a=document.createElement("textarea");a.value=code;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();d()})}
+function setup(){const ro=ME?"disabled":"";return `<div class="card"><div class="ct">Otaq ayarları</div><div class="card-divider"></div>
+<span class="lb">Oğurlama</span><div class="row"><button class="chip ${S.steal?"on":""}" ${ro} onclick="cfg('steal',true)">Açıq</button><button class="chip ${S.steal?"":"on"}" ${ro} onclick="cfg('steal',false)">Bağlı</button></div>
+<span class="lb">Hər sual üçün vaxt</span><div class="row">${[15,20,25,30].map(t=>`<button class="chip ${S.time==t?"on":""}" ${ro} onclick="cfg('time',${t})">${t} san</button>`).join("")}</div>
+<span class="lb">Mövzular (ən azı 3)</span><div class="row">${TP.map((t,i)=>`<button class="chip ${S.sel.includes(i)?"on":""}" ${ro} onclick="tg(${i})">${t.n}</button>`).join("")}</div></div>`}
+function game(){const b=G.b;let o="",h=G.wait?`<div class="pill">Otaq hazırlanır...</div>`:`<button class="pill" id="cd" onclick="cpy()" title="Kodu kopyala">Kod: ${code}</button>`;
+const hd=`<div class="hd">${[0,1].map(i=>`<div class="pl p${i} ${G.turn==i&&G.ph!="lobby"&&G.ph!="end"?"act":""}"><span>${NM(i)} (${i?"O":"X"})</span><strong>${G.sc[i]}</strong></div>`).join("")}</div><p class="st" id="wn" style="display:none">⚠ Rəqib bağlantısı kəsildi. Gözlənilir...</p>`;
+if(G.ph=="lobby"){const ready=!ME&&G.gid&&S.sel.length>=3;
+return h+hd+`<div class="card"><div class="ct">${ME?"Otaq sahibi başlatmağı gözləyir":G.names[1]?NM(1)+" qoşuldu":"Dostunu gözləyirik"}</div><div class="card-divider"></div><p class="cd">${ME?"Ayarlara bax və gözlə.":G.names[1]?"Ayarları seç və oyunu başlat.":"Yuxarıdakı kodu kopyala və dostuna göndər. O, “Otağa qoş” seçib kodu yazacaq."}</p>${ME?"":`<div class="col">${btn("pk"+(ready?"":" dis"),"startGame()","Başla")}</div>`}</div>`+setup()}
+const mine=G.act==ME;
+if(G.ph=="pick")o=`<div class="card"><div class="ct">${mine?"Mövzunu seç":NM(G.act)+" mövzu seçir"}</div><div class="card-divider"></div>${G.stl?`<p class="cd">${NM(G.act)}, xananı oğurlamaq şansın var.</p>`:""}${mine?`<div class="col">${G.opts.map((t,k)=>btn("",`go('pick',${k})`,TP[t].n)).join("")}</div>`:""}</div>`;
+if(G.ph=="ask")o=`<div class="card"><div class="tm" id="tm"></div><div class="tb"><i id="bar"></i></div><div class="cd" style="margin-top:6px">${TP[G.tp].n} · ${NM(G.act)}</div><div class="q">${E(G.q)}</div>${mine?`<input class="in" id="in" autocomplete="off" placeholder="Cavabı yaz" onkeydown="if(event.key=='Enter')go('ans',this.value)"><div class="col">${btn("pk","go('ans',$('in').value)","Cavab ver")}</div>`:`<p class="cd">${NM(G.act)} cavab yazır...</p>`}</div>`;
+if(G.ph=="fb")o=`<div class="card"><div class="ct">${G.fb.ok?"Düzdür!":"Səhvdir"}</div><div class="card-divider"></div><p class="cd">${G.fb.ok?"Xana "+NM(G.act)+" üçündür.":"Düzgün cavab: <b>"+E(G.fb.a)+"</b>"}</p></div>`;
+if(G.ph=="end")o=`<div class="card"><div class="ct">${G.w==null?"Bərabərlik":NM(G.w)+" qalib gəldi!"}</div><div class="card-divider"></div><p class="cd">Hesab ${G.sc[0]} : ${G.sc[1]}</p>${ME?`<p class="cd">Ev sahibi yeni oyunu başladacaq.</p>`:`<div class="col">${btn("pk","round()","Yenidən oyna")}</div>`}</div>`;
+if(G.err)o=`<div class="card"><div class="ct">Xəta</div><div class="card-divider"></div><p class="cd">${E(G.err)}</p><div class="col">${btn("pk","location.reload()","Yenidən cəhd et")}</div></div>`;
+if(G.gone)o=`<div class="card"><div class="ct">Rəqib otaqdan çıxdı</div><div class="card-divider"></div><div class="col">${btn("pk","location.reload()","Əsas menyu")}</div></div>`;
+return h+hd+`<p class="st">${G.ph=="end"?"Oyun bitdi":"Növbə: "+NM(G.turn)}</p><div class="bd">${b.map((v,i)=>`<button class="c ${v==null?"":"s"+v}" ${v!=null||G.ph!="idle"||G.turn!=ME?"disabled":""} onclick="go('cell',${i})" aria-label="xana ${i+1}">${v==null?"":v?"O":"X"}</button>`).join("")}</div>`+(o?`<div class="ov">${o}</div>`:"")}
+function R(){let h="";
+if(V=="home")h=`<h2 class="section-title">İntellektual XOX</h2><div class="card"><div class="ct">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd">Xananı seç, mövzunu seç, sualı düzgün cavabla və xananı qazan.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="myName=this.value"><div class="col">${btn("pk","tr=0;mkRoom()","Otaq yarat")}${btn("","V='join';msg='';R()","Otağa qoş")}</div></div>`;
+else if(V=="join")h=`<h2 class="section-title">Otağa qoş</h2><div class="card"><div class="ct">Otaq kodunu yaz</div><div class="card-divider"></div><input class="in" id="jc" maxlength="5" placeholder="KOD" style="text-transform:uppercase;letter-spacing:4px;text-align:center" onkeydown="if(event.key=='Enter')joinRoom()"><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="myName=this.value"><p class="cd" style="text-align:center">${E(msg)}</p><div class="col">${btn("pk","joinRoom()","Qoşul")}${btn("","V='home';R()","Geri")}</div></div>`;
+else h=game();
+const keep=V=="join"&&$("jc")?$("jc").value:"";app.innerHTML=h;if(keep&&$("jc"))$("jc").value=keep;
+if(V=="game"&&G.ph=="ask"){tick();const i=$("in");if(i)i.focus()}}
+R();
 </script>
-
 </body>
 </html>
