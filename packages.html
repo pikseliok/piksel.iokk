@@ -343,6 +343,13 @@ function render(){
   });
 }
 render();
+  /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
+cardsList.addEventListener("click",e=>{
+  const a=e.target.closest("a.pkg-card");
+  if(!a||e.ctrlKey||e.metaKey||e.shiftKey) return;
+  e.preventDefault();
+  setTimeout(()=>{location.href=a.href},300);
+});
 </script>
 </body>
 </html>
