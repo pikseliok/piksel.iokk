@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <style>
 :root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);
 --g:linear-gradient(135deg,#001E6F 0%,#002E92 50%,#001E6F 100%);--pg:linear-gradient(135deg,#8E0B45 0%,#D4276F 50%,#8E0B45 100%);--pc:#FFE3EF;--sec:#001E6F}
@@ -295,25 +295,36 @@ function setTheme(d){document.body.classList.toggle("dark",d);try{localStorage.s
 themeToggle.onclick=()=>setTheme(!document.body.classList.contains("dark"));
 (()=>{let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}setTheme(s?s=="dark":!!(matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches))})();
 
-let V="home",ME=0,G={ph:"lobby",names:["",""],sc:[0,0],b:[]},S={steal:true,time:20,sel:[0,1,2,3,4]},H={},peer,conn,code="",END=0,iv,msg="",myName="";
+let V="home",ME=0,G={ph:"lobby",names:["",""],sc:[0,0],b:[]},S={steal:true,time:20,sel:[0,1,2,3,4]},H={},mq,gt,tr=0,cid=Math.random().toString(36).slice(2,9),code="",END=0,iv,msg="",myName="";
 const NM=i=>E((G.names[i]||"").trim()||(i?"Qonaq":"Ev sahibi"));
-const send=o=>{if(conn&&conn.open)conn.send(o)};
+const BR=["wss://broker.emqx.io:8084/mqtt","wss://broker.hivemq.com:8884/mqtt","wss://test.mosquitto.org:8081"],TOP=()=>"piksel-xox/v1/"+code+"/";
+let MQ=[],seen=new Set(),sq=0,lastN=0,lastH=0,lastG=0;
+const send=o=>{const p=JSON.stringify(Object.assign({c:cid,i:cid+(++sq)},o));MQ.forEach(c=>{if(c.connected)c.publish(TOP()+(ME?"g":"h"),p,{qos:1})})};
 const AL="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const btn=(c,f,t)=>`<button class="btn ${c}" onclick="${f}">${t}</button>`;
-function mkRoom(){V="game";ME=0;code=[...Array(5)].map(()=>AL[Math.random()*AL.length|0]).join("");
-G={ph:"lobby",names:[myName||"Ev sahibi",""],sc:[0,0],b:Array(9).fill(null),st:Math.random()<.5?0:1};
-peer=new Peer("pxox-"+code);
-peer.on("error",e=>{if(e.type=="unavailable-id")mkRoom();else{V="home";msg="";alert("Bağlantı xətası. Yenidən cəhd et.");R()}});
-peer.on("connection",c=>{if(conn&&conn.open){c.close();return}conn=c;c.on("data",hd);c.on("close",gone)});R()}
+function link(ok,fail){if(typeof mqtt=="undefined")return fail("Bağlantı kitabxanası yüklənmədi. İnterneti yoxla və səhifəni yenilə.");
+MQ.forEach(c=>{try{c.end(true)}catch(e){}});MQ=[];const T=TOP(),ot=ME?"h":"g";let done=0;
+const t=setTimeout(()=>{if(!done){done=1;MQ.forEach(c=>{try{c.end(true)}catch(e){}});fail("Serverə qoşulmaq alınmadı. İnterneti yoxla.")}},10000);
+BR.forEach(u=>{const c=mqtt.connect(u,{clientId:"px"+cid+Math.random().toString(36).slice(2,5),keepalive:20,connectTimeout:8000,reconnectPeriod:2000});MQ.push(c);
+c.on("connect",()=>c.subscribe(T+ot,{qos:1},e=>{if(!e&&!done){done=1;clearTimeout(t);ok()}}));
+c.on("message",(tp,m)=>{let d;try{d=JSON.parse(m.toString())}catch(x){return}if(!d||seen.has(d.i))return;seen.add(d.i);if(seen.size>800)seen.clear();hd(d)});
+c.on("error",()=>{})})}
+function mkRoom(){V="game";ME=0;lastN=0;code=[...Array(5)].map(()=>AL[Math.random()*AL.length|0]).join("");
+G={ph:"lobby",names:[myName||"Ev sahibi",""],sc:[0,0],b:Array(9).fill(null),st:Math.random()<.5?0:1,wait:1,n:0};H={};R();
+link(()=>{G.wait=0;R()},m=>{G.wait=0;G.err=m;R()})}
 function gone(){G.gone=1;clearInterval(iv);R()}
 function joinRoom(){const c=($("jc").value||"").trim().toUpperCase();if(c.length<5){msg="Kodu tam yaz.";return R()}
-ME=1;code=c;msg="Qoşulur...";R();peer=new Peer();
-peer.on("error",e=>{msg=e.type=="peer-unavailable"?"Otaq tapılmadı. Kodu yoxla.":"Bağlantı xətası.";V="join";R()});
-peer.on("open",()=>{conn=peer.connect("pxox-"+c,{reliable:true});conn.on("open",()=>{V="game";G={ph:"lobby",names:["",myName||"Qonaq"],sc:[0,0],b:[]};send({t:"hi",n:myName||"Qonaq"});R()});conn.on("data",hd);conn.on("close",gone)})}
+ME=1;code=c;lastN=0;H={};msg="Qoşulur...";R();
+const to=setTimeout(()=>{if(V!="game"){MQ.forEach(x=>{try{x.end(true)}catch(e){}});msg="Otaq tapılmadı. Kodu yoxla, otaq sahibi səhifəni açıq saxlamalıdır.";V="join";R()}},20000);
+gt=()=>clearTimeout(to);
+link(()=>{const hi=()=>send({t:"hi",n:myName||"Qonaq"});hi();const h=setInterval(()=>{if(V=="game"||ME!=1)clearInterval(h);else hi()},2000)},m=>{clearTimeout(to);msg=m;V="join";R()})}
 function hd(d){if(!d||typeof d!="object")return;
-if(ME){if(d.t=="st"){G=d.G;S=d.S;clearInterval(iv);if(G.ph=="ask"){END=Date.now()+G.ms;iv=setInterval(tick,200)}R()}}
-else if(d.t=="hi"){G.names[1]=String(d.n).slice(0,14);sync()}else host(d.t,d.x,1)}
-function sync(){if(!ME){G.ms=G.ph=="ask"?Math.max(0,END-Date.now()):0;send({t:"st",G,S})}R()}
+if(ME){if(d.t!="st")return;lastH=Date.now();if(d.n<=lastN)return;lastN=d.n;const k=JSON.stringify([d.G,d.S],(a,v)=>a=="ms"||a=="n"?0:v),nw=V!="game";if(nw){V="game";gt&&gt()}const same=k==H.k;H.k=k;G=d.G;S=d.S;clearInterval(iv);if(G.ph=="ask"){END=Date.now()+G.ms;iv=setInterval(tick,200)}if(!same||nw)R();return}
+if(d.t=="hi"){if(G.gid&&G.gid!=d.c)return;const f=G.gid==d.c;G.gid=d.c;G.names[1]=String(d.n).slice(0,14);lastG=Date.now();f?pub():sync()}
+else if(d.c==G.gid){lastG=Date.now();if(d.t!="ping")host(d.t,d.x,1)}}
+function pub(){if(ME)return;G.ms=G.ph=="ask"?Math.max(0,END-Date.now()):0;G.n=(G.n||0)+1;send({t:"st",n:G.n,G,S})}
+function sync(){pub();R()}
+setInterval(()=>{if(V!="game")return;if(ME)send({t:"ping"});else if(G.gid)pub();const l=ME?lastH:lastG,w=$("wn");if(w)w.style.display=l&&Date.now()-l>12000?"block":"none"},3000);
 function go(t,x){ME?send({t,x}):host(t,x,0)}
 const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 function host(t,x,by){
@@ -322,7 +333,7 @@ else if(t=="pick"){if(G.ph!="pick"||G.act!=by||!G.opts[x]&&G.opts[x]!==0)return;
 else if(t=="ans"){if(G.ph!="ask"||G.act!=by)return;doAns(String(x||""))}}
 function tg(i){if(ME)return;const k=S.sel.indexOf(i);k<0?S.sel.push(i):S.sel.splice(k,1);sync()}
 function cfg(k,v){if(ME)return;S[k]=v;sync()}
-function startGame(){if(ME||!conn||!conn.open||S.sel.length<3||!G.names[1])return;G.sc=[0,0];round()}
+function startGame(){if(ME||!G.gid||S.sel.length<3)return;G.sc=[0,0];round()}
 function round(){if(ME)return;G.b=Array(9).fill(null);G.turn=G.st;G.st=1-G.st;G.ph="idle";G.stl=false;G.w=null;sync()}
 function offer(){G.opts=[...S.sel].sort(()=>Math.random()-.5).slice(0,2);G.ph="pick";sync()}
 function doPick(ti){const t=TP[ti];let p=t.q.filter(x=>!(H.u||(H.u=new Set())).has(x));if(!p.length){t.q.forEach(x=>H.u.delete(x));p=t.q}
@@ -341,19 +352,20 @@ function setup(){const ro=ME?"disabled":"";return `<div class="card"><div class=
 <span class="lb">Oğurlama</span><div class="row"><button class="chip ${S.steal?"on":""}" ${ro} onclick="cfg('steal',true)">Açıq</button><button class="chip ${S.steal?"":"on"}" ${ro} onclick="cfg('steal',false)">Bağlı</button></div>
 <span class="lb">Hər sual üçün vaxt</span><div class="row">${[15,20,25,30].map(t=>`<button class="chip ${S.time==t?"on":""}" ${ro} onclick="cfg('time',${t})">${t} san</button>`).join("")}</div>
 <span class="lb">Mövzular (ən azı 3)</span><div class="row">${TP.map((t,i)=>`<button class="chip ${S.sel.includes(i)?"on":""}" ${ro} onclick="tg(${i})">${t.n}</button>`).join("")}</div></div>`}
-function game(){const b=G.b;let o="",h=`<button class="pill" id="cd" onclick="cpy()" title="Kodu kopyala">Kod: ${code}</button>`;
-const hd=`<div class="hd">${[0,1].map(i=>`<div class="pl p${i} ${G.turn==i&&G.ph!="lobby"&&G.ph!="end"?"act":""}"><span>${NM(i)} (${i?"O":"X"})</span><strong>${G.sc[i]}</strong></div>`).join("")}</div>`;
-if(G.ph=="lobby"){const ready=!ME&&G.names[1]&&S.sel.length>=3&&conn&&conn.open;
+function game(){const b=G.b;let o="",h=G.wait?`<div class="pill">Otaq hazırlanır...</div>`:`<button class="pill" id="cd" onclick="cpy()" title="Kodu kopyala">Kod: ${code}</button>`;
+const hd=`<div class="hd">${[0,1].map(i=>`<div class="pl p${i} ${G.turn==i&&G.ph!="lobby"&&G.ph!="end"?"act":""}"><span>${NM(i)} (${i?"O":"X"})</span><strong>${G.sc[i]}</strong></div>`).join("")}</div><p class="st" id="wn" style="display:none">⚠ Rəqib bağlantısı kəsildi. Gözlənilir...</p>`;
+if(G.ph=="lobby"){const ready=!ME&&G.gid&&S.sel.length>=3;
 return h+hd+`<div class="card"><div class="ct">${ME?"Otaq sahibi başlatmağı gözləyir":G.names[1]?NM(1)+" qoşuldu":"Dostunu gözləyirik"}</div><div class="card-divider"></div><p class="cd">${ME?"Ayarlara bax və gözlə.":G.names[1]?"Ayarları seç və oyunu başlat.":"Yuxarıdakı kodu kopyala və dostuna göndər. O, “Otağa qoş” seçib kodu yazacaq."}</p>${ME?"":`<div class="col">${btn("pk"+(ready?"":" dis"),"startGame()","Başla")}</div>`}</div>`+setup()}
 const mine=G.act==ME;
 if(G.ph=="pick")o=`<div class="card"><div class="ct">${mine?"Mövzunu seç":NM(G.act)+" mövzu seçir"}</div><div class="card-divider"></div>${G.stl?`<p class="cd">${NM(G.act)}, xananı oğurlamaq şansın var.</p>`:""}${mine?`<div class="col">${G.opts.map((t,k)=>btn("",`go('pick',${k})`,TP[t].n)).join("")}</div>`:""}</div>`;
 if(G.ph=="ask")o=`<div class="card"><div class="tm" id="tm"></div><div class="tb"><i id="bar"></i></div><div class="cd" style="margin-top:6px">${TP[G.tp].n} · ${NM(G.act)}</div><div class="q">${E(G.q)}</div>${mine?`<input class="in" id="in" autocomplete="off" placeholder="Cavabı yaz" onkeydown="if(event.key=='Enter')go('ans',this.value)"><div class="col">${btn("pk","go('ans',$('in').value)","Cavab ver")}</div>`:`<p class="cd">${NM(G.act)} cavab yazır...</p>`}</div>`;
 if(G.ph=="fb")o=`<div class="card"><div class="ct">${G.fb.ok?"Düzdür!":"Səhvdir"}</div><div class="card-divider"></div><p class="cd">${G.fb.ok?"Xana "+NM(G.act)+" üçündür.":"Düzgün cavab: <b>"+E(G.fb.a)+"</b>"}</p></div>`;
 if(G.ph=="end")o=`<div class="card"><div class="ct">${G.w==null?"Bərabərlik":NM(G.w)+" qalib gəldi!"}</div><div class="card-divider"></div><p class="cd">Hesab ${G.sc[0]} : ${G.sc[1]}</p>${ME?`<p class="cd">Ev sahibi yeni oyunu başladacaq.</p>`:`<div class="col">${btn("pk","round()","Yenidən oyna")}</div>`}</div>`;
+if(G.err)o=`<div class="card"><div class="ct">Xəta</div><div class="card-divider"></div><p class="cd">${E(G.err)}</p><div class="col">${btn("pk","location.reload()","Yenidən cəhd et")}</div></div>`;
 if(G.gone)o=`<div class="card"><div class="ct">Rəqib otaqdan çıxdı</div><div class="card-divider"></div><div class="col">${btn("pk","location.reload()","Əsas menyu")}</div></div>`;
 return h+hd+`<p class="st">${G.ph=="end"?"Oyun bitdi":"Növbə: "+NM(G.turn)}</p><div class="bd">${b.map((v,i)=>`<button class="c ${v==null?"":"s"+v}" ${v!=null||G.ph!="idle"||G.turn!=ME?"disabled":""} onclick="go('cell',${i})" aria-label="xana ${i+1}">${v==null?"":v?"O":"X"}</button>`).join("")}</div>`+(o?`<div class="ov">${o}</div>`:"")}
 function R(){let h="";
-if(V=="home")h=`<h2 class="section-title">İntellektual XOX</h2><div class="card"><div class="ct">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd">Xananı seç, mövzunu seç, sualı düzgün cavabla və xananı qazan.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="myName=this.value"><div class="col">${btn("pk","mkRoom()","Otaq yarat")}${btn("","V='join';msg='';R()","Otağa qoş")}</div></div>`;
+if(V=="home")h=`<h2 class="section-title">İntellektual XOX</h2><div class="card"><div class="ct">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd">Xananı seç, mövzunu seç, sualı düzgün cavabla və xananı qazan.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="myName=this.value"><div class="col">${btn("pk","tr=0;mkRoom()","Otaq yarat")}${btn("","V='join';msg='';R()","Otağa qoş")}</div></div>`;
 else if(V=="join")h=`<h2 class="section-title">Otağa qoş</h2><div class="card"><div class="ct">Otaq kodunu yaz</div><div class="card-divider"></div><input class="in" id="jc" maxlength="5" placeholder="KOD" style="text-transform:uppercase;letter-spacing:4px;text-align:center" onkeydown="if(event.key=='Enter')joinRoom()"><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="myName=this.value"><p class="cd" style="text-align:center">${E(msg)}</p><div class="col">${btn("pk","joinRoom()","Qoşul")}${btn("","V='home';R()","Geri")}</div></div>`;
 else h=game();
 const keep=V=="join"&&$("jc")?$("jc").value:"";app.innerHTML=h;if(keep&&$("jc"))$("jc").value=keep;
