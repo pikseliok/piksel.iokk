@@ -83,6 +83,12 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
   .pkg-card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
   .pkg-card:hover::before{opacity:1}
 }
+  .pkg-card:active{
+  transform:translateY(0) scale(.97);
+  box-shadow:0 6px 14px rgba(0,20,110,.12);
+  transition-duration:.3s;
+}
+.filter-pill:active,.sort-btn:active{transform:scale(.94)}
 .pkg-icon{width:80px;height:80px;flex:0 0 80px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.15)}
 .pkg-icon img{width:100%;height:100%;object-fit:cover;display:block}
 .pkg-right{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
