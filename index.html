@@ -80,6 +80,11 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
   .card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
   .card:hover::before{opacity:1}
 }
+  .card:active{
+  transform:translateY(0) scale(.97);
+  box-shadow:0 6px 14px rgba(0,20,110,.12);
+  transition-duration:.3s;
+  }
 .card.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.85fr) 2px minmax(0,1.5fr);align-items:center;column-gap:18px;padding:18px 24px}
 
 .card-head{display:flex;align-items:center;gap:14px;min-width:0}
@@ -434,6 +439,14 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add(
 
 /* İlk söz HƏMİŞƏ "Hər şey" olur. */
 setTimeout(()=>{typeWord("Hər şey");firstRun=false;wordIndex=-1;},850);
+  /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
+document.querySelectorAll("a.card").forEach(a=>{
+  a.addEventListener("click",e=>{
+    if(e.ctrlKey||e.metaKey||e.shiftKey) return;
+    e.preventDefault();
+    setTimeout(()=>{location.href=a.href},300);
+  });
+});
 </script>
 </body>
 </html>
