@@ -112,9 +112,11 @@ body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
 .q-text b{font-weight:700}
 .mat-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-top:10px}
 .mat-after{margin-top:12px}
-.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:6px}
-.req-img{width:100%;max-width:240px;border-radius:12px;cursor:pointer;display:block;transform-origin:center center;transition:transform .5s cubic-bezier(.25,1,.5,1),box-shadow .5s ease;will-change:transform;position:relative;z-index:1}
 
+/* REKVİZİT ŞƏKLİ: max hündürlük 40px, çərçivədən dar */
+.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:6px;vertical-align:top}
+.req-img{display:block;width:auto;height:auto;max-height:40px;max-width:100%;border-radius:8px;cursor:pointer;transform-origin:center center;will-change:transform;position:relative;z-index:1}
+.req-img.extra{max-height:none;width:100%;max-width:240px;border-radius:12px}
 
 /* CAVAB PANELİ */
 .ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}
@@ -656,13 +658,13 @@ function renderQuestions(){
     card.id = `q-card-${index}`;
     card.style.setProperty("--i", (firstRender ? 4 : 0) + Math.min(index, 8));
 
+    /* "Rekvizit:" nömrənin yanında (Duplet kimi), şəkil dərhal altında */
     const reqImgHTML = item.reqImg
-      ? `<div class="mat-row"><span class="ans-label">Rekvizit:</span><br>
-          <div class="req-img-wrapper"><img src="${item.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div></div>`
+      ? `<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${item.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`
       : "";
 
     const handoutHTML = item.handout
-      ? `<div class="mat-row"><span class="ans-label">Paylama materialı:</span> ${item.handout}</div>`
+      ? `<div class="mat-row"><b>Paylama materialı:</b> ${item.handout}</div>`
       : "";
 
     const criteriaHTML = item.criteria
@@ -673,14 +675,14 @@ function renderQuestions(){
 
     const extraImageHTML = item.extraImage
       ? `<div class="req-img-wrapper" style="margin-top:8px;margin-bottom:8px;">
-          <img src="${item.extraImage}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>` : "";
+          <img src="${item.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>` : "";
 
     const sourceHTML = item.source
       ? `<div class="ans-row"><span class="ans-label">Mənbə:</span> ${item.source}</div>` : "";
 
     card.innerHTML = `
 
-      <div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${index})" onkeydown="qTextKey(event,${index})">${(reqImgHTML || handoutHTML) ? `<b>${item.id}.</b>${reqImgHTML}${handoutHTML}<div class="mat-after">${item.question}</div>` : `<b>${item.id}.</b> ${item.question}`}</div>
+      <div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${index})" onkeydown="qTextKey(event,${index})">${(reqImgHTML || handoutHTML) ? `<b>${item.id}.</b> ${reqImgHTML}${handoutHTML}<div class="mat-after">${item.question}</div>` : `<b>${item.id}.</b> ${item.question}`}</div>
 
       <div class="ans-panel">
 
@@ -813,6 +815,8 @@ function fallbackCopy(text, onDone){
 
 /* =========================================================
    ŞƏKİL BÖYÜTMƏ
+   - Klikdə şəkil olduğu yerdən ekranın tən mərkəzinə gəlir və ekrana sığacaq qədər böyüyür.
+   - Yenidən klikdə animasiya ilə öz yerinə qayıdır.
 ========================================================= */
 function toggleZoom(imgEl, event){
   event.stopPropagation();
@@ -823,6 +827,7 @@ function toggleZoom(imgEl, event){
   const rect = imgEl.getBoundingClientRect();
   const clone = imgEl.cloneNode(true);
   clone.removeAttribute("onclick");
+  clone.classList.remove("extra");
 
   clone.style.position = "fixed";
   clone.style.top = rect.top + "px";
@@ -831,23 +836,30 @@ function toggleZoom(imgEl, event){
   clone.style.height = rect.height + "px";
   clone.style.margin = "0";
   clone.style.maxWidth = "none";
+  clone.style.maxHeight = "none";
   clone.style.zIndex = "9999";
   clone.style.transformOrigin = "center center";
-  clone.style.transition = "transform .5s cubic-bezier(.25,1,.5,1), box-shadow .5s ease";
-  clone.style.borderRadius = "10px";
+  clone.style.transform = "translate(0px,0px) scale(1)";
+  clone.style.transition = "transform .55s cubic-bezier(.25,1,.5,1), box-shadow .55s ease";
   clone.style.cursor = "pointer";
-  clone.style.filter = "none";
 
+  clone._start = {top:rect.top, left:rect.left};
   clone.onclick = function(e){ e.stopPropagation(); removeZoom(); };
 
   document.body.appendChild(clone);
   imgEl.style.visibility = "hidden";
   document.body.classList.add("img-zoomed");
 
-  requestAnimationFrame(() => {
-    clone.style.transform = "scale(1.2)";
-    clone.style.boxShadow = "0 10px 30px rgba(0,0,0,.25)";
-  });
+  /* ekranın tən mərkəzi + ekran sərhədləri daxilində maksimum ölçü */
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const s = Math.min((vw * 0.92) / rect.width, (vh * 0.86) / rect.height);
+  const dx = vw / 2 - (rect.left + rect.width / 2);
+  const dy = vh / 2 - (rect.top + rect.height / 2);
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    clone.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
+    clone.style.boxShadow = "0 10px 30px rgba(0,0,0,.3)";
+  }));
 
   activeZoomedImg = imgEl;
   activeClone = clone;
@@ -855,14 +867,17 @@ function toggleZoom(imgEl, event){
 
 function removeZoom(){
   if(activeClone){
-    const cloneToRemove = activeClone;
-    const imgToRestore = activeZoomedImg;
-    cloneToRemove.style.transform = "scale(1)";
-    cloneToRemove.style.boxShadow = "none";
+    const c = activeClone, img = activeZoomedImg;
+    /* skroll olubsa belə şəklin indiki yerinə qayıtsın */
+    const now = img.getBoundingClientRect();
+    const dx = now.left - c._start.left;
+    const dy = now.top - c._start.top;
+    c.style.transform = `translate(${dx}px,${dy}px) scale(1)`;
+    c.style.boxShadow = "none";
     setTimeout(() => {
-      cloneToRemove.remove();
-      if(imgToRestore) imgToRestore.style.visibility = "visible";
-    }, 500);
+      c.remove();
+      if(img) img.style.visibility = "visible";
+    }, 550);
     activeClone = null;
   }
   activeZoomedImg = null;
