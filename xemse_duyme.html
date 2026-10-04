@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
 <title>πksel - Xəmsə düymə sistemi</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 <style>
+/* Yazı ölçüləri (komp+planşet / telefon / dar telefon): --t başlıq 24/17/15, --b adi yazı 15/9/8, --c düymə/input 15/11/10.
+   Komanda adı, xal, sıralama və BUZZ düyməsi bu qaydaya daxil deyil. */
 :root{
   --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
   --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
@@ -20,9 +24,11 @@
   --g-pink:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8);
   --g-green:linear-gradient(135deg,#0FCB6E,#0BB55F 55%,#049A52);
   --g-orange:linear-gradient(135deg,#D2603C,#E8692A 55%,#FF6A14);
+  --t:24px;--b:15px;--c:15px;--glow:rgba(0,8,45,.30);
 }
-body.dark{--err:#c4160c}
+body.dark{--err:#c4160c;--glow:rgba(255,255,255,.40)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
 html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
 body{min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;width:100%;display:flex;flex-direction:column;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body.dark{background:var(--dark-bg);color:var(--dark-ink)}
@@ -30,43 +36,71 @@ a{color:inherit;text-decoration:none}
 button,input{font-family:inherit}
 .page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
 
+/* GİRİŞ ANİMASİYASI: əvvəl çərçivə, sonra içindəkilər */
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+.frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.55s}
+.screen.active>.card{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.1s}
+.screen.active>.card>*:not(.kick-overlay){animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.65s}
+
 /* NAV */
-.top-nav{height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition),box-shadow var(--transition)}
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}
 .dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
-.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
 .dark .nav-link{color:var(--dark-ink)}
 .nav-link:hover{transform:translateY(-1px)}
-.theme-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:44px;height:44px;min-width:44px;padding:0;margin:0;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;min-width:38px;padding:0;margin:0;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
 .dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.theme-icon{width:25px;height:25px;display:block}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
 /* PANEL */
-#app{width:100%;max-width:540px;margin:18px auto 40px}
+#app{width:100%;max-width:540px;margin:16px auto 32px}
 .screen{display:none;width:100%}
 .screen.active{display:flex}
-.card{width:100%;min-height:min(72dvh,640px);border-radius:31px;padding:26px 24px 28px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);display:flex;flex-direction:column;overflow:hidden;position:relative;transition:background var(--transition),color var(--transition)}
+.card{width:100%;min-height:min(72dvh,640px);border-radius:28px;padding:22px 24px 24px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);display:flex;flex-direction:column;overflow:hidden;position:relative;transition:background var(--transition),color var(--transition)}
 .dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+/* Maus ətrafında yumşaq rəng dəyişimi */
+.card>*:not(.kick-overlay):not(.dd){position:relative;z-index:1}
+.card::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){.card:hover::before{opacity:1}}
+
+/* Giriş ekranları (ana, otaq yarat, oyunçu girişi): məzmun yuxarıdan başlayır */
+#homeScreen .card,#hostCreateScreen .card,#playerJoinScreen .card{justify-content:flex-start}
+#homeScreen .card>div[style],#hostCreateScreen .card>div[style],#playerJoinScreen .card>div[style]{flex:0 0 auto!important;height:22px}
 
 .brand{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
 .brand-badge{width:42px;height:42px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .brand-badge img{width:100%;height:100%;object-fit:contain;display:block}
-.brand-title{font-size:22px;font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.6px}
-.brand-tagline{font-size:13px;font-weight:500;text-align:center;line-height:1.2;margin-top:2px}
-.subtitle{text-align:center;font-size:12px;font-weight:600;opacity:.8;margin:4px 0 10px}
+.brand-title{font-size:var(--t);font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.7px}
+.brand-tagline{font-size:var(--b);font-weight:500;text-align:center;line-height:1.2;margin-top:2px}
+.subtitle{text-align:center;font-size:var(--b);font-weight:600;opacity:.8;margin:4px 0 10px}
 
-input{width:100%;border:2px solid currentColor;background:rgba(157,195,255,.1);color:inherit;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:500;outline:none;margin-bottom:10px;transition:background .25s ease}
+input{width:100%;border:2px solid currentColor;background:rgba(157,195,255,.1);color:inherit;border-radius:999px;padding:10px 18px;font-size:var(--c);font-weight:500;outline:none;margin-bottom:10px;transition:background .25s ease}
 .dark input{background:rgba(0,7,44,.08)}
 input::placeholder{color:inherit;opacity:.55}
 input:focus{background:rgba(157,195,255,.2)}
 .dark input:focus{background:rgba(0,7,44,.15)}
 
-button{width:100%;border:2px solid transparent;border-radius:999px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;color:var(--deep);background:var(--ink);white-space:normal;line-height:1.25;transition:transform .25s ease,opacity .25s ease,background .25s ease}
+button{width:100%;border:2px solid transparent;border-radius:999px;padding:10px;font-size:var(--c);font-weight:700;cursor:pointer;margin-top:8px;color:var(--deep);background:var(--ink);white-space:normal;line-height:1.25;transition:transform .25s ease,opacity .25s ease,background .25s ease}
 .dark button{color:var(--dark-light);background:var(--dark-ink)}
 button:hover{transform:translateY(-2px)}
 button:active{transform:scale(.97)}
+/* Basılma effekti 0.2 san (BUZZ düyməsi, çıxarma (x) və info düymələri istisna) */
+.card button:not(.big-buzz):not(.kick-btn):not(.info-btn):not(:disabled):active{transform:scale(.96);transition-duration:.2s}
 button.secondary{background:transparent;border:2px solid currentColor}
 .card button.secondary{color:var(--ink)}
 .dark .card button.secondary{color:var(--dark-ink)}
@@ -75,7 +109,7 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 
 .room-code{text-align:center;font-size:26px;font-weight:800;letter-spacing:1px;margin:4px 0 6px;cursor:pointer;user-select:none;-webkit-user-select:none}
 
-/* KOMANDALAR */
+/* KOMANDALAR (dəyişməyib) */
 .teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
 .team{border-radius:22px;padding:10px 8px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;transition:opacity .3s ease}
 .team.blue,.rank-row.blue,.big-buzz.blue{background:var(--g-blue)}
@@ -91,7 +125,7 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 .kick-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:60;background:rgba(0,7,44,0);pointer-events:none}
 .kick-modal{opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;box-shadow:0 17px 35px rgba(0,20,110,.3)}
 .dark .kick-modal{background:var(--dark-bg);color:var(--dark-light)}
-.kick-modal-text{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:14px;word-break:break-word;letter-spacing:-.2px}
+.kick-modal-text{font-size:var(--c);font-weight:700;line-height:1.35;margin-bottom:14px;word-break:break-word;letter-spacing:-.2px}
 .kick-modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .kick-modal-buttons button{margin-top:0}
 .kick-modal-buttons button.yes{background:var(--deep);color:var(--dark-light)}
@@ -102,13 +136,13 @@ button:focus-visible,input:focus-visible,.nav-link:focus-visible,.footer-link:fo
 /* RAUND SEÇİMİ */
 .dd{position:relative;z-index:100;margin-top:2px}
 .dd-menu{isolation:isolate}
-button.dd-btn{position:relative;background:rgba(157,195,255,.1);color:var(--ink);border:2px solid currentColor;margin-top:0;padding:10px 40px;font-size:clamp(16px,5vw,21px);font-weight:700}
+button.dd-btn{position:relative;background:rgba(157,195,255,.1);color:var(--ink);border:2px solid currentColor;margin-top:0;padding:10px 40px;font-size:var(--c);font-weight:700}
 .dark button.dd-btn{background:rgba(0,7,44,.08);color:var(--dark-ink)}
 button.dd-btn i{position:absolute;right:22px;top:50%;transform:translateY(-58%);font-style:normal;transition:transform .3s ease}
 .dd.open button.dd-btn i{transform:translateY(-42%) rotate(180deg)}
 .dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:101;background:var(--dark-light);color:var(--deep);border-radius:22px;padding:6px;box-shadow:0 12px 28px rgba(0,20,110,.3)}
 .dark .dd-menu{background:var(--dark-bg);color:var(--dark-light)}
-button.dd-item{background:transparent;color:inherit;margin:0;padding:11px;border-radius:16px;font-size:14px}
+button.dd-item{background:transparent;color:inherit;margin:0;padding:10px;border-radius:16px;font-size:var(--c)}
 .dark button.dd-item{background:transparent;color:inherit}
 button.dd-item.on{background:rgba(0,30,111,.14)}
 .dark button.dd-item.on{background:rgba(157,195,255,.18)}
@@ -122,7 +156,7 @@ button.val-btn.on{background:var(--ink);color:var(--deep);border-color:transpare
 
 /* SIRALAMA */
 .rank{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px;min-height:60px}
-.rank-empty{text-align:center;font-size:12px;font-weight:500;opacity:.75;padding:14px 0}
+.rank-empty{text-align:center;font-size:var(--b);font-weight:500;opacity:.75;padding:14px 0}
 .rank-row{display:flex;align-items:center;gap:6px;border:2px solid currentColor;border-radius:999px;padding:3px 4px 3px 16px;min-height:46px;transition:opacity .25s ease}
 .rank-row.in{animation:rowIn .25s ease both}
 .rank-row.out{animation:rowOut .3s ease forwards}
@@ -135,9 +169,9 @@ button.val-btn.on{background:var(--ink);color:var(--deep);border-color:transpare
 button.rk-btn{width:40px;min-width:40px;height:34px;margin:0;padding:0;border-radius:13px;font-size:22px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center}
 button.rk-btn:hover{transform:none}
 
-/* BUZZ */
-.question-value{text-align:center;font-size:12px;font-weight:500;opacity:.9;margin-bottom:10px}
-.question-value strong{font-size:17px;font-weight:700}
+/* BUZZ (dəyişməyib) */
+.question-value{text-align:center;font-size:var(--b);font-weight:500;opacity:.9;margin-bottom:10px}
+.question-value strong{font-size:var(--c);font-weight:700}
 .big-buzz{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(90px,18vh,140px);border-radius:30px;margin:0 0 10px;font-weight:800;border:0;padding:8px;overflow:hidden;flex:1;color:#F5F7FA;touch-action:manipulation}
 .big-buzz:hover{transform:none}
 .big-buzz:active{transform:scale(.97)}
@@ -148,14 +182,14 @@ button.rk-btn:hover{transform:none}
 .bl-big{display:block;width:100%;text-align:center;line-height:1.05;font-size:clamp(30px,10vh,58px)}
 .bl-sm{display:block;width:100%;text-align:center;line-height:1.15;font-size:clamp(12px,3.6vw,17px);margin-top:2px}
 
-.info{text-align:center;font-size:11px;font-weight:500;opacity:.85;margin-top:6px;line-height:1.3}
+.info{text-align:center;font-size:var(--b);font-weight:500;opacity:.85;margin-top:6px;line-height:1.3}
 .hidden{display:none!important}
-.error{color:var(--err);text-align:center;margin-top:8px;font-size:12px;font-weight:600}
-.connection{text-align:center;font-size:10px;margin-top:6px;font-weight:600;opacity:.8}
+.error{color:var(--err);text-align:center;margin-top:8px;font-size:var(--b);font-weight:600}
+.connection{text-align:center;font-size:var(--b);margin-top:6px;font-weight:600;opacity:.8}
 .connection.off{color:var(--err);opacity:1}
 
 .mode-select{display:flex;flex-direction:column;gap:8px;margin:8px 0 6px}
-.mode-option{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
+.mode-option{display:flex;align-items:center;gap:8px;font-size:var(--c);font-weight:600;cursor:pointer}
 .mode-option input[type="radio"]{width:16px;height:16px;margin:0;padding:0;flex-shrink:0;accent-color:var(--ink);background:none;border-radius:50%}
 .dark .mode-option input[type="radio"]{accent-color:var(--dark-ink)}
 .mode-option span{flex:1}
@@ -163,58 +197,64 @@ button.info-btn{width:22px;height:22px;min-width:22px;padding:0;margin:0;border-
 .card button.info-btn{color:var(--ink)}
 .dark .card button.info-btn{color:var(--dark-ink)}
 button.info-btn:hover{transform:none}
-.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.4;margin-top:4px}
+.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:var(--b);font-weight:500;line-height:1.4;margin-top:4px}
 .dark .info-bubble{background:var(--dark-bg);color:var(--dark-light)}
 
-footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:170px;padding:27px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;transition:background var(--transition),color var(--transition)}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
-.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-width:700px){
+  :root{--t:17px;--b:9px;--c:11px}
   .page{width:calc(100vw - 44px);padding-top:11px}
-  .top-nav{height:52px;padding-left:18px;padding-right:60px}
-  .nav-links{gap:34px}.nav-link{font-size:15px}
-  .theme-toggle{width:39px;height:39px;min-width:39px;right:8px}.theme-icon{width:22px;height:22px}
-  #app{margin-top:16px}
-  .card{border-radius:29px;padding:22px 18px 24px}
-  footer{min-height:185px;padding-left:12px;padding-right:12px}.footer-line{font-size:14px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}.nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;min-width:34px;right:6px}.theme-icon{width:21px;height:21px}
+  #app{margin-top:12px}
+  .card{border-radius:22px;padding:18px 16px 20px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}
 }
 @media (max-width:420px){
+  :root{--t:15px;--b:8px;--c:10px}
   .page{width:calc(100vw - 36px)}
-  .nav-links{gap:25px}.nav-link{font-size:13px}.top-nav{height:48px}
-  .theme-toggle{width:36px;height:36px;min-width:36px;right:6px}.theme-icon{width:20px;height:20px}
-  .card{padding:20px 14px 22px}
+  .nav-links{gap:22px}.nav-link{font-size:11px}.top-nav{height:42px;padding:0 42px}
+  .theme-toggle{width:32px;height:32px;min-width:32px;right:5px}.theme-icon{width:20px;height:20px}
+  .card{padding:16px 14px 18px}
+  footer{min-height:88px}.footer-line{font-size:11px}
 }
-@media(max-height:680px){.brand-badge{width:34px;height:34px;margin-bottom:5px}.brand-title{font-size:18px}}
-
-/* AÇILIŞ ANİMASİYASI */
-@keyframes pageFadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.page>*,.screen.active>.card>*{animation:pageFadeUp .65s cubic-bezier(.22,.8,.25,1) both}
-.top-nav{animation-delay:.05s}
-.screen.active>.card>*:nth-child(1){animation-delay:.10s}
-.screen.active>.card>*:nth-child(2){animation-delay:.16s}
-.screen.active>.card>*:nth-child(3){animation-delay:.22s}
-.screen.active>.card>*:nth-child(4){animation-delay:.28s}
-.screen.active>.card>*:nth-child(5){animation-delay:.34s}
-.screen.active>.card>*:nth-child(6){animation-delay:.40s}
-.screen.active>.card>*:nth-child(7){animation-delay:.46s}
-.screen.active>.card>*:nth-child(8){animation-delay:.52s}
-.screen.active>.card>*:nth-child(9){animation-delay:.58s}
-.screen.active>.card>*:nth-child(10){animation-delay:.64s}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}.page>*,.screen.active>.card>*{animation:none!important}}
+@media(max-height:680px){.brand-badge{width:34px;height:34px;margin-bottom:5px}}
 </style>
 </head>
 <body>
 <div class="page">
-<nav class="top-nav" aria-label="Əsas naviqasiya">
-  <div class="nav-links">
+<nav class="top-nav frame" aria-label="Əsas naviqasiya">
+  <div class="nav-links rise">
     <a class="nav-link" href="index.html">Əsas Səhifə</a>
     <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
   </div>
   <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
-    <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+    <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
+      <defs>
+        <mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+          <rect width="32" height="32" fill="#fff"/>
+          <circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/>
+        </mask>
+      </defs>
+      <g class="rays">
+        <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+      </g>
+      <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+    </svg>
   </button>
 </nav>
 <main>
@@ -224,7 +264,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 <div id="homeScreen" class="screen active">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Xəmsə düymə sistemi</div>
       <div class="brand-tagline">πksel</div>
     </div>
@@ -238,7 +278,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 <div id="hostCreateScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Xəmsə düymə sistemi</div>
       <div class="brand-tagline">πksel</div>
     </div>
@@ -295,7 +335,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 <div id="playerJoinScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Xəmsə düymə sistemi</div>
       <div class="brand-tagline">πksel</div>
     </div>
@@ -324,23 +364,49 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 </main>
 </div>
 <footer>
-  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
   <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
   <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
 <script>
-/* TEMA */
-const themeToggle=document.getElementById("themeToggle"),themeIcon=document.getElementById("themeIcon");
-function sunIcon(){return `<circle cx="16" cy="16" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M16 2.7v3"/><path d="M16 26.3v3"/><path d="m2.7 16 3 0"/><path d="m26.3 16-3 0"/><path d="m6.6 6.6 2.1 2.1"/><path d="m23.3 23.3 2.1 2.1"/><path d="m25.4 6.6-2.1 2.1"/><path d="m8.7 23.3-2.1 2.1"/></g>`}
-function moonIcon(){return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`}
-function updateThemeIcon(){const d=document.body.classList.contains("dark");themeIcon.innerHTML=d?moonIcon():sunIcon();themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç")}
-function setTheme(d){document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}updateThemeIcon()}
-function initTheme(){let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}
-  if(s==="dark")return setTheme(true);if(s==="light")return setTheme(false);
-  setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)}
-themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
+/* TEMA — gün / ay animasiyası */
+const themeToggle=document.getElementById("themeToggle");
+const rays=[...document.querySelectorAll(".ray")];
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark
+      ?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]
+      :[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish=()=>a.cancel();
+  });
+}
+function setTheme(d,anim){
+  document.body.classList.toggle("dark",d);
+  try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}
+  themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  if(anim)animateRays(d);
+}
+function initTheme(){
+  let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}
+  if(s==="dark")return setTheme(true,false);
+  if(s==="light")return setTheme(false,false);
+  setTheme(!!(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches),false);
+}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
 initTheme();
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+
+/* Maus işığı */
+document.addEventListener("pointermove",e=>{
+  const c=e.target.closest(".card");
+  if(!c)return;
+  const r=c.getBoundingClientRect();
+  c.style.setProperty("--mx",(e.clientX-r.left)+"px");
+  c.style.setProperty("--my",(e.clientY-r.top)+"px");
+});
 
 /* FIREBASE (breyn rinqlə eyni layihə, otaqlar ayrı "rooms4" qovluğundadır) */
 const firebaseConfig={
