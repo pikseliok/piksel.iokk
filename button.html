@@ -101,6 +101,10 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){.card:hover::before{opacity:1}}
 
+/* Giriş ekranları (ana, otaq yarat, oyunçu girişi): məzmun çərçivənin ortasında, düymələr aşağıda qalmır */
+#homeScreen .card,#hostCreateScreen .card,#playerJoinScreen .card{justify-content:center}
+#homeScreen .card>div[style],#hostCreateScreen .card>div[style],#playerJoinScreen .card>div[style]{flex:0 0 auto!important;height:22px}
+
 /* BREND */
 .brand{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
 .brand-badge{width:42px;height:42px;border-radius:0;background:none;border:0;display:flex;align-items:center;justify-content:center;overflow:visible;margin-bottom:8px}
@@ -305,7 +309,7 @@ footer{
 <div id="homeScreen" class="screen active">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
@@ -319,7 +323,7 @@ footer{
 <div id="hostCreateScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
@@ -375,9 +379,9 @@ footer{
 </div>
 
 <div class="host-controls">
-  <div class="subtitle">πksel İntellektual Oyunlar Platforması</div>
+  <div class="subtitle">πksel.iok</div>
 
-  <button id="startBtn" onclick="hostStart()"> VAXT! - 20 SANİYƏ</button>
+  <button id="startBtn" onclick="hostStart()">▶ VAXT! — 20 SANİYƏ</button>
   <button id="resetBtn" class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
 
   <div id="answerControls" class="hidden">
@@ -402,7 +406,7 @@ footer{
 
 <div style="flex:1"></div>
 
-<div class="connection" id="hostConnection">● Canlı bağlantı</div>
+<div class="connection" id="hostConnection">● Firebase bağlantısı</div>
 
 <div class="info">
   OTAQ KODU
@@ -413,8 +417,8 @@ footer{
   <div class="kick-modal" id="kickModal">
     <div class="kick-modal-text" id="kickModalText"></div>
     <div class="kick-modal-buttons">
-      <button class="green" onclick="kickConfirm(true)">Bəli</button>
-      <button class="red" onclick="kickConfirm(false)">Xeyr</button>
+      <button class="green" onclick="kickConfirm(true)">BƏLİ</button>
+      <button class="red" onclick="kickConfirm(false)">XEYR</button>
     </div>
   </div>
 </div>
@@ -426,7 +430,7 @@ footer{
 <div id="playerJoinScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
@@ -469,7 +473,7 @@ footer{
   </div>
 </div>
 
-<div class="connection" id="playerConnection">● Canlı bağlantı</div>
+<div class="connection" id="playerConnection">● Firebase bağlantısı</div>
 
   </div>
 </div>
@@ -2014,7 +2018,7 @@ function setConnection(online){
 
   if(online){
     el.className = "connection";
-    el.textContent = "● Canlı bağlantı aktivdir";
+    el.textContent = "● Firebase bağlantısı aktivdir";
   }else{
     el.className = "connection off";
     el.textContent = "○ Xətli/Oflayn (Yenidən qoşulur...)";
