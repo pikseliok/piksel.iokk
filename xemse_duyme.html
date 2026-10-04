@@ -265,8 +265,8 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   <div class="card">
     <div class="brand">
       <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
-      <div class="brand-title">Xəmsə düymə sistemi</div>
-      <div class="brand-tagline">πksel</div>
+      <div class="brand-title">Xəmsə </div>
+      <div class="brand-tagline">Düymə sistemi</div>
     </div>
     <div style="flex:1"></div>
     <button onclick="showScreen('hostCreateScreen')">APARICI</button>
@@ -279,8 +279,8 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   <div class="card">
     <div class="brand">
       <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
-      <div class="brand-title">Xəmsə düymə sistemi</div>
-      <div class="brand-tagline">πksel</div>
+      <div class="brand-title">Xəmsə</div>
+      <div class="brand-tagline">Düymə sistemi</div>
     </div>
     <div class="subtitle">APARICI PANELİ:</div>
     <input id="hostName" placeholder="Aparıcının adı">
@@ -317,7 +317,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
     <div id="hostRank" class="rank"></div>
     <div style="flex:1"></div>
     <button class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
-    <div class="connection" id="hostConnection">● Firebase bağlantısı</div>
+    <div class="connection" id="hostConnection">● Canlı bağlantı</div>
     <div class="info">OTAQ KODU<div id="hostRoomCode" class="room-code" onclick="copyRoomCode()">------</div></div>
     <div id="kickOverlay" class="kick-overlay">
       <div class="kick-modal" id="kickModal">
@@ -336,8 +336,8 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   <div class="card">
     <div class="brand">
       <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
-      <div class="brand-title">Xəmsə düymə sistemi</div>
-      <div class="brand-tagline">πksel</div>
+      <div class="brand-title">Xəmsə</div>
+      <div class="brand-tagline">Düymə sistemi</div>
     </div>
     <div class="subtitle">OYUNÇU GİRİŞİ</div>
     <input id="roomInput" maxlength="6" placeholder="6 simvollu otaq kodu">
@@ -356,7 +356,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
     <button id="buzzButton" class="big-buzz" onpointerdown="playerBuzz(event)"><span class="bl-big">BAS!</span></button>
     <div id="playerTeams" class="teams"></div>
     <div id="playerRank" class="rank"></div>
-    <div class="connection" id="playerConnection">● Firebase bağlantısı</div>
+    <div class="connection" id="playerConnection">● Canlı bağlantı</div>
   </div>
 </div>
 
@@ -741,7 +741,7 @@ async function kickConfirm(yes){
 /* BAĞLANTI */
 function setConnection(on){
   const e=el(role==="host"?"hostConnection":"playerConnection");if(!e)return;
-  if(on){e.className="connection";e.textContent="● Firebase bağlantısı aktivdir"}
+  if(on){e.className="connection";e.textContent="● Canlı bağlantı aktivdir"}
   else{e.className="connection off";e.textContent="○ Xətli/Oflayn (Yenidən qoşulur...)"}
 }
 window.addEventListener("beforeunload",()=>{
