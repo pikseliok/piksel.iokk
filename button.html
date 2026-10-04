@@ -101,8 +101,8 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){.card:hover::before{opacity:1}}
 
-/* Giriş ekranları (ana, otaq yarat, oyunçu girişi): məzmun çərçivənin ortasında, düymələr aşağıda qalmır */
-#homeScreen .card,#hostCreateScreen .card,#playerJoinScreen .card{justify-content:center}
+/* Giriş ekranları (ana, otaq yarat, oyunçu girişi): məzmun yuxarıdan başlayır, düymələr aşağıda qalmır */
+#homeScreen .card,#hostCreateScreen .card,#playerJoinScreen .card{justify-content:flex-start}
 #homeScreen .card>div[style],#hostCreateScreen .card>div[style],#playerJoinScreen .card>div[style]{flex:0 0 auto!important;height:22px}
 
 /* BREND */
@@ -309,7 +309,7 @@ footer{
 <div id="homeScreen" class="screen active">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
@@ -323,7 +323,7 @@ footer{
 <div id="hostCreateScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
@@ -430,7 +430,7 @@ footer{
 <div id="playerJoinScreen" class="screen">
   <div class="card">
     <div class="brand">
-      <div class="brand-badge"><img src="https://cdn.phototourl.com/free/2026-09-12-5cd972af-3038-4dcd-bfc0-6eed5dc73855.png" alt="πksel"></div>
+      <div class="brand-badge"><img src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" alt="πksel"></div>
       <div class="brand-title">Breyn Rinq</div>
       <div class="brand-tagline">düymə sistemi</div>
     </div>
