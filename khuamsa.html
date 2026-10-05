@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel.iok - "Khuamsa" turniri</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+/* Ölçülər (komp+planşet / telefon / dar telefon):
+   --pt turnir və raund adı 25/19/16 · --pi məlumatlar 18/16/14 · --pr turlar 17/15/13 · --pq sual/cavab mətnləri 18/16/13 */
+:root{
+  --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
+  --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
+  --mode-bg-light:linear-gradient(135deg,#9DC3FF 0%,#8DB8F5 50%,#9DC3FF 100%);
+  --mode-bg-dark:linear-gradient(135deg,#00072C 0%,#001044 50%,#00072C 100%);
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --glow:rgba(0,8,45,.30);
+  --pt:25px;--pi:18px;--pr:17px;--pq:18px;
+}
+body.dark{--glow:rgba(255,255,255,.40)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
+html{scroll-behavior:smooth}
+html,body{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+
+/* GİRİŞ ANİMASİYASI: əvvəl çərçivə, sonra içindəkilər */
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+.round-title.rise{animation-delay:var(--d)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+
+/* Maus ətrafında yumşaq rəng dəyişimi */
+.glow{position:relative;overflow:hidden}
+.glow>*{position:relative;z-index:1}
+.glow::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){.glow:hover::before{opacity:1}}
+
+/* NAVIGATION */
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+
+/* MAIN */
+.main-container{width:100%;display:flex;flex-direction:column;gap:14px;position:relative;margin-top:14px;padding-bottom:44px}
+.blur-content{display:flex;flex-direction:column;gap:14px}
+
+/* KARTLAR */
+.info-card,.tours-card,.q-card{width:100%;border-radius:28px;padding:20px 22px;
+  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);
+  box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;
+  transition:background var(--transition),color var(--transition)}
+.dark .info-card,.dark .tours-card,.dark .q-card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+
+/* INFO */
+.game-title{font-size:var(--pt);font-weight:700;line-height:1.15;letter-spacing:-.7px;margin-bottom:14px}
+.info-row{font-size:var(--pi);line-height:1.5;margin-bottom:6px;font-weight:400}
+.info-row:last-child{margin-bottom:0}
+.info-label{font-weight:700}
+.info-val{font-weight:400}
+.tours-head{font-size:var(--pi);font-weight:700;margin-bottom:12px}
+
+/* TURLAR */
+.tour-buttons{display:flex;flex-direction:column;gap:8px}
+.tour-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:11px 16px;border-radius:16px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:left;
+  transition:background .35s ease,color .35s ease,border .35s ease,transform .25s ease,box-shadow .25s ease}
+.dark .tour-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.10)}
+.tour-btn.active{background:var(--mode-bg-light);color:var(--deep);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(0,30,111,.08),0 5px 14px rgba(0,20,100,.08)}
+.dark .tour-btn.active{background:var(--mode-bg-dark);color:var(--dark-light);border-color:rgba(157,195,255,.12);box-shadow:inset 0 0 0 1px rgba(157,195,255,.08),0 5px 14px rgba(0,0,0,.16)}
+.tour-btn:active,.global-toggle-btn:active{transform:scale(.96);transition-duration:.3s}
+
+/* BÜTÜN CAVABLAR */
+.global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:12px 16px;border-radius:20px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.10);
+  transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease}
+.dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}
+
+/* SUALLAR */
+.questions-container{display:flex;flex-direction:column;gap:14px}
+.round-title{font-size:var(--pt);font-weight:700;color:var(--dark-ink);line-height:1.2;letter-spacing:-.7px;margin:4px 0 0}
+.dark .round-title{color:var(--ink)}
+.topic-title{font-size:var(--pq);font-weight:700;line-height:1.3;letter-spacing:-.3px;margin-bottom:12px}
+.q-item{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.22)}
+.dark .q-item{border-bottom:1px solid rgba(0,7,44,.18)}
+.q-item:last-of-type{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.q-text{font-size:var(--pq);font-weight:400;line-height:1.55;cursor:pointer}
+.q-text b{font-weight:700}
+
+/* CAVAB PANELİ — sualın üzərinə basanda aşağıdan açılır */
+.ans-panel{max-height:0;overflow:hidden;opacity:0;margin-top:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease}
+.q-item.active .ans-panel{max-height:3000px;opacity:1;margin-top:10px}
+.ans-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:6px}
+.ans-row:last-child{margin-bottom:0}
+.ans-label{font-weight:700}
+
+/* MÜƏLLİF + BƏYƏN + KOPYALA (mövzu üçün) */
+.topic-author{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.22);font-size:var(--pq);font-weight:400;line-height:1.55}
+.dark .topic-author{border-top:1px solid rgba(0,7,44,.18)}
+.author-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.act-group{flex:0 0 auto;display:flex;align-items:flex-start;gap:8px}
+.like-wrap{display:flex;flex-direction:column;align-items:center}
+.like-btn,.copy-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease}
+.dark .like-btn,.dark .copy-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
+.like-btn:hover,.copy-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.28)}
+.dark .like-btn:hover,.dark .copy-btn:hover{background:rgba(0,7,44,.2)}
+.like-btn:active,.copy-btn:active{transform:scale(.9);transition-duration:.3s}
+.copy-btn.copied{background:var(--mode-bg-light);color:var(--deep)}
+.dark .copy-btn.copied{background:var(--mode-bg-dark);color:var(--dark-light)}
+.copy-icon{width:16px;height:16px;display:block}
+.copy-icon .check-path{display:none}
+.copy-btn.copied .copy-icon .clip-path{display:none}
+.copy-btn.copied .copy-icon .check-path{display:block}
+.like-icon{width:18px;height:18px;display:block;overflow:visible}
+.like-icon .outline{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.like-icon .fill{fill:currentColor;transform:scale(0);transform-origin:12px 12.5px;transition:transform .3s ease-in}
+.like-btn.liked .fill{transform:scale(1);transition:transform .42s cubic-bezier(.34,1.56,.64,1)}
+.like-count{display:block;text-align:center;font-size:12px;font-weight:700;line-height:1;margin-top:4px;min-width:20px}
+
+/* FOOTER */
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+.q-text:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.like-btn:focus-visible,.copy-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* TELEFON */
+@media (max-width:700px){
+  :root{--pt:19px;--pi:16px;--pr:15px;--pq:16px}
+  .page{width:calc(100vw - 44px);padding-top:11px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;right:6px}
+  .theme-icon{width:21px;height:21px}
+  .main-container,.blur-content,.questions-container{gap:10px}
+  .main-container{margin-top:12px}
+  .info-card,.tours-card,.q-card{border-radius:22px;padding:16px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}
+  .footer-line{font-size:13px}
+}
+/* DAR TELEFON */
+@media (max-width:420px){
+  :root{--pt:16px;--pi:14px;--pr:13px;--pq:13px}
+  .page{width:calc(100vw - 36px)}
+  .nav-links{gap:22px}
+  .nav-link{font-size:11px}
+  .top-nav{height:42px;padding:0 42px}
+  .theme-toggle{width:32px;height:32px;right:5px}
+  .theme-icon{width:20px;height:20px}
+  .info-card,.tours-card,.q-card{padding:14px}
+  footer{min-height:88px}
+  .footer-line{font-size:11px}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+    <div class="nav-links rise">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link active" href="packages.html">Sual Paketləri</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+            <rect width="32" height="32" fill="#fff"/>
+            <circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g class="rays">
+          <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        </g>
+        <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="main-container" id="mainContainer">
+    <div class="blur-content">
+
+      <div class="info-card glow frame" style="--i:1">
+        <div class="game-title rise">"Khuamsa" turniri - XƏMSƏ</div>
+        <div class="info-row rise"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Kuantum İntellektual Oyunlar Klubu</span></div>
+        <div class="info-row rise"><span class="info-label">Redaktor:</span> <span class="info-val"> Hacızadə Nihad</span></div>
+        <div class="info-row rise"><span class="info-label">Müəllif(lər):</span> <span class="info-val"> İbrahimli Şükran,Nəhmətli Adil, Heydərli Hüseyn, Hacızadə Nihad, Nəhmətli Turqut, Cəfərov Saday, Həsənli Şehra, Şükürov Tərlan</span></div>
+        <div class="info-row rise"><span class="info-label">Oynanıldığı tarix:</span> <span class="info-val">24.01.2026</span></div>
+        <div class="info-row rise"><span class="info-label">Əlavə edildiyi tarix:</span> <span class="info-val">04.10.2026</span></div>
+      </div>
+
+      <div class="tours-card glow frame" style="--i:2">
+        <div class="tours-head rise">Tur seçimi</div>
+        <div class="tour-buttons rise" id="tourButtons"></div>
+      </div>
+
+      <button class="global-toggle-btn frame" style="--i:3" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
+
+      <div class="questions-container" id="questionsContainer"></div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+/* Turnirin unikal adı (bəyənmələr bu ada görə saxlanılır) */
+const PKG_ID = "khuamsa";
+
+const A = (q,a,c="") => ({q,a,c});
+
+const toursData = [
+
+/* =========================================================
+   SEÇİM TURU
+========================================================= */
+{
+name:"Seçim turu",
+ rounds:[
+ {
+ name:"",
+ topics:[
+ {
+  name:`Rik və Morti sitkomundan elmi-fantastik filmlərə allüziyalar`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Mövzumuza başlayırıq. Epizodların birində Rik xüsusi bir texnologiyadan istifadə edərək Mortinin müəlliminin yuxularına sızır. Siz isə bu zaman 2010-cu ilə aid hansı filmə göndərmə edildiyini tapın.`,`İnception`),
+   A(`Rik, Morti və Summer'ı telefon şarj cihazını icazəsiz istifadə etdikləri üçün bir simulyasiyaya salır. Bəs bu zaman 1999-cu ilin hansı filminin atmosferinin yarandığını tapın.`,`The Matrix`),
+   A(`Rik qocalmış dahi ixtiraçı, onun gənc dostu Morti isə məktəblidir. Maraqlıdır ki, onlar arasındakı tərəfdaşlıq 1985-ci ilin bu filminin mövzusu ilə bənzərlik təşkil edir.`,`Back to the Future`),
+   A(`"Promortyus" bölümündə Rik və Morti onlara yapışan və zehinlərini idarə edən kosmik varlıqlarla qarşılaşırlar. Bu bölümdə ilk filmi 1979-cu ildə ekranlara çıxmış hansı franşizaya allüziya edilir?`,`Alien`),
+   A(`Bölümlərin birində Rik, Morti və Summer'i hər tərəfi səhralıqla əhatələnmiş post-apokaliptik bir yerə aparır. Onlar orada yanacaq sızdıran döyüşçülərlə qarşılaşır və yüksək sürətli avtomobillərlə hərəkət edərək əylənirlər. Siz isə 2015-ci ilə aid hansı filmə göndərmə edildiyini tapın.`,`Mad Max: Fury Road`,`Sayılır: Mad Max`)
+  ]
+ },
+ {
+  name:`Avroviziya qalibi olmuş mahnılar`,
+  author:`Adil Nəhmətli`,
+  questions:[
+   A(`2005-ci ildə Avroviziya müsabiqəsinin 50 illiyi qeyd edilərkən 19-cu müsabiqədə İsveçi təmsil etmiş bu mahnı yarışma tarixinin ən yaxşısı seçilmişdi.`,`"Vaterloo"`),
+   A(`Bu mahnının nəqəratı müğənninin uşaq olarkən nənəsindən eşitdiyi xalq musiqisi əsasında Krım tatarlarının dilində yazılmışdı.`,`1944`,`Ukraynalı Jamalanın 2016-cı ildə qalib olduğu mahnı Stalin rejimi tərəfindən zülmə məruz qalan Krım tatarlarına həsr edilib.`),
+   A(`1958-ci ildə Fransaya müsabiqədəki ilk qələbəsini qazandıran "yat, sevgilim" adlı mahnı dövrün kritikləri tərəfindən romantik ALFA adlandırılmışdı. ALFA ilə əvəz olunanı deyin.`,`Layla`,`Mahnının adı əsas ipucudur.`),
+   A(`Məqalələrdən birində Estoniyanın 2001-ci ildəki qələbəsindən sonra onların BUNU sanki ikinci dəfə məhv etdikləri yazılıb. BUNU iki sözlə deyin.`,`Dəmir pərdə`,`Dəmir pərdənin dağılmasından sonra 1994-cü ildə ilk dəfə müsabiqəyə qatılan Estoniya 2001-ci ildə qalib olmağı da bacardı.`),
+   A(`Turində qalib olmuş bu mahnının ifası zamanı sopilka və telenkanı eşitmək olar.`,`Stefania`,`Sopilka və telenka Ukrayna musiqi alətləridir. 2022-ci ildə Turində Ukraynanı təmsil edən "Stefania" mahnısı qalib olmuşdu.`)
+  ]
+ },
+ {
+  name:`İnsialları A.R`,
+  author:`Hüseyn Heydərli, Nihad Hacızadə`,
+  questions:[
+   A(`Qroningenin bölgəsində anadan olan onun ləqəblərindən biri "glassman"dir.`,`Arjen Robben`,`Futbolçu karyerası boyunca çox zədəyə meyilli idi.`),
+   A(`Belarusiyada anadan olan bu şəxs 5 yaşından bəri musiqi alətində ifa edə bilir. Sözsüz ki, 2009-cu ildə karyerasının zirvə anını yaşayıb.`,`Alexander Rybak`),
+   A(`Tarixçi Serj Zenkovski bu rəssam haqqında yazırdı ki, "O, XIV əsrin sonu və XV əsrin əvvəllərində Rusiyanın mənəvi və mədəni dirçəlişini ifadə edir".`,`Andrey Rublyov`),
+   A(`1946-cı ildə doğulmuş bu məşhur ingilis aktyor 2016-cı ildə "Ramsey lənəti"nə qurban getdi.`,`Alan Rickman`),
+   A(`Rəşadət ordeninə layiq görülən ilk qadın 2024-cü ildə stüardessa olan bu həmyerlimiz oldu.`,`Aydan Rəhimli`)
+  ]
+ },
+ {
+  name:`Hecavi mövzu "Ra"`,
+  author:`Turqut Nəhmətli, Nihad Hacızadə`,
+  questions:[
+   A(`Bu köçəri xalqın digər adı yunan dilindən tərcümədə "astinqanoi" yəni, "toxunulmazlar" sözündən yaranıb.`,`Qaraçılar`),
+   A(`"Avropanın Qüdsü" adlanan bu şəhərin gerbində yaşıl üçbucaqlar təpələri, göy yarımdairə çayı, ağ parabola körpünü bildirir. Həmçinin gerbdə qala divarları da təsvir olunub.`,`Sarayevo`),
+   A(`BURANIN devizlərindən biri "Gücüm təkərdədir" kimi səslənir. Səbəb isə mərmər sənayesinin yüksək inkişafıdır.`,`Karrara`),
+   A(`1961-ci ildə doğulan ONUN tam adında "Hüseyn" adına da rast gələ bilərik.`,`Barak Obama`),
+   A(`Beynəlxalq borcların alınması üçün bir dövlətin digər dövlətə silahlı müdaxiləsinin yolverilməzliyi prinsipi 1902-ci ildə bu adla hazırlanıb və bir neçə il sonra Haaqadakı məhkəmədə qəbul edilmişdi.`,`Draqo Doktrinası`)
+  ]
+ },
+ {
+  name:`Uydurulmuş gəmilər`,
+  author:`Adil Nəhmətli, Nihad Hacızadə`,
+  questions:[
+   A(`Eynilə Cek Sperrou obrazının Han Soloya oxşadıldığı kimi, bu gəmi də "Millenium Falcon"a bənzədilir.`,`Qara mirvari`),
+   A(`Əhalisinin musiqini çox sevdiyi Pepperlənd adlı xəyali məkanı 1968-ci ilə aid bu adlı ekran işində görə bilərik.`,`Sarı sualtı qayıq`,`Məkanın adı Serjant Pepperin şərəfinə adlandırılıb.`),
+   A(`Vilhelm, 1839-cu ildə Riqadan Londona gedərkən yolda yelkənli gəmidə fırtınaya düşür. Bu faktın götürüldüyü Vikipediya məqaləsinin hansı opera barədə olduğunu deyin.`,`Uçan Hollandiyalı`),
+   A(`Rik Riordanın "ölülər gəmisi" əsərində qəhrəmanlar onu axtarır. Etimoloq Adolf Noreen qeydlərində yazırdı ki, əslində onun dırnaqla əlaqəsi yoxdur, adının mənası cəsəd gəmisidi.`,`Naqlfar`),
+   A(`Qarşılıqlı samitlərlə başlayan iki sözlə cavab verin. 1523-cü ildə Martin Lüter tərəfindən vəftiz ayininə əlavə edilmiş bunun əsas məğzi Tanrıya və peyğəmbərinə sidq ürəkdən inanan 8 nəfərin gəmi vasitəsilə xilasıdır.`,`Tufan duası`)
+  ]
+ },
+ {
+  name:`Avropa şəhərləri rəssamlıqda`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Bu rəsm haqqında danışılan bir videoda "filosofların çempionlar liqası" sözləri işlədilir.`,`Afina məktəbi`),
+   A(`2006-cı il istehsalı "Alatriste" filmi İspaniyanın Hollandiyanı işğalından da bəhs edir. Filmin bir epizodunda bu rəsmin səhnələşdirilməsini görə bilərik.`,`Bredanın təslim edilməsi`),
+   A(`Veduta - 18-ci əsr Venesiyasında yaranmış və şəhər peyzajları ilə xarakterizə olunan janrdır. Siz isə bu janrın görkəmli nümayəndəsi olan Covanni Antonionun saitləri eyni soyadını deyin.`,`Kanal`),
+   A(`Şərqi Avropada "şəlalələrdən kənardakı torpaq"larda yaşayan onlar özlərini "azad basqınçılar" adlandırırdılar. 19-cu əsrin sonlarına aid məşhur rəsmdə isə onların söyüşlərdən istifadə edərək əyləndiklərini görə bilərik. Onları 2 sözlə deyin.`,`Zaparojya kazakları`),
+   A(`Bir sənədli filmdə bu şəhər bütövlükdə açıq səma altında muzey adlandırılır.`,`Bristol`,`Benksinin qraffitiləri`)
+  ]
+ }
+ ]
+ }
+ ]
+},
+
+
+/* =========================================================
+   QRUP MƏRHƏLƏSİ
+========================================================= */
+{
+name:"Qrup mərhələsi",
+ rounds:[
+
+ {
+ name:"Bəlli raund",
+ topics:[
+ {
+  name:`Q ilə başlayan təkhecalı sözlər`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Rimski-Korsakovun "Şəhrizad" simfonik süitasında Sindibadın gəmisi qayalara çırpıldıqda fonda BUNUN səsi eşidilir.`,`Qonq`),
+   A(`Bir mənbədə deyilir ki, O, əslində bayramın kommersiyalaşmasına nifrət edirdi. Hədiyyələr, səs-küy ona görə sevginin yox, istehlakın simvoludur.`,`Qrinç`),
+   A(`Şpindleruv Mlin qəsəbəsi Kralove bölgəsinin Trutnov rayonunda yerləşir. Hansı romanın yazılmasına 1922-ci ildə bu rayonda başlanılmışdı?`,`Qəsr`,`Adlar çex mənşəlidir. Frans Kafka məşhur əsərini bu rayonda yazmağa başlamışdı.`),
+   A(`"Sorry we missed you" filmində əmək istismarı mövzusuna da toxunulur. Film haqda olan bir mənbədə hansı fransız mənşəli sözə rast gəlmək olar?`,`Qrev`),
+   A(`Əbubəkr ibn Xosrovun "Munisnamə" əsərində Alburuz adının çəkilməsinə görə bu coğrafi obyekt Elbrusla eyniləşdirilmişdi.`,`Qaf`,`İran əsatirlərində simurq quşunun da yaşadığı əfsanəvi dağ.`)
+  ]
+ },
+ {
+  name:`Avropa şəhərləri`,
+  author:`Turqut Nəhmətli, Nihad Hacızadə`,
+  questions:[
+   A(`Veneto Vilayətinin mərkəzi olan bu şəhərin ləqəbi Dənizlərin kraliçasıdır.`,`Venesiya`),
+   A(`1973-cü ildə BURADA baş verən soyğunda Yan-Erik Olsson dörd bank işçisini əsir götürmüşdü.`,`Stokholm`,`Bu hadisədən sonra "Stokholm sindromu" termini psixologiya tarixinə keçdi.`),
+   A(`Fridrix Nitşe, əqli sağlamlığını itirməyə başlayanda məhz bu şəhərdə idi.`,`Turin`,`Bella Tarın bu haqda məşhur filmi "Turin atı" adlanır.`),
+   A(`1984-cü ildə ilk dəfə Şərqi Avropada bu paytaxt şəhərdə keçirilən qış olimpiya oyunlarının infrastrukturları sonrakı 10 illikdə baş verən müharibədə sığınacaq kimi istifadə olunub.`,`Sarayevo`,`Bosniya müharibəsi`),
+   A(`1912-ci il 4 fevralda ölən "Uçan dərzi"nin son sözləri "Deyəsən, nəyisə düz etməmişəm." olmuşdur. ONUN hansı şəhərdə öldüyünü deyin.`,`Paris`,`Franz Reyçelt Eyfel qülləsindən özünü ataraq öz ixtirası olan paraşüt geyimini sınaqdan keçirmək istəyərkən ölmüşdü. O həm də dərzi olmuşdur və paraşütü özü tikmişdir.`)
+  ]
+ },
+ {
+  name:`Masaüstü oyunlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Manhettendə yerləşən "56 Leonard Street" adlı tikili nizamsız görünüşü ilə fərqlənir. Siz isə ona verilən ləqəbi deyin.`,`Cenqa`,`Binanın mərtəbələri asimmetrik olduğu üçün bu ləqəbi alıb.`),
+   A(`BU oyunun adının mənası, zulu dilindən tərcümədə "çoxlu sonluq" deməkdir. BU oyunla 20-ci əsrin sonlarında tanış olmuşuq.`,`Cumanci`,`Söhbət məşhur filmdəki masaüstü oyundan gedirdi.`),
+   A(`Bu oyun haqqında olan karikaturada sürücü yol polisinə sürücülük vəsiqəsindəki fotonun köhnə olduğunu deyir. Söhbətin hansı oyundan getdiyini deyin.`,`Şahmat`,`Vəsiqədə piyada görən yol polisi şübhələnmişdi, çünki sükan arxasında vəzir var idi.`),
+   A(`Digər adı "reversi" olan bu oyun, ağ və qara daşların bir-biri üzərində üstünlük əldə etmə prinsipinə əsaslandığı üçün 1603-cü ilə aid olduğu güman edilən BU əsərdən adını alıb.`,`Otello`,`Oyunun müasir versiyası belə tanınır. Qaydalar isə "Otello" əsərinin sujet xəttinə uyğundur.`),
+   A(`Entoni Prett tərəfindən hazırlanan bu detektiv oyunun adı, latın dilindən tərcümədə "oynayıram" mənasını verən "ludo" sözü ilə BU ingilis sözünün birləşməsindən yaranıb.`,`Clue (İpucu)`,`Sualda detektiv oyunu olduğu deyilmişdi. "Clue" sözü isə tərcümədə "ipucu" deməkdir. Oyunun adı isə "Cluedo"dur.`)
+  ]
+ },
+ {
+  name:`Rəngli mövzu`,
+  author:`Turqut Nəhmətli, Nihad Hacızadə`,
+  questions:[
+   A(`Ötən il İspaniyada BUNLARI sahiblənmək 10 noyabra qədər qadağan edilmişdi. Səbəb isə Hellovində BUNLARIN pis niyyətlə istifadəsinin qarşısını almaq idi.`,`Qara pişik`,`Qara pişiklərdən əyləncə məqsədi ilə istifadəni məhdudlaşdırmağa çalışırdılar.`),
+   A(`Fantastik əsərlərdə ölməli olan personajları ifadə etmək üçün "BELƏ köynəkli adam" ifadəsi işlədilir. Necə?`,`Qırmızı`,`Qırmızı qan rəngi olduğu üçün bu heç də təəccüblü deyil.`),
+   A(`1960-cı illərə qədər maşın sahibi olan qaradərili amerikalılar BUNU alaraq hansı ərazilərdə müsbət qarşılanacaqlarını, hansı ərazilərdə isə təhlükə və nifrətlə üzləşəcəklərini öyrənə bilərdilər.`,`Yaşıl kitab`,`ABŞ-də rasizmin vüsət aldığı dövrlərdə belə bir çıxış yolu tapılmışdı.`),
+   A(`Dini mərasimlər zamanı asteklər BUNA bənzəmək üçün tünd saçlarını sarıya boyayırdılar. BUNU mürəkkəb 1 sözlə deyin.`,`Qarğıdalı`),
+   A(`Bir filmdə İngiltərə Kraliçası Anna yalnız xanımlar üçün açıq olan elmi cəmiyyətin iclasına dəvət alır. Bu cəmiyyətin adı nədir?`,`Mavi corab`)
+  ]
+ },
+ {
+  name:`Azərbaycan musiqi qrupları fərqli prizmada`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Keçmiş futbolçu Marsel Deşayli müdafiədə inamlı, möhkəm oynadığına görə bu ləqəbi almışdı.`,`Qaya`),
+   A(`Piter Bregelin bir neçə əsərində təsvir etdiyi BU kütlənin üzərində duran və hər şeyi üyüdən sistemin və hakimiyyətin metaforasıdır.`,`Dəyirman`),
+   A(`"Dədə Qorqud" filmində ONA edilən müraciətdən sonra "Ərə gedən qız oynasın" sözləri də deyilir.`,`Ozan`,`Çal, Ozan, ərə gedən qız oynasın`),
+   A(`Azərbaycan və türk folklorunda BU ümid, yeni başlanğıc və sübhün xəbərçisi hesab olunur.`,`Dan ulduzu`),
+   A(`Mövzumuza uyğun olaraq deyin. Onun qızlarının adları dilimizə "müalicə", "sağlamlıq", "hər şeyi sağaldan", "sağaldıcı" kimi tərcümə olunur.`,`Eskulap`,`Tibb universiteti tələbələrinin yaratdığı musiqi qrupu.`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Şərtli raund",
+ topics:[
+ {
+  name:`Yeməli personajlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Bəziləri düşünür ki, O, əslində, 3-cü Riçarddır, çünki heç bir yazılı mənbədə ONUN yumurta olması ilə bağlı məlumat yoxdur. Hasardan yıxılmaq isə Riçardın Bosvort döyüşündə ölümünə işarədir.`,`Şaltay-Baltay (Humpty-Dumpty)`,`Bir çoxları bu adın əslində 3-cü Riçarda aid olduğunu güman etsə də, O bir yumurtadır.`),
+   A(`"Şrek" animasiya filmində ONU Konrad Vernon səsləndirmişdi.`,`Zəncəfilli keks`),
+   A(`O, ilk başlarda qırmızı saçlara malik idi və göbələk növünün adı ilə adlandırılmışdı. Çoxlarının zənn etdiyinin əksinə, O məşhur personajın Paulindən sonra ikinci eşqi idi. Onu eyni hərflə başlayan 2 sözlə də deyə bilərsiz.`,`Şəhzadə Şaftalı (Princess Peach)`,`Məşhur sarı saçlı halını almazdan əvvəl O şaftalı yox, göbələk (toadstool) adı daşıyırdı.`),
+   A(`Romada Maxentus bazilikasında istifadə olunan mərmər bu personajın adını daşıyır. Onun balet versiyası Karen Xaçeturyan tərəfindən bəstələnmiş, Henrix Mayorov tərəfindən xareoqrafiya edilmiş və 1974-cü ildə Taras Şevçenko adına teatrda səhnəyə qoyulmuşdu.`,`Çippalino`,`Roma İtaliyaya ipucu ola bilərdi, sualda əsas ipucu isə Sovet ölkələrində populyar olması idi.`),
+   A(`O, "Hasbro" şirkətinin məşhur animasiya serialında "Main Six"in üzvü idi. Onunla eyni adı daşıyan bir qida növü əvvəllər "Jersey Lightning" adlanırdı.`,`Applejack`,`Söhbət "My Little Pony" animasiyasından gedirdi. Obrazla eyni adı daşıyan içki isə əvvəllər "Cersi ildırımı" adlanırdı.`)
+  ]
+ },
+ {
+  name:`Cənubi Koreya şirkətləri`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`"Samtron" 1999-cu ildə müstəqil olanadək BU şirkətin törəmə şirkəti kimi qəbul olunurdu. Təəccüblü deyil ki, "Samtronun" loqosunda da ulduz görə bilərik.`,`Samsung`,`"Samsung" sözünün mənası "üç ulduz" deməkdir.`),
+   A(`1995-ci il, 28 fevralda "GoldStar" və "Lucky" şirkətlərinin birləşməsindən hansı şirkətin yarandığını deyin.`,`LG`,`Sözlərin baş hərfləri şirkətin indiki adını əmələ gətirir.`),
+   A(`"Paldo"nun istehsal etdiyi BUNUN adının hərfi tərcüməsi "yemək qutusudur".`,`Doşirak`,`Məşhur "instant noodle" brendindən söhbət gedirdi.`),
+   A(`"Hyundai", bu adı seçməklə avtomobil bazarında yeni səhifə açmaq istəyini biruzə vermişdi. Söhbət hansı brendin adından gedir?`,`Genesis`,`"Genesis" - "Hyundai"ın daxilində yer alan brenddir, adının mənası isə "başlanğıcdır".`),
+   A(`BU şirkətin adı ingilis dilində "navigator" sözünün təhrif olunmuş formasıdır və şəbəkədə bələdçi rolunu oynamağı simvolizə edir.`,`Naver`,`"Naver" Cənubi Koreyada ən çox istifadə olunan axtarış sistemi və xəritənin adıdır.`)
+  ]
+ },
+ {
+  name:`Qolf`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Bunda orta hesabla 336 çuxur var.`,`Qolf topu`),
+   A(`Onun vəzifəsinin əsas hissəsi fiziki köməkdən daha çox psixoloji köməkdir.`,`Keddi`,`Keddilər qolfçunun çubuqlarını daşımaqdan çox ona məsləhətlər verməli, psixoloji dəstək və həvəs verməlidir.`),
+   A(`Qolfun vətəni olan şəhərə də ad vermiş Onun adını daşıyan universitet Oxford və Kembricdən sonra Böyük Britaniyanın ən qədim 3-cü universitetidir.`,`Saint Endryus`,`Saint-Endryus həm də qolfun himayədarıdır.`),
+   A(`2-ci dəfə topa zəif vurdum amma top təxminən 180-270 metr uzaqlaşdı. Bu Yerdə mümkün ola bilməzdi. Müsahibənin kimin tərəfindən verildiyini deyin.`,`Alan Şepard`,`Söhbət Ayda ilk və son dəfə qolf oyunundan gedir.`),
+   A(`Dünyada dəniz səviyyəsindən ən hündür qolf meydançası bu paytaxt şəhərində yerləşir.`,`La-Pas`,`Həm də dünyanın ən hündürdə yerləşən paytaxt şəhəridir.`)
+  ]
+ },
+ {
+  name:`Ölü mövzu`,
+  author:`Turqut Nəhmətli, Nihad Hacızadə`,
+  questions:[
+   A(`Alimlər iddia edirlər ki, havada uçan tozların böyük hissəsini ONLAR təşkil edir. İnsanlar hər gün ONLARDAN təxminən milyonlarla itirirlər.`,`Ölü dəri hüceyrələri`),
+   A(`Bu, Valve tərəfindən hazırlanmış və nəşr edilmiş üçüncü şəxs atıcı və çox oyunçulu onlayn döyüş arenası oyunudur. Oyunda altı oyunçudan ibarət iki komanda var, məqsədi düşmən patronu olan üzən kürəni məhv etməkdir.`,`Deadlock`),
+   A(`Maraqlıdır ki, bu ekran işində 1 dəfə də olsun Zombi sözü işlədilmir. Səbəb isə o sinematik kainatda zombi anlayışının olmamasıdır.`,`The Walking Dead`),
+   A(`Slavyan nağılına görə, ONUN canı bir iynədə, iynə yumurtanın, yumurta isə tısbağanın içində idi.`,`Ölməz Kaşşey`),
+   A(`"In the forest yabadabadu", "Victoria's wedding", "Victor's wedding", "Barkis's bummer" - eşitdikləriniz BU animasiya filminin soundtrekləridir.`,`Ölü gəlin`)
+  ]
+ },
+ {
+  name:`Cəmi dörd hərf`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Buraya Avstraliyanın işıqlar paytaxtı deyilir.`,`Pert`),
+   A(`O, Masaçusetsdə, Amherst akademiyasından öz hazırladığı partlayıcı ilə kampusda yanğına səbəb olduğu üçün qovulmuşdu. Siz isə ONUN bizə tanış olan soyadını deyin.`,`Kolt`,`Samuel Kolt sonra öz silah kampaniyasını yaratmışdı.`),
+   A(`Eynisaitli sözlə cavab verin. ONUN ilk filialı 1975-ci ildə A Korunada açılmışdır.`,`Zara`,`Adından da göründüyü kimi qəsəbə İspaniyada yerləşir. Məşhur geyim brendi də İspaniyaya aiddir.`),
+   A(`BU, öz adını latın dilindəki "tərəzi" sözündən almışdır. Türk dilinə də italyan dilindən keçmişdir.`,`Lirə`,`"Lirə" sözü "libra" sözündən yaranıb. İtaliyanın keçmiş pul vahidi də lirə idi.`),
+   A(`"The Lego Batman" filmində Puteri 2010-cu ildə tanış olduğumuz O səsləndirib.`,`Siri`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Sirli raund",
+ topics:[
+ {
+  name:`Yaşıl mövzu`,
+  author:`Nihad Hacızadə, Turqut Nəhmətli`,
+  questions:[
+   A(`Corc Stinni ABŞ-da ölümə məhkum edilmiş ən gənc insandır. Stinnini 14 yaşında 5380 voltluq elektrik stuluna bağlamışdılar. Bu hadisədən ilhamlanaraq hansı əsər yazılıb?`,`Yaşıl yol`),
+   A(`16-cı əsrdə burada tikilmiş Fortaleza Real de São Filipe qalası qul ticarəti zamanı əsas məkanlardan biri idi.`,`Yaşıl burun adaları və ya Kabo Verde`,`Əvvəllər Portuqaliyanın müstəmləkəsi olan Kabo Verde əsas qul ticarəti yollarının üzərində yerləşirdi.`),
+   A(`Stiven Kinqin "Döyüş meydanı" hekayəsi əsasında çəkilən filmdə BUNLARIN pis niyyətlə canlanması təsvir olunur. Ukraynada əməliyyat keçirən rus əsgərləri BUNLARA istinadən "kiçik yaşıl adamlar" adlandırılmışdılar.`,`Qalay əsgər, oyuncaq əsgər`,`Hekayədə qalay əsgərlər canlanır. Qalay əsgərlər isə yaşıl rəngləri ilə məşhurdur.`),
+   A(`1941-ci ildə çəkilən bu film viktorian İngiltərəsində mədənçi ailənin işçi hüquqlarından - həmkarlar ittifaqlarının yaranması və təbiətin sənayeləşmə nəticəsində məhv olmasından bəhs edir. Film 5 "Oskar" mükafatı qazanıb.`,`"Vadim o qədər yaşıl idi ki" (How Green Was My Valley)`),
+   A(`Hesab edilir ki, BUNUN tərkibindəki arsenin zəhərləyici xüsusiyyətləri, Napoleonun ölümünə səbəb olan amillərdən biri olmuşdur.`,`Şeyele yaşılı`,`Şeyele özü də qarşısına çıxan hər şeyin dadına baxması ilə tanınırdı. Onun adını daşıyan rəng də ölüm rəngi kimi tanınır.`)
+  ]
+ },
+ {
+  name:`Saitləri yalnız "a"`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Bu söz fransız dilində ilk dəfə Jan-Baptist de La Şapelle tərəfindən üzməyi bacarmadan suda qalmağa kömək edən cihazı bildirmək üçün istifadə edilmişdir. Yunan mənşəli bu sözü deyin.`,`Skafandr`,`"Skafandr" yunan dilindəki "qayıq" və "insan" sözlərinin birləşməsindən yaranmışdır.`),
+   A(`"Space Odyssey: Voyage to the Planets" sənədli televiziya şousunda Mars səhnələrini qeydə almaq üçün BURADA çəkilişlər aparılmışdı. Qeydlərə görə, BURANIN bir çox hissəsinə 1570-1971-ci illərdə heç yağıntı düşməmişdir.`,`Atakama`,`Ərazi Mars mühitinə bənzərliyi ilə seçilir.`),
+   A(`Yoruba, Hausa, Xosa və İngilis dili ORANIN dilləri arasında yer alır.`,`Vakanda`,`Bir digər dili isə elə Vakanda dilidir.`),
+   A(`"The Vagabond" ingilis dilində "məqsədsiz şəkildə olduğu məkanı tez-tez dəyişən" mənalarına gəlir. Siz isə hansı filmin bir çox ölkədə bu adla tanındığını deyin.`,`"Avara"`,`"Avara" Rac Kapurun məşhur filmidir, sözün mənası isə "Səyyah"dır.`),
+   A(`Xristian ənənəsinə məxsus bu söz ivrit dilindən tərcümədə "ata" mənasını verir.`,`Abbat`,`VI əsrdən Qərbi Avropa xristian ənənəsində monastrın baş keşişi.`)
+  ]
+ },
+ {
+  name:`İnsialları A.A`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Antiquo - İspaniyada, San Sebastiyanda yerləşən şəhərdir. Siz isə 1994-1999-cu illərdə bu şəhərin futbol klubunda kimin çıxış etdiyini deyin.`,`Aritz Aduriz`,`Məşhur futbolçu basklıdır, San Sebastian da Bask vilayətində yerləşir.`),
+   A(`ONUN ailəsi ABŞ-yə gələndə, atası soyadlarını kiril əlifbasında yazarkən "Z" əvəzinə "S" hərfindən istifadə etmişdi. Bu hadisə sonradan ONUN "Spell my name with an S" əsərinə ilham vermişdi.`,`Ayzek Azimov`,`"Azimov" soyadı "ozimıy xleb" yəni, "qış taxılı" sözündən yaranmışdır.`),
+   A(`O, tüberkuloz xəstələri üçün xüsusi Paimio stulunu hazırlamışdı. Bu stuldan ilk dəfə Finlandiyada yerləşən eyni adlı sanatoriyada istifadə olunub. ONUN kim olduğunu deyin.`,`Alvar Aalto`,`Söhbət fin memarından gedirdi.`),
+   A(`O, Burak Aksakın eyni adlı romanı əsasında çəkilən serialda rol aldıqdan sonra populyarlıq qazanmışdı.`,`Ali Atay`,`Məşhur "Leyla ile Mecnun" serialında baş rolu canlandırmışdı.`),
+   A(`"Bədheybət" ləqəbli ONUN haqqında məqalədə müəllif, taleyinin Stuart Tomlinson, Qrant Holt və ya Tim Viz kimi ola biləcəyini deyir.`,`Adebayo Akinfenva`,`Adı çəkilənlər futbolçu kimi karyerasına başlayıb, sonradan güləşçi kimi davam edənlərdir. Akinfenva da güləş karyerasına başlamaq arzusunda olsa da, heç vaxt nail olmamışdı.`)
+  ]
+ },
+ {
+  name:`İstanbul`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Bir müddət Topqapı sarayının bağçası olan BU parkın adına Nazim Hikmətin məşhur şeirində rast gələ bilərik.`,`Gülhanə`),
+   A(`İstanbulun fəthindən sonra ilk Cümə namazı məhz BU məsciddə qılınmışdır. Məscid 1934-cü ildən 2020-ci ilə kimi muzey olaraq fəaliyyət göstərmişdir.`,`Ayasofya`),
+   A(`Bir müddət Büyükadada sürgün həyatı yaşayan O, 1940-cı ildə Mexiko şəhərində qətlə yetirilmişdi.`,`Lev Trotski`),
+   A(`Sarıyerdə yerləşən və Osmanlı dövründə də İstanbulu su ilə təmin edən BURA 1521-ci ildə Osmanlıya əsir düşmüş minlərlə serbə görə öz adını alıb.`,`Belqrad meşəsi`),
+   A(`"İstanbulun gözü" ləqəbli BU şəxs, Pablo Pikasso, Bertrand Rassel, Salvador Dali kimi şəxslərin fotolarını çəkmişdir. Bu şəxsin ad və soyadı məşhur futbolçudan 1 hərf azdır.`,`Ara Güler`)
+  ]
+ },
+ {
+  name:`Norveç`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Bu yaxınlarda Norveçin BURAYA iki əsgər göndərəcəyi xəbərinə "Axı indi 1 aprel deyil" reaksiyası gəlmişdi.`,`Qrenlandiya`),
+   A(`Təkhecalı sözlə deyin. Şimal dənizlərinin, soyuq səmanın və BUNLARIN rəngini bəzən Norveç mavisi adlandırırlar.`,`Fyord`),
+   A(`Qədim nors dilində deyin: "Döyüşçü və ya qalxanlı qadın".`,`Lagerta`,`Əfsanəvi vikinq hökmdarı Raqnar Lodbrokun ilk həyat yoldaşı.`),
+   A(`Eyni hərflə başlayan iki sözlə deyin. Ötən əsrin 40-cı illərində Vyaçeslav Molotov Trüqve Li ilə görüşündə "Şpitsbergen" traktatını əsas gətirərək BURANIN SSRİ-yə ilhaq edilməsini tələb etmişdir.`,`Ayı adası`,`Şpitsbergen arxipelaqının cənubunda yerləşən Norveçə məxsus ada.`),
+   A(`Skandinav mənşəli 1 sözlə cavab verin. Maraqlıdır ki, BURANIN memarı müxalifyönümlü Emil Viktor Lanqlet olmuşdur.`,`Stortinq`,`Norveç parlamenti`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Fərdi raund",
+ topics:[
+ {
+  name:`Ədəbi sindromlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Ətraf mühit tarixçisi Ralf Hats BU haqda məqaləsində ovçuların haqsız yerə şeytanlaşdırıldığını demişdir. BU öz adını 1923-cü ilə aid kitabdan almışdır.`,`Bembi kompleksi (effekti)`,`Bu kompleksə sahib insanlar ətraf mühitə qarşı həddən artıq həssas olurlar.`),
+   A(`İnsanın reallığı təhrif olunmuş şəkildə qavraması və özünü xəyali təhlükələrə və ya problemlərə qarşı mübariz qəhrəman kimi aparması ilə xarakterizə olunan psixoloji davranış modeli ONUN adını daşıyır.`,`Don Kixot`),
+   A(`BU fenomen, valideynin öz diqqətini övladları arasında tez-tez dəyişdirməsi və onları manipulyasiya etməsi cəhdini ifadə edir. Eyni zamanda əsasən ataların qız övladlara hədsiz emosional bağlılığını da ehtiva edir. BUNUN hansı ədəbi personajın adı ilə bağlı olduğunu deyin.`,`Kral Lir`,`Şekspirin obrazı, qızları arasında krallığı bölərkən sözü gedən simptomları sərgiləyir.`),
+   A(`Piylənmə hipoventilyasiyası sindromuna verilən BU adın istifadəsindən imtina olunmasına səbəb, qeyri-iradi yuxu periodlarının adı keçən xəstəlikdə müşahidə olunmamasıdır. BU ad Çarlz Dikensin yaratdığı obrazın şərəfinə verilmişdi.`,`Pikvik`,`Dikensin "Posthumous Papers of the Pickwick Club" əsərində Coe adlı obraz tez-tez yuxuya getməsi ilə də məşhur idi.`),
+   A(`Qısaca MAI olaraq bilinən ağciyərdə yaranan infeksiyaya sahib insanlar nəfəs almaqda çətinlik çəkir və tez-tez öskürürlər, əlavə olaraq başqalarına toxunmaqdan çəkinirlər. Bu xəstəliyə ONUN adının verilməsi zamanı ONUN əsər boyu heç vaxt öskürməməsi və əlləri dolu olduğu üçün qonağı ilə görüşməməsi qeyd olunur.`,`Leydi Vindermer`,`Oskar Vayldın yaradıcılığının məhsulu olan Vindermerin vasvası olması ilə bağlı sübut yox idi.`)
+  ]
+ },
+ {
+  name:`"S" ilə başlayan soyad`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Oktyabr inqilabından sonra Moskva sovetində tibb-sanitar şöbəsinə rəhbərlik edən Nikolayın soyadını deyin.`,`Semaşko`),
+   A(`Uilbur yazdığı kitabda südü bibər yanığına qarşı ən yaxşı antidot adlandırmışdı. Uilburun soyadını deyin.`,`Skovill`,`"Skovill" şkalası bibərlərin acılıq dərəcəsini göstərir.`),
+   A(`Harri Keynin nə qədər təhlükəli hücumçu olduğunu göstərmək üçün onun şəklinin üzərinə 5 kateqoriyadan ibarət qeydlər əlavə olunub. Siz isə həmin qeydlərin yuxarı hissəsində hansı iki soyadı görə biləcəyimizi deyin.`,`Saffir və Simpson`,`Harri Keynin ləqəbi "Hurricane" yəni "Qasırğa"dır. Qasırğanın da şiddətini 5 kateqoriyadan ibarət Saffir-Simpson şkalası ilə ölçürlər.`),
+   A(`Ötən əsrin 80-ci illərində Hindistan ordusunun Amritsardakı Qızıl məbədə girməsini sikhlər özlərinə təhqir kimi qəbul etmişdi. Qəribə deyil ki, BU soyadı daşıyan iki şəxs də sikh idi. Hansı?`,`Sinq`,`Sikh olan Beant və Satvant Sinq İndira Qandinin şəxsi mühafizəçisi idi. Bu hadisədən sonra onlar İndira Qandini qətlə yetirmişdilər.`),
+   A(`Dairəvi əl metodu - əsas xəttdən saat əqrəbinin əksinə 52 dərəcəlik əyrilikdə yazılan yazı metodudur. Bu metod haqda mənbədə xatırlanan Platt Rocersin soyadını deyin.`,`Spenser`,`Spenser şriftinin yaradıcısı. Həmin şriftdən "Coca-Cola" və "Ford" şirkətlərinin loqosunda istifadə edilib.`)
+  ]
+ },
+ {
+  name:`Filmlərdə allüziyalar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`"Oyuncaqlar" animasiya filmində, düşmənlə mübarizə apararkən Buzz Lightyear yerə yıxılır və düşməninin təslim olmaq təklifinə qarşılıq "Sən mənim atamı öldürdün" deyir. Düşməni isə cavabında BU məşhur cümləni işlədir.`,`I'm your father (Mən sənin atanam.)`,`"Star Wars" filmində Dart Veyderin Skayvolkerə dediyi məşhur cümlə.`),
+   A(`"Be Cool" filmində Con Travolta ONU rəqsə dəvət edir.`,`Uma Turman`,`"Kriminal Qiraət" filmindəki səhnəyə allüziya edilir.`),
+   A(`"Madagascar" animasiya filmində şir Aleks xəyalında yerdə uzanır və göydən düşən qırmızı steykləri izləyir. Bu səhnə 1999-cu ildə ekranlara çıxan hansı filmə allüziyadır?`,`American Beauty`,`Filmdə çiçək ləçəklərinin havada uçuşduğunu görə bilərik.`),
+   A(`"Forrest Gump" filmində Forrest, dostu leytenant Din Teylori yolun digər tərəfinə keçirərkən Teylor, qəfil gələn maşının kapotuna zərbə endirərək BU cümləni iki dəfə deyir.`,`I'm walkin' here.`,`Bununla "Midnight Cowboy" filminin məşhur replikası xatırlanır.`),
+   A(`"Deadpool və Wolverine" filmində Kassandra "time ripper"dən istifadə edərkən arxadakı metro tablosunda BURANIN adını görə bilərik.`,`Lone Pine Mall`,`"Back to the Future"dəki ticarət mərkəzi.`)
+  ]
+ },
+ {
+  name:`Həşəratlar`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Həşəratların bəzi növləri hətta belə olduqdan sonra da 10 günədək yaşaya bilirlər. XIX əsrin 60-cı illərində yazılmış bu əsərin adında da belə var. Əsəri deyin.`,`Başsız atlı`),
+   A(`Oldous Hakslinin "Ada" romanında personaj bu həşəratlar cütləşərkən ölümün təbiəti haqqında danışır.`,`Dəvədəlləyi (Mantis)`),
+   A(`Post-apokaliptik janrda yazılan "Extinction Journals" romanında Dean adlı personaj nüvə partlayışından sağ çıxmaq üçün bu həşəratlardan özünə qoruyucu kostyum hazırlayır.`,`Tarakan`,`Tarakanlar nüvə partlayışından belə sağ çıxa bilirlər.`),
+   A(`2017-ci ildə İranda tapılan nəhəng yeni hörümçək növünə məşhur bir franşizanın 20 illiyi şərəfinə bu adı veriblər.`,`Araqoq`,`Harry Potter seriyasında görünən nəhəng danışan hörümçək.`),
+   A(`Skarabeylər ailəsinə daxil olan Refaim həşəratı 11 sm boya və 100 qrama çatan çəkisi ilə dünyanın ən böyük həşəratlarındandır. Əvvəlki cümlədə Refaimlə əvəz olunmuş xüsusi isimi deyin.`,`Qoliaf`,`Refaim ivritcə uzunboylu nəhəng insanlara deyilir. İncildə də Qoliafın qəbiləsindən bəhs edilərkən Refaim sözündən istifadə olunur.`)
+  ]
+ },
+ {
+  name:`Öpüş`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`BUNDAN öncə deyilən son cümlə "Nə üçün gəlmisənsə, onu et" olmuşdur.`,`İudanın öpüşü`,`İsa peyğəmbər İuda ona yaxınlaşanda eşitdiyiniz cümləni demişdi.`),
+   A(`Dmitri Vrubelin Berlin divarındakı "Allahım, bu ölümcül sevgidən qurtulmağıma kömək et" adlı divar rəsmində Erix Honnekeri və ONU görə bilərik.`,`Leonid Brejnev`,`Divar rəsmində məşhur "Brejnev öpüşü" təsvir olunmuşdu.`),
+   A(`Ceyms Foks bu ilk dəfə Vyanada nümayiş olunanda haqqında demişdi: "Bu şəhərdə incəsənət və siyasət, xəyallar və kabuslar, yaradılış və dağıntı ölümcül bir qucaqlaşma halında idi."`,`Qustav Klimtin "Öpüş" əsəri`),
+   A(`Aktyorla səhv salındıqdan sonra, Nyu-Yorklu bir oğru, potensial film rolu üçün fərdi təlim keçməyə Hollivuda göndərilir. Eşitdiyiniz BU filmin açıqlamasıdır.`,`Kiss Kiss Bang Bang`),
+   A(`2003-cü ildə O Kirsten Danstla bərabər "Ən yaxşı öpüş üçün MTV" mükafatına layiq görülmüşdü.`,`Tobi Maqayr`,`Onlar bu mükafatı "Spider-Man" filmindəki məşhur səhnəyə görə qazanmışdılar.`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Xəmsə raundu",
+ topics:[
+ {
+  name:`İrlandiya`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Dingle qəsəbəsi İrlandiyada dəniz sahilində yerləşir. Buradan hərəkət edən gəmilər vasitəsilə dəniz canlılarını izləmək və onların fotolarını çəkmək mümkündür. Bu dəniz turizmi haqqında məqalədə hansı Afrika mənşəli söz xatırlanır?`,`Safari`,`Bu turizm növü "dəniz safarisi" adlanır.`)
+  ]
+ }
+ ]
+ }
+
+ ]
+},
+
+
+/* =========================================================
+   YARIMFİNAL
+========================================================= */
+{
+name:"Yarımfinal",
+ rounds:[
+
+ {
+ name:"Bəlli raund",
+ topics:[
+ {
+  name:`İtirilmiş ədəbiyyat`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Pandemonium - tərcümədə "iblislərlə dolu yer" mənasında şərh edilir. Siz isə Pandemoniumun hansı əsərdə paytaxt olduğunu tapın.`,`İtirilmiş cənnət`,`Con Miltonun epik poemasında cəhənnəmin paytaxtı`),
+   A(`2009-cu ildə çapdan çıxmış bu romanda baş qəhrəman masonların böyük sirrini tapmağa çalışır və müəmmalı işarələrlə dolu labirintdə ölümcül təhlükələrlə üzləşir.`,`İtirilmiş simvol`,`Den Braun`),
+   A(`"İtirilmiş gəmilər adası" əsəri "Rusiyanın Jül Verni" adlandırılan məhz bu yazıçının qələminin məhsuludur.`,`Aleksandr Belyayev`),
+   A(`Erix Mariya Remarkın "Qayıdış" romanında, Birinci Dünya Müharibəsindən qayıdan əsgərdən və onun yaşamaq uğrunda mübarizəsindən bəhs edilir. Təsadüfi deyil ki, müəllif onun nümayəndəsi sayılır.`,`İtirilmiş nəsil`),
+   A(`Bir mənbədə eramızın IV əsrinə aid edilən hadisə ilə bağlı bura haqqında "İtirilmiş ən böyük ədəbiyyat" cümləsi işlədilir.`,`İsgəndəriyyə kitabxanası`,`İsgəndəriyyə kitabxanası yanğını`)
+  ]
+ },
+ {
+  name:`Komiks`,
+  author:`Şükran İbrahimli, Nihad Hacızadə`,
+  questions:[
+   A(`"Watchmen" komiksinin bir neçə sayında bunların içinin boş olmasının səbəbi, dilin artıq reallığı ifadə etməməsidir.`,`Söhbət buludu`,`Sayılır: Speech bubble, speech balloon və s.`),
+   A(`Alan Glazgo şəhərində yaşayan iş adamıdır. O 1880-ci illərdə yarasa kostyumu geyinərək cinayətkarlarla mübarizə aparmışdır. Alanın soyadını deyin.`,`Wayne`,`Batman`),
+   A(`Heinz şirkətinin 2024-cü ilin yay aylarında paylaşdığı məşhur reklam kampaniyasında, ketçup və xardal məhsulunu məhz bu iki personaj qismində təsvir etmişdir. Hansı personajlar?`,`Deadpool və Wolverine`),
+   A(`Ninja Tısbağalar komiksində maraqlıdır ki, Leonardonun yox Rafaelin yaxın dostu olan kərtənkələ bu adı daşıyır. Adı dəqiqliklə deyin.`,`Mona Lizard`),
+   A(`Komikslərin birində süper qəhrəman, günahkarlarla mübarizə aparmaqdan sıxıldığı üçün özünə qəsdən maneələr yaradır və limitlər qoyur. Bu zaman müəllif Rube adlı həmkarını xatırlayır. Rube'un soyadını deyin.`,`Qoldberq`,`Qoldberq maşını`)
+  ]
+ },
+ {
+  name:`Formasında ləqəbi yazılan Braziliyalı futbolçular`,
+  author:`Tərlan Şükürov`,
+  questions:[
+   A(`Onun oynadığı dövrdə Braziliya milli komandasında iki Ronaldo soyadlı futbolçu var idi. Aralarında yaşca ən böyük olan Ronaldo Nazario öz adı ilə, O isə BU adla tanınırdı.`,`Ronaldinyo`,`"Ronaldinyo" adı "kiçik Ronaldo" deməkdir.`),
+   A(`Bu futbolçu yeniyetməlik illərində bədənçə xırda və uşaq göründüyünə görə körpə mənasına gələn ləqəblə çağırılırdı.`,`Bebeto`,`"Bebeto" Braziliya portuqalcasında əzizləmə mənasında istifadə olunur.`),
+   A(`Əsl adı Arthur olan bu futbolçunun ləqəbi, Braziliya portuqalcasında olan "Arthurzinho" - "kiçik Arthur" sözündən yaranıb.`,`Zico`),
+   A(`Carlos Caetano Bledorn Verriyə uşaqlıqda cılız bədəni və səfeh uşaq olduğu üçün əmisi Ağbəniz və 7 cırtdandakı Dopey obrazının portuqalcaya uyğunlaşmasını ləqəb olaraq vermişdi.`,`Dunga`,`Dopey gicbəsər, səfeh deməkdir.`),
+   A(`Əsl adı Claudemir Barreto olan O, öz ləqəbini Braziliyada yetişən bitkidən alıb.`,`Kakau`,`Ləqəbini kakao bitkisinin adından almışdı.`)
+  ]
+ },
+ {
+  name:`Hesab`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`İnsanın ayaq pəncəsinin orta uzunluğuna bərabər olan ölçü vahidi belə adlanır.`,`Fut`,`"Foot" ingilis dilindən tərcümədə ayaq deməkdir.`),
+   A(`BUNUN kəşfindən sonra 100 öküz kəsilərək tanrılara qurban edildiyi üçün digər adı Hekatomba teoremidir.`,`Pifaqor teoremi`),
+   A(`Bu sözün etimologiyasına nəzər salsaq, "xırda daşları üst-üstə qoymaq" kəlimələrinə rast gələ bilərik.`,`Kalkulyator`,`"Calculus", "xırda daşlar" deməkdir.`),
+   A(`Davam edək. Saitləri eyni olan qısa sözlə cavab verin. Fərz olunur ki, BU SÖZÜN mənası "üstünə qum tökülmüş lövhə"dir.`,`Abak`,`İlk hesab aləti kimi qəbul edilir.`),
+   A(`12-ci əsrin sonuna qədər ingilislər vergi yığımı sonunda BUNU edirdilər. Bir dəfə BUNUN nəticəsində hətta xəzinədarlığın binasına belə ziyan dəymişdi.`,`Tonqal qalamaq`,`Vergiləri ağaclar üzərində qeyd edir, vergi yığımının sonunda isə tonqal qalayıb ağacları yandırırdılar.`)
+  ]
+ },
+ {
+  name:`Siqaret`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Bu siqaret brendi qadın bazarını hədəfləyən ilk brenddir. Onun adını ingilis dilində bir qısa adla deyin.`,`Eve`,`Qadın bazarını hədəf alan bu brend ilk qadın olan Həvvanın adını daşıyırdı.`),
+   A(`Bu brendin adının mənası "Müasir yaşa" deməkdir.`,`L&M`,`Hərflər "Live Modern" sözlərinin ilk hərfləridir.`),
+   A(`Bu siqaret brendinin reklamlarında irland xalq mahnısı olan "The Campbells are coming"in təhrif olunmuş halını eşidə bilərik.`,`Camel`,`Brend mahnıdakı "Campbells" sözünü "camels" olaraq dəyişmişdi.`),
+   A(`2006-cı ildə BU BRENDİN sahibkarları "Cope" adında ikinci brend yaratdılar. BU BRENDİN adına baxmayaraq, o ABŞ istehsalıdır.`,`Kopenhagen`,`Baxmayaraq ki, Kopenhagen Danimarkanın paytaxtıdır, eyni adlı siqaret ABŞ-da istehsal olunur.`),
+   A(`Henri Şarrier, "Papillon" adlı avtobioqrafiyasında digər həmyerli həmkarlarının BU SİQARETDƏN istifadə etməsindən tez-tez bəhs edir.`,`Gauloises`,`Yazıçının adından onun fransız olduğu bəlli olurdu. Digər fransız yazıçılar (Albert Kamyu, Jan Pol Sartr və s.) haqqında məşhur faktdır ki, onlar məhz bu fransız brendindən istifadə edirdilər.`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Şərtli raund",
+ topics:[
+ {
+  name:`Musiqi qruplarının adlarının etimologiyası`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`BU qrupun vokalisti və qurucusu olan Piter Krisin öncəki qrupunun adı "Lips" idi. Siz isə Krisin yeni qrupu hansı ingilis sözü ilə adlandırdığını deyin.`,`Kiss`,`"Lips" ingilis dilindən tərcümədə dodaqlar deməkdir. "Kiss" sözünün mənası isə öpüşdür.`),
+   A(`Güman edilir ki, BU qrup öz adını "The Crickets" qrupundan ilhamlanaraq seçib.`,`The Beatles`,`Hər iki qrupun adı böcək növünü bildirən sözlərdir.`),
+   A(`Britaniyada yaradılmış bu qrup, şəhərin adından ilk hərf olan "G"ni və son hərf olan "W"nu silmiş və öz qruplarına ad vermişdir.`,`Lasgo`,`Böyük Britaniyaya daxil olan Şotlandiyanın şəhərlərindən biri Qlazqov adını daşıyır.`),
+   A(`Mayki Vey, BU qrupun adına qərar verərkən İrvin Velşin əsərindən ilham almışdı. Qrupun adına yiyəlik əvəzliyi artırmasının səbəbi isə adı fərdiləşdirmək idi.`,`My Chemical Romance`,`İrvin Velş "Ecstasy: Three Tales of Chemical Romance" əsərinin müəllifidir. Mayki Vey bu əsərin adından ilham almış və adı fərdiləşdirmək üçün "My" əvəzliyini artırmışdı.`),
+   A(`Billi Coy Armstronq, ilk narkotik təcrübəsindən bəhs edən BU adlı mahnısını yazdıqdan sonra qrupun adı olan "Sweet Children"ı da BUNA dəyişmişdi. Bu həm də ingilis slengində marixuananın təsirində olan müddəti bildirir.`,`Green Day`)
+  ]
+ },
+ {
+  name:`Fransızlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Onun yaratdığı sistem Napoleonun ordusunda əsgərlərin gecə vaxtı işıq yandırmadan, səssizcə mesaj oxumaları üçün istifadə etdiyi "gecə yazısı" metoduna əsaslanırdı.`,`Lui Brayl`),
+   A(`Onun sözlərinə görə, bir qız iki xüsusiyyətə malik olmalıdır: zərif və möhtəşəm. Onun kim olduğunu deyin.`,`Koko Şanel`,`Məşhur modelyerin qadınlar haqqında sitatından söhbət gedirdi.`),
+   A(`"İnsan əxlaqı haqqında nə bilirəmsə, bunu futbola borcluyam, çünki top heç vaxt gözlədiyim yerdən gəlmədi." Eşitdiyiniz sözlər 1960-cı ildə ölən ONA aiddir.`,`Albert Kamyu`,`Albert Kamyu 18 yaşına qədər qapıçı mövqeyində çıxış etmiş, vərəm xəstəliyi səbəbindən karyerasını erkən başa vurmuşdu.`),
+   A(`Rəvayətə görə, O, boş tavanda milçəyin yerini təyin etməyə çalışarkən ən məşhur ixtirasını etmişdi.`,`Rene Dekart`,`Müasir dövrdə istifadə olunan koordinat sistemi elə Rene Dekartın soyadı ilə adlandırılır.`),
+   A(`O, fransız topçularının məlumatlarını almanlara verməkdə ittiham olunmuş və Fransa Qvianasında ömürlük həbs cəzasına məhkum edilmişdi.`,`Alfred Dreyfus`,`Alfred Birinci Dünya Müharibəsində Fransa ordusunda topçu kimi xidmət etmişdi.`)
+  ]
+ },
+ {
+  name:`Game of Thrones`,
+  author:`Hüseyn Heydərli, Nihad Hacızadə`,
+  questions:[
+   A(`Serialın 7-ci sezonunda GOT həvəskarları arasında mərc oyunlarında kəskin artış baş vermişdi. Buna səbəb 7-ci sezonun yayıma getməsiylə kontorların bu mərci açması idi. Hansı?`,`Kral kim olacaq`),
+   A(`John Snow, Joffrey, Gendry, Ramsey - adı çəkilən personajları birləşdirən eynisaitli ingilis sözünü deyin.`,`Bastard`),
+   A(`Kitablara əsasən demək olar ki, BU personajı "Blackwater" döyüşündən sonra Voldemorta bənzətmək olar.`,`Tyrion Lannister`,`Serialdan fərqli olaraq Tyrion döyüşdə burnunu itirir. Serialda sadəcə çapıqla yadda qalmışdı.`),
+   A(`3-cü sezonun ilk bölümünün adındakı əcnəbi dildəki bu ifadə "hər kəs xidmət etməlidir" mənasına gəlir.`,`Valar Dohaeris`,`Valar Morghulis sayılmır.`),
+   A(`Köhnə dünya xəritəsinin GOT kainatına uyğunlaşdırılmış illüstrasiya xəritəsində maraqlıdır ki, Meereen şəhəri bu ölkə ərazisinə düşürdü.`,`Misir`,`Meereen şəhərində Misirdə olduğu kimi böyük piramida var.`)
+  ]
+ },
+ {
+  name:`Qəsəbələr film və seriallarda`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Matamata Yeni Zelandiyada yerləşən qəsəbədir. Bu qəsəbənin özünəməxsus xüsusiyyəti yaşıl təbiət qoynunda salınmış çox kiçik və dar quruluşlu evləridir. Siz isə əsrin əvvəllərində bu qəsəbədə hansı franşiza üçün film seti yaradıldığını deyin.`,`Üzüklərin hökmdarı`),
+   A(`2014-cü ildə bu serial üçün seçilmiş İspaniyanın Osuna qəsəbəsində Dothraki döyüş səhnələri çəkilmişdir.`,`Game of Thrones`),
+   A(`Keçən il ekranlara çıxan serialda hadisələr 1962, 1935 və 1902-ci illərdə cərəyan edir. Siz isə serialda hadisələrin hansı qəsəbədə keçdiyini tapın.`,`Derry`,`Söhbət "It: Welcome to Derry" serialından gedir. Stiven Kinqin romanı əsasında ekranlaşdırılmış serialda Pennywise hər 27 ildən bir Derry qəsəbəsində peyda olur.`),
+   A(`Fanfiklərdə bu qəsəbənin adının alman dilindən tərcümədə "küləkli yer", "itmək" mənalarını verən sözlərdən yarandığı güman edilir. Söhbət hansı qəsəbədən gedir?`,`Winden`,`Dark`),
+   A(`Kassius Kulicin bir rəsminin adında bu adlı məkan xatırlanır. Bu həmçinin 2003-cü ildə yayımlanmış filmdəki eyniadlı qəsəbənin adıdır.`,`Dogville`)
+  ]
+ },
+ {
+  name:`Eyni hərflə başlayan iki söz`,
+  author:`Şehra Həsənli, Saday Cəfərov, Nihad Hacızadə`,
+  questions:[
+   A(`Bir xəbər kanalına görə Nobel mükafatı laureatı Uilyam Şokli, intihar cəhdi edərkən, qəribə də olsa bunu tək oynamışdı.`,`Rus ruleti`),
+   A(`1877-ci ildə Satsuma üsyanına başçılıq edərkən öldürülən Saiqo Takamorini mövzumuza uyğun adlandırın.`,`Sonuncu samuray`,`"Sonuncu Samuray" filmi də Saiqonun həyatı əsasında çəkilib.`),
+   A(`Bir paylaşımda 15-ci əsrdə Azərbaycanı uğurlu idarə etmiş 2 dövlətin hakimiyyət dövrünü belə dövr adlandırırlar.`,`Qızıl qoyun`,`Söhbət Ağqoyunlu və Qaraqoyunlu dövlətlərindən gedirdi.`),
+   A(`"Maskanın altındakı həqiqət" altbaşlıqlı bir mənbədə Qrimaldi ilə bərabər BU paradoks da xatırlanır.`,`Kədərli kloun`,`Məşhur hekayədə deyildiyi kimi "Bir gün bir pasiyent psixoloqa gedir deyir mən gülə bilmirəm. Psixoloq deyir ki, bir kloun var get o səni güldürsün. Pasiyent cavab verir: - O kloun mənəm."`),
+   A(`Eyni 2 hərflə başlayan 2 sözlə deyin. Çində yeni virus çıxması haqqında olan video çarxın rəyində bir izləyici Harry Potter kitablarından bizə tanış olan ifadənin 1 sözünü dəyişərək şərh bildirmişdi. Həmin şərhdəki mövzumuza uyğun olan 2 sözü deyin.`,`Yatmış yarasa`,`Yatmış əjdahanı qıdıqlamayın`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Sirli raund",
+ topics:[
+ {
+  name:`Bir parça ət`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`ONUN eksperimentinin alternativ versiyasında bir parça əti kiçik pendir, iti isə siçan əvəz edir.`,`İvan Pavlov`),
+   A(`Silahlar - bıçaq, səngər - kəsim masası, əsgər - bir parça ət. Qeyd edilən bənzətmələr ötən əsrin 10-cu illərindəki hadisədən sonra hansı şəhər haqqındadır?`,`Verden`,`Verden döyüşü meyitlərin çoxu parça-parça olduğundan "Verden qəssabxanası" adı ilə tarixə keçib.`),
+   A(`Biri xüsusi olan bir neçə sözlə deyin. Nə heyvan hüquq müdafiəçiləri tərəfindən pislənsə də, "Taym" jurnalı tərəfindən "2010-cu ilin dəbi" adlandırılmışdı?`,`Ledi Qaqanın ət paltarı`,`Müğənninin 2010-cu ildə çıxışında geyindiyi ət paltar səs-küyə səbəb olmuşdu.`),
+   A(`Veksel - müəyyən müddət keçəndən sonra veksel verənin müəyyən məbləği vaxtı çatdıqda veksel sahibinə ödəməsini təsdiq edən pul öhdəliyidir. Siz isə tərtib edilmiş ən qəribə vekselin hansı XVI əsr personajına aid olduğunu deyin.`,`Şeylok`,`"Venesiyalı tacir" əsərinin personajı olan sələmçi Şeylok verdiyi borc pul ödənmədiyi təqdirdə onun bədənindən bir parça ət tələb edirdi.`),
+   A(`BUNUN belə adlanmasına səbəb kimi ölü tapılan şəxsin üstünə siçovul zəhəri tökülmüş bir parça ət yeməsi göstərilir.`,`Qiymə əməliyyatı`,`II DM-nin gedişatına təsir edən əməliyyatlardan biri.`)
+  ]
+ },
+ {
+  name:`Rep`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`İngilisdilli Vikipediyada bu söz haqqında məqalədə "Azərbaycan üsulu milli rep" sözlərini görə bilərik.`,`Meyxana`),
+   A(`Qonşu hərflərlə başlayan 2 sözlə deyin. Ən məşhur bunlardan biri 2018-ci ildə aralarında mübahisə yaranan Machine Gun Kelly'ə qarşı yayımlanan "Killshot" trekidir.`,`Eminemin diss'ləri`),
+   A(`Davam edirik! Bir versiyaya görə bu termin "stalker" və "fan" sözlərinin portmantosundan yaranıb.`,`Stan`),
+   A(`2015-ci ildə reliz edilmiş "Medicine Man" ("Tibb adamı") mahnısı Andre Romell Young'ın diskoqrafiyasına aiddir. Siz isə onun bizə tanış olan səhnə adını deyin.`,`Dr. Dre`),
+   A(`"Battle rap"lərdə bəzən iştirakçılar qarşı-qarşıya dayanaraq bir-birlərinə vulqar sözlərdən istifadə edirlər. Bir videoda 2 repçi arasında baş tutan gərgin battle BUNA bənzədilir. Bunu eyni hərflə başlayan 2 sözlə deyin.`,`Trash talk`)
+  ]
+ },
+ {
+  name:`Cavablarda saylar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`BU filmin minimalistik posterində ağ arxa planda onlarla qara pəncə izi görə bilərik. Filmin adı isə qırmızı hərflərlə yazılıb.`,`101 Dalmatin`,`Məşhur it cinsinin bədənində də qara nöqtələrə rast gələ bilərik.`),
+   A(`Rene Bull 1898-ci ildə çəkdiyi "Balıqçı və Cin" illüstrasiyasında BUNA əsaslanıb.`,`1001 Gecə nağılları`,`"Balıqçı və Cin" 1001 Gecə nağıllarına aid nağıldır.`),
+   A(`Heyli Col 1988-ci ildə anadan olub və ilk filminə 1994-cü ildə çəkilib. Siz isə ona əsas populyarlıq gətirən filmi deyin.`,`"Altıncı Hiss"`,`Heyli Col 1994-cü ildə "Forrest Gump" filmində Forrestin oğlu rolunu oynamışdı. Əsas məşhurluq qazandığı film isə 1999-cu ildə rol aldığı "Altıncı Hiss" filmi olmuşdur.`),
+   A(`Psixoloq Con Qotman münasibəti birbaşa bitirə biləcək alçaltma, təndiq, davamlı müdafiə və divar hörmə davranışlarını ümumiləşdirmək üçün BU SÖZLƏRDƏN istifadə etmişdi.`,`Məhşərin Dörd Atlısı`,`Sual 4-cü sual idi və 4 davranış xatırlanırdı.`),
+   A(`Təəccüblü deyil ki, BUNUN haqqında Vikipediya məqaləsindən Cim Parsons haqqında məqaləyə keçid var.`,`73 ədədi`,`Cim Parsons "Big Bang Theory" serialında Şeldon Kuperin rolunu canlandırmışdı. Şeldonun sözlərinə görə isə, 73 mükəmməl ədəddir.`)
+  ]
+ },
+ {
+  name:`Şahmat və ekranizasiya`,
+  author:`Adil Nəhmətli`,
+  questions:[
+   A(`Niderland istehsalı "Kraliça, uzun yaşa" filminin rejissoru Esme Lammers maraqlıdır ki, bu beşinci Dünya Çempionunun nəvəsidir.`,`Maks Eyve`),
+   A(`2009 istehsalı filmdə Saemundur Palssonun bu keçmiş dostuna etdiyi köməkdən bəhs olunur.`,`Bobbi Fişer`,`Palssonun island olduğunu başa düşmək çətin deyil.`),
+   A(`"Və quzu BUNU açanda səmada təxminən yarım saat səssizlik oldu." İncildən bir hissəni eşitdiniz. Bu ilə əvəzlənəni keçən əsrə aid filmlə deyin.`,`Yeddinci möhür`),
+   A(`Eyni hərflə başlayan iki sözlə cavab verin. 1997-ci ildə baş tutmuş qarşılaşmaya həsr edilən "Rematch" serialının posterində şahmat fiqurları ağ-qara rənglərdən ibarət bunun üzərində təsvir edilib.`,`Kompüter klaviaturası`,`Film 1997-ci ildə Kasparovla IBM super kompüteri Deep Blue arasındakı görüşə həsr olunub.`),
+   A(`Mövzunun sonuncu sualı. 2011-ci il istehsalı serialda keçmiş Dünya Çempionu Arkadi Balaqanov məntiqi sayəsində cinayət hadisələrini həll edərək bağlayır. Siz isə serialın necə adlandığını deyin.`,`Endşpil`)
+  ]
+ },
+ {
+  name:`Q ilə başlayan dodaqlanan saitli sözlər`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Bir çox ölkələr bunu soyqırımı kimi tanıyır. Hər il 1 şərqi Avropa ölkəsində onun qurbanları adlı anım günü keçirilir.`,`Qolodomor`),
+   A(`Hind fəlsəfəsində bu söz mənəvi yol göstərən mənasına da gəlir.`,`Quru`),
+   A(`Buna fransızlar hündür ağac tərcüməsi olan Hautbois deyir, yəni səs ucadan yüksəkdən gəlir. Bəs biz buna nə deyirik?`,`Qoboy`),
+   A(`Bunun qalibini 10 nəfərlik jüri heyəti Parisin Drouant restoranında müzakirələrdən sonra seçir. Rəmzi olaraq qalib cəmi 10 avro alır.`,`Qonkur`),
+   A(`Boston marafonunun sonunda içkidən sızıb qalmayan insanlara X deyilir. X həm də intihar etmiş bir şəxsin yaratdığının adıdır.`,`Qonzo`,`Hanter Skott Tompson`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Fərdi raund",
+ topics:[
+ {
+  name:`Animasiyalar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Walt Disneyin BU İKİ obrazını səsləndirən şəxslər əsl həyatda həyat yoldaşı olmuşdurlar.`,`Miki və Mini Mouse`),
+   A(`Bəzi konspirasiya nəzəriyyələrinə görə, BU animasiyanın adının açılışı "Sosialist men under red flag"dir.`,`The Smurfs`,`Şirin atanın Karl Marksa oxşaması və qırmızı papaq taxması bu nəzəriyyələrin ortaya çıxmasına səbəb olmuşdu.`),
+   A(`"Ferdinand" animasiya filmində heç bir zərər görmədən elektrik kabellərini dişləyən klonlanmış buğa haqqında danışan məqalədə BU ədəbi qəhrəman xatırlanır.`,`Frankenşteyn`,`Frankenşteyn də ildırım nəticəsində canlanmışdı.`),
+   A(`Zootopia animasiyasında qəribə səslənsə də, Cüdi BELƏ heyvanların məskunlaşdığı yerə gələndə utanıb gözünü tutur. Filmdə digər heyvanlar paltar geyinir.`,`Nudist`),
+   A(`"Mən 32 yaşlı qadın deyiləm" cümləsini harada görə biləcəyimizi dəqiqliklə deyin.`,`"Simpsonlar" animasiyasında Bartın yazı yazdığı lövhədə`,`Bart Simpsonu əslində Nensi Kartrayt adlı bir qadın səsləndirirdi.`)
+  ]
+ },
+ {
+  name:`Bir şəxs ətrafında`,
+  author:`Hüseyn Heydərli`,
+  questions:[
+   A(`1903-cü ildə anadan olan Avril 1936-1937-ci illərdə İspaniya vətəndaş müharibəsində iştirak edib. Biz onu hansı adla tanıyırıq?`,`Corc Oruell`),
+   A(`Oruellin bu əsərinin ilkin adı "The Last Man in Europe" idi. Söhbət hansı əsərindən gedir?`,`1984`),
+   A(`Tarixdə ilk dəfə bu ifadə 1945-ci ildə SSRİ və ABŞ arasındakı münaqişəni bildirmək üçün Oruell tərəfindən istifadə olunmuşdu. Sözügedən ifadəni deyin.`,`Soyuq müharibə`),
+   A(`Oruellin öz həyatına əsaslanan BU əsərində müstəmləkə sisteminin həm yerli xalqları, həm də müstəmləkəçiləri necə mənəvi cəhətdən məhv etdiyini görə bilərik.`,`Birma günləri`),
+   A(`Yazıçı Oruell yoldaşı ilə birlikdə fermada heyvanlara baxırdı, maraqlıdır ki onun keçisinin adı BU idi.`,`Muriel`,`"Heyvanıstan" əsərində də eyniadlı keçi var.`)
+  ]
+ },
+ {
+  name:`...lak...`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Onlar orucluq müddətində ancaq süd içdikləri üçün BU ADI almışdılar.`,`Malakanlar`,`"Moloko" rus dilindən tərcümədə "süd" deməkdir.`),
+   A(`Bu Kanadada xokkeydən sonra ən çox sevilən idman növüdür.`,`Lakros`),
+   A(`Ferents Listin "Sardanapalo" operasını yazarkən ilhamlandığı əsərin müəllifini yazın.`,`Ejen Delakrua`,`"Sardanapalın ölümü" rəsmi`),
+   A(`6 hecalı sözlə deyin. Bu xəstəlik olan körpələr doğuş zamanı normal görünür. Simptomlar isə ana südünü qəbul etdikdən bir neçə gün sonra özünü büruzə verir.`,`Qalaktozemiya`,`Bu xəstəliklə doğulan uşaqlar ana südündə olan şəkəri qəbul edə bilmir.`),
+   A(`Bu klub öz ev oyunlarını 524 oturacağı olan Vid Dyupumirar stadionunda keçirsə də, UEFA-nın standartlarına uyğun gəlmədiyi üçün 3-cü təsnifat və yuxarı mərhələlərində Torşvollur stadionunda ev oyunlarını keçirir.`,`Ki Klaksvik`,`Az oturacaq sayı və skandinav adları sizi Farer adalarına çıxarmalı idi. Torşvollur stadionu həm də Torşavnda yerləşir.`)
+  ]
+ },
+ {
+  name:`Saitləri iki "ə"`,
+  author:`Saday Cəfərov, Fuad Əmrəliyev`,
+  questions:[
+   A(`Bu söz ərəb dilindən səhv, yanlış mənasına gəlir.`,`Qələt`),
+   A(`Palindrom sözlə deyin. Dermatoloq Reymond Sabouro BUNUN yaranması haqqındakı məqaləsində baş dərisində yaşayan mikroorqanizmlərin rolunu irəli sürmüşdü.`,`Kəpək`),
+   A(`Rejissor Ağarza Quliyevin BU adlı filminin posterində "Bəli yoldaşlar, çoxdan gözlədiyiniz azadlıq günəşinin doğmağına az qalmışdır" sözlərini oxumaq olar.`,`"Səhər"`,`Məşədi Əzizbəyova həsr olunmuş film.`),
+   A(`"Stailsdə müəmmalı hadisə" romanında hadisələr Stails malikanəsində cərəyan edir, bəs hansı romanda Stails malikanəsi yaşlılar üçün pansionat olaraq fəaliyyət göstərir?`,`"Pərdə"`,`Erkül Puaronun ilk dəfə ortaya çıxdığı roman "Stailsdə müəmmalı hadisə", öldüyü roman isə "Pərdə"dir.`),
+   A(`Nyuton "Optika" əsərinin "sorğular" bölməsində dəqiq fikri olmadığı məsələlərə fikir bildirərkən cümlələrinin əvvəlində BUNDAN istifadə edib.`,`Əgər`,`Sayılır: Bəlkə\nƏsərinin bu bölməsi fərziyyələrdən ibarətdir. Buna görə də "Əgər işıq belədirsə...", "Əgər bu hadisə bundan doğursa..." kimi cümlələrlə başlayır.`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Xəmsə raundu",
+ topics:[
+ {
+  name:`Hindistan`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Hind mifologiyasında Kameiram-ev haqqında olan hekayədə deyilir ki, insanların meşələri səbəbsiz yerə kəsdiyini görən Kameiram-ev çox kədərlənmişdi. Siz isə bundan sonra haranın yarandığını deyin.`,`Çerrapunçi`,`İnsanların meşələri səbəbsiz yerə kəsdiyinə kədərlənən Kameiram-ev dayanmadan ağlamağa başlayıb. Çerrapunçi dünyada ən çox yağmur düşən yerdir.`)
+  ]
+ }
+ ]
+ }
+
+ ]
+},
+
+
+/* =========================================================
+   FİNAL
+========================================================= */
+{
+name:"Final",
+ rounds:[
+
+ {
+ name:"Bəlli raund",
+ topics:[
+ {
+  name:`Eyni hərflə başlayan heyvan və isim`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Bir mənbədə deyilir ki, Ceydon Ostervolde vurduğu möhtəşəm qolla belə demək olarsa BUNU sındırdı. Nəyi?`,`Aslanın ayağı`),
+   A(`Bunun gedişi zamanı səslənən ittihamlarda Corc Hanterin "Mülki biologiya" kitabından istifadə edildiyi də qeyd edilmişdi.`,`Meymun məhkəməsi`),
+   A(`Trilogiyaya daxil olan BU almandilli əsərin əsas ideyasını itaət, zorakılıq və kor tabeçilik təşkil edir. BU adlı başqa məqalədə 1994, 2006 və 2018 kimi qeydlərə rast gəlmək olar.`,`İt illəri`,`Günter Qrassın "Dansiq trilogiyası"na daxil olan əsəri.`),
+   A(`Deyilənlərə görə BUNU yaxından görməyənə qədər avropalılar məlum canlını "ikibaşlı" adlandırırdılar.`,`Kenqurunun kisəsi`,`Kenqurunun öz balasını kisədə saxlaması məlumdur. Bu canlını uzaqdan görən avropalılar onu ikibaşlı adlandırmışdılar, ta ki, kisəsinin olduğunu və balasını orada saxladığını başa düşənə qədər.`),
+   A(`Sena çayı üzərində yerləşən, BU adı daşıyan əyləncə istirahət məkanının ziyarətçilərindən biri də Klod idi.`,`Qurbağa qəfəsi`,`Klod Monenin həmin istirahət yerinin təsvir edildiyi "Qurbağa qəfəsi" adlı tablosu var.`)
+  ]
+ },
+ {
+  name:`Azərbaycan rəssamlığı`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Mikayıl Abdullayev "Kitabi Dədə Qorqud" dastanı mövzusunda çəkilmiş rəsmlərin müəllifidir. Siz isə onun bu mövzuda neçə rəsm çəkdiyini deyin.`,`12`),
+   A(`Bəhruz Kəngərlinin çəkmiş olduğu "Nuhun qəbri" tablosunun fonunda bu təsvir edilib.`,`Ağrı dağı`),
+   A(`Sakit Məmmədovun əsasını qoyduğu opalizm cərəyanına aid rəsmlərdə rənglərin harmoniyasını görə bilərik. Bir məqalədə cərəyana adını vermiş opal daşları "təbiətin İKS-i" adlandırılıb. İKS-i yunan mənşəli mürəkkəb sözlə deyin.`,`Kaleydoskop`),
+   A(`19-cu əsrdə fəaliyyət göstərmiş bu rəssamımız "Sərdar sarayı"nın Güzgülü zalında asılmış bir çox portretin müəllifidir.`,`Mirzə Qədim İrəvani`,`Sərdar sarayı İrəvanda yerləşirdi.`),
+   A(`Qədim yunan mənşəli qısa sözlə deyin: "göz qamaşdırıcı", "parıldayan".`,`Opal`,`Bir sual əvvəl opal daşlarının opalizm cərəyanına adını verməsi barədə sualla tanış olmuşduq.`)
+  ]
+ },
+ {
+  name:`Yunan mifologiyası və idiomlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`İngilis dilində olduqca mürəkkəb, baş çıxarmağın çətin olduğu şeylərə BU ad verilir. BUNU Dedal Kritin kralı Minos üçün yaratmışdı.`,`Labirint`,`Labirintdə çıxışı tapmaq çətin olduğu üçün bənzər situasiyalarda bu ad istifadə olunur.`),
+   A(`Biznes dünyasında korrupsiyanı aradan qaldırmaq kimi izah olunan idiom BU mifoloji süjet ilə bağlıdır. BU həm də Heraklın sayca 5-ci qoçaqlığıdır.`,`Avgi tövləsini təmizləmək`,`Avgi Herakla tövlənin 1 günə təmizlənəcəyi halda söz verdiyi ödənişi etmədiyinə görə Herakl onunla müharibəyə başlamışdı.`),
+   A(`Barselonanın Eixample rayonunda "La manzana de la discordia" ləqəbli blok var. İspan dilində "manzana" sözü həm "şəhər bloku", həm də BU mənanı verir. Blokun bu ləqəbi almasının səbəbi isə katalan modernizminin dörd fərqli şərhini qarşı-qarşıya qoymasıdır. BUNUN nə olduğunu deyin.`,`Alma`,`Dörd fərqli fikri qarşı-qarşıya qoyduğu üçün bu blok, bir növ, memarlar arasında nifaq almasıdır. "Discord" sözü də ingilis dilində "nifaq" deməkdir.`),
+   A(`BU idiom, son dərəcə diqqətli, detalların fərqinə varan insanları ifadə edir. İdiomun öz adını aldığı mifoloji epizodda tovuzquşu da xatırlanır. Söhbətin hansı idiomdan getdiyini deyin.`,`Arqus gözlü`,`Arqus Panoptes yüz gözə sahib idi. O, Heranı izləməklə vəzifələndirilmişdi. Bəzi gözləri yumulu olanda digərləri açıq qalırdı. Əfsanəyə görə, Arqus öləndə Hera onun gözlərini tovuzquşunun quyruğuna yerləşdirdi.`),
+   A(`Böyük risk və təhlükə ehtiva etməsinə baxmayaraq, olduqca diqqət cəlb edici və göz ardı edilə bilməyən gözəlliyə sahib detalları ingilislər BUNUNLA müqayisə edirlər. Bir "reddit" istifadəçisi "Yatmış gözəlin lənəti" filminin BU idiomun ideyasını tam ehtiva etdiyini demişdi.`,`Siren musiqisi`,`Sirenlər insanabənzər dişi varlıqlardır, cazibədar səsləri ilə tanınırlar. Sirenalar orta əsrlər dövründə xristian incəsənətində qadının təmsil etdiyi təhlükəli cazibənin simvolu kimi istifadə olunmağa davam etmişdir. Sözügedən filmdə də personaj yuxusunda gördüyü qadını öpəndə başına pis hadisə gələcəyini bilə-bilə, yenə də bunu edir.`)
+  ]
+ },
+ {
+  name:`Çoban`,
+  author:`Adil Nəhmətli`,
+  questions:[
+   A(`İncildə yer alan "Çobanlara müjdə" süjetində hadisələr məhz bu şəhər ətrafında cərəyan edir.`,`Betləhəm`,`İsa doğulduqdan sonra mələk Betləhəm ətrafında sürüləri otaran çobanlara yaxınlaşır və onlara müjdəni çatdırır.`),
+   A(`Övliya Çələbi iddia edirdi ki, bu Avropa şəhərinin adı Qüreyş qəbiləsindən olan Abu-Karişin adından yaranıb, lakin daha geniş yayılmış versiyada bir çobanın adı çəkilir.`,`Buxarest`,`Şəhərin adının Bukur adlı rumın çobandan gəldiyinə inanılır.`),
+   A(`Santyaqo əslində keşiş olmaq üçün təhsil alırdı. Lakin dünyanı gəzmək istədiyi üçün valideynlərinə qarşı çıxaraq çobanlığı seçir. Söhbət hansı əsərdən gedir?`,`Kimyagər`),
+   A(`1966-cı il istehsalı Azərbaycan filminin adında Onun dağdan endiyini görmək olar. Eyni ildə onun haqqında "Life" jurnalında məqalə də dərc olunmuşdu.`,`Şirəli Müslümov`,`Film "Şirəli dağdan endi" adlanır. "Həyat" jurnalının verilməsi də bu uzunömürlü çobanı tapmaqda sizə kömək ola bilərdi.`),
+   A(`Onun çoban və ya münəccim olması ilə bağlı rəvayətlər hər iki halda da zamanının əsas hissəsini Selenaya baxaraq keçirməsi ilə əsaslandırılır.`,`Endimion`,`Yunan mifologiyasında gözəl bir çoban və ya ovçu, Ay tanrıçası Selenanın sevgilisidir.`)
+  ]
+ },
+ {
+  name:`Video oyunlarla bağlı mövzu`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`1995-ci ildə ekranlara çıxan filmə əsaslanan "GoldenEye" oyununun adında BU 3 rəqəmə rast gələ bilərik.`,`007`,`"GoldenEye" Ceyms Bond filmidir.`),
+   A(`Google axtarış sistemində BU oyunun adını axtardıqda ekranın aşağısında kub görünür. Kuba basdıqda isə kursor "plus" işarəsi forması alır.`,`Minecraft`),
+   A(`"L.A. Noire" oyununun hazırlanma prosesində hər səhnədə obrazların üz cizgiləri üçün 11 müxtəlif kameradan istifadə olunmuşdu. Siz isə oyunun hansı janrda olduğunu deyin.`,`Detektiv`,`Oyunda oyunçu obrazların üz cizgiləri və reaksiyalarına uyğun qərarlar verməli idi.`),
+   A(`FIFA 23 video oyununda "Wrexham" və "Liverpool" qarşı-qarşıya gəldikdə Rob McElhenney ilə birlikdə ONUN da səsini şərhçi kimi eşidə bilərik.`,`Ryan Reynolds`,`Klubun sahibkarlarından biri olan aktyor.`),
+   A(`Azərbaycanda "AzDimension" studiyası tərəfindən yaradılan və bütün oyun platformalarına çıxan ilk video oyun məhz BUDUR.`,`The Last DeadEnd (Sonuncu dalan)`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Şərtli raund",
+ topics:[
+ {
+  name:`Çəhrayının çalarları`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Bu şəhərin adı ilə assosiasiya olunan çalar öz adını köhnə kərpiclərlə inşa edilmiş Manhetten binalarının gecə görüntüsünə görə alıb.`,`Nyu-York`,`Manhetten bildiyiniz kimi Nyu-Yorkun 5 əsas bölgəsindən biridir.`),
+   A(`Bir kitabda müəllimi tərəfindən sinif otağının küncündə cəzalandırılan şagirdi dostu bu canlıya bənzədir.`,`Flaminqo`,`Dostu tək ayaq üstə dayanmışdı, flaminqo kimi.`),
+   A(`Geyim dizayneri Şarlotte Conson çəhrayının bu çalarını ilk istifadə edənlərdən biri olmuşdu. Şarlotte bir müddət "Mattel" şirkətində işləmişdi.`,`Barbi`),
+   A(`İkinci növ təyini söz birləşməsi ilə deyin. Hər ilin mart-aprel aylarında Vaşinqtonda keçirilən bu adlı festivalın tarixində siyasətçi Yukio Ozakinin verdiyi hədiyyələr xatırlanır.`,`Albalı çiçəyi`,`3000 ədəd albalı ağacı hədiyyəsindən sonra Sakura ilə eyni mahiyyətli "Albalı çiçəyi" festivalının əsası qoyulmuşdu.`),
+   A(`Çəhrayının bir çalarının belə adlanmasına səbəb kimi bir fermerin ona qızının olacağı xəbərinin göndərildiyi məktubun zərfinin rənginə bu adı verməsinə dair fakta rast gələ bilərik.`,`Donuz balası`,`Sayılır: Donuz\nFermer sonradan həmin zərfin rəngini təsvir edərkən "donuz balası rəngində" sözlərini demişdir.`)
+  ]
+ },
+ {
+  name:`Ədəbiyyat üzrə Nobel mükafatı laureatları`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Toxunduğu mövzulara görə qadağan olunan "Xanım Uorrenin peşəsi" əsərinin müəllifi olan bu yazıçı, 1856-cı ildə, Dublində dünyaya gəlib. Həmçinin, O, 2016-cı ilə qədər həm Nobel, həm Oskar alan yeganə şəxs idi.`,`Bernard Şou`,`Qadınlarla bağlı fikirlərinə görə tez-tez tənqid olunan yazıçının ilk əsərlərindən biri də bənzər səbəbdən qadağan olunmuşdu.`),
+   A(`O, öz avtobioqrafiyasında yazır ki, 11 yaşında üçbucağın daxili bucaqlarının cəmini öz-özünə sübut etmişdi.`,`Bertrand Rassel (1950)`,`Baxmayaraq ki, Rassel məşhur riyaziyyatçı idi, ədəbiyyat üzrə Nobel mükafatı almışdı.`),
+   A(`O, Vergilinin ilk eklogunu öz ana dili olan provansal dilinə tərcümə etmişdi. O, həmçinin, 1945-ci ilin laureatı ilə eyni soyadı daşıyır. Söhbətin 1904-cü ildə mükafatlandırılan kimdən getdiyini deyin.`,`Frederik Mistral (1904)`,`Məşhur fransız yazıçı provansal dilinin inkişafında böyük töhvələr vermişdi. 1945-ci ildə mükafata layiq görülən Qabriela Mistralla eyni soyada sahibdir.`),
+   A(`1941-ci ildə Cuzeppe Verdi adına Milan konservatoriyasının professoru seçilən bu şairin soyadı 1831-ci ildə yazılan əsərin personajının adı ilə eynilik daşıyır. O 1959-cu ildə sözügedən mükafatı almışdı.`,`Salvatore Kvazimodo (1959)`,`"Cuzeppe Verdi" və "Milan" sözləri italyan olduğuna işarə idi.`),
+   A(`Türkiyənin İzmir şəhərində, vəkil ailəsində anadan olan O, Londonda olarkən "Nohur" adlı şeirlər məcmuəsi yazır və Tomas Eliotun əsərlərini yunan dilinə tərcümə edir. 1963-cü ildə mükafata qovuşan kimdən söhbət gedir?`,`Georgios Seferis (1963)`,`Məşhur yunan şairi özü də Sorbonda hüquq oxumuşdu.`)
+  ]
+ },
+ {
+  name:`İnsialları M.V.`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Bu idmançı türk vətəndaşlığını aldıqdan sonra adındakı s hərfindən birini azaltmışdı.`,`Melisa Vargas`),
+   A(`Şahzadə qız-Qu quşu, Sirin və Alkonost kədər və sevinc quşları rəsmləri bu polyak əsilli rusun fırçasının məhsuludur.`,`Mixayıl Vrubel`,`Əsərlərində insan-quş motivləri olan Mixayıl Vrubelin soyadı da polyakcadan sərçə deməkdir.`),
+   A(`2022-ci ildə İtaliyanın mədəniyyət naziri Dario Frankesçini onu "İtalyan kinosunun kraliçası" adlandırıb.`,`Monika Vitti`),
+   A(`2012-ci ildə yayımlanan "Lego Star Wars: The Empire Strikes Out" animasiyasında Julian Glover bu personajı səsləndirib.`,`Maximilian Veers`,`1980-ci ildə yayımlanmış "Star Wars: İmperiya cavab zərbəsi endirir" filmində Glover həmin personajı canlandırıb.`),
+   A(`Taylor Swift bir müsahibəsində "Look What You Made Me Do" mahnısını onun "öldürəcəklərim siyahısı"ndan ilhamlandığını demişdi. Onu canlandıran aktrisanı deyin.`,`Meysi Uilyams`,`Söhbət Arya Starkın öldürəcəklərim siyahısından gedir. T. Swift GOT fanatıdır, bir neçə mahnısında GOT-a göndərmələr var.`)
+  ]
+ },
+ {
+  name:`Müharibə və idman`,
+  author:`Nihad Hacızadə`,
+  questions:[
+   A(`Bura Afina şəhərindən 42 195 metr məsafədə yerləşir.`,`Marafon döyüşünün baş verdiyi ərazi`),
+   A(`"Mən niyə mənimlə heç bir problemi olmayan insanları öldürməliyəm" sitatının müəllifini deyin.`,`Məhəmməd Əli`,`O Vyetnam müharibəsindən imtina etmişdi.`),
+   A(`II DM-dən sonra keçirilən və Sülh oyunları kimi tarixə düşən Olimpiya oyunlarının keçirilmə ili və yerini deyin.`,`London, 1948`),
+   A(`Tarixə "Milad atəşkəsi" kimi düşmüş hadisə zamanı 1914-cü ilin dekabrında bu 2 ölkənin əsgərləri pis hava şəraitinə görə silahı yerə qoyub, bir-birlərinə hədiyyələr göndərib və futbol oynamışdı.`,`Almaniya və İngiltərə`),
+   A(`"Çimərlikdən çempionluğa gedən yığma" adlı məqalədə adı çəkilən 2 ölkənin adını deyin.`,`Danimarka və Yuqoslaviya`,`1992-ci il Avropa çempionatında Yuqoslaviya millisi ölkədə gedən müharibəyə görə diskvalifikasiya edildi və yerinə Danimarka millisi dəvət edildi. Çimərliklərdə istirahətdə olan millinin oyunçuları tələsik çağırıldı və sonda çempion oldular.`)
+  ]
+ },
+ {
+  name:`Musiqinin kimyası`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`1833-cü ildə Sankt-Peterburq şəhərində anadan olmuş bu şəxslə bağlı bir məqalə başlığı mövzumuzun adı ilə eynidir.`,`Aleksandr Borodin`),
+   A(`"Black Sabbath", "Judas Priest" kimi musiqi qrupları 1960-cı illərdə kimya sənaye mərkəzi hesab edilən Birmingem şəhərində qurulmuşdur. Bir versiyaya görə bu janrın adının etimologiyası məhz bu şəhərlə əlaqəlidir. Söhbət hansı janrdan gedir?`,`Heavy Metal`),
+   A(`Üçüncü sual! Bir məqalədə 90-cı illərin əvvəlində yayımlanmış bu mahnı depressiyadan əziyyət çəkən şəxslər üçün təbii dərman adlandırılıb.`,`Lithium`),
+   A(`"Götterdämmerung" operasında lənətlənmiş Nibelunqların üzüyü Siqfrid və Brunhilda'ya bədbəxtlik gətirir və axırda onların ölümünə səbəb olur. Siz isə Nibelunqların üzüyünün nədən hazırlandığını deyin.`,`Reyn qızılı`,`Reyn qızılı insanlara bədbəxtlik gətirir. Vaqnerin "Nibelunqların üzüyü" dörtləməsinin 1-ci operası "Reyn qızılı" adlanır və üzüyün hazırlanması və lənətlənməsindən bəhs edir.`),
+   A(`Əsası Mançester şəhərində qurulmuş bu musiqi qrupu 2005-ci ildə yayımladıqları "Galvanize" sinqlı ilə Grammy qazanmışdır.`,`The Chemical Brothers`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Sirli raund",
+ topics:[
+ {
+  name:`Pis qoxu`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Çarlz Darvin "Təbiətşünasın dünya səyahəti" əsərində bunların hərəkətini "kimyəvi müdafiə" adlandırmışdı.`,`Skuns`),
+   A(`İsanın başına tikanlı tac qoyulan zaman ortaya qan və tər qarışımından xoşagəlməz qoxu yayılmışdı. Maraqlıdır ki, bunun az bilinən növündən biri "İsanın tikanlı tacı" adlanır.`,`Durian meyvəsi`),
+   A(`Manuel Blanko Romasanta bir neçə mənbədə Jan-Baptist Qrenuyun prototipi hesab olunur. Eyni iki hərflə başlayan iki sözlə deyin: Maraqlıdır ki, Manuelin anadan olduğu Ourensedə də BUNA rast gəlmək olar. Nəyə?`,`Balıq bazarı`,`"Parfümer"in baş personajı Jan-Baptist Qrenuy ifrat iy verən balıq bazarında piştaxtanın altında dünyaya gəlmişdi.`),
+   A(`Kimyaçı Antuan Jerom Balar 1826-cı ildə BUNU duzlu, bataqlı sulardan ayıraraq təcrid etmişdi. Siz isə yunan dilində deyin: "Pis qoxulu", "Üfunət".`,`Brom`),
+   A(`Ədəbi mətnlərdə pis qoxu tez-tez lənət, günah və natəmizlik simvolu kimi istifadə olunur. Dəqiqliklə deyin: XIV əsrə aid olan nədə bəzi yerlər çürük qoxulu olaraq təsvir edilib?`,`"İlahi komediya"dakı cəhənnəm`,`Dantenin cəhənnəmi və s.`)
+  ]
+ },
+ {
+  name:`Göy qurşağı`,
+  author:`Adil Nəhmətli`,
+  questions:[
+   A(`"Göyqurşağı milləti" ifadəsini Desmond Tutu 1994-cü ildə bu ölkədəki ilk demokratik seçkilərdən sonra işlətmişdi.`,`CAR`,`İfadəni Desmond Tutu aparteid sonrası Nelson Mandelaya istinadən işlədib.`),
+   A(`Adətən ağ, qırmızı və yaşıl rəngli üç hissədən ibarət olan göyqurşağı şirniyyatı Amerika ilə yanaşı məhz bu qeyri-Amerika ölkəsinin mədəniyyətinə də aid edilir.`,`İtaliya`,`Sözügedən rənglər İtaliya bayrağını əmələ gətirir.`),
+   A(`Ölü heyvanların sahiblərini gözlədikləri yerə apardığına inanılan bu anlayış bir versiyaya görə, skandinav mifologiyasına əsaslanır.`,`Göyqurşağı körpüsü`,`Skandinav mifologiyasındakı Bifröst cavaba çıxmaqda kömək ola bilərdi.`),
+   A(`Harold Arlen tərəfindən bəstələnən "Göyqurşağının üzərində" adlı mahnını 1939-cu ilə aid mənbədə bu aktrisa səsləndirir.`,`Cudi Qarland`,`"Oz ölkəsinin sehrbazı" filmində Doroti Qeyl obrazını Cudi Qarland canlandırıb.`),
+   A(`Yozef Koxun çəkdiyi tabloda Tanrının yer üzünə göy qurşağı göndərdiyi görünür. Əsər "Onun şükür qurbangahı" adlanır. Onun kim olduğunu deyin.`,`Nuh`,`Böyük yağıntılar və daşqından sonra Nuh tufandan xilas olduqları üçün Tanrı üçün qurbangah inşa edir. Tanrı da işarə olaraq insanlara göyqurşağı göndərir.`)
+  ]
+ },
+ {
+  name:`İrlandiya ədəbiyyatı`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Üç sözlə deyin. Rəssam İvan Albright bu adlı tablonu elə də gənc olmayan yaşında çəkmişdir.`,`Dorian Qreyin portreti`),
+   A(`Brem Stokerin "Drakula" əsərinin personajı Lucy Westenra'nın səhhəti pisləşir və rəngi ağarmağa başlayır. Siz isə onun nədən əziyyət çəkdiyini eyni hərflə başlayıb-bitən sözlə deyin.`,`Anemiya`,`Qan azlığı`),
+   A(`Dantedi - hər ilin 25 martında italyan şair Dante Aliqyerinin şərəfinə keçirilən bayramdır. Siz isə bu məqalədən mövzumuzla səsləşən hansı adlı məqaləyə keçid olduğunu tapın.`,`Bloomsday`,`15 iyun`),
+   A(`İki sözlə deyin. Kevin Barry'nin hadisələri qış aylarında cərəyan edən romanında, irland satıcı küçədə bunu bir pennyə satır. Bu həmçinin bir uşaq oyununun adıdır.`,`İsti kartof`),
+   A(`Bir məqalədə "İrlandiya Uşaq Ədəbiyyatı"nın məhz BUNDAN başladığı deyilir. BUNU fransız mənşəli bir sözlə deyin.`,`Qarderob`,`K. S. Lewis - Narnia salnamələri`)
+  ]
+ },
+ {
+  name:`Ölülərdən geriyə qalanlar`,
+  author:`Turqut Nəhmətli`,
+  questions:[
+   A(`Təxminən 2500 ilə yaxın müddətdir ki, ONUN dişi Şri-Lankada, Diş Məbədində saxlanılır.`,`Budda`,`Budda yandırılmadan öncə rahiblər onun bir dişini çıxarmış və saxlamışdılar.`),
+   A(`ONUN kəllə sümüyünün bəzi hissələri 161 ildir saxlanılır və hazırda ABŞ Milli Sağlamlıq və Tibb muzeyində sərgilənir.`,`Abraham Linkoln`,`Abraham Linkoln 1865-ci ildə başından vurularaq öldürülmüşdür. Əməliyyat zamanı kəlləsindən güllə çıxarılarkən sümükləri sınmış və Linkolnu xilas etmək mümkün olmamışdır.`),
+   A(`Meksikalı inqilabçı Panço Villa mahir atıcı idi. 1923-də pusquda öldürülən Pançonun məzarı 3 il sonra açılır və onun skeletində məhz BU SÜMÜYÜN olmadığı aşkarlanır.`,`Tətik barmağının sümüyü`,`Panço o qədər məşhur və sərrast atıcı idi ki, o dövrdə bir mağaza sahibi onun tətik barmağına sahib olmaq istəmiş və buna nail olmuşdu.`),
+   A(`1791-ci ildə Londonda anadan olan "kompüterin atası" sayılan bu riyaziyyatçının beyninin yarısı London elm muzeyində saxlanılır.`,`Çarlz Bebbic`),
+   A(`2005-ci ildə Vyanalı bir ailə ONUN qulaq sümüklərinə sahib olduqlarını etiraf etmişdi.`,`Lüdviq van Bethoven`,`1827-ci ildə Vyanada vəfat edən Bethovenin qulaq sümükləri əksik idi.`)
+  ]
+ },
+ {
+  name:`K.d`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Tək zərbəsi ilə on nəfəri yerə sərə bilən Toxmaqvuran onlardan biri idi. Onları mövzuya uyğun adlandırın.`,`Koroğlunun dəliləri`),
+   A(`Aqata Kristi öz həyat yoldaşı kimi bir çox arxeoloqu mövzumuza uyğun belə adlandırmışdı.`,`Keçmişin detektivləri`),
+   A(`1990-cı ildə İraqın hücumu nəticəsində çoxlu bu oğurlandığı üçün, işğal bitdikdən sonra hökumət oğurlanmışları yararsız etmək üçün dərhal yeni əskinas seriyasını dövriyyəyə buraxdı.`,`Küveyt dinarı`),
+   A(`Orizuru sözü Yaponiyada bəzən kənardan təhlükəli görünən amma əslində heç bir təhdid vəd etməyən şəxslərə qarşı istifadə edilir. Siz isə bu sözü dilimizə tərcümə edin.`,`Kağız durna`),
+   A(`2014-cü ildə Brisben şəhərində keçirilmiş G20 Zirvə görüşündə yerli hökumət, "yumşaq güc" siyasətinə diqqət çəkmək üçün qonaq dövlət başçılarına bir jest etmişdir. Bir mənbədə yazılır ki, bu jestin davamı üçün evkalipt ağacları da lazım olacaq. Siz isə bu məlumatların götürüldüyü məqalə başlığını deyin.`,`Koala diplomatiyası`,`Sayılmır: Kenquru diplomatiyası`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Fərdi raund",
+ topics:[
+ {
+  name:`Xalça`,
+  author:`Saday Cəfərov`,
+  questions:[
+   A(`Eyni hərflə başlayan iki sözlə deyin. Digər xalçaçılardan fərqli olaraq Faiq Əhməd daha müasir və fərqli xalçalar hazırlayır. Maraqlıdır ki, onun sərgilərindən biri bu adı daşıyır.`,`Qara qoyun`,`Ağ qarğa ilə mahiyyət etibarilə eyni olan ifadə`),
+   A(`Frans Yants müsahibələrindən birində zarafatla Bakıda olarkən "pleylist"inə Alov qüllələrini və Bakı kristal zalını da əlavə etdiyini qeyd etmişdi. Siz isə onun nəyin müəllifi olduğunu deyin.`,`Bükülmüş xalça`,`Xalça muzeyi üzərindəki bükülmüş xalça örtüyünün müəllifidir Frans Yants. "Memarlıq donmuş musiqidir" ifadəsinə eyham vuran o pleylistinə sualın mətnində qeyd edilən abidələri əlavə etdiyini demişdir.`),
+   A(`Eldar Mikayılzadənin "Kəhkəşan" xalçasında ulduz və planet təsvirləri yer alır. Biri xüsusi olan iki sözlə deyin: Xalça Mərkəzi Asiyada olarkən qısa müddətdə BURADA nümayiş olunub. Harada?`,`Uluqbəy rəsədxanası`),
+   A(`Qısa sözlə deyin. Bir mənbədə orta əsrlər Fransasında üzərində aslan təsvirləri olan xalçalardan danışılarkən hansı toponim xatırlanır.`,`Baye`,`Baye qobeleni`),
+   A(`Fars dilində deyin: "Süd yolu"`,`Kəhkəşan`,`Kəhkəşan xalçasının üzərində planet, ulduz təsvirlərinin olduğunu və Uluqbəy rəsədxanasında nümayiş edildiyini demişdik.`)
+  ]
+ },
+ {
+  name:`Lənətli mövzu`,
+  author:`Adil Nəhmətli`,
+  questions:[
+   A(`Bununla bağlı məqalədə təsadüfi deyil ki, "Karib dənizi quldurları: Dünyanın sonu" filminə də keçid var.`,`Uçan Hollandiyalı`,`Uçan Hollandiyalını görmək qiyamətin əlamətlərindən hesab edilir.`),
+   A(`Bunun sağ üst hissəsində Covanni Braqolinin imzasını görmək olar.`,`"Ağlayan uşaq" rəsmi`,`Rəssam daha çox Bruno Amadio adı ilə tanınır.`),
+   A(`1991-ci il çevriliş cəhdi, 1998-ci il iqtisadi böhran, 2000-ci il Kursk sualtı gəmisi fəlakəti, 2008-ci il rus-gürcü müharibəsi. Sadalanan hadisələr məhz bu ayda baş verib.`,`Avqust`,`Rusiyada bir çox bədbəxt hadisələr avqust ayında baş verdiyi üçün "avqust lənəti" ifadəsi var.`),
+   A(`Saitləri eyni olan sözlə cavab verin. Havaydan özləri ilə qum, qaya kimi şeylər aparanların tutulduğuna inanılan lənət Havay Vulkan milli parkında yaşadığı zənn edilən bu tanrının adı ilə bağlıdır.`,`Pele`,`Eyniadlı vulkanın olması da kömək ola bilərdi.`),
+   A(`Maraqlıdır ki, bir çox ədəbi nümunələrdə o, Musaya bənzər güclərə sahib, israilli olmayan bir peyğəmbər kimi təsvir edilir.`,`Balam`,`Dini mətnlərə görə, Balam israilliləri lənətləmək, günaha çəkmək üçün vəzifələndirilmişdi.`)
+  ]
+ },
+ {
+  name:`1 kimyəvi element ətrafında`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`19-cu əsrin sonu və 20-ci əsrin əvvəlləri CAR-da "almaz hərsliyi" dövrü adlanır. Bu haqda danışılan məqalədə hansı kimyəvi elementin adı tez-tez çəkilir?`,`Karbon`,`Karbon təzyiq altında almaza çevrilir.`),
+   A(`Hadisələri 2384-cü il uzaq gələcəkdə baş verən bu mənbədə insan şüuru və yaddaşı başqa bir bədənə köçürülərək kopyalanır. Söhbətin hansı mənbədən getdiyini tapmağa çalışın.`,`Altered Carbon`),
+   A(`Dendroxronologiya - illik halqalara əsaslanaraq ağacın yaşını müəyyən edən elmi üsuldur. Bundan bəhs edən məqalədə mövzumuza uyğun nə xatırlanır?`,`Radiokarbon tarixləndirmə`,`Sayılır: Carbon dating, C-14 və s.`),
+   A(`İnsan fəaliyyətinin iqlimə verdiyi zərərin ölçüsünü hesablayan indeks bu terminlə ifadə olunur.`,`Karbon ayaq izi`),
+   A(`Saitləri eyni olan 2 sözlə deyin. CAR-lı yazıçı Zakes Mdanın kitabında təzyiq altında olmalarına baxmayaraq yeni formalaşmış yüksək təbəqəli yerli əhaliyə bu ad verilib. Karbonado da təbii bu sayılır.`,`Qara almaz`,`Birinci sualdan bildiniz ki, CAR öz almaz yataqları ilə məşhurdur. Yazıçı həmin kitabında karbonun təzyiq altında məhz almaza çevrilməsi simvolikasına toxunaraq əhalini məhz "qara almaz" adlandırıb.`)
+  ]
+ },
+ {
+  name:`Beyin`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Elmi-fantastikanın mövzularından biri olan iç-içə keçirilmiş bir neçə Dyson kürəsindən ibarət meqastruktur layihə "İKS beyni" adlanır. İKS-i deyin.`,`Matryoşka`),
+   A(`Nasistlərin təqibindən xilas olmaq üçün ABŞ-a mühacirət edən fizik Albert Eynşteyn siyasi dəyişikliklər nəticəsində BUNA əsas nümunə sayılır. Sənaye, təşkilati və coğrafi BUNUN əsas növləridir.`,`Beyin köçü`,`Sayılır: Beyin axını`),
+   A(`İnternet slenqində aşağı keyfiyyətli və ya dəyərsiz hesab edilən rəqəmsal medianı təsvir etmək üçün bu termindən istifadə olunur.`,`Brainrot (Beyin çürüməsi)`),
+   A(`2022-ci ildə Apple TV-də ekranlara çıxmış bu serialın əsas mövzusu insan beyninə yerləşdirilmiş xüsusi çip vasitəsilə ev və iş həyatını bir-birindən ayırmaqdır.`,`Severance`),
+   A(`"Reductio ad absurdum" latın ifadəsi, bir fikrin əksini doğru kimi qəbul edib, bunun absurd nəticəyə apardığını göstərməklə həmin fikri təkzib etmə üsuludur. Bu ifadə haqqında məqalədə bir düşüncə eksperimenti və Lüdviq xatırlanır. Sizə isə Lüdviqin soyadını deyin.`,`Boltsman`,`Boltsmanın beyni`)
+  ]
+ },
+ {
+  name:`"P" ilə başlayan rəssamlıq`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Kompüter qrafikasında təsvirin göstərilə biləcəyi mövcud rənglər toplusu da bu sözlə adlandırılır.`,`Palitra`,`Sayılır: Palet`),
+   A(`Emalatxanada deyil, birbaşa açıq havada, təbiət qoynunda işlənilən rəsm prosesinə bu ad verilir.`,`Plener (Plein air)`),
+   A(`İtalyanca deyin: Bir çox sənətşünas 15-ci əsrdə çəkilmiş bu rəsmi yazın gəlişinə alleqoriya olduğunu bildirir.`,`Primavera (Bahar)`),
+   A(`Anri Russonun rəsmləri qəsdən sadələşdirilmiş təsvirlərlə səciyyələnir və sanki bir uşağın yaradıcılığında görə biləcəyimiz formada olur. Siz isə onun hansı cərəyanın nümayəndəsi olduğunu bütün saitləri eyni olan sözlə deyin.`,`Primitivizm`),
+   A(`Karavaccionun "Qumarbazlar" adlı əsərini infraqırmızı əksetdirmə sayəsində incələyən sənətşünaslar, rəsmdə daha əvvəlcədən dəyişikliklər edildiyi qənaətinə gəlmişdilər. Bu məlumatların götürüldüyü məqalə başlığını deyin.`,`Pentimento`)
+  ]
+ }
+ ]
+ },
+
+ {
+ name:"Xəmsə raundu",
+ topics:[
+ {
+  name:`İrlandiya`,
+  author:`Şükran İbrahimli`,
+  questions:[
+   A(`Plener - açıq havada çəkilən təbiət rəsmlərinə verilən addır. Təsadüfi deyil ki, irland rəssam Nathaniel Hone plener tablolarında BUNDAN da istifadə edib. BUNU əlifbanın qonşu hərfləri ilə başlayan 2 sözlə yazın.`,`Zümrüd yaşılı`,`Sayılma meyarı: Yalnız dəqiq cavablar\nBildiyiniz kimi İrlandiyanı həm də "Zümrüd ada" (Emerald) adlandırırlar. Bunun əsas səbəblərindən biri də adanın yaşıl təbiətidir. Rəssam isə bu tip rəsmlərində yaşılın tonlarından biri olan zümrüddən də tez-tez istifadə edib.`)
+  ]
+ }
+ ]
+ }
+
+ ]
+}
+
+];
+
+
+/* =========================================================
+   THEME — gün / ay animasiyası
+========================================================= */
+
+const themeToggle = document.getElementById("themeToggle");
+const rays = [...document.querySelectorAll(".ray")];
+
+function animateRays(dark){
+  rays.forEach(r => {
+    r.getAnimations().forEach(a => a.cancel());
+    const kf = dark
+      ? [{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]
+      : [{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+    const a = r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish = () => a.cancel();
+  });
+}
+function setTheme(dark, animate){
+  document.body.classList.toggle("dark", dark);
+  try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(err){}
+  themeToggle.setAttribute("aria-label", dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+  if(animate) animateRays(dark);
+}
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem("piksel-theme"); }catch(err){}
+  if(saved === "dark") return setTheme(true,false);
+  if(saved === "light") return setTheme(false,false);
+  setTheme(!!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches),false);
+}
+themeToggle.addEventListener("click", () => setTheme(!document.body.classList.contains("dark"), true));
+initTheme();
+requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add("ready")));
+
+/* Maus işığı */
+document.addEventListener("pointermove", e => {
+  const g = e.target.closest(".glow");
+  if(!g) return;
+  const r = g.getBoundingClientRect();
+  g.style.setProperty("--mx",(e.clientX-r.left)+"px");
+  g.style.setProperty("--my",(e.clientY-r.top)+"px");
+});
+
+
+/* =========================================================
+   BƏYƏNMƏLƏR (mövzu üçün, Firebase)
+   - Hər cihaz/brauzer hər mövzunu yalnız 1 dəfə bəyənə bilər.
+   - Bəyəni geri çəkmək olar. Səhifəni yenilədikdə / günlər sonra
+     qayıdanda bəyənmə vəziyyəti serverdən oxunur və eyni qalır.
+========================================================= */
+function getDeviceId(){
+  let d = "";
+  try{
+    d = localStorage.getItem("piksel-dev") || "";
+    if(!d){
+      d = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now();
+      localStorage.setItem("piksel-dev", d);
+    }
+  }catch(e){ d = d || "dev" + Math.random().toString(36).slice(2) + Date.now(); }
+  return d.replace(/[.#$\[\]\/]/g,"_");
+}
+const DEV = getDeviceId();
+
+let likeCounts = {};
+let myLikes = {};
+let countsRef = null, myRef = null;
+const likeBusy = {};
+
+try{
+  const cfg = {
+    apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",
+    authDomain:"piksel-breyn-rinq.firebaseapp.com",
+    databaseURL:"https://piksel-breyn-rinq-default-rtdb.firebaseio.com",
+    projectId:"piksel-breyn-rinq",
+    storageBucket:"piksel-breyn-rinq.firebasestorage.app",
+    messagingSenderId:"284823608972",
+    appId:"1:284823608972:web:58dfcbcbfde0119affa5a9"
+  };
+  if(!firebase.apps.length) firebase.initializeApp(cfg);
+  const db = firebase.database();
+  countsRef = db.ref("likeCounts/" + PKG_ID);
+  myRef = db.ref("userLikes/" + DEV + "/" + PKG_ID);
+}catch(e){ countsRef = null; myRef = null; }
+
+try{
+  const c = JSON.parse(localStorage.getItem("piksel-likes-" + PKG_ID) || "null");
+  if(c){ likeCounts = c.counts || {}; myLikes = c.mine || {}; }
+}catch(e){}
+
+function saveLikeCache(){
+  try{ localStorage.setItem("piksel-likes-" + PKG_ID, JSON.stringify({counts:likeCounts,mine:myLikes})); }catch(e){}
+}
+
+function updateLikeUI(){
+  document.querySelectorAll(".like-btn").forEach(btn => {
+    const on = !!myLikes[btn.dataset.k];
+    btn.classList.toggle("liked", on);
+    btn.setAttribute("aria-pressed", on);
+    btn.setAttribute("aria-label", on ? "Bəyənməni geri çək" : "Bəyən");
+  });
+  document.querySelectorAll(".like-count").forEach(el => {
+    el.textContent = Math.max(0, likeCounts[el.dataset.k] || 0);
+  });
+}
+
+if(countsRef){
+  countsRef.on("value", snap => { likeCounts = snap.val() || {}; saveLikeCache(); updateLikeUI(); });
+  myRef.on("value", snap => { myLikes = snap.val() || {}; saveLikeCache(); updateLikeUI(); });
+}
+
+async function toggleLike(k){
+  if(likeBusy[k] || !countsRef) return;
+  likeBusy[k] = true;
+
+  const wasLiked = !!myLikes[k];
+  const prevMine = {...myLikes};
+  const prevCounts = {...likeCounts};
+
+  myLikes[k] = !wasLiked;
+  if(!myLikes[k]) delete myLikes[k];
+  likeCounts[k] = Math.max(0, (likeCounts[k] || 0) + (wasLiked ? -1 : 1));
+  updateLikeUI();
+
+  try{
+    const res = await myRef.child(k).transaction(cur => {
+      if(wasLiked) return cur ? null : undefined;
+      return cur ? undefined : true;
+    });
+    if(res.committed){
+      await countsRef.child(k).transaction(c => Math.max(0, (c || 0) + (wasLiked ? -1 : 1)));
+    }
+  }catch(e){
+    myLikes = prevMine;
+    likeCounts = prevCounts;
+    updateLikeUI();
+  }finally{
+    saveLikeCache();
+    likeBusy[k] = false;
+  }
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+const container = document.getElementById("questionsContainer");
+const tourButtonsWrap = document.getElementById("tourButtons");
+const globalBtn = document.getElementById("globalToggleBtn");
+
+let currentTour = 0;
+let allExpanded = false;
+let firstRender = true;
+
+function escapeHTML(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+function formatText(str){ return escapeHTML(str).replace(/\n/g,"<br>"); }
+function plainText(str){ return String(str).replace(/<br\s*\/?>/gi,"\n").trim(); }
+
+function renderTourButtons(){
+  tourButtonsWrap.innerHTML = "";
+  toursData.forEach((tour,idx) => {
+    const btn = document.createElement("button");
+    btn.className = "tour-btn" + (idx === currentTour ? " active" : "");
+    btn.textContent = tour.name;
+    btn.type = "button";
+    btn.addEventListener("click", () => loadTour(idx));
+    tourButtonsWrap.appendChild(btn);
+  });
+}
+
+function loadTour(tourNum){
+  currentTour = tourNum;
+  allExpanded = false;
+  globalBtn.textContent = "Bütün cavabları göstər";
+  document.querySelectorAll(".tour-btn").forEach((btn,idx) => btn.classList.toggle("active", idx === tourNum));
+  renderQuestions();
+  window.scrollTo(0,0);
+}
+
+function topicAuthor(topic){ return topic.author || "Yusifov Zeynal"; }
+
+function renderQuestions(){
+
+  container.innerHTML = "";
+
+  const tour = toursData[currentTour];
+  let k = firstRender ? 4 : 0;
+
+  tour.rounds.forEach((round, ri) => {
+
+    /* Raund adı (Bəlli raund, Şərtli raund və s.) */
+    if(round.name){
+      const roundTitle = document.createElement("div");
+      roundTitle.className = "round-title rise";
+      roundTitle.style.setProperty("--d", (Math.min(k++,9) * 0.1) + "s");
+      roundTitle.textContent = round.name;
+      container.appendChild(roundTitle);
+    }
+
+    round.topics.forEach((topic, ti) => {
+
+      const key = "t" + currentTour + "r" + ri + "p" + ti;
+
+      const card = document.createElement("div");
+      card.className = "q-card glow frame";
+      card.style.setProperty("--i", Math.min(k++,9));
+
+      let html = `<div class="topic-title rise">Mövzu: ${formatText(topic.name)}</div>`;
+
+      topic.questions.forEach((item,qi) => {
+        html += `
+          <div class="q-item rise">
+
+            <div class="q-text" role="button" tabindex="0" aria-expanded="false">
+              <b>${qi + 1}.</b> ${formatText(item.q)}
+            </div>
+
+            <div class="ans-panel">
+              <div class="ans-row"><span class="ans-label">Cavab:</span> ${formatText(item.a)}</div>
+              ${item.c ? `<div class="ans-row"><span class="ans-label">Şərh:</span> ${formatText(item.c)}</div>` : ""}
+            </div>
+
+          </div>`;
+      });
+
+      html += `
+        <div class="topic-author author-row rise">
+          <span><span class="ans-label">Müəllif:</span> ${formatText(topicAuthor(topic))}</span>
+
+          <div class="act-group">
+
+            <div class="like-wrap">
+              <button class="like-btn" type="button" data-k="${key}" aria-pressed="false" aria-label="Bəyən">
+                <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </button>
+              <span class="like-count" data-k="${key}">0</span>
+            </div>
+
+            <button class="copy-btn" type="button" aria-label="Mövzunu kopyala">
+              <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g class="clip-path">
+                  <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </g>
+                <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </button>
+
+          </div>
+        </div>`;
+
+      card.innerHTML = html;
+
+      bindTopicCard(card, topic, key);
+
+      container.appendChild(card);
+    });
+  });
+
+  firstRender = false;
+  updateLikeUI();
+}
+
+
+/* =========================================================
+   SUALA BASANDA CAVAB AÇILIR / BƏYƏN / KOPYALA
+========================================================= */
+
+function toggleItem(item){
+  const open = item.classList.toggle("active");
+  item.querySelector(".q-text").setAttribute("aria-expanded", open);
+}
+
+function buildTopicText(topic){
+
+  let text = `Mövzu: ${topic.name}`;
+
+  topic.questions.forEach((item,qi) => {
+    text += `\n\n${qi + 1}. ${plainText(item.q)}`;
+    text += `\nCavab: ${item.a}`;
+    if(item.c) text += `\nŞərh: ${plainText(item.c)}`;
+  });
+
+  text += `\n\nMüəllif: ${topicAuthor(topic)}`;
+
+  return text;
+}
+
+function bindTopicCard(card, topic, key){
+
+  card.querySelectorAll(".q-text").forEach(t => {
+
+    t.addEventListener("click", e => {
+      if(e.target.closest("a")) return;
+      const sel = window.getSelection && window.getSelection().toString();
+      if(sel) return;
+      toggleItem(t.closest(".q-item"));
+    });
+
+    t.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        toggleItem(t.closest(".q-item"));
+      }
+    });
+  });
+
+  card.querySelector(".like-btn").addEventListener("click", () => toggleLike(key));
+
+  card.querySelector(".copy-btn").addEventListener("click", e => {
+
+    const btn = e.currentTarget;
+    const text = buildTopicText(topic);
+
+    const showCopied = () => {
+      btn.classList.add("copied");
+      clearTimeout(btn._copyTimer);
+      btn._copyTimer = setTimeout(() => btn.classList.remove("copied"), 1600);
+    };
+
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+    }else{
+      fallbackCopy(text, showCopied);
+    }
+  });
+}
+
+function fallbackCopy(text, onDone){
+  const helper = document.createElement("textarea");
+  helper.value = text;
+  helper.style.position = "fixed";
+  helper.style.opacity = "0";
+  document.body.appendChild(helper);
+  helper.select();
+  try{ document.execCommand("copy"); onDone(); }catch(err){}
+  document.body.removeChild(helper);
+}
+
+
+/* =========================================================
+   BÜTÜN CAVABLAR
+========================================================= */
+
+function toggleAllAnswers(){
+
+  allExpanded = !allExpanded;
+
+  document.querySelectorAll(".q-item").forEach(item => {
+    item.classList.toggle("active", allExpanded);
+    item.querySelector(".q-text").setAttribute("aria-expanded", allExpanded);
+  });
+
+  globalBtn.textContent = allExpanded ? "Bütün cavabları gizlə" : "Bütün cavabları göstər";
+}
+
+
+/* START */
+renderTourButtons();
+renderQuestions();
+</script>
+</body>
+</html>
