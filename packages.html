@@ -353,5 +353,21 @@ cardsList.addEventListener("click",e=>{
   setTimeout(()=>{location.href=a.href},300);
 });
 </script>
+  </script>
+  /* Sağ klik, F12, Ctrl+U, Ctrl+S, Ctrl+Shift+I/J blokla */
+document.addEventListener('contextmenu',function(e){e.preventDefault();});
+document.addEventListener('keydown',function(e){
+  if(
+    e.keyCode===123 ||
+    (e.ctrlKey&&e.shiftKey&&e.keyCode===73) ||
+    (e.ctrlKey&&e.shiftKey&&e.keyCode===74) ||
+    (e.ctrlKey&&e.keyCode===85) ||
+    (e.ctrlKey&&e.keyCode===83)
+  ){
+    e.preventDefault();
+    return false;
+  }
+});
+</script>
 </body>
 </html>
