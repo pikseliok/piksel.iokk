@@ -404,11 +404,43 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* ---------- Mövcut Kodların ---------- */
+/* ---------- Əsas Skriptlər ---------- */
 const DAY_QR="https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png";
 const NIGHT_QR="https://cdn.phototourl.com/member/2026-09-26-389276da-ea79-4b24-a3ce-d41009da09e0.png";
 const words=["Sual Paketləri","Taymer","Düymə sistemi","Yarış elanları","Komanda elanları","Oyunçu elanları"];
-// ... digər kodların olduğu kimi qalır
+const changingText=document.getElementById("changingText");
+const qrImage=document.getElementById("qrImage");
+const themeToggle=document.getElementById("themeToggle");
+const rays=[...document.querySelectorAll(".ray")];
+let wordIndex=-1,firstRun=true,typingTimer=null,eraseTimer=null;
+
+/* ---------- Gün / Ay animasiyası ---------- */
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark ?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]
+                  :[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish=()=>a.cancel();
+  });
+}
+
+function setTheme(dark,animate){
+  document.body.classList.toggle("dark",dark);
+  try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}
+  themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  qrImage.src=dark?NIGHT_QR:DAY_QR;
+  if(animate) animateRays(dark);
+}
+
+function initTheme(){
+  let saved=null;
+  try{saved=localStorage.getItem("piksel-theme")}catch(e){}
+  if(saved==="dark") return setTheme(true,false);
+  if(saved==="light") return setTheme(false,false);
+  setTheme(!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false);
+}
+
 themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
 
 /* ---------- Kartlarda maus işığı ---------- */
@@ -420,7 +452,7 @@ document.querySelectorAll(".card").forEach(card=>{
   });
 });
 
-/* ---------- Typewriter (dəyişməyib) ---------- */
+/* ---------- Typewriter ---------- */
 function nextWord(){
   if(firstRun){firstRun=false;wordIndex=0;}
   else{
@@ -429,6 +461,7 @@ function nextWord(){
   }
   typeWord(words[wordIndex]);
 }
+
 function typeWord(word){
   clearTimeout(typingTimer);clearTimeout(eraseTimer);
   changingText.textContent="";
@@ -443,6 +476,7 @@ function typeWord(word){
   }
   typeStep();
 }
+
 function eraseWord(word){
   let i=word.length;
   function eraseStep(){
@@ -460,9 +494,8 @@ function eraseWord(word){
 initTheme();
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 
-/* İlk söz HƏMİŞƏ "Hər şey" olur. */
 setTimeout(()=>{typeWord("Hər şey");firstRun=false;wordIndex=-1;},850);
-  /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
+
 document.querySelectorAll("a.card").forEach(a=>{
   a.addEventListener("click",e=>{
     if(e.ctrlKey||e.metaKey||e.shiftKey) return;
