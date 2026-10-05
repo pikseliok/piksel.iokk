@@ -385,7 +385,30 @@ function initTheme(){
   if(saved==="light") return setTheme(false,false);
   setTheme(!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false);
 }
+<script>
+/* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
 
+document.addEventListener('keydown', function(e) {
+  if (
+    e.keyCode === 123 || // F12
+    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+    (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+    (e.ctrlKey && e.keyCode === 85) || // Ctrl+U
+    (e.ctrlKey && e.keyCode === 83)    // Ctrl+S
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+/* ---------- Mövcut Kodların ---------- */
+const DAY_QR="https://cdn.phototourl.com/member/2026-09-26-5f5084c1-e3f0-45ed-9af3-fb978d27ccf2.png";
+const NIGHT_QR="https://cdn.phototourl.com/member/2026-09-26-389276da-ea79-4b24-a3ce-d41009da09e0.png";
+const words=["Sual Paketləri","Taymer","Düymə sistemi","Yarış elanları","Komanda elanları","Oyunçu elanları"];
+// ... digər kodların olduğu kimi qalır
 themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
 
 /* ---------- Kartlarda maus işığı ---------- */
