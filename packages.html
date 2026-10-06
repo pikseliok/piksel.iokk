@@ -96,13 +96,31 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .pkg-type,.pkg-date{font-size:15px;font-weight:500;line-height:1.3;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 mark.hl{background:var(--mk);color:inherit;font-weight:800;border:2px solid currentColor;border-radius:6px;padding:0 4px;display:inline-block;line-height:1.1}
 
+/* ---------- Paylaş düyməsi (kartın ən sağı) ---------- */
+.share-btn{flex:0 0 auto;margin-left:auto;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;background:var(--mk);color:var(--fg);transition:transform .25s ease,background .3s ease}
+.share-btn svg{width:18px;height:18px;display:block}
+@media (hover:hover){.share-btn:hover{transform:scale(1.12)}}
+.share-btn:active{transform:scale(.88)}
+
+/* ---------- Paylaşma pəncərəsi ---------- */
+.sheet-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,7,44,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.sheet-overlay.open{opacity:1;pointer-events:auto}
+.sheet{width:min(100%,520px);background:var(--grad);color:var(--fg);border-radius:28px 28px 0 0;padding:20px 18px calc(18px + var(--bx));transform:translateY(100%);transition:transform .4s cubic-bezier(.22,.8,.25,1)}
+.sheet-overlay.open .sheet{transform:translateY(0)}
+.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.4px;text-align:center;margin-bottom:8px}
+.sheet-opt{width:100%;height:52px;margin-top:8px;padding:0 16px;border:0;border-radius:16px;background:var(--mk);color:inherit;display:flex;align-items:center;gap:14px;font-size:16px;font-weight:500;cursor:pointer;text-align:left;transition:transform .2s ease}
+.sheet-opt:active{transform:scale(.97)}
+.sheet-opt svg{width:22px;height:22px;flex:0 0 22px}
+.toast{position:fixed;left:50%;bottom:calc(28px + var(--bx));z-index:120;max-width:min(92vw,420px);padding:12px 18px;border-radius:20px;background:var(--grad);color:var(--fg);font-size:14px;font-weight:500;text-align:center;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
 /* ---------- Footer ---------- */
 footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
-.pkg-card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.pkg-card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.share-btn:focus-visible,.sheet-opt:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ---------- TELEFON ≤700px ---------- */
@@ -123,6 +141,8 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   .pkg-icon{width:56px;height:56px;flex-basis:56px;border-radius:14px}
   .pkg-title{font-size:17px;letter-spacing:-.5px}
   .pkg-type,.pkg-date{font-size:9px}
+  .share-btn{width:32px;height:32px}
+  .share-btn svg{width:16px;height:16px}
   footer{min-height:96px;padding:16px 12px;gap:5px}
   .footer-line{font-size:13px}
 }
@@ -142,6 +162,7 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   .pkg-icon{width:50px;height:50px;flex-basis:50px}
   .pkg-title{font-size:15px}
   .pkg-type,.pkg-date{font-size:8px}
+  .share-btn{width:30px;height:30px}
   footer{min-height:88px}
   .footer-line{font-size:11px}
 }
@@ -207,6 +228,34 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
   <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
+
+<!-- Paylaşma pəncərəsi -->
+<div class="sheet-overlay" id="shareOverlay" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-label="Paylaş">
+    <div class="sheet-title">Paylaş</div>
+    <button class="sheet-opt" type="button" data-mode="whatsapp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-5A8.5 8.5 0 1 1 8 19.4L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.4-1.8-1.2-2.2-2.2l.8-.8-1-2L9 9.5z"/></svg>
+      WhatsApp
+    </button>
+    <button class="sheet-opt" type="button" data-mode="instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></svg>
+      Instagram
+    </button>
+    <button class="sheet-opt" type="button" data-mode="other">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+      Digər tətbiqlər
+    </button>
+    <button class="sheet-opt" type="button" data-mode="copy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+      Linki kopyala
+    </button>
+    <button class="sheet-opt" type="button" data-mode="download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0l-4-4m4 4l4-4"/><path d="M5 20h14"/></svg>
+      Şəkli yüklə
+    </button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
@@ -358,17 +407,261 @@ function render(){
         <div class="pkg-title">${highlight(p.title,query)}</div>
         <div class="pkg-type">${t.full}</div>
         <div class="pkg-date">${d}.${m}.${y}</div>
-      </div>`;
+      </div>
+      <button class="share-btn${r}" type="button" data-i="${p.order}" aria-label="Paylaş">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+      </button>`;
     cardsList.appendChild(card);
   });
 }
 render();
   /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
 cardsList.addEventListener("click",e=>{
+  /* Paylaş düyməsi: karta keçid olmasın, paylaşma pəncərəsi açılsın */
+  const sb=e.target.closest(".share-btn");
+  if(sb){
+    e.preventDefault();
+    openShare(+sb.dataset.i);
+    return;
+  }
   const a=e.target.closest("a.pkg-card");
   if(!a||e.ctrlKey||e.metaKey||e.shiftKey) return;
   e.preventDefault();
   setTimeout(()=>{location.href=a.href},300);
+});
+
+
+/* =========================================================
+   PAYLAŞ
+   - Story/status üçün 1080x1920 foto (dizayna uyğun) canvas ilə hazırlanır.
+   - Telefonda sistem paylaşma menyusu açılır (WhatsApp, Instagram, Telegram və s.),
+     şəkil fayl kimi, başlıq + link isə mesaj mətni kimi göndərilir.
+   - Masaüstündə WhatsApp linki açılır, Instagram üçün şəkil yüklənir.
+========================================================= */
+const LOGO="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png";
+const overlay=document.getElementById("shareOverlay");
+const toastEl=document.getElementById("toast");
+let shareIdx=null,sharePromise=null,shareFile=null,toastTimer=null;
+
+function absLink(p){ return new URL(p.link,location.href).href; }
+
+function toast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toastEl.classList.remove("show"),2600);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+function loadImg(src){
+  return new Promise(res=>{
+    const im=new Image();
+    im.crossOrigin="anonymous";
+    im.onload=()=>res(im);
+    im.onerror=()=>res(null);
+    im.src=src;
+  });
+}
+
+function drawCover(ctx,im,x,y,w,h){
+  const s=Math.max(w/im.naturalWidth,h/im.naturalHeight);
+  const dw=im.naturalWidth*s,dh=im.naturalHeight*s;
+  ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+}
+
+function wrapLines(ctx,text,maxW){
+  const words=text.split(" ");
+  const lines=[];
+  let cur="";
+  words.forEach(w=>{
+    const t=cur?cur+" "+w:w;
+    if(ctx.measureText(t).width>maxW&&cur){ lines.push(cur); cur=w; }
+    else cur=t;
+  });
+  if(cur) lines.push(cur);
+  return lines;
+}
+
+function placeholderBox(ctx,x,y,w,h,r,fontPx){
+  const g=ctx.createLinearGradient(x,y,x+w,y+h);
+  g.addColorStop(0,"#001E6F");g.addColorStop(1,"#00072C");
+  ctx.fillStyle=g;
+  roundRect(ctx,x,y,w,h,r);ctx.fill();
+  ctx.fillStyle="#6FA5FC";
+  ctx.font="700 "+fontPx+"px Poppins, sans-serif";
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("π",x+w/2,y+h/2);
+}
+
+async function makeStory(p){
+  const t=TYPES.find(x=>x.key===p.type);
+  const typeText=t.full.replace("Nə Zaman","Nə zaman");
+  const [d1,d2,d3]=[p.date.split("-")[2],p.date.split("-")[1],p.date.split("-")[0]];
+  try{
+    await Promise.all([
+      document.fonts.load('700 88px Poppins'),
+      document.fonts.load('300 48px Poppins')
+    ]);
+  }catch(e){}
+  const [icon,logo]=await Promise.all([loadImg(p.icon),loadImg(LOGO)]);
+
+  const W=1080,H=1920;
+  const c=document.createElement("canvas");
+  c.width=W;c.height=H;
+  const x=c.getContext("2d");
+
+  /* fon */
+  const bg=x.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,"#A9C9FF");bg.addColorStop(1,"#68A5F8");
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+
+  /* yuxarıdakı logo */
+  if(logo){
+    x.save();roundRect(x,483,170,113,113,28);x.clip();
+    drawCover(x,logo,483,170,113,113);
+    x.restore();
+  }else{
+    placeholderBox(x,483,170,113,113,28,64);
+  }
+
+  /* paket kartı */
+  const cg=x.createLinearGradient(0,457,0,1463);
+  cg.addColorStop(0,"#001A6B");cg.addColorStop(1,"#0537A4");
+  x.fillStyle=cg;
+  roundRect(x,103,457,874,1006,72);x.fill();
+
+  /* ikon yeri */
+  if(icon){
+    x.save();roundRect(x,263,500,553,553,100);x.clip();
+    drawCover(x,icon,263,500,553,553);
+    x.restore();
+  }else{
+    placeholderBox(x,263,500,553,553,100,300);
+  }
+
+  /* başlıq (uzun olarsa kiçilir və sətirlərə bölünür) */
+  x.textAlign="center";x.textBaseline="middle";x.fillStyle="#9DC3FF";
+  let size=88,lines=[];
+  for(;size>=52;size-=4){
+    x.font="700 "+size+"px Poppins, sans-serif";
+    lines=wrapLines(x,p.title,826);
+    if(lines.length<=(size>=64?2:3)) break;
+  }
+  const lh=size*1.14,top=1085;
+  lines.forEach((ln,i)=>x.fillText(ln,W/2,top+lh*i+lh/2));
+  const bottom=top+lh*lines.length;
+
+  /* növ və tarix */
+  x.font="300 48px Poppins, sans-serif";
+  x.fillText(typeText,W/2,bottom+53);
+  x.fillText(d1+"."+d2+"."+d3,W/2,bottom+130);
+
+  /* alt yazı */
+  x.fillStyle="#00309A";
+  x.font="700 72px Poppins, sans-serif";
+  x.fillText("πksel-də bax",W/2,1510);
+
+  const blob=await new Promise(res=>c.toBlob(res,"image/png"));
+  if(!blob) return null;
+  const name=(p.link.split("/").pop()||"paket").replace(".html","")||"paket";
+  return new File([blob],name+".png",{type:"image/png"});
+}
+
+function openShare(i){
+  shareIdx=i;
+  shareFile=null;
+  const my=i;
+  sharePromise=makeStory(packages[i]).catch(()=>null);
+  sharePromise.then(f=>{ if(shareIdx===my) shareFile=f; });
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+}
+function closeShare(){
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+}
+overlay.addEventListener("click",e=>{ if(e.target===overlay) closeShare(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeShare(); });
+
+function copyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+  }
+  fallbackCopy(text);
+  return Promise.resolve();
+}
+function fallbackCopy(text){
+  const h=document.createElement("textarea");
+  h.value=text;h.style.position="fixed";h.style.opacity="0";
+  document.body.appendChild(h);h.select();
+  try{document.execCommand("copy")}catch(e){}
+  document.body.removeChild(h);
+}
+function downloadFile(file){
+  const u=URL.createObjectURL(file);
+  const a=document.createElement("a");
+  a.href=u;a.download=file.name;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),4000);
+}
+
+async function doShare(mode){
+  if(shareIdx===null) return;
+  const p=packages[shareIdx];
+  const url=absLink(p);
+  const text=p.title+"\n"+url;
+
+  if(mode==="copy"){
+    copyText(url);
+    toast("Link kopyalandı");
+    closeShare();
+    return;
+  }
+
+  /* şəkil hazırdırsa gözləmədən (istifadəçi toxunuşu itməsin deyə) */
+  const file=shareFile||await sharePromise;
+
+  if(mode==="download"){
+    if(file){ downloadFile(file); toast("Şəkil yükləndi"); }
+    else toast("Şəkil hazırlana bilmədi");
+    closeShare();
+    return;
+  }
+
+  const canFile=!!(file&&navigator.share&&navigator.canShare&&navigator.canShare({files:[file]}));
+
+  if(canFile){
+    if(mode==="instagram") copyText(url);   /* Story-də link stikeri üçün */
+    try{ await navigator.share({files:[file],title:p.title,text:text}); }catch(e){}
+    closeShare();
+    return;
+  }
+
+  /* şəkil paylaşımı dəstəklənmir (əsasən masaüstü) */
+  if(mode==="whatsapp"){
+    window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");
+  }else if(mode==="instagram"){
+    if(file) downloadFile(file);
+    copyText(url);
+    toast("Şəkil yükləndi, link kopyalandı. Instagram-da Story-yə əlavə et.");
+  }else{
+    if(navigator.share){ try{ await navigator.share({title:p.title,text:text}); }catch(e){} }
+    else{ copyText(url); toast("Link kopyalandı"); }
+  }
+  closeShare();
+}
+
+overlay.querySelectorAll(".sheet-opt").forEach(b=>{
+  b.addEventListener("click",()=>doShare(b.dataset.mode));
 });
 </script>
 
