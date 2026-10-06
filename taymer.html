@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
-<title>Taymer - πksel.iok</title>
+<title>πksel - Taymer</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,7 @@
   --dark-bright:#6FA5FC;
   --transition:650ms cubic-bezier(.22,.8,.25,1);
   --red:#ff3b30;
+  --title-size:24px;--body-size:15px;--control-size:15px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -41,30 +42,38 @@ button,a{font:inherit}
 a{color:inherit;text-decoration:none}
 .page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
 
-/* ---------- NAVIGATION (eyni) ---------- */
+/* Giriş animasiyası */
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(22px)}}
+@keyframes themeIconIn{0%{opacity:0;transform:rotate(-80deg) scale(.55)}65%{opacity:1;transform:rotate(12deg) scale(1.12)}100%{opacity:1;transform:rotate(0) scale(1)}}
+.frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.45s}
+.theme-icon.theme-changing{animation:themeIconIn .55s cubic-bezier(.18,.8,.24,1)}
+
+/* ---------- NAVIGATION ---------- */
 .top-nav{
-  height:60px;width:100%;border-radius:40px;padding:0 14px 0 26px;
+  height:50px;width:100%;border-radius:40px;padding:0 52px;
   display:flex;align-items:center;justify-content:center;position:relative;
   background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
   box-shadow:0 10px 28px rgba(0,20,100,.08);
   transition:background var(--transition),box-shadow var(--transition);
 }
 .dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
-.nav-link{position:relative;color:var(--ink);font-size:20px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
 .dark .nav-link{color:var(--dark-ink)}
 .nav-link:hover{transform:translateY(-1px)}
 .nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
 .theme-toggle{
-  position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:38px;height:38px;min-width:38px;padding:0;margin:0;border:0;border-radius:50%;cursor:pointer;
   display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);
   transition:transform .3s ease,background var(--transition),color var(--transition);
 }
 .dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.theme-icon{width:25px;height:25px;display:block}
+.theme-icon{width:24px;height:24px;display:block}
 
 /* ---------- TAYMER KARTI ---------- */
 .card{
@@ -83,16 +92,16 @@ a{color:inherit;text-decoration:none}
 .blur-wrap{transition:filter .4s ease}
 .card.confirming .blur-wrap{filter:blur(7px);pointer-events:none}
 
-.title-sub{text-align:center;font-weight:700;font-size:clamp(14px,2.5vw,17px);line-height:1.3;letter-spacing:-.2px}
-.title-sub2{text-align:center;font-weight:500;font-size:clamp(12px,2vw,15px);margin-bottom:6px}
-.title-main{text-align:center;font-weight:700;font-size:clamp(28px,5vw,40px);letter-spacing:-1px;margin-bottom:22px}
+.title-sub{text-align:center;font-weight:700;font-size:var(--body-size);line-height:1.3;letter-spacing:-.2px}
+.title-sub2{text-align:center;font-weight:500;font-size:var(--body-size);margin-bottom:6px}
+.title-main{text-align:center;font-weight:700;font-size:var(--title-size);letter-spacing:-.7px;margin-bottom:20px}
 
 /* Rejim düymələri */
 .mode-row{display:flex;gap:10px;justify-content:center;margin-bottom:26px;width:100%}
 .mode-btn{
   flex:1;padding:11px 8px;border:2px solid currentColor;border-radius:999px;
   background:transparent;color:inherit;cursor:pointer;text-align:center;
-  font-weight:600;font-size:clamp(11px,2.2vw,14px);letter-spacing:-.1px;
+  font-weight:600;font-size:var(--control-size);letter-spacing:-.1px;
   transition:transform .25s ease,background .25s ease,color .25s ease;
 }
 .mode-btn:hover{transform:translateY(-2px)}
@@ -147,9 +156,9 @@ a{color:inherit;text-decoration:none}
 }
 .dark .confirm-box{background:var(--dark-bg);color:var(--dark-light)}
 .confirm-box.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
-.confirm-text{font-weight:700;font-size:16px;margin-bottom:16px;letter-spacing:-.2px}
+.confirm-text{font-weight:700;font-size:var(--body-size);margin-bottom:14px;letter-spacing:-.2px}
 .confirm-buttons{display:flex;gap:10px;justify-content:center}
-.confirm-btn{flex:1;padding:10px 0;border:none;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;transition:transform .25s ease}
+.confirm-btn{flex:1;padding:10px 0;border:none;border-radius:999px;font-weight:700;font-size:var(--control-size);cursor:pointer;transition:transform .25s ease}
 .confirm-btn:hover{transform:translateY(-2px)}
 .confirm-yes{background:var(--deep);color:var(--dark-light)}
 .dark .confirm-yes{background:var(--dark-light);color:var(--dark-bg)}
@@ -159,44 +168,46 @@ a{color:inherit;text-decoration:none}
 footer{
   width:100%;
   background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  color:var(--ink);min-height:170px;padding:27px 20px 24px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;
+  color:var(--ink);min-height:110px;padding:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;
   transition:background var(--transition),color var(--transition);
 }
 .dark footer{
   background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
   color:var(--dark-ink);
 }
-.footer-line{font-size:15px;line-height:1.45;font-weight:500}
+.footer-line{font-size:var(--body-size);line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
 .nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,
 .mode-btn:focus-visible,.icon-btn:focus-visible,.confirm-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important}
-}
-
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-width:700px){
+  :root{--title-size:17px;--body-size:13px;--control-size:11px}
   .page{width:calc(100vw - 44px);padding-top:11px}
-  .top-nav{height:52px;padding-left:18px;padding-right:60px}
-  .nav-links{gap:34px}
-  .nav-link{font-size:15px}
-  .theme-toggle{width:39px;height:39px;right:8px}
-  .theme-icon{width:22px;height:22px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;min-width:34px;right:6px}
+  .theme-icon{width:21px;height:21px}
   .card{border-radius:29px;margin-top:16px}
-  footer{min-height:185px;padding-left:12px;padding-right:12px}
-  .footer-line{font-size:14px}
+  .mode-row{gap:8px;margin-bottom:20px}
+  .mode-btn{padding:9px 7px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}
 }
 @media (max-width:420px){
+  :root{--title-size:15px;--body-size:11px;--control-size:10px}
   .page{width:calc(100vw - 36px)}
-  .nav-links{gap:25px}
-  .nav-link{font-size:13px}
-  .top-nav{height:48px}
-  .theme-toggle{width:36px;height:36px;right:6px}
+  .nav-links{gap:22px}
+  .nav-link{font-size:11px}
+  .top-nav{height:42px;padding:0 42px}
+  .theme-toggle{width:32px;height:32px;min-width:32px;right:5px}
   .theme-icon{width:20px;height:20px}
   .card{padding:28px 16px 32px}
+  .mode-row{gap:6px;margin-bottom:16px}
+  footer{min-height:88px}
 }
 </style>
 </head>
@@ -204,8 +215,8 @@ footer{
 
 <div class="page">
 
-  <nav class="top-nav" aria-label="Əsas naviqasiya">
-    <div class="nav-links">
+  <nav class="top-nav frame" aria-label="Əsas naviqasiya">
+    <div class="nav-links rise">
       <a class="nav-link" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
@@ -215,8 +226,8 @@ footer{
     </button>
   </nav>
 
-  <main>
-    <div class="card" id="card">
+  <main class="rise">
+    <div class="card frame" id="card">
       <div class="blur-wrap">
         <div class="title-sub">"Nə? Harada? Nə Zaman?"</div>
         <div class="title-sub2">intellektual oyunu üçün</div>
@@ -258,7 +269,7 @@ footer{
   </main>
 </div>
 
-<footer>
+<footer class="frame">
   <div class="footer-line">İntellektuallar üçün hər şey...</div>
 
   <a class="footer-line footer-link"
@@ -292,22 +303,28 @@ footer{
   function moonIcon(){
     return `<path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z" fill="currentColor"/>`;
   }
-  function updateThemeIcon(){
+  function updateThemeIcon(animate){
     const dark = document.body.classList.contains("dark");
     themeIcon.innerHTML = dark ? moonIcon() : sunIcon();
     themeToggle.setAttribute("aria-label", dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+    if(animate){
+      themeIcon.classList.remove("theme-changing");
+      void themeIcon.offsetWidth;
+      themeIcon.classList.add("theme-changing");
+      themeIcon.addEventListener("animationend",()=>themeIcon.classList.remove("theme-changing"),{once:true});
+    }
   }
-  function setTheme(dark){
+  function setTheme(dark,animate=true){
     document.body.classList.toggle("dark", dark);
     try{ localStorage.setItem("piksel-theme", dark ? "dark" : "light"); }catch(e){}
-    updateThemeIcon();
+    updateThemeIcon(animate);
   }
   function initTheme(){
     let saved = null;
     try{ saved = localStorage.getItem("piksel-theme"); }catch(e){}
-    if(saved === "dark") return setTheme(true);
-    if(saved === "light") return setTheme(false);
-    setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    if(saved === "dark") return setTheme(true,false);
+    if(saved === "light") return setTheme(false,false);
+    setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches,false);
   }
   themeToggle.addEventListener("click", () => setTheme(!document.body.classList.contains("dark")));
   initTheme();
