@@ -545,5 +545,29 @@ document.addEventListener("pointermove", function(e){
   buildTicks();
   updateDisplay();
 </script>
+  <script>
+(() => {
+  document.addEventListener("contextmenu", event => {
+    event.preventDefault();
+  }, true);
+
+  document.addEventListener("keydown", event => {
+    const key = event.key.toLowerCase();
+    const modifier = event.ctrlKey || event.metaKey;
+
+    const devTools =
+      key === "f12" ||
+      (modifier && event.shiftKey && ["i", "j", "c", "k"].includes(key));
+
+    const viewSourceOrSave =
+      modifier && !event.shiftKey && ["u", "s"].includes(key);
+
+    if (devTools || viewSourceOrSave) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+})();
+</script>
 </body>
 </html>
