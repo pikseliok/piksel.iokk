@@ -13,8 +13,6 @@
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 <style>
-/* Ölçülər (komp+planşet / telefon / dar telefon):
-   --pt turnir və raund adı 25/19/16 · --pi məlumatlar 18/16/14 · --pr turlar 17/15/13 · --pq sual/cavab mətnləri 18/16/13 */
 :root{
   --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
   --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
@@ -35,14 +33,11 @@ a{color:inherit;text-decoration:none}
 button{font:inherit}
 .page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
 
-/* GİRİŞ ANİMASİYASI: əvvəl çərçivə, sonra içindəkilər */
 .frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
-.round-title.rise{animation-delay:var(--d)}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
-/* Maus ətrafında yumşaq rəng dəyişimi */
 .glow{position:relative;overflow:hidden}
 .glow>*{position:relative;z-index:1}
 .glow::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;
@@ -51,7 +46,6 @@ button{font:inherit}
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){.glow:hover::before{opacity:1}}
 
-/* NAVIGATION */
 .top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
   background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}
 .dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
@@ -73,27 +67,24 @@ body.dark .core{transform:scale(1)}
 body.dark .bite{transform:translate(0,0)}
 body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
-/* MAIN */
 .main-container{width:100%;display:flex;flex-direction:column;gap:14px;position:relative;margin-top:14px;padding-bottom:44px}
 .blur-content{display:flex;flex-direction:column;gap:14px}
 
-/* KARTLAR */
 .info-card,.tours-card,.q-card{width:100%;border-radius:28px;padding:20px 22px;
   background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);
   box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;
   transition:background var(--transition),color var(--transition)}
 .dark .info-card,.dark .tours-card,.dark .q-card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
 
-/* INFO */
 .game-title{font-size:var(--pt);font-weight:700;line-height:1.15;letter-spacing:-.7px;margin-bottom:14px}
+.topic-card .game-title{margin-bottom:0}
 .info-row{font-size:var(--pi);line-height:1.5;margin-bottom:6px;font-weight:400}
 .info-row:last-child{margin-bottom:0}
 .info-label{font-weight:700}
 .info-val{font-weight:400}
-.tours-head{font-size:var(--pi);font-weight:700;margin-bottom:12px}
 
-/* TURLAR */
 .tour-buttons{display:flex;flex-direction:column;gap:8px}
+.tour-group{display:flex;flex-direction:column;gap:0}
 .tour-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:11px 16px;border-radius:16px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:left;
   transition:background .35s ease,color .35s ease,border .35s ease,transform .25s ease,box-shadow .25s ease}
 .dark .tour-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.10)}
@@ -101,35 +92,49 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .dark .tour-btn.active{background:var(--mode-bg-dark);color:var(--dark-light);border-color:rgba(157,195,255,.12);box-shadow:inset 0 0 0 1px rgba(157,195,255,.08),0 5px 14px rgba(0,0,0,.16)}
 .tour-btn:active,.global-toggle-btn:active{transform:scale(.96);transition-duration:.3s}
 
-/* BÜTÜN CAVABLAR */
+/* Tur → raund → mövzu açılış animasiyası */
+.battle-buttons{
+  display:flex;flex-direction:column;gap:7px;
+  padding:0 4px;margin-top:0;
+  max-height:0;opacity:0;overflow:hidden;transform:translateY(-8px);
+  transition:max-height .55s cubic-bezier(.22,.8,.25,1),opacity .4s ease,transform .55s cubic-bezier(.22,.8,.25,1),margin-top .45s ease,padding .45s ease;
+}
+.tour-group.open>.battle-buttons{max-height:4000px;opacity:1;transform:none;margin-top:7px;padding:0 4px 4px}
+.round-group{display:flex;flex-direction:column}
+.round-btn,.battle-btn{
+  width:100%;min-height:40px;padding:8px 12px;border-radius:13px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.14);color:var(--ink);
+  font-size:var(--pr);font-weight:700;line-height:1.25;cursor:pointer;text-align:left;
+  transition:background .35s ease,color .35s ease,transform .25s ease;
+}
+.dark .round-btn,.dark .battle-btn{color:var(--dark-ink);border-color:rgba(0,7,44,.16);background:rgba(0,7,44,.10)}
+.round-btn.active,.battle-btn.active{background:var(--mode-bg-light);color:var(--deep);border-color:transparent}
+.dark .round-btn.active,.dark .battle-btn.active{background:var(--mode-bg-dark);color:var(--dark-light)}
+.round-btn:active,.battle-btn:active{transform:scale(.96)}
+.topic-buttons{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;
+  padding:0 4px;margin-top:0;
+  max-height:0;opacity:0;overflow:hidden;transform:translateY(-8px);
+  transition:max-height .55s cubic-bezier(.22,.8,.25,1),opacity .4s ease,transform .55s cubic-bezier(.22,.8,.25,1),margin-top .45s ease,padding .45s ease;
+}
+.round-group.open>.topic-buttons{max-height:1200px;opacity:1;transform:none;margin-top:7px;padding:0 4px 4px}
+.topic-buttons .battle-btn{font-size:calc(var(--pr) - 1px)}
+
 .global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:12px 16px;border-radius:20px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.10);
   transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease}
 .dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}
 
-/* SUALLAR */
 .questions-container{display:flex;flex-direction:column;gap:14px}
-.round-title{font-size:var(--pt);font-weight:700;color:var(--dark-ink);line-height:1.2;letter-spacing:-.7px;margin:4px 0 0}
-.dark .round-title{color:var(--ink)}
-.topic-title{font-size:var(--pq);font-weight:700;line-height:1.3;letter-spacing:-.3px;margin-bottom:12px}
-.q-item{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.22)}
-.dark .q-item{border-bottom:1px solid rgba(0,7,44,.18)}
-.q-item:last-of-type{margin-bottom:0;padding-bottom:0;border-bottom:none}
 .q-text{font-size:var(--pq);font-weight:400;line-height:1.55;cursor:pointer}
 .q-text b{font-weight:700}
 
-/* CAVAB PANELİ — sualın üzərinə basanda aşağıdan açılır */
-.ans-panel{max-height:0;overflow:hidden;opacity:0;margin-top:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease}
-.q-item.active .ans-panel{max-height:3000px;opacity:1;margin-top:10px}
-.ans-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:6px}
+.ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}
+.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}
+.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:14px;padding-top:12px}
+.ans-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:8px}
 .ans-row:last-child{margin-bottom:0}
 .ans-label{font-weight:700}
 
-/* MÜƏLLİF + BƏYƏN + KOPYALA (mövzu üçün) */
-.topic-author{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.22);font-size:var(--pq);font-weight:400;line-height:1.55}
-.dark .topic-author{border-top:1px solid rgba(0,7,44,.18)}
-.author-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.act-group{flex:0 0 auto;display:flex;align-items:flex-start;gap:8px}
 .like-wrap{display:flex;flex-direction:column;align-items:center}
 .like-btn,.copy-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease}
 .dark .like-btn,.dark .copy-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
@@ -148,17 +153,15 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .like-btn.liked .fill{transform:scale(1);transition:transform .42s cubic-bezier(.34,1.56,.64,1)}
 .like-count{display:block;text-align:center;font-size:12px;font-weight:700;line-height:1;margin-top:4px;min-width:20px}
 
-/* FOOTER */
 footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
-.q-text:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.like-btn:focus-visible,.copy-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.q-text:focus-visible,.like-btn:focus-visible,.copy-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* TELEFON */
 @media (max-width:700px){
   :root{--pt:19px;--pi:16px;--pr:15px;--pq:16px}
   .page{width:calc(100vw - 44px);padding-top:11px}
@@ -173,7 +176,6 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   footer{min-height:96px;padding:16px 12px;gap:5px}
   .footer-line{font-size:13px}
 }
-/* DAR TELEFON */
 @media (max-width:420px){
   :root{--pt:16px;--pi:14px;--pr:13px;--pq:13px}
   .page{width:calc(100vw - 36px)}
@@ -183,19 +185,18 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   .theme-toggle{width:32px;height:32px;right:5px}
   .theme-icon{width:20px;height:20px}
   .info-card,.tours-card,.q-card{padding:14px}
+  .topic-buttons{grid-template-columns:repeat(1,minmax(0,1fr))}
   footer{min-height:88px}
   .footer-line{font-size:11px}
 }
-   /* Mövzu başlığı: ad + müəllif solda, bəyənmə sağda */
-.topic-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+/* Mövzu kartı: ad + müəllif solda, bəyənmə sağda */
+.topic-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .topic-info{min-width:0}
-.topic-head .topic-title{margin-bottom:0}
-.topic-head .topic-author{margin-top:6px;padding-top:0;border-top:none;font-size:12px;font-weight:400;line-height:1.4;opacity:.9}
-.dark .topic-head .topic-author{border-top:none}
+.topic-author{font-size:12px;font-weight:400;line-height:1.4;margin-top:6px;opacity:.9}
 .topic-head .like-wrap{flex:0 0 auto}
 .copy-row{display:flex;justify-content:flex-end}
-@media (max-width:700px){.topic-head .topic-author{font-size:11px}}
-@media (max-width:420px){.topic-head .topic-author{font-size:10px}}
+@media (max-width:700px){.topic-author{font-size:11px}}
+@media (max-width:420px){.topic-author{font-size:10px}}
 </style>
 </head>
 
@@ -243,11 +244,10 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
       </div>
 
       <div class="tours-card glow frame" style="--i:2">
-        <div class="tours-head rise">Tur seçimi</div>
         <div class="tour-buttons rise" id="tourButtons"></div>
       </div>
 
-      <button class="global-toggle-btn frame" style="--i:3" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
+      <button class="global-toggle-btn glow frame" style="--i:3" id="globalToggleBtn" onclick="toggleAllAnswers()">Bütün cavabları göstər</button>
 
       <div class="questions-container" id="questionsContainer"></div>
 
@@ -262,7 +262,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 </footer>
 
 <script>
-   /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
+/* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
@@ -279,6 +279,9 @@ document.addEventListener('keydown', function(e) {
     return false;
   }
 });
+</script>
+
+<script>
 /* Turnirin unikal adı (bəyənmələr bu ada görə saxlanılır) */
 const PKG_ID = "khuamsa";
 
@@ -1208,9 +1211,6 @@ document.addEventListener("pointermove", e => {
 
 /* =========================================================
    BƏYƏNMƏLƏR (mövzu üçün, Firebase)
-   - Hər cihaz/brauzer hər mövzunu yalnız 1 dəfə bəyənə bilər.
-   - Bəyəni geri çəkmək olar. Səhifəni yenilədikdə / günlər sonra
-     qayıdanda bəyənmə vəziyyəti serverdən oxunur və eyni qalır.
 ========================================================= */
 function getDeviceId(){
   let d = "";
@@ -1305,127 +1305,154 @@ async function toggleLike(k){
 
 
 /* =========================================================
-   RENDER
+   TUR → RAUND → MÖVZU DÜYMƏLƏRİ
 ========================================================= */
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function fmt(s){ return esc(s).replace(/\n/g,"<br>"); }
+function plainText(s){ return String(s).replace(/<br\s*\/?>/gi,"\n").trim(); }
+function topicAuthor(topic){ return topic.author || "Yusifov Zeynal"; }
 
-const container = document.getElementById("questionsContainer");
-const tourButtonsWrap = document.getElementById("tourButtons");
-const globalBtn = document.getElementById("globalToggleBtn");
-
-let currentTour = 0;
+let cur = {t:0,r:0,p:0};
 let allExpanded = false;
 let firstRender = true;
 
-function escapeHTML(str){
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function buildTourButtons(){
+  const wrap = document.getElementById("tourButtons");
+  wrap.innerHTML = toursData.map((tour,ti) => `
+    <div class="tour-group" data-t="${ti}">
+      <button class="tour-btn group-btn" type="button" onclick="toggleTourGroup(this)">${esc(tour.name)}</button>
+      <div class="battle-buttons">
+        ${tour.rounds.map((round,ri) => {
+          const topicsHTML = round.topics.map((tp,pi) =>
+            `<button class="battle-btn" type="button" data-key="${ti}-${ri}-${pi}" onclick="loadTopic(${ti},${ri},${pi})">${esc(tp.name)}</button>`
+          ).join("");
+          if(!round.name){
+            return `<div class="round-group open"><div class="topic-buttons">${topicsHTML}</div></div>`;
+          }
+          return `<div class="round-group" data-r="${ri}">
+            <button class="round-btn" type="button" onclick="toggleRoundGroup(this)">${esc(round.name)}</button>
+            <div class="topic-buttons">${topicsHTML}</div>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`).join("");
 }
-function formatText(str){ return escapeHTML(str).replace(/\n/g,"<br>"); }
-function plainText(str){ return String(str).replace(/<br\s*\/?>/gi,"\n").trim(); }
 
-function renderTourButtons(){
-  tourButtonsWrap.innerHTML = "";
-  toursData.forEach((tour,idx) => {
-    const btn = document.createElement("button");
-    btn.className = "tour-btn" + (idx === currentTour ? " active" : "");
-    btn.textContent = tour.name;
-    btn.type = "button";
-    btn.addEventListener("click", () => loadTour(idx));
-    tourButtonsWrap.appendChild(btn);
+function toggleTourGroup(button){
+  const group = button.closest(".tour-group"), open = group.classList.contains("open");
+  document.querySelectorAll(".tour-group").forEach(g => {
+    g.classList.remove("open");
+    g.querySelector(".group-btn").classList.remove("active");
   });
+  if(!open){
+    group.classList.add("open");
+    button.classList.add("active");
+  }
 }
 
-function loadTour(tourNum){
-  currentTour = tourNum;
+function toggleRoundGroup(button){
+  const rg = button.closest(".round-group"), open = rg.classList.contains("open");
+  rg.parentElement.querySelectorAll(".round-group[data-r]").forEach(g => {
+    g.classList.remove("open");
+    g.querySelector(".round-btn").classList.remove("active");
+  });
+  if(!open){
+    rg.classList.add("open");
+    button.classList.add("active");
+  }
+}
+
+function syncButtons(){
+  document.querySelectorAll(".tour-group").forEach(g => {
+    const isCur = Number(g.dataset.t) === cur.t;
+    g.classList.toggle("open", isCur);
+    g.querySelector(".group-btn").classList.toggle("active", isCur);
+    g.querySelectorAll(".round-group[data-r]").forEach(rg => {
+      const isR = isCur && Number(rg.dataset.r) === cur.r;
+      rg.classList.toggle("open", isR);
+      rg.querySelector(".round-btn").classList.toggle("active", isR);
+    });
+  });
+  const key = cur.t + "-" + cur.r + "-" + cur.p;
+  document.querySelectorAll(".battle-btn").forEach(b => b.classList.toggle("active", b.dataset.key === key));
+}
+
+function loadTopic(t,r,p){
+  cur = {t,r,p};
   allExpanded = false;
-  globalBtn.textContent = "Bütün cavabları göstər";
-  document.querySelectorAll(".tour-btn").forEach((btn,idx) => btn.classList.toggle("active", idx === tourNum));
+  document.getElementById("globalToggleBtn").textContent = "Bütün cavabları göstər";
+  syncButtons();
   renderQuestions();
   window.scrollTo(0,0);
 }
 
-function topicAuthor(topic){ return topic.author || "Yusifov Zeynal"; }
 
+/* =========================================================
+   RENDER
+========================================================= */
 function renderQuestions(){
 
+  const container = document.getElementById("questionsContainer");
   container.innerHTML = "";
 
-  const tour = toursData[currentTour];
-  let k = firstRender ? 4 : 0;
+  const topic = toursData[cur.t].rounds[cur.r].topics[cur.p];
+  /* Köhnə bəyənmələr itməsin deyə eyni açar saxlanılıb */
+  const topicKey = "t" + cur.t + "r" + cur.r + "p" + cur.p;
 
-  tour.rounds.forEach((round, ri) => {
+  const head = document.createElement("div");
+  head.className = "info-card topic-card glow frame";
+  head.style.setProperty("--i", firstRender ? 4 : 0);
+  head.innerHTML = `
+    <div class="topic-head">
+      <div class="topic-info">
+        <div class="game-title rise">Mövzu: ${fmt(topic.name)}</div>
+        <div class="topic-author rise">Müəllif: ${fmt(topicAuthor(topic))}</div>
+      </div>
+      <div class="like-wrap rise">
+        <button class="like-btn" type="button" data-k="${topicKey}" aria-pressed="false" aria-label="Bəyən" onclick="toggleLike('${topicKey}')">
+          <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+        <span class="like-count" data-k="${topicKey}">0</span>
+      </div>
+    </div>`;
+  container.appendChild(head);
 
-    if(round.name){
-      const roundTitle = document.createElement("div");
-      roundTitle.className = "round-title rise";
-      roundTitle.style.setProperty("--d", (Math.min(k++,9) * 0.1) + "s");
-      roundTitle.textContent = round.name;
-      container.appendChild(roundTitle);
-    }
+  topic.questions.forEach((item,index) => {
 
-    round.topics.forEach((topic, ti) => {
+    const card = document.createElement("div");
+    card.className = "q-card glow frame";
+    card.id = `q-card-${index}`;
+    card.style.setProperty("--i", (firstRender ? 5 : 1) + Math.min(index, 8));
 
-      const key = "t" + currentTour + "r" + ri + "p" + ti;
+    const commentHTML = item.c
+      ? `<div class="ans-row"><span class="ans-label">Şərh:</span> ${fmt(item.c)}</div>` : "";
 
-      const card = document.createElement("div");
-      card.className = "q-card glow frame";
-      card.style.setProperty("--i", Math.min(k++,9));
+    card.innerHTML = `
+      <div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${index})" onkeydown="qTextKey(event,${index})"><b>${index + 1}.</b> ${fmt(item.q)}</div>
 
-      let html = `
-        <div class="topic-head rise">
-          <div class="topic-info">
-            <div class="topic-title">Mövzu: ${formatText(topic.name)}</div>
-            <div class="topic-author">Müəllif: ${formatText(topicAuthor(topic))}</div>
-          </div>
-          <div class="like-wrap">
-            <button class="like-btn" type="button" data-k="${key}" aria-pressed="false" aria-label="Bəyən">
-              <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-            </button>
-            <span class="like-count" data-k="${key}">0</span>
-          </div>
-        </div>`;
+      <div class="ans-panel">
+        <div class="ans-row"><span class="ans-label">Cavab:</span> ${fmt(item.a)}</div>
+        ${commentHTML}
+        <div class="ans-row copy-row">
+          <button class="copy-btn" type="button" onclick="copyQuestion(${index},this)" aria-label="Sualı kopyala">
+            <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g class="clip-path">
+                <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </g>
+              <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `;
 
-      topic.questions.forEach((item,qi) => {
-        html += `
-          <div class="q-item rise">
-
-            <div class="q-text" role="button" tabindex="0" aria-expanded="false">
-              <b>${qi + 1}.</b> ${formatText(item.q)}
-            </div>
-
-            <div class="ans-panel">
-              <div class="ans-row"><span class="ans-label">Cavab:</span> ${formatText(item.a)}</div>
-              ${item.c ? `<div class="ans-row"><span class="ans-label">Şərh:</span> ${formatText(item.c)}</div>` : ""}
-
-              <div class="ans-row copy-row">
-                <button class="copy-btn" type="button" data-q="${qi}" aria-label="Sualı kopyala">
-                  <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g class="clip-path">
-                      <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
-                      <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    </g>
-                    <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-          </div>`;
-      });
-
-      card.innerHTML = html;
-
-      bindTopicCard(card, topic, key);
-
-      container.appendChild(card);
-    });
+    container.appendChild(card);
   });
 
   firstRender = false;
@@ -1433,13 +1460,40 @@ function renderQuestions(){
 }
 
 
-/* SUALA BASANDA CAVAB AÇILIR / BƏYƏN / KOPYALA */
-
-function toggleItem(item){
-  const open = item.classList.toggle("active");
-  item.querySelector(".q-text").setAttribute("aria-expanded", open);
+/* =========================================================
+   CAVABLAR
+========================================================= */
+function toggleSingleCard(index){
+  const card = document.getElementById(`q-card-${index}`);
+  const open = card.classList.toggle("active");
+  card.querySelector(".q-text").setAttribute("aria-expanded", open);
+}
+function qTextClick(e, index){
+  if(e.target.closest("a")) return;
+  const sel = window.getSelection && window.getSelection().toString();
+  if(sel) return;
+  toggleSingleCard(index);
+}
+function qTextKey(e, index){
+  if(e.key === "Enter" || e.key === " "){
+    e.preventDefault();
+    toggleSingleCard(index);
+  }
+}
+function toggleAllAnswers(){
+  allExpanded = !allExpanded;
+  document.querySelectorAll(".q-card").forEach(card => {
+    card.classList.toggle("active", allExpanded);
+    card.querySelector(".q-text").setAttribute("aria-expanded", allExpanded);
+  });
+  document.getElementById("globalToggleBtn").textContent =
+    allExpanded ? "Bütün cavabları gizlə" : "Bütün cavabları göstər";
 }
 
+
+/* =========================================================
+   KOPYALA
+========================================================= */
 function buildQuestionText(topic, qi){
   const item = topic.questions[qi];
   let text = `${qi + 1}. ${plainText(item.q)}`;
@@ -1449,49 +1503,24 @@ function buildQuestionText(topic, qi){
   return text;
 }
 
-function bindTopicCard(card, topic, key){
+function copyQuestion(index,btn){
+  const topic = toursData[cur.t].rounds[cur.r].topics[cur.p];
+  if(!topic.questions[index]) return;
+  const text = buildQuestionText(topic, index);
 
-  card.querySelectorAll(".q-text").forEach(t => {
+  function showCopied(){
+    btn.classList.add("copied");
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => btn.classList.remove("copied"), 1600);
+  }
 
-    t.addEventListener("click", e => {
-      if(e.target.closest("a")) return;
-      const sel = window.getSelection && window.getSelection().toString();
-      if(sel) return;
-      toggleItem(t.closest(".q-item"));
-    });
-
-    t.addEventListener("keydown", e => {
-      if(e.key === "Enter" || e.key === " "){
-        e.preventDefault();
-        toggleItem(t.closest(".q-item"));
-      }
-    });
-  });
-
-  card.querySelector(".like-btn").addEventListener("click", () => toggleLike(key));
-
-  card.querySelectorAll(".copy-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const qi = Number(btn.dataset.q);
-      if(!topic.questions[qi]) return;
-      const text = buildQuestionText(topic, qi);
-
-      const showCopied = () => {
-        btn.classList.add("copied");
-        clearTimeout(btn._copyTimer);
-        btn._copyTimer = setTimeout(() => btn.classList.remove("copied"), 1600);
-      };
-
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
-      }else{
-        fallbackCopy(text, showCopied);
-      }
-    });
-  });
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+  }else{
+    fallbackCopy(text, showCopied);
+  }
 }
-   
+
 function fallbackCopy(text, onDone){
   const helper = document.createElement("textarea");
   helper.value = text;
@@ -1504,26 +1533,9 @@ function fallbackCopy(text, onDone){
 }
 
 
-/* =========================================================
-   BÜTÜN CAVABLAR
-========================================================= */
-
-function toggleAllAnswers(){
-
-  allExpanded = !allExpanded;
-
-  document.querySelectorAll(".q-item").forEach(item => {
-    item.classList.toggle("active", allExpanded);
-    item.querySelector(".q-text").setAttribute("aria-expanded", allExpanded);
-  });
-
-  globalBtn.textContent = allExpanded ? "Bütün cavabları gizlə" : "Bütün cavabları göstər";
-}
-
-
 /* START */
-renderTourButtons();
-renderQuestions();
+buildTourButtons();
+loadTopic(0,0,0);
 </script>
 </body>
 </html>
