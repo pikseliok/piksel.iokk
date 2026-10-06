@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
-<title>πksel - "Yubiley" turniri</title>
+<title>πksel - Sentyabr Kuboku</title>
 <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -224,19 +224,18 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
     <div class="blur-content">
 
       <div class="info-card glow frame" style="--i:1">
-        <div class="game-title rise">"Yubiley" turniri</div>
-        <div class="info-row rise"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Paradoks İntellektual Oyunlar Klubu</span></div>
-        <div class="info-row rise"><span class="info-label">Redaktor:</span> <span class="info-val">Məmmədli Nurșad</span></div>
-        <div class="info-row rise"><span class="info-label">Müəllif(lər):</span> <span class="info-val">Məmmədli Nurşad, Bəylərov Kamal, Cəfərzadə Yəhya, Məmmədov Şəmil, Vəlili Murad</span></div>
-        <div class="info-row rise"><span class="info-label">Oynadığı tarix:</span> <span class="info-val">30.11.2025</span></div>
-        <div class="info-row rise"><span class="info-label">Əlavə olunduğu tarix:</span> <span class="info-val">01.10.2026</span></div>
+        <div class="game-title rise">"Sentyabr" kuboku</div>
+        <div class="info-row rise"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Breyn Fayt İntellektual Oyunlar Klubu</span></div>
+        <div class="info-row rise"><span class="info-label">Redaktor:</span> <span class="info-val">Məmmədquliyev İsmayıl</span></div>
+        <div class="info-row rise"><span class="info-label">Müəllif(lər):</span> <span class="info-val">Məmmədquliyev İsmayıl</span></div>
+        <div class="info-row rise"><span class="info-label">Oynadığı tarix:</span> <span class="info-val">03.10.2026</span></div>
+        <div class="info-row rise"><span class="info-label">Əlavə olunduğu tarix:</span> <span class="info-val">04.10.2026</span></div>
       </div>
 
       <div class="tours-card glow frame" style="--i:2">
         <div class="tour-buttons rise">
           <button class="tour-btn active" onclick="loadTour(1)">I tur</button>
           <button class="tour-btn" onclick="loadTour(2)">II tur</button>
-          <button class="tour-btn" onclick="loadTour(3)">III tur</button>
         </div>
       </div>
 
@@ -275,59 +274,290 @@ document.addEventListener('keydown', function(e) {
 </script>
 
 <script>
-
 /* Paketin unikal adı (bəyənmələr bu ada görə saxlanılır). Başqa paketdə dəyiş: məs. "diamonds2_3" */
-const PKG_ID = "yubiley_turrniri";
+const PKG_ID = "sentyabr_kuboku";
 
 /* =========================================================
    SUAL MƏLUMATLARI
    Əlavə sahələr: reqImg (rekvizit şəkli), handout (paylama materialı, HTML)
 ========================================================= */
-const toursData = {
-1:[
-{id:1,question:`Bu həftə ABŞ prezidenti D.Tramp yüzlərlə şəxsin qarşısında iki İKSin həyatını əfv etməsi ölkədəki bir çox veqanın etirazına səbəb olub və bu qərar ikiüzlülük adlandırılıb. İKSlə əvəz olunan 2 sözü yazın.`,answer:`Hind toyuğu`,comment:`Hər il noyabr ayının sonlarında Ağ evdə təşkil olunan Şükran günü ziyafətində hind toyuğu yeyilir. Ötən əsrin ortalarından etibarən bir çox ABŞ prezidentinin hind toyuqlarını “əfv etməsi” adət halını almışdır. Veqanlar isə yalnız iki yox, bütün hind toyuqlarının “əfv edilməsini” tələb edirdi.`,author:`Məmmədli Nurşad`},
-{id:2,question:`Türk reper Ekincan Arslan istənilən halda beat’ə ehtiyacının olmadığını, çünki beynində hər zaman İKSin olduğunu deyir. İKSi eyni hərflə başlayıb bitən 1 sözlə yazın.`,answer:`Metronom`,author:`Bəylərov Kamal`},
-{id:3,question:`İkinci Dünya müharibəsi illərində Almaniyanın əks-kəşfiyyat rəisi Vilhelm Kanaris restoranında ofisiant işləmək üçün bir neçə qadını işə götürməyi əmr etmişdi. Əvvəlki cümlədə buraxılmış qısa sözü yazın.`,answer:`Kar`,comment:`Kəşfiyyat rəisinin restoranı alman zabitlərin toplaşdığı əsas yerlərdən idi. Orada edilən məxfi söhbətlərin yayılmaması üçün o, bu yola əl atmışdı.`,author:`Məmmədov Şəmil`},
-{id:4,question:`Bir internet istifadəçisi “Old money” tərzinə üstünlük verənlərin əsasən orta təbəqəyə məxsus olduqlarını və onların sanki BUNU etdiyini deyir. BUNUNLA əvəz olunan biri xarici mənşəli 2 sözü yazın.`,answer:`Zəngin cosplayi`,comment:`Bu internet istifadəçisinə görə maddi vəziyyəti aşağı olan insanlar zəngin kimi görünmək üçün “old money” tərzində geyinməyə üstünlük verirdilər.`,author:`Bəylərov Kamal`},
-{id:5,question:`“True Detective” serialında getdiyi hər obyektdə dəftərinə qeydlər yazan personaja verilən ləqəb ALFAdır. Bir yumoristik animasiyada iqtisadiyyatı iflas edən dövlətdə yaşayan vətəndaşların qapısını hər səhər ALFAnın döydüyü qeyd olunur. ALFAnı 2 sözlə yazın.`,answer:`Vergi məmuru`,criteria:`Vergi işçisi (tərkibində “vergi” olan, məntiqə uyğun cavablar)`,author:`Vəlili Murad`},
-{id:6,question:`Bir saytda qəribə də olsa son zamanlarda yetkinlər arasında İKSin populyarlıq qazandığı deyilir. Satıcıların fikrincə İKS yuxunu yaxşılaşdırır və siqareti atmağa köməklik edir. Orta əsrlərdə İKSin əvəzinə pambıq parçalar və heyvan dərisindən olan kisələrdən istifadə edilirdi. İKSi incə saitli bir sözlə deyin.`,answer:`Əmzik`,author:`Cəfərzadə Yəhya`},
-{id:7,question:`Mövzumuza davam edək. 2016-cı ildə uzun müddətli müalicələrdən sonra dünyasını dəyişən Johan Cruyff’un məzarının üzərinə minlərlə əmzik qoyulmuşdur. Əvvəlki cümlədə iki söz bir sözlə əvəzlənib. Əvəzlənən sözləri yazın.`,answer:`Chupa Chups`,comment:`Chupa Chups brendinin ispan dilindəki mənası “əmmək” deməkdir. 1991-ci ildə siqareti tərgidən Johan Cruyff ömrünün sonuna qədər Chupa Chups yemişdir.`,author:`Bəylərov Kamal`},
-{id:8,question:`George Orwellin “1984” əsərinin oxucusu əsərdəki insanların durmadan izlənildiyinə işarə edərək onların azad cəmiyyətdə yox, sanki ALFAda olduğunu deyir. ALFAnı fəlsəfəyə ilk dəfə gətirənin Jeremy Bentham olduğunu bilərək, cavabı yunan mənşəli sözlə yazın.`,answer:`Panoptikon`,author:`Vəlili Murad`},
-{id:9,question:`“Galatasaray” və “Liverpool” arasında keçən qarşılaşmada şərhçi meydanda olan əzimkar mübarizədən danışarkən oyunu BURAXILMIŞ İKİ SÖZə bənzədir. BURAXILMIŞ İKİ SÖZ haqqında olan məqalələrin birinə 1453-cü ildə rast gələ bilərik. BURAXILMIŞ İKİ SÖZ ilə əvəz etdiyimiz 2-ci növ təyini söz birləşməsini cavab kartlarınıza yazın.`,answer:`İstanbul döyüşü`,author:`Məmmədov Şəmil`},
-{id:10,question:`1501-ci ilin isti yaz günlərinin birində Bakı qalasının mühafizəçilərindən biri uzaqdan gələn ALFAları qırmızı ilana bənzətmişdi. Şah Abbas hakimiyyətə gəldikdən sonra ALFAları 4 yerə ayırdı. ALFAnı eyni iki hərflə başlayan iki sözlə yazın.`,answer:`Səfəvi sərkərdələri`,comment:`Başlarına qızıl çalma bağlayan Səfəvi sərkərdələrini görən mühafizəçilər onları qırmızı ilana bənzətmişdir. Şah Abbas hakimiyyətə gəldikdən sonra orduda köklü islahatlar apararaq sərkərdələri 4 fərqli ixtisasa bölmüşdür.`,author:`Vəlili Murad`},
-{id:11,question:`<b>Diqqət! 11-ci sual.</b> Bir sosial media istifadəçisinin dediyinə görə, elə xalqlar var ki, onları öz torpaqlarında məğlub etmək mümkün deyildir. Həmin xalqlar öz ərazisində döyüşərkən sanki bu mifoloji personaja çevrilirlər. Söhbətin hansı mifoloji personajdan getdiyini yazın.`,answer:`Antey`,comment:`11-ci sualın olması sizi Antey cavabına apara bilərdi, çünki Heraklın 11-ci qəhrəmanlığı Anteyi məğlub etmək idi.`,author:`Cəfərzadə Yəhya`},
-{id:12,question:`Donald Tramp klublararası dünya çempionatı kubokunun Ağ evdə saxlanacağını bildirdikdən sonra çap olunan məqalədə müəllif onu ABŞ-nin ALFA prezidenti adlandırıb. ALFAnın digər adlarından biri isə pika-pikadır. ALFAnı saitləri eyni olan bir sözlə yazın.`,answer:`Sağsağan`,comment:`İngilis mifinə görə sağsağanlar parlaq və qızıl əşyaları oğurlayırdı. İngilis futbol klubu “Chelsea”-nin 2025-ci ildə qazandığı kubok isə ABŞ prezidenti D.Tramp tərəfindən “oğurlanmışdır”.`,author:`Məmmədli Nurşad`}
-],
-2:[
-{id:1,question:`“Birdman” filmində aktyor olan Riqan adlı personaj artıq unudulduğunu, insanların onu çətinliklə xatırladığını deyir və adının yalnız İKSlərdə çəkildiyini qeyd edir. Biz də onun adını İKSdə çəkdik. İKSi bir neçə sözlə yazın.`,answer:`İntellektual oyunlar`,criteria:`Bilik yarışı (dəqiq oyun adları qəbul edilmir)`,author:`Bəylərov Kamal`},
-{id:2,question:`1953-cü ildə Vernon Parton tərəfindən ixtira edilən Alisa şahmatı standart şahmat taxtası ilə oynanılmağı ilə tarixə düşüb. Əvvəlki cümlədə bir söz buraxılıb, buraxılmış sözü yazın.`,answer:`İki`,comment:`“Alisa möcüzələr ölkəsində” əsərinə uşaqlıqda heyran olduğunu qeyd edən V.Parton Alisanın güzgüdən keçib alternativ dünyada şahmat oynamağını bir növ “reallaşdırıb”.`,author:`Məmmədli Nurşad`},
-{id:3,question:`Bir xəbər saytında “TransAstra” şirkətinin yeni ixtirasının həm asteroidləri tuta, həm də Yerin orbitindəki artan tullantıları toplaya biləcəyi deyilir və bu ixtira “kosmik İKS” adlandırılır. “Family Guy” cizgi serialının personajı İKSi istifadə etməyinin müsbət cəhəti kimi rahatlıqla yüksək səslə deyinə bildiyini deyir. İKSi bir mürəkkəb sözlə yazın.`,answer:`Tozsoran`,comment:`Sözü gedən mənbədə bu ixtira orbitdəki tullantıları toplaya bildiyi üçün kosmik tozsorana bənzədilmişdir. İkinci hissədə isə personaj tozsoranın səsi sayəsində rahatca ucadan deyinə bildiyini deyir.`,author:`Bəylərov Kamal`},
-{id:4,question:`Bir yumoristik videoçarxda riskli bir suala məharətlə cavab verən şəxs haqqında onun cavab verərkən özünü məhv edə biləcəyi və sanki onun İKSdə tanqo etdiyi deyilir. Başqa bir mənbədə vətəndaşlarının böyük bir hissəsinin bədən üzvünü itirdiyi Kamboca da İKSə bənzədilir. İKSi istənilən dildə yazın.`,answer:`Mina tarlası`,author:`Cəfərzadə Yəhya`},
-{id:5,reqImg:`https://cdn.phototourl.com/member/2026-09-30-ec65a7bb-91d0-47e3-85a3-a741c4b7483f.jpg`,question:`<b>Rekvizit</b>də gördüyünüz 1947-ci ildə Kopenhagen şəhərinin genişləndirilməsi üçün hazırlanmış İKS planıdır. İKSi tapdınızsa şəhərin kazinolar olan hissəsinə verilən adı 2 sözlə yazın.`,answer:`Çəçələ barmaq`,comment:`Bu plana “Barmaqlar” adı verilmişdi. Dünyanın bir çox ölkəsində olduğu kimi Danimarkada da çəçələ barmaqdan mərc üçün istifadə edirlər.`,author:`Məmmədli Nurşad`},
-{id:6,question:`II Əbdülhəmid Ərəb xəlifəsi ilə şam yeməyi yeyərkən onun əslində saxtakar olduğunu xəlifənin tez-tez İKSdən istifadə etməsindən anlayır. 1571-ci ildə 2-ci Səlimin başçılıq etdiyi ordu ilə döyüşdən sonra Migel de Servantes İKSdən ömürlük istifadə edə bilməmişdir. İKS ilə əvəz etdiyimiz iki sözü yazın.`,answer:`Sol əlindən`,author:`Məmmədli Nurşad`},
-{id:7,question:`Bir filmdə cinayət işinə görə Los-Ancelesdən Alyaskaya gedən polisin insomnia olmasına səbəb kimi İKSlər göstərilir. İKSin oksimoron olduğunu bilərək cavabı 2 sözlə yazın.`,answer:`Bəyaz gecələr`,comment:`Bildiyiniz kimi Şimal qütbünə yaxın bəzi bölgələrdə günəş demək olar ki, batmır. Bu təbiət hadisəsinə də “Bəyaz gecələr” deyilir.`,source:`“Insomnia” filmi`,author:`Bəylərov Kamal`},
-{id:8,question:`<i>(Aparıcı üçün qeyd: Sual oxunmazdan əvvəl oyunçulara orfoqrafik səhv olan cavabların qəbul edilməyəcəyini çatdırsın)</i><br>Bir zarafatda ALFA haqqında danışarkən onu buxarlı lokomotivə bənzədərək deyilir ki, həm müasirlikdən uzaqdır, həm də narahat edici səslər çıxarır. ALFA adlı mənbəmizin 1978-ci ilə aid olduğunu bilərək ALFAnı yazın.`,answer:`Qayınana`,comment:`Yaşlı və deyingən qayınana hərəkətlərinə görə buxarlı lokomotivə bənzədilir. 1978-ci ildə nümayiş etdirilən filmimizin adı “Qaynana” formasında yazılmışdır və bu səhv uzun illər müzakirələrə səbəb olmuşdur.`,author:`Məmmədli Nurşad`},
-{id:9,question:`“Liverpool” və “Manchester City” klubları arasında baş tutan görüşdə Virgil van Dijkın kritik müdaxilələri haqqında danışan şərhçi onu BURAXILMIŞ İKİ SÖZ adlandırır. BURAXILMIŞ İKİ SÖZ haqqında olan məqalədən Xosrov bəy Sultanov, Fətəli xan Xoyski və Səməd bəy Mehmandarov haqqında olan məqalələrə keçid edə bilərik. BURAXILMIŞ İKİ SÖZü qonşu hərflərlə yazın.`,answer:`Müdafiə naziri`,author:`Məmmədli Nurşad`},
-{id:10,question:`Bir mənbədə insanların matriksdə yaşadığı və İKSdə gördüklərinin həqiqəti əks etdirmədiyi deyilir. Bir cizgi serialda işlətdiyi telefonun çox köhnə olduğunu deyən personaj həmin telefonun reklamını İKSdə də görə biləcəklərini qeyd edir. İKS ilə əvəz olunan 2 sözü cavab kartlarınıza yazın.`,answer:`Mağara divarı`,comment:`Birinci hissədə söhbət Platonun mağara alleqoriyasından gedirdi.`,author:`Bəylərov Kamal`},
-{id:11,question:`Şahzadə Diana paparaziləri üstələmək üçün maşından düşdükdən sonra BUNU EDİRDİ. BUNU ETMƏYİ ehtiva edən X haqqında məqalədə “Billie Jean” mahnısı haqqında məqaləyə də keçid vardır. BUNU ETMƏKLƏ əvəz olunan bir neçə sözü cavab kartınıza yazın.`,answer:`Geri-geri yerimək`,comment:`Şahzadə Diana maşından düşdükdən sonra geri-geri yeriyərək kameralardan qaçmağa çalışırdı. İkinci hissədə isə söhbət məşhur “Ay yerişi” rəqsindən gedirdi.`,author:`Bəylərov Kamal`},
-{id:12,question:`David Grossmanın əsərinin qəhrəmanı maraqlıdır ki, İKS zamanı anasının yoxluğunu xatırlayır. Qədim Roma amfiteatrlarında izləyicilərin qəflətən və sürətli şəkildə tamaşalardan çıxmaları üçün planlanan keçidin adı dilimizə İKS kimi tərcümə olunur. İKS ilə əvəz olunan sözü yazın.`,answer:`Qusma`,comment:`“Bir at bara girib” romanında personaj qusanda anasının onun başını tutmasını xatırlayır. 19-cu əsrə qədər hesab edilirdi ki, amfiteatrlarda “qusma otağı” mövcud idi. Daha sonra məlum olmuşdur ki, “vomitorium” sadəcə təcili çıxış qapısına verilən addır.`,author:`Məmmədli Nurşad`}
-],
-3:[
-{id:1,question:`Geoloq Cozef Kirşvinkin irəli sürdüyü hipotezə görə 600 milyon il əvvəl Yer kürəsi tamamilə donub. Alim bu hipotezə İKS dünya adını verib. Yaponiya, Finlandiya, Norveç, İsveç kimi ölkələrdə məşhur olan “Yukigassen” oyununda iştirakçıların əsas silahı İKSdir. İKS ilə əvəzlənən 2 sözü yazın.`,answer:`Qar topu`,author:`Məmmədli Nurşad`},
-{id:2,question:`<b>Duplet</b><br><b>1.</b> Bir mənbədə derbilərdə uğur əldə etmiş komandanın rəhbərlərinin hətta İKSlərə belə müsahibə verdiyi deyilir. İKSi samitlə başlayan 2 sözlə yazın.<br><b>2.</b> Eyni mənbədə derbilərdə məğlub olmuş komandanın rəhbərlərinin hətta stadionu tərk etdiyi deyilir. Eşitdiyiniz cümlədə 2 söz buraxılıb. Həmin sözləri yazın.`,answer:`1. Təhlükəsizlik kamerası<br>2. Arxa qapıdan`,comment:`1-ci hissədə qalib olan komanda rəhbərlərinin hətta təhlükəsizlik kameralarına belə müsahibə verdiyi deyilir. 2-ci hissədə isə kameralardan qaçmaq istəyən klub rəhbərlərinin arxa qapıdan istifadə edərək stadionu tərk etdiklərindən söhbət gedirdi.`,author:`Bəylərov Kamal`},
-{id:3,question:`İnsan azadlığına verdiyi töhfələrə görə seçilən ABŞ İstiqlaliyyət Bəyannaməsində tarixdə ilk dəfə insana BUNU axtarmaq hüququ verilib. Rejissoru Ramiz Əzizbəyli olan filmimizdə baş personaj film ərzində BUNU qafiyələndirməkdə çətinlik çəkir. BUNUNLA əvəz olunan sözü yazın.`,answer:`Xoşbəxtlik`,author:`Məmmədli Nurşad`},
-{id:4,question:`1956-cı ildə Avstraliyada keçirilən Olimpiya oyunlarında SSRİ və Macarıstan arasındakı su polosu oyunu tarixə ən gərgin matç kimi düşüb. Baş verən hadisələrdən sonra matç BURAXILMIŞ İKİ SÖZ adlandırılıb. BURAXILMIŞ İKİ SÖZü James Watkinsin çəkdiyi qorxu janrında olan filmin adında da görə bilərik. BURAXILMIŞ İKİ SÖZü ikinci növ təyini söz birləşməsi ilə yazın.`,answer:`Qan gölü`,author:`Məmmədli Nurşad`},
-{id:5,question:`Bir paradoksa görə, nə qədər BUNU etsəniz də yenə eyni yerə qayıdacaqsınız. Maraqlıdır ki, “Liftçi qız” filmində baş personaj sadəcə 1 dəfə BUNU edir. BUNU etməklə əvəz olunmuş 2 sözü cavab kartlarınıza yazın.`,answer:`Pilləkən qalxmaq`,comment:`Birinci hissədə söhbət Penrouz pilləkəni və ya digər adı ilə desək, pilləkən paradoksundan gedirdi. Liftçi qız kimi işləyən baş personaj isə film boyunca sadəcə bir dəfə pilləkənlə qalxır.`,author:`Bəylərov Kamal`},
-{id:6,reqImg:`https://cdn.phototourl.com/member/2026-09-30-1e118eeb-d8a2-47e4-8476-5b9052116a75.jpg`,question:`<b>Rekvizit</b>də rəqiblərinə hər zaman məzəli atmacalar atan “Family Guy” cizgi serialının İKS küçəsində keçən bir səhnəsi göstərilib. İKSi 2 sözlə cavab kartlarınıza yazın.`,answer:`Looney Tunes`,comment:`Gördüyünüz səhnədə “Looney Tunes” cizgi serialının Koyot və Road Runner olan seriyalarına alüziya etmişdir.`,author:`Bəylərov Kamal`},
-{id:7,question:`<b>Paylama materialı</b>:<br> “Thank you for all. You are amazing.”<br><br>Rekvizitdə bir filmdə yaşlandığına görə məşhurluğu azalan bir xanıma göndərilən ad günü təbrikini görürsünüz. Personajın təbriki gördükdən sonra kədərləndiyini bilərək rekvizitdə etdiyimiz dəyişikliyi bərpa edin.`,answer:`was`,author:`Cəfərzadə Yəhya`},
-{id:8,question:`İkinci Dünya müharibəsi illərində alman hərbçiləri kəşfiyyat məqsədi ilə Böyük Britaniyaya xeyli sayda kəşfiyyatçı göndərib. Həmin kəşfiyyatçılar yaxşı işləsələr də, yerli qayda-qanunları ətraflı bilməmələri onların gizli kimliyini aşkara çıxarıb. Kəşfiyyatçıları ələ verən əsas səbəb isə onların tez-tez İKSdən istifadəsi idi. İKS ilə əvəz olunan bir neçə sözü yazın.`,answer:`Yolun sağ zolağı`,criteria:`Mənaca oxşar cavablar`,author:`Məmmədov Şəmil`},
-{id:9,question:`Verdiyi absurd qərarlarla seçilən Şimali Koreya prezidenti Kim Çen In ötən günlərdə artıq onların da edam edilməsi haqqında yeni fərman imzalayıb. Atatürkün vəfatından sonra onun ən yaxın silahdaşlarından olan Salih Bozok da onların sırasına qoşulub. ONLARLA əvəz edilən bir neçə sözü yazın.`,answer:`İntihar edib sağ qalanlar`,author:`Məmmədli Nurşad`},
-{id:10,question:`Qolodomora aid bir məqalədə aclığın həm əxlaqi, həm fiziki mübarizə olduğu deyilir. Bu dövrdə yazılan məktubda BUNDAN imtina edən valideynlərin uşağından daha tez öldüyü vurğulanır. BUNU qərb mənşəli bir sözlə yazın.`,answer:`Hannibalizm`,author:`Cəfərzadə Yəhya`},
-{id:11,question:`Fridrix Bodenştedt haqqında olan məqalədə bu Azərbaycan şairinə də keçid var. Yazıçı Əlisa Nicatın onun haqqındakı romanı “Gəncəli müdrik” adlanır. Sözü gedən şəxsin adında bir titul olduğunu bilərək yazın.`,answer:`Mirzə Şəfi Vazeh`,author:`Vəlili Murad`},
-{id:12,question:`Bu canlı haqqında danışan bir təbiətşünas onun nərgizgülü ilə oxşar xüsusiyyətlərə malik olduğunu vurğulayır. Biz bu canlını yaxın vaxtlarda çıxan “Reze Arc” anime filminin bir panelində də görə bilərik. Cavabı eyni hərflə başlayan iki sözlə yazın.`,answer:`Kral kəpənəyi`,author:`Vəlili Murad`}
-]
+        const toursData = {
+      1: [
+      {
+        id: 1,
+        question: "Letitia Orşivşi öz muzeyini beynəlxalq sərgilərdə kolleksioner və ooloqlarla əlaqələr qurduqdan sonra yaratmışdı. Bu muzeydə yer alan 17 sm hündürlüyündəki yeganə İKS, bir aborigen turist tərəfindən Orşivşiyə hədiyyə edilib. İKS-i biri qısa olan iki sözlə yazın.",
+        answer: "Emu yumurtası",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Oologiya Ornitologiyanın bir qolu olub, quş yumurtalarını öyrənən elmdir. Rumıniyadakı Vama-Bukovına muzeyi dünyanın ən nəhəng yumurta muzeyi kimi tarixə düşüb. Burada dünyanın, demək olar, hər növündə olan quşların yumurtaları yer alır. Ölçüsünün yumurtaya görə nəhəng olması və aborigen turist də sizi emuya çıxarmalı idi. Yenə də yumurta ilə başladıq.",
+        source: "<a href='https://vamabucovina.ro/documente/patru-personalitati-au-primit-titlul-de-cetatean-de-onoare-al-comunei-vama/' target='_blank'>Link 1</a>, <a href='https://muzeuloului-vama.com/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 2,
+        question: "<b>Paylama materialı:</b> <br><b>***fibian</b><br>Ben 10 çizgi serialında elektrikli ilan balığından ilhamlanaraq yaradılmış bir personajın orijinal adını görürsünüz. Personajın adında 3 hərfi buraxmışıq, sözü bərpa edərək yazın.",
+        answer: "Ampfibian",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Sualda elektrikli ilan balığı deyilmişdi, bu personaj həm balıq kimi üzürdü, həm də uçurdu, yəni həm suda, həm quruda yaşayırdı, elektrik məsələsini bildirmək üçün isə personaj amper və amfibiya sözlərinin birləşməsindən yaranmışdı, belə ki amper elektrik cərəyanı şiddətinin əsas ölçü vahididir və qısaldılmış forması da məhz \"amp\" kimi yazılır.",
+        source: "<a href='https://comicvine.gamespot.com/profile/lowlaville/blog/ben-10-aliens/100180/' target='_blank'>Link 1</a>, <a href='https://ben10.fandom.com/wiki/Ampfibian_(Classic)' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 3,
+        question: "Homerin \"İliada\" əsərində qeyd olunur ki, Patroklun yaralı cəsədi İKS ilə yuyulub. Bir türk serialında personaj mübahisə zamanı günahkar olan şəxsin özünü haqlı çıxarmağa çalışdığını görür və onu İKS-lə müqayisə edir. İKS-i qonşu samitlərlə başlayan iki sözlə yazın.",
+        answer: "Zeytun yağı",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Sualda biz məhz yunan şairi olan Homerin əsərindən danışırdıq, belə ki qədim yunanlarda zeytun yağı həm yaraya məlhəm kimi və təmizlik vasitəsi kimi istifadə olunurdu. Qədimdə olduğu kimi bugün də yunanlar zeytun yağından çox geniş istifadə edir. İkinci tərəfdə isə türk filmi deyilmişdi, burada \"Zeytin yağı gibi üste çıkmak\" frazasına göndərmə var idi.",
+        source: "<a href='https://www.julianjaynes.org/books/the-iliad-book-xviii/' target='_blank'>Link 1</a>, <a href='https://maa.missouri.edu/education/museum-in-30-objects/strigil' target='_blank'>Link 2</a>, <a href='https://youtube.com/shorts/BSy3rdqSlx8?si=AUIvh24BD9EUCSgm' target='_blank'>Link 3</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 4,
+        question: "Donald Merfi 1972-ci ildə özünü təyyarə qaçaqçısı Den Kuper kimi qələmə vermək üçün hətta İKS-lər də hazırlamışdı. ABŞ qanunvericiliyinə görə, İKS-ə yalnız teatr, televiziya və reklam layihələri daxilində birüzlü və fərqli ölçüdə olması şərtilə icazə verilir. İKS-i birinci növ təyini söz birləşməsi ilə yazın.",
+        answer: "Saxta pul",
+        criteria: "Saxta əskinas",
+        comment: "D.B Kuper adı ilə məşhur olan Den Kuper 1971-ci ildə bomba ilə təyyarəyə minərək sərnişinlərin həyatı üçün 200.000 dollar fidyə alaraq sonra təyyarəni qaçırmış və paraşütlə tullanaraq yoxa çıxmışdı. FBI ona təqdim etdiyi 200.000 dolların hər birinin seriya nömrəsini çıxarmış və əhaliyə məlumat vermişdi. Özünü Den Kuper kimi təqdim edən Donald Merfi isə hətta həmin seriya nömrələrin eyni olduğu saxta pullar da hazırlamışdı, çünki FBI vizual görünüşdsn çox xüsusilə seriya nömrələri üzərində axtarışda idi. ABŞ-də saxta pulların istifadəsinə yalnız teatr, kino, reklam layihələri daxilində icazə verilir, ancaq bunun şərtlərinə də birüzlü və orijinaldan fərqli ölçüdə olması daxildir.",
+        source: "<a href='https://people.com/fbi-files-db-cooper-case-reveal-strange-new-clues-11766872' target='_blank'>Link 1</a>, <a href='https://www.govinfo.gov/content/pkg/USCODE-2022-title18/html/USCODE-2022-title18-partI-chap25-sec504.htm' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 5,
+        question: "Süni intellektin faydaları haqqında olan bir yazıda zəka, təhsil və təcrübədən asılı olmayaraq hər kəsin eyni optimal nəticələr əldə edə biləcəyi qeyd edilir. Bu zaman süni intellekt İKS ilə müqayisə olunur. İKS XIX əsrdə ixtira edilib. İKS-i biri xüsusi olan iki sözlə yazın.",
+        answer: "Kolt tapançası",
+        criteria: "Kolt revolveri",
+        comment: "Sualda insanların zəka, təhsil və təcrübədən asılı olmayaraq eyni nəticələri əldə edəcəyi deyilmişdi ki, bu da süni intellektin insanları bərabərləşdirməsinə işarə idi. Palkovnik Samuel Kolt öz revolverini ixtira etdikdən sonra o məşhur sitat ortaya çıxmışdı:\"Tanrı insanları fərqli yaratdı, polkovnik Kolt onları bərabərləşdirdi\"",
+        source: "<a href='https://lnkd.in/p/dmXt-h2U' target='_blank'>Link 1</a>, <a href='https://www.colt.com/timeline/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 6,
+        question: "Ötən əsrin 30-cu illərində Pikton-Turbervil, Mahatma Qandi və Lord İrvin arasında əldə edilən qarşılıqlı razılaşmanı dəstəkləyirdi. Bir çıxışında Turbervil qeyd edir ki, hətta bu məşhur sitatın ardında da iki güclü insan üz-üzə dayandıqda, dünyanın iki ucundan gəlsələr belə, sərhədin, nəsilin və doğum yerinin fərqi olmaması qeyd edilir. Siz isə sözügedən sitatın müəllifini yazın.",
+        answer: "Redyard Kiplinq",
+        criteria: "Kiplinq",
+        comment: "1931-ci ildə Qandi və İrvin imzalanan paktdan sonra artıq atəşkəs baş tutmuş və qarşılıqlı razılaşmalar edilmişdi. Bu siyasəti dsətəkləyən Turbervil qeyd edir ki, qarşılıqlı güzəştlərə getmək lazımdır, Britaniya vədlərinə əməl etməli, Hindistan isə qaydaları pozmamalıdır, beləliklə birlik əldə edilə bilər. Hər kəs məşhur \"Şərq şərqdir, qərb də qərb\" sitatının birinci tərəfini işlədir, \"bəs bu sitatın ardını niyə demirsiz?\" sualını verir və sitatı tam formada işlədir. Redyard Kiplinq \"Şərq şərqdir, qərb də qərb, onlar heç vaxt bir yerə gəlməyəcək\" ifadəsini \"Şərq və qərbin balladası\" poemasında işlətmişdi. Britaniya qərb, Hindistan isə şərq ölkələri hesab olunur. Həmçinin sualda deyilən dünyanın iki ucundan da gəlsələr ifadəsi sizə kömək ola bilərdi. Kiplinq özü də Hindistanda anadan olmuş ingilisdir.",
+        source: "<a href='https://api.parliament.uk/historic-hansard/commons/1931/mar/12/india' target='_blank'>Link 1</a>, <a href='https://www.kiplingsociety.co.uk/poem/poems_eastwest.htm' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 7,
+        question: "<b>Blitz:</b><br><b>1</b>. Bir çox fars tarixçiləri yazır ki, azərbaycanlılar XI əsrdən sonra BİRİNCİNİ ETDİ. BİRİNCİNİ ETMƏKlə əvəz olunmuş düzəltmə sözü yazın.<br><b>2</b>. İndoneziyalıların İKİNCİNİ ETMƏSİ barədə olan mənbədə XIII–XIV əsrlərdə Həzrəmovt bölgəsindən gələn tacirlərdən bəhs olunur. İKİNCİNİ ETMƏKlə əvəz olunmuş düzəltmə sözü yazın.<br><b>3</b>. Amerikan hindularının məhv olma səbəbi haqqında danışılan məqalədə onların ÜÇÜNCÜNÜ EDƏ bilməməsindən danışılır. ÜÇÜNCÜNÜ ETMƏKlə əvəz olunmuş düzəltmə sözü yazın.",
+        answer: "Türkləşmək, İslamlaşmaq, Müasirləşmək",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Birinci mini-sualda bildirilir ki, farslı tarixçilər azərbaycanlıların tarixini ərəb-fars olması ilə əlaqələndirir və yalnız səlcuqların gəlişindən sonra türkləşdiyini qeyd edir. İkinci mini-sualda söhbət orta əsrlərə aid Ərəbistan bölgəsi olan Həzrəmovtdan gedirdi, elə adından da ərəb adı olduğunu bilmək olardı, İndoneziya əhalisi də müsəlmandır. Üçüncü sualda isə qəbilə şəklində yaşayan qızıldərililərin müasirləşə bilməyərək ayaq uydurmamasından söhbət gedirdi, hansı ki bu onların müxtəlif səbəblərdən məhvinə gətirib çıxardı. Blitzimiz Əli bəy Hüseynzadənin \"Türkləşmək, İslamlaşmaq və Müasirləşmək\" sitatına həsr olunur.",
+        source: "<a href='https://www.iranicaonline.org/articles/iran-i-lands-of-iran/' target='_blank'>Link 1</a>, <a href='https://www.iranicaonline.org/articles/southeast-asia-ii/' target='_blank'>Link 2</a>, <a href='https://resources.finalsite.net/images/v1719859582/wardlaw/nh2sjwpqlcdj1qyuvg4q/CPUSHSummerAssignment2024.pdf' target='_blank'>Link 3</a> (səhifə 9)",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 8,
+        question: "Türkiyənin Avropa hissəsində yerləşən və daxilində hündür məscidin də olduğu Böyük Validə karvansarayı dəniz səviyyəsindən 55 metr yüksəklikdə yerləşir. Bir mənbədə bu karvansaraya TETA adı verilib. TETA-nı üç sözlə yazın.",
+        answer: "İstanbulun səkkizinci təpəsi",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Sualda Türkiyənin Avropası sizi İstanbula çıxara bilərdi, bildiyimiz kimi İstanbul yeddi təpədən ibarətdir və hər təpə də dəniz səviyyəsindən müəyyən qədər yüksəklikdə yerləşdiyi kimi həm də özlüyündə bir məscidi var. Bu səbəbdən \"Sabah\" qəzeti bu karvansaranı \"İstanbulun səkkizinci təpəsi\" adlandırmışdı. Sualda da bu karvansarayın yüksəklikdə yerləşdiyi və daxilində hündür məscid olduğu deyilmişdi. Teta yunan əlifbasında səkkizinci hərfdir, sual da səkkizinci sual idi.",
+        source: "<a href='https://darulfunun.org.tr/buyuk-valide-han-iranlilar-camiinde-bir-matem-aksami/' target='_blank'>Link 1</a>, <a href='https://www.sabah.com.tr/pazar/2015/11/15/istanbulun-sekizinci-tepesi' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 9,
+        question: "<b>QARA QUTU:</b><br><i>(Aparıcı üçün qeyd: Qara qutu aparıcının sol cibidir)</i><br>QARA QUTUDAKI nəinki mifologiyada, hətta əksər xalqların mədəniyyət və ənənələrində həm doğum, həm də ölümü simvolizə edir. Koko Şanelin istifadə etdiyi əksər boyunbağı və lentlərdə QARA QUTUDAKI da mövcud idi. QARA QUTUDAKInı yazın.",
+        answer: "Qayçı",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Moiralar insanın doğulduğu anda onun həyat taleyini müəyyənləşdirirdilər. Klotho insanın həyat ipini əyirir, yəni həyatın başlanğıcını təmsil edirdi. Mənbələrdə Moiraların insanın doğumunda meydana çıxdığı və onun gələcək həyatını müəyyən etdiyi qeyd olunur. Atropos isə həmin həyat ipinin uzunluğunu müəyyənləşdirən digər bacılardan sonra onu kəsirdi. Bir çox ölkələrdə uşaq doğulanda göbək bağı xüsusi qayçı ilə kəsilir, öləndə də kəfənin kəsilməsi, yaxud güzgü ilə bərabər ağzı açıq qayçı qoyulması ənənələri yəqin ki hər kəsə məlumdur. Həmçinin qayçı modanın da simvoludur, bu səbəbdən Koko Şanel onu üzərində gəzdirirdi.",
+        source: "<a href='https://www.theoi.com/Daimon/Moirai.html' target='_blank'>Link 1</a>, J. E. CIRLOT - A DICTIONARY OF SYMBOLS, səhifə 280: <a href='https://www.aboutpsyche.com/_media/books_and_literature/dictionary_of_symbols/a_dictionary_of_symbols_j._e._cirlot_routledge_2nd_edition_1971_.pdf' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 10,
+        question: "Florida ştatında peyda olan 3.66 metr uzunluğundakı alliqator yaşadığı ərazidə digər həmnövləri ilə döyüşürdü. Bu hadisələrin şahidi olan İKS klubunun üzvləri alliqatora İQREK ləqəbini qoyublar. İKS İQREK-dən 2 hərf qısadır. İKS və İQREK-i yazın.",
+        answer: "Qolf, Qoliaf",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Florida ştatında 1200-dən çox qolf meydançası yer alır və qeyri-rəsmi olaraq Florida ABŞ-in \"Qolf paytaxtı\" adlandırılır. Həmçinin bildiyimiz kimi alliqatorlar gölməçə, çay, bir sözlə rütubətli əraziləri sevirlər, qolf meydançalarında bu kimi gölməçə, bataqlıq və su anbarları olduğundan elə timsahlar kimi alliqatorlar da burada çox saydadır. Qolf klubunun üzvləri 3.66 metr uzunluğunda olan bir alliqatorun digər alliqatorlara meydan oxuyub qovmasından sonra ona ad seçmək üçün səsvermə edirlər və sonda elə nəhəng ölçüləri olan və bütöv ölkəyə meydan oxuyan \"Qoliaf\" adını seçirlər. Həmçinin həmin meydançanın dəliklərindən biri də bu nəhəng alliqatorun adını daşıyır.",
+        source: "<a href='https://www.theguardian.com/world/2015/mar/27/goliath-florida-alligator-golf-course' target='_blank'>Link 1</a>, <a href='https://www.cbsnews.com/miami/news/gators-get-into-brawl-on-florida-golf-course/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 11,
+        question: "Sualda İKS-lə qısa bir söz əvəz olunub.<br>Qaret Beylın çıxdığı matçlarda adi vəziyyətlərdə belə ağır zədələr alması barədə danışan məşhur bir qəzet, maraqlıdır ki, bu məqaləsinə \"Cənab İKS\" başlığını seçib. Daha az məşhur olan folklor nümunələrində BU İKS-də yox, sandıqda, atda və göyərçindədir. BU-nu iki sözlə yazın.",
+        answer: "Divin canı",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Qaret Beylin çıxdığı matçlarda tez-tez ağır zədələnməsini sümüklərinin həssas olması ilə ələqəndirən Real Madrid azarkeşləri Beylı \"Cənab Şüşə\" adlandırmışdılar. Maraqlıdır ki, güzgü mənasına gələn \"Mirror\" qəzeti də bu mənfi ləqəbi başlıq kimi seçmişdi. İkinci tərəfdə isə folklorumuzda divin canının yalnız şüşədə yox, müxtəlif nağıllarımıza əsasən sandıqda, göyərçində, atda da olduğundan gedirdi. Elə Məlikməmməd nağılında şüşənin qırılması yox, məhz göyərçinin öldürülməsindən sonra div ölmüşdü.",
+        source: "<a href='https://www.mirror.co.uk/sport/football/news/gareth-bale-earns-new-nickname-13820196' target='_blank'>Link</a>, İlkin Rüstəmzadə. Azərbaycan nağıllarının süjet göstəricisi. Bakı, «Elm və təhsil», 2013",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 12,
+        question: "Təbiətşünas Sidni Cekson quşlara qarşı o qədər maraqlı idi ki, onların hər hərəkətini mənimsəmiş və öz artikulyativ bacarıqlarını da inkişaf etdirmişdi. Bəzən isə bu bacarığından istifadə edərək şoular verir və bəzi insanlar onun quşlarla danışdığını düşünürdü. Əslində isə Cekson həvəskar bir İKS idi. İKS-i latın mənşəli sözlə yazın.",
+        answer: "Ventriloq",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Ornitoloq olan Cekson uşaqlıqdan quşlara o qədər maraqlı idi ki, hətta onların çıxardığı səsi də eynilə çıxara bilirdi. Bu səs bacarığı vasitəsilə o səs tellərini elə inkişaf etdirmişdi ki, hətta ventriloqluq da edə bilirdi. Bu bacarığı ilə şoular göstərərək sanki quşlarla danışmış kimi rola girirdi.",
+        source: "<a href='https://adb.anu.edu.au/biography/jackson-sidney-william-6815' target='_blank'>Link</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 13,
+        question: "Xeyirxah əməlləri ilə seçilən Osmanlı sultanı I Muradın dövründə baş vəzir hökmdarın ən yaxın köməkçisi oldu və digər ikinci dərəcəli vəzirlər isə baş vəzir və sultanın əhali barədə bir-birinə ötürdükləri məlumatlardan xəbərsiz oldular. Belə demək olarsa, hər iki mənada I Muradın BURAXILMIŞ SÖZLƏR. BURAXILMIŞ SÖZLƏRİ tərkibində əksmənalı sözlər olan bir neçə sözlə yazın.",
+        answer: "Sağ əlinin verdiyini sol əli bilmədi",
+        criteria: "Sağ əlinin verdiyini sol əli görmədi",
+        comment: "I Muradın qərarı ilə ölkədə kasıblar üçün isti yemək paylayan yerlər açılmış, vəqf torpaqları genişləndirilmiş, əhalisi üçün mədrəsələr və imarətlər tikdirmişdir. Onun dövründən başlayaraq vəzirlər arasında bir diversifikasiya başladı, belə ki baş vəzir vəzifəsi yaradıldı, Çandarlı Qara Xəlil Xeyrəddin Paşa ilk baş vəzir oldu və artıq sultanla daha yaxın olmalı və onların danışıb verdiyi qərarları digər vəzirlər bilməməli idi. Xeyirxah əməlləri barədə qərarlarını ilkin olaraq baş vəzirə desə də, digər vəzirlər bilmirdi. Həmçinin bildiyimiz kimi hökmdarların ən yaxın köməkçisini sağ əl, ikinci dərəcəli olanları isə sol əl adlandırırlar. Belə demək olarsa, sözün hər iki mənasında sultanın sağ əlinin verdiyini sol əli bilmirdi.",
+        source: "Halil Inalcik - The Ottoman Empire, The Classical Age 1300–1600. Səhifə 126",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 14,
+        question: "Ediləsi vacib işləri unutmamağa xidmət edən bir proqramın loqosundakı İKS küncü qatlanan kitab səhifəsi kimi stilizə edilib. Ötən əsrin 40-cı illərinə aid bir mənbədə fiziki qüsurun insanı uğura yüksəldə biləcəyi izləyicilərə İKS üzərindən çatdırılır. İKS-i iki sözlə yazın.",
+        answer: "Fil qulağı",
+        criteria: "Filin qulağı",
+        comment: "Birinci tərəfdə söhbət Evernot proqramından gedirdi, sualda vacib məlumatları unutmamaq və küncü qatlanan səhifə sizi yaddaşa çıxarmalı idi. İkinci tərəfdə isə söhbət \"Dumbo\" animasiyandan gedirdi, animasiyada Dumbo qulaqlarının böyük olması səbəbilə rişxəndə uğrasa da, sonradan qulaqları vasitəsilə uçur və çox məşhur olur. Sualda da \"yüksəlmək\" sizi uçmağa işarə idi.",
+        source: "<a href='https://logos-world.net/evernote-logo/' target='_blank'>Link 1</a>, <a href='https://www.imdb.com/title/tt0033563/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 15,
+        question: "<i>(Aparıcı üçün qeyd: Bu sualdan sonra 10 dəqiqəlik fasilə olacaq)</i><br>Zəhərli qazları aşkarlayacaq sensor ixtira etmək istəyən Uolter Yeger qazla sensorun elektrik göstəricisini dəyişməli idi. Lakin praktika zamanı planı işə yaramır və məyus olan Yeger BUNU EDƏN zaman sensor qəfildən işə düşür. BUNU ETMƏK-lə əvəz olunmuş iki sözü yazın.",
+        answer: "Siqaret çəkmək",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Uolter Yeger müasir yanğın dedektorlarından birinin ixtiraçısıdır. O, bu ixtirasını məhz siqaret çəkdikdən sonra tüstü vasitəsilə sensorun işə düşməsindən sonra yaratmışdı. İndi isə fasilədir və smokerlər siqaretlərini çəkə bilərlər.",
+        source: "<a href='https://www.nrc.gov/regulations-legislation/fact-sheets-brochures/backgrounder-on-smoke-detectors' target='_blank'>Link</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      ],
+      2: [
+      {
+        id: 1,
+        question: "Pikassonun 1944-cü ildə Parisdə olarkən çəkdiyi rəsm əsərindəki İKS Fransanın azadlığını və yeni bir dövrün başladığını simvolizə edir. Qədim şərqdə gecənin müxtəlif vaxtları İKS ilə müəyyən olunurdu. İKS ilə əvəz etdiyimiz iki sözü yazın.",
+        answer: "Xoruzun banlaması",
+        criteria: "Xoruz banı",
+        comment: "Sualda Fransanın azadlığını simvolizə etdiyi deyilmişdi, bildiyimiz kimi Fransanın simvolu xoruzdur. 1941-ci ildə Fransanın nasistlərdən azad olduğuna şahid olan Pikasso xoruzun banlamasını təsvir etmişdi. İkinci tərəfə gəldikdə isə, Romada olduğu kimi Qədim şərqdə də gecənin müəyyən vaxtlarını xoruzun banlaması ilə müəyyən edirdilər, məsələn, xoruzun birinci banlaması, xoruzun ikinci banlaması və.s",
+        source: "<a href='https://customprints.mam.org/detail/514263/picasso-the-cock-of-the-liberation-le-coq-de-la-liberation-1944' target='_blank'>Link 1</a>, Musa Adilov - Niyə belə deyirik? səhifə 326-327 (<a href='https://azerbaycandili.az/Literatures/Download/9108/Nergiz%204%20cild%201.pdf' target='_blank'>Link 2</a>)",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 2,
+        question: "<b>Paylama materialı:<br>Female Replacement Intelligent Digital Assistant Youth </b><br>Paylama materialında bir komiks personajının şəxsi köməkçisi olan uydurma süni intellektin adının mənasını görürsünüz. Əslində isə sözügedən ad XVIII əsrə aid əsərin personajından ilhamlanaraq seçilib. Həmin əsərin müəllifini yazın.",
+        answer: "Daniel Defo",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Rekvizitdə sizə verilən adların baş hərflərinə baxsaz, \"Friday\" adına çıxa bilərdiniz. Marvel Komiksində Dəmir adamın ən yaxın köməkçisinin adı F.R.I.D.A.Y idi, bu adın seçilməsinə səbəb də \"Robinzon Kruzo\" əsərində Robinzonun ən yaxın köməkçisi və dostunun \"Friday\" adını daşıması idi. Hətta ingilis dilində tez-tez işlənən və bir çox məşhur mənbələrə öz adını verən \"Man Friday\" idiomu məhz bu əsərdən yaranmış və \"köməkçi, kömək edən, etibar edilən\" birini ifadə etmək üçün işlədilir.",
+        source: "<a href='https://marvelcinematicuniverse.fandom.com/wiki/F.R.I.D.A.Y' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Friday_(Robinson_Crusoe)' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 3,
+        question: "XIX əsrda yaşamış taylandlı iki qardaş bir stolüstü oyunda rəqiblərinə qarşı məsləhətləşib oynayırdılar. Hazırda bir çox ölkələrdə həmin oyunun bir növü sözügedən qardaşların şərəfinə adlandırılıb. Hansı oyun növündən danışdığımızı biri xüsusi olan qonşu samitlərlə başlayan iki sözlə yazın.",
+        answer: "Siam şahmatı",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Sualda XIX əsrdə yaşadıqları və taylandlı olduqları deyilmişdi, həmçinin tək-tək şəxslərə qarşı birlikdə məsləhətləşib oynamaqları da sizi Çanq-Enq Banker qardaşları olan - Siam əkizlərinə çıxarmalı idi. Çanq-Enq qardaşları həvəskar şahmatçılar idi və məcburən rəqiblərinə qarşı birlikdə oynayırdılar. Məhz bu qardaşlardan ilhamlanaraq bir çox ölkələrdə bughouse adlanan şahmat növünə \"Siam şahmatı\" adı verilib. Sualda deyilən xüsusi ad tələbi də sizi tandem şahmatı versiyasından yayındırmaq üçün idi.",
+        source: "<a href='https://www.chess.com/article/view/siamese-chess' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Bughouse_chess#cite_note-1' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 4,
+        question: "<b>Duplet:</b><br>1. Çanq və Enq əkizlərinin ayrı-ayrılıqda şəxsi həyatlarının mürəkkəb olmasından bəhs edən məqalə \"BELƏ həyat\" adını daşıyır. BELƏ ilə əvəz etdiyimizi yazın.<br>2. 2005-ci ildə Fransada övladlarına öz soyadlarını vermək istəyən valideynlərin fikir ayrılıqları nəzərə alınaraq hətta ELƏ soyadlar da yarandı. ELƏ ilə əvəz etdiyimizi mürəkkəb sözlə yazın.",
+        answer: "Defisli, ikidefisli",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Birinci mini-sualda deyilir ki, Çanq və Enq siam əkizlərin şəxsi həyatları fərdi olaraq çətindir, çünki onlar iki ayrı şəxs olsa da, onlara bir fərd kimi yanaşılırdı, əksər yazılarda da adları məhz defislə yazılırdı. Sualda deyilən \"həyatlarının mürəkkəb olması\" da ipucu ola bilərdi, mürəkkəb sözlər ya bitişik, ya da defislə yazılır. İkinci mini-suala gəldikdə isə, 2005-ci ilədək Fransada valideynlərdən yalnız biri övladına soyad verə bilərdi, bu nüansda yaranan ixtilafları nəzərə alan hökümət yeni qayda ilə hər iki valideynin övlada soyadını verə biləcəyi qaydasını açıqladı, əvvəlki defislə yazılan soyadlarla qarışmaması üçün isə belə soyad iki defislə yazılmağa başladı. Həmçinin diqqət etsəydiniz, əvvəlki sualın şərhində biz Çanq və Enq qardaşlarını elə Çanq-Enq olaraq bir ad kimi dedik. Sualda deyilən \"Fransa\" və \"soyad\" sizi artıq birbaşa defisə aparmalı idi.",
+        source: "<a href='https://blueridgecountry.com/archive/a-hyphenated-life/' target='_blank'>Link 1</a>, <a href='https://www.legifrance.gouv.fr/ceta/id/CETATEXT000021385716' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 5,
+        question: "Konstantin Balmont \"İşıq simfoniyası\" kitabında qeyd edir ki, Skryabin İKS adlı əsərində sarı, narıncı və qırmızı rəngləri musiqiyə bəxş etdi. İKS-i iki samitlə başlayan sözlə yazın.",
+        answer: "Prometey",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Balmont qeyd edir ki, Skryabin rəngləri çox yaxşı eşidir və bizlərə eşitdirməyi bacarır. Xüsusilə, sarı, narıncı və qırmızı rəngi bildirməsi də təsadüfi deyil, belə ki, bu rənglər alovu simvolizə edir. Aleksandr Skryabin ilk dəfə \"Prometey\" əsərində \"işıq klaviaturası\" ilə musiqinin harmoniyasına rənglər qatmışdı. \"İşıq simfoniyası\" və qeyd edilən rənglər sizi alova çıxarmalı idi, Prometey də insanlara alovu bəxş etmişdi.",
+        source: "<a href='https://pianolessons-london.co.uk/elements/composers/scriabin/' target='_blank'>Link</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 6,
+        question: "Aleksandr Skryabinin \"Həşəratlar sonatası\" bəstəsində bir-birilə uyğunluq təşkil edən vızıltı səsləri mistik bir məna daşıyır. Simvolikdir ki, bir müəllif Skryabinin öz bəstələrini İKS İQREK-i ilə yazdığını qeyd edir. Antik dövrə aid bir hekayədə İKS İQREK-i ən yaxşı və ən pis ət yeməyi kimi təqdim edir. İKS və İQREK qonşu hərflərlə başlayan qısa sözlərdir. İKS və İQREK-i yazın.",
+        answer: "Ezop, dil",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "\"Həşəratlar sonatası\" bəstəsində Skryabin vızıltı səslərinə bənzər səs tonlarından istifadə edir və sanki həşəratların bir-birilə danışdıqları güman edilir. Ezop dili ifadəsi də elə məhz bu kontekstdə istifadə olunur. İkinci tərəfdə isə söhbət Ezopun dili fiziki olaraq ağasının qonaqlarına \"ən yaxşı yemək\" kimi verib dildən daha üstün bir şey varmı deyə sual etməsi idi, bundan sonra qonaqlar \"ən pis yeməyi\" də görmək istəyir və Ezop yenə də dili gətirərək \"dildən daha çox bəla gətirən bir şey varmı?\" sualını verir. Sualda deyilən \"mistik, antik\" sözləri və həşəratların sanki təmsil yaratması əsas ipucular idi. Əvvəlki sualda biz onun başqa bir mifik addan gələn Prometey əsərində danışmışdıq. Bu da sizə kiçik bir ipucu ola bilərdi.",
+        source: "<a href='https://www.yevgenysudbin.com/artist.php?view=prog&rid=3582' target='_blank'>Link 1</a>, <a href='https://muzlifemagazine.ru/skryabin-geniy-ili-sharlatan/' target='_blank'>Link 2</a>, <a href='https://pdfcoffee.com/the-alexander-scriabin-companion-history-performance-and-lore-by-ballard-lincoln-bengston-matthew-scriabin-aleksandr-nikolayevich-young-john-bell-z-liborg-3-pdf-free.html?utm_source=chatgpt.com' target='_blank'>Link 3</a>, <a href='https://www.grosvenorprints.com/stock_detail.php?ref=48715' target='_blank'>Link 4</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 7,
+        question: "Bir podkastda fransız kralının qardaşı olan Filipin diqqətdən kənarda qaldığı, belə demək olarsa, İKS-də böyüdüyü qeyd olunur. Rişard Kapuşçinskinin hadisələri Afrikada cərəyan edən bir əsərinə sonradan İKS adı verilmişdi. İKS-i qarşılıqlı hərflərlə başlayan iki sözlə yazın.",
+        answer: "Günəşin kölgəsi",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Podkastda \"Günəş kralı\" ləqəbi ilə tanınan XIV Lüdoviqin qardaşı Filipin sanki \"Günəşin kölgəsində böyüdüyü\" qeyd olunub. Rişard Kapuşçinskinin \"Heban\" əsəri hərfi olaraq \"qaradərili\" mənasına gəldiyi üçün tənqid olunmuşdu, sonradan kitabın adı \"Shadow of Sun\", tərcümədə \"Günəşin kölgəsi\" olaraq dəyişdirilmişdi.",
+        source: "<a href='https://podcasts.apple.com/gb/podcast/philippe-duc-dorl%C3%A9ans-radio-edit/id1479973402?i=1000761800774' target='_blank'>Link 1</a>, <a href='https://kapuscinski.info/en/books/the-shadow-of-the-sun/the-shadow-of-the-sun-summary-and-analysis/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 8,
+        question: "Sual mətnində BELƏ ilə saitləri eyni olan bir söz, İKS ilə qısa bir söz əvəz olunub. XIX əsrdə Rusiyada metalların cilovlanması və parıldadılmasında istifadə olunan Olein turşusu əsasən heyvan piylərindən hazırlanırdı. Bu səbəbdən xarici görünüşünə görə, Olein turşusuna \"BELƏ İKS\" adı verilmişdi. Siz isə XIX əsrin son rübünə aid əsərdə hansı personajın qum əvəzinə BELƏ İKS təklif etdiyini yazın.",
+        answer: "Samovar",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Olein turşusu müxtəlif bitki yağlarının hidrolizindən əldə edilsə də, müxtəlif heyvan piylərində də birbaşa mövcuddur. Heyvan piylərinə qanın hopması səbəbilə, Olein turşuları qırmızı rəngə çalır və əhali arasında \"qırmızı yağ\" adlandırılırdı. 1889-cu ilə aid \"Çay dəstagı\" əsərində də məhz Rusiyanın Tula şəhərindən olan Samovar baba nökərdən onu qumla yox, məhz qırmızı yağla təmizləməsini istəyir. Sual mətnində \"metal cilovlanması\", \"baba personaj\" sizlərə kömək edə bilərdi. <br>Çirklənəndə silir məni qumnan. <br>Amma bilmir onu ki qırmızı yağ <br>Məni eylər həmi təmiz, həmi ağ.",
+        source: "<a href='https://chem21.info/info/198305/' target='_blank'>Link 1</a>, <a href='https://patents.google.com/patent/US2482760A/en' target='_blank'>Link 2</a>, <a href='https://anl.az/el/m/m001/m001001/cd001.htm' target='_blank'>Link 3</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 9,
+        question: "Mənbəyini Hindistanın dağlıq ərazilərdən götürən Musi çayı mənbə və ona yaxın ərazilərdə istifadəyə yararlıdır. Sual müəllifi bu çayı 2019-cu ilə aid mənbədəki atom ilə müqayisə edir. Əvvəlki cümlədə bir sözdə hərflər buraxılıb, hərfləri bərpa edərək sözü orijinalda yazın.",
+        answer: "Platforma",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Sualda Musi çayının dağlıqdan, yəni yüksək yerdən başlayıb, düzənliyə, yəni aşağıya doğru axması deyilmişdi, həmçinin yalnız mənbəsində - yuxarı ərazilərdə istifadəyə yararlı olması da əsas ipucu idi. Belə ki, 2019-cu ildə ekranlara çıxan Platforma filmində platforma yalnız yuxarı mərtəbələrdə istifadəyə yararlı olurdu.",
+        source: "<a href='https://www.researchgate.net/publication/390681662_Spatial_and_Seasonal_Assessment_of_Water_Quality_of_Musi_River_India' target='_blank'>Link 1</a>, <a href='https://www.imdb.com/title/tt27729779/plotsummary/' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 10,
+        question: "Bir serialda personaj \"Mayn Kampft\" kitabını oxuyan zaman arxa fonda Rixard Vaqnerin ONUN adını daşıyan uvertürasını eşidə bilərik. XIX əsrdə O Risorgimentonun sələfi kimi qələmə verilirdi. ONUN kim olduğunu yazın.",
+        answer: "Rienzi",
+        criteria: "Kola di Rienzo, Nikola di Lorenzo Qabrini",
+        comment: "Hitlerin uşaqlıq dostu Oqüst Kubizek bildirir ki, gənc vaxtı Hitlerlə Vaqnerin operasına getmişdik və hər şey ondan sonra başladı. Hitler özü də bu operaya olan heyranlığı barədə öz kitabında yazıb. Hətta operanın uvertürasını nasistlərin Nürnberq partiya qurultaylarının açılışında da istifadə edirdi. Sözügedən opera əsl adı Nikola di Lorenzo Qabrini olan və bizim daha çox Rienzi adı ilə tanıdığımız şəxsə həsr olunmuşdu. Rienzi italiyanların xilaskarı kimi ölkəni birləşdirmək uğrunda mübarizə aparırdı. Bu səbəbdən Risorgimento üsyançıları Rienzini öz sələfləri seçmişdilər. Kurtlar Vadisi serialında da Testere Necmi \"Mayn Kampft\" kitabını açıb oxuduqda Rienzi uvertürası səslənir, kitab bağlanan kimi isə musiqi kəsilir.",
+        source: "<a href='https://www.tagesschau.de/kultur/wagners-rienzi-bayreuther-festspiele-100.html' target='_blank'>Link</a>, Kurtlar Vadisi 45.bölüm, 01:58:34-dən",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 11,
+        reqImg: "https://i.ibb.co/6J1vz7QX/Screenshot-20261004-232626-com-google-android-apps-docs-Pdf-Viewer-Activity.jpg",
+        question: "<i>(Aparıcı və komandalar üçün qeyd: Böyük şəkildə necə tutulacağı göstərilsin və deyilsin: \"Həm bu formada, həm də tərsinə baxmağınız tövsiyə olunur.\")</i><br>Paylama materialında bütün həyatını musiqiyə qurban verdiyini qeyd edən Corc Krambın \"Oğlaq bürcü\" pyesi təsvir olunub. Bu təsvirdəki simvolun nə olduğunu bildinizsə, pyesin digər adını latınca və ya dilimizdə samitlə başlayan iki sözlə yazın.",
+        answer: "Tanrının quzusu",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Göstərilən simvol \"sülh\" simvolu idi(☮). Sülh simvolunu yaradan Cerald Holtom əvvəlcə xaç işarəsini seçsə də, təşkilat xaçın hərbi və dini assosiasiyalarından narahat olduqları üçün qəbul etməmişdilər. Deyilənə görə, bu zaman Holtom xaçı tərs çevirmiş, ancaq məna kimi başqa bir açıqlama vermişdi. Siz də pyesə tərs baxsaz, çarmıxa çəkilmiş adam təsvirinə bənzədə bilərsiniz. Bu simvoldan ilhamlanan Corc Kramb məhz zodiak kimi oğlaq bürcündə anadan olmuş İsa peyğəmbərə ithafən pyesə onun məşhur ləqəbi olan \"Tanrının quzusu\" və ya \"Agnus Dei\" adını vermişdi. Sualda \"qurban vermək\" ifadəsinin işlənməsi də məhz buna işarə idi.",
+        source: "Samir Əli oğlu Mirzəyev - Azərbaycan Musiqisi Kontekstində Müasir Fortepiano Notasiya Simvolları, səhifə 104, <a href='https://www.thenuclearworld.org/origins-of-the-peace-sign' target='_blank'>Link 1</a>, <a href='https://www.britannica.com/topic/Agnus-Dei-liturgical-chant' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 12,
+        question: "Çox qayğıkeş və diqqətcil ana olan Marqaret Kin bu xüsusiyyətini rəsm əsərlərinə də yansıtmışdı. Bu barədə danışan Marqaret deyir ki, rəsm əsərlərində təsvir etdiyi obrazlar üçün əsas ilham mənbəyi sklera və bəbəyi olub. Əvvəlki cümlədə üç sözlə əvəz olunan iki sözü yazın.",
+        answer: "Yeganə övladı",
+        criteria: "Tək övladı, tək qızı, bir övladı, bir qızı",
+        comment: "Evləndikdən sonra övlad sahibi olan Marqaret Kin qeyd edir ki, körpəlikdən bəri ancaq onun üzünə baxır və get-gedə böyüyən gözlərinə fikir verirdim. Hər gün daha da, daha da böyüyən gözlər mənə öz texnikamda inkişaf etməyə imkan verdi, elə sonra da qızım-Ceyn əsas rol modelim oldu. İfadəyə gəldikdə isə sklera-gözün ağ hissəsi, bəbək isə gözün qarasıdır. Biz sizə \"yeganə övlad\" mənasına gələn \"gözünün ağı, qarası\" ifadəsini tibb elmində ekvivalent terminlə vermişdik.",
+        source: "<a href='https://www.thecollector.com/works-margaret-keane-should-know/' target='_blank'>Link 1</a>, <a href='https://www.architecturaldigest.com/gallery/inquistive-guest-big-eyes-slideshow' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 13,
+        question: "<i>(Aparıcı üçün qeyd: Tənə sözü aydın və anlaşıqlı şəkildə deyilsin)</i><br>Bir filmdə çatdırılma xidmətində çalışan personaj motosikletdən avtomobilə keçid edir. Növbəti səhnələrdən birində personaj barədə zarafatca tənənin əksinə hərəkət etdiyi deyilir. Əvvəlki cümlədə bir sözlə əvəz olunmuş iki sözü yazın.",
+        answer: "Təkamül nəzəriyyəsi",
+        criteria: "Yalnız dəqiq cavablar",
+        comment: "Aydın məsələdir ki, burada \"tənə\" sözü yerşonim idi. Taksi filmində pizza çatdırılmasında işləyən personajın ikitəkərli nəqliyyat vasitəsindən sonra dördtəkərliyə keçid etməsi deyilir ki, o sanki təkamül nəzəriyyəsində geriyə gedir. Darvinə görə, dördyaqlı olan şimpanzelər də bizim əcdadlarımızdır.",
+        source: "<a href='https://www.springfieldspringfield.co.uk/movie_script.php' target='_blank'>Link</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 14,
+        question: "Bir mənbədə \"tırtıl, yoxsa kəpənəyin birinci yaranması\" haqqında bir neçə dəfə eyni bir sual təkrar edilir. Bu zaman sual müəllifinin eramızdan əvvəl qədim şərqdə yaşamış kimi xatırladığını yazın.",
+        answer: "Çjuan-tszı",
+        criteria: "Zuan-gzin, Zuanq zou",
+        comment: "Mənbədə bir neçə dəfə \"kəpənək tırtıla çevrilib, yoxsa tırtıl kəpənəyə\" sualları verilir. Bu zmaan sual müəllifi qədim çin filosofu Çjiuan-tszını xatırlayır. Bir dəfə yuxusunda kəpənəyə çevrildiyini görən filosof Çjuan-tszı yuxudan oyandıqdan sonra Çjuan-tszının kəpənəyə çevrildiyi, yoxsa kəpənəyin Çjuan-tszıya çevrildiyi barədə uzun müddət düşünməli olmuşdu.",
+        source: "<a href='https://sicb.org/wp-content/uploads/2021/04/Press_Metamorphosis.pdf?utm_source=chatgpt.com' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Zhuang_Zhou' target='_blank'>Link 2</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      {
+        id: 15,
+        question: "XVII əsr doğumlu ONUN haqqında məqalədə qeyd olunur ki, əslində O əvvəldən hər şeyi düşünmüş, fikirləri yetişmişdi. BUNUN BAŞ VERMƏSİ isə praktiki olaraq son təkan oldu. Söhbətin kimdən getdiyini bildinizsə, BUNUN BAŞ VERMƏSİ ilə əvəz etdiyimizi 2 və ya 3 sözlə yazın.",
+        answer: "Göydən alma düşməsi",
+        criteria: "Başına alma düşməsi, alma düşməsi və.s mənaya uyğun",
+        comment: "Söhbət İsak Nyutondan gedirdi, fikirlərinin yetişməsi də məhz almaya işarə edirdi. Nağıllarda olduğu kimi göydən alma düşməsi ilə turnirimizi yekunlaşdırırıq. Ənənəyə sadiq qaldıq, başda yumurta, sonda alma!",
+        source: "<a href='https://www.newtonproject.ox.ac.uk/view/texts/normalized/OTHE00001' target='_blank'>Link</a>",
+        author: "İsmayıl Məmmədquliyev"
+      },
+      ]
 };
-
 
 let currentTour = 1;
 let allExpanded = false;
