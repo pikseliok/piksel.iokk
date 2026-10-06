@@ -223,7 +223,7 @@ button.info-btn{width:22px;height:22px;min-width:22px;padding:0;margin:0;border-
 .card button.info-btn{color:var(--ink)}
 .dark .card button.info-btn{color:var(--dark-ink)}
 button.info-btn:hover{transform:none}
-.info-bubble{background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:var(--b);font-weight:500;line-height:1.4;margin-top:4px}
+.info-bubble{width:100%;max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;word-break:break-word;background:var(--dark-light);color:var(--deep);border-radius:20px;padding:10px 14px;font-size:var(--b);font-weight:500;line-height:1.4;margin-top:4px}
 .dark .info-bubble{background:var(--dark-bg);color:var(--dark-light)}
 
 /* FOOTER */
@@ -359,7 +359,7 @@ footer{
   Dəyər <strong>+<span id="hostValue">1</span></strong>
 </div>
 
-<button type="button" id="resetQVBtn" class="secondary mini-reset" onclick="resetQuestionValue()">Xalı sıfırla</button>
+<button type="button" id="resetQVBtn" class="secondary mini-reset" onclick="resetQuestionValue()">Dəyəri sıfırla</button>
 
 <div id="hostTimer" class="timer">20</div>
 
@@ -379,9 +379,9 @@ footer{
 </div>
 
 <div class="host-controls">
-  <div class="subtitle">πksel.iok</div>
+  <div class="subtitle">πksel</div>
 
-  <button id="startBtn" onclick="hostStart()">▶ VAXT! — 20 SANİYƏ</button>
+  <button id="startBtn" onclick="hostStart()">VAXT! - 20 SANİYƏ</button>
   <button id="resetBtn" class="secondary" onclick="resetButtons()">DÜYMƏLƏRİ SIFIRLA</button>
 
   <div id="answerControls" class="hidden">
@@ -406,7 +406,7 @@ footer{
 
 <div style="flex:1"></div>
 
-<div class="connection" id="hostConnection">● Firebase bağlantısı</div>
+<div class="connection" id="hostConnection">Canlı bağlantı aktivdir</div>
 
 <div class="info">
   OTAQ KODU
@@ -473,7 +473,7 @@ footer{
   </div>
 </div>
 
-<div class="connection" id="playerConnection">● Firebase bağlantısı</div>
+<div class="connection" id="playerConnection">Canlı bağlantı aktivdir</div>
 
   </div>
 </div>
@@ -558,6 +558,7 @@ let team = null;
 let roomRef = null;
 let timerLoop = null;
 let currentRoom = null;
+let disqualificationVisible = false;
 let serverOffset = 0;
 let audioContext = null;
 let lastStateKey = "";
@@ -1233,6 +1234,13 @@ function updateTimerOnly(){
 
   if(!currentRoom) return;
 
+  const showDisqualification = Number(currentRoom.disqualifiedUntil || 0) > serverNow();
+  if(showDisqualification !== disqualificationVisible){
+    disqualificationVisible = showDisqualification;
+    if(role === "host") renderHost(currentRoom);
+    else if(role === "player") renderPlayer(currentRoom);
+  }
+
   const seconds = calculateRemaining(currentRoom);
 
   const el = document.getElementById(
@@ -1418,43 +1426,24 @@ function renderHost(room){
   finishedControls.classList.add("hidden");
 
   if(room.status === "waiting"){
-
-    if(!room.blue || !room.pink){
-
-      startBtn.disabled = true;
-      event.className = "event neutral";
-      event.textContent = "İki komandanın qoşulması gözlənilir...";
-
+    if(Number(room.disqualifiedUntil || 0) > serverNow()){
+      startBtn.disabled = true; event.className = "event neutral"; event.textContent = "DİSKVALİFİKASİYA!!!";
+    }else if(!room.blue || !room.pink){
+      startBtn.disabled = true; event.className = "event neutral"; event.textContent = "İki komandanın qoşulması gözlənilir...";
     }else if(room.failBlue && room.failPink){
-
-      startBtn.disabled = true;
-      event.className = "event neutral";
-      event.textContent = "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
-
+      startBtn.disabled = true; event.className = "event neutral"; event.textContent = "Hər iki komanda əvvəlcədən basıb — sual keçilir...";
     }else if(room.failBlue || room.failPink){
-
       startBtn.disabled = false;
-
-      const falseStartName =
-        room.failBlue
-        ? (room.blue?.name || "Mavi")
-        : (room.pink?.name || "Çəhrayı");
-
-      event.className = room.failBlue ? "event blue" : "event pink";
-      event.textContent = falseStartName + " FALSTART ETDİ";
-
+      const falseStartName = room.failBlue ? (room.blue?.name || "Mavi") : (room.pink?.name || "Çəhrayı");
+      event.className = room.failBlue ? "event blue" : "event pink"; event.textContent = falseStartName + " FALSTART ETDİ";
     }else{
-
-      startBtn.disabled = false;
-      event.className = "event neutral";
-      event.textContent = "Hazırdır. Sualı oxuyun və START basın.";
+      startBtn.disabled = false; event.className = "event neutral"; event.textContent = "Hazırdır. Sualı oxuyun və START basın.";
     }
-
   }else if(room.status === "running"){
 
     startBtn.disabled = true;
     event.className = "event neutral";
-    event.textContent = "⏱️ CAVAB VAXTI DAVAM EDİR";
+    event.textContent = "VAXT GEDİR...";
 
   }else if(room.status === "answered"){
 
@@ -1480,7 +1469,7 @@ function renderHost(room){
     startBtn.disabled = true;
     expiredControls.classList.remove("hidden");
     event.className = "event neutral";
-    event.textContent = "⏱️ VAXT BİTDİ — HEÇ KİM CAVAB VERMƏDİ";
+    event.textContent = "VAXT ÇIXDI - DOĞRU CAVAB YOXDUR";
 
   }else if(room.status === "finished"){
 
@@ -1534,7 +1523,10 @@ function renderPlayer(room){
 
   /* ---------- WAITING ---------- */
   if(room.status === "waiting"){
-
+    if(Number(room.disqualifiedUntil || 0) > serverNow()){
+      button.disabled = true; button.className = "big-buzz locked"; setBuzzLabel("GÖZLƏYİN", false);
+      event.className = "event neutral"; event.textContent = "DİSKVALİFİKASİYA!!!"; return;
+    }
     const failed = team === "blue" ? room.failBlue : room.failPink;
 
     if(failed){
@@ -1593,7 +1585,7 @@ function renderPlayer(room){
     }
 
     event.className = "event neutral";
-    event.textContent = "⏱️ BASMAQ ÜÇÜN VAXT VAR";
+    event.textContent = "VAXT GEDİR...";
 
     return;
   }
@@ -1667,7 +1659,7 @@ async function hostStart(){
     const snap = await db.ref("rooms/" + roomCode).once("value");
     const room = snap.val();
 
-    if(!room || !room.blue || !room.pink || room.status !== "waiting"){
+    if(!room || !room.blue || !room.pink || room.status !== "waiting" || (room.failBlue && room.failPink) || Number(room.disqualifiedUntil || 0) > serverNow()){
       return;
     }
 
@@ -1798,82 +1790,35 @@ function closeKickOverlay(shouldRemove){
 }
 
 async function kickConfirm(accept){
-  if(kickBusy) return;
-  if(!accept){
-    closeKickOverlay(false);
-    return;
-  }
-
-  kickBusy = true;
-  const target = kickTarget;
-  closeKickOverlay(true);
-
-  try{
-    if(target && roomCode){
-      await db.ref("rooms/" + roomCode + "/" + target).remove();
-    }
-  }catch(e){
-  }finally{
-    kickBusy = false;
-    kickTarget = null;
-  }
+  if(kickBusy)return;if(!accept){closeKickOverlay(false);return;}kickBusy=true;const target=kickTarget;closeKickOverlay(true);
+  try{if(target&&roomCode){const updates={};updates[target]=null;updates[target+"Score"]=0;updates[target==="blue"?"failBlue":"failPink"]=false;updates[target==="blue"?"wrongBlue":"wrongPink"]=false;await db.ref("rooms/"+roomCode).update(updates);}}
+  catch(e){}finally{kickBusy=false;kickTarget=null;}
 }
 
 
 /* PLAYER BUZZ */
 let buzzBusy = false;
-
 async function playerBuzz(){
   if(buzzBusy || role !== "player" || !team || !roomCode) return;
-
-  buzzBusy = true;
-  unlockAudio();
-
+  buzzBusy=true; unlockAudio();
   try{
-    await waitForOffset();
-    const now = serverNow();
-    const ref = db.ref("rooms/" + roomCode);
-
-    await ref.transaction(function(room){
-      if(!room) return room;
-
-      if(room.status === "waiting"){
-        if(team === "blue" && !room.failBlue){
-          room.failBlue = true;
-          localFlags.fail = true;
-        }else if(team === "pink" && !room.failPink){
-          room.failPink = true;
-          localFlags.fail = true;
-        }
-      }else if(room.status === "running"){
-        const failed = team === "blue" ? room.failBlue : room.failPink;
-        const wrong = team === "blue" ? room.wrongBlue : room.wrongPink;
-
-        if(!failed && !wrong){
-          let rem = 20;
-          if(room.timerEnd){
-            rem = Math.max(0, Math.ceil((Number(room.timerEnd) - now) / 1000));
-          }
-          if(rem > 0){
-            room.status = "answered";
-            room.winner = team;
-            room.buzzAt = now;
-            room.pausedRemaining = rem;
-            room.timerEnd = null;
-            localFlags.buzz = true;
-          }
-        }
-      }
+    await waitForOffset(); const now=serverNow(); const ref=db.ref("rooms/"+roomCode); let acceptedFalseStart=false;
+    const result=await ref.transaction(function(room){
+      if(!room) return;
+      if(room.status==="waiting"){
+        if(Number(room.disqualifiedUntil||0)>now || room.failBlue || room.failPink) return;
+        if(team==="blue") room.failBlue=true; else room.failPink=true; acceptedFalseStart=true;
+      }else if(room.status==="running"){
+        const failed=team==="blue"?room.failBlue:room.failPink, wrong=team==="blue"?room.wrongBlue:room.wrongPink;
+        if(failed||wrong) return;
+        let rem=20; if(room.timerEnd) rem=Math.max(0,Math.ceil((Number(room.timerEnd)-now)/1000)); if(rem<=0) return;
+        room.status="answered"; room.winner=team; room.buzzAt=now; room.pausedRemaining=rem; room.timerEnd=null;
+      }else return;
       return room;
     });
-
-    if(localFlags.buzz) buzzSound();
-    if(localFlags.fail) failSound();
-
-  }catch(e){
-  }finally{
-    setTimeout(()=>{ buzzBusy = false; }, 200);
-  }
+    if(result.committed){const updated=result.snapshot.val();if(acceptedFalseStart&&updated&&(team==="blue"?updated.failBlue:updated.failPink))localFlags.fail=true;if(updated&&updated.status==="answered"&&updated.winner===team)localFlags.buzz=true;}
+    if(localFlags.buzz) buzzSound(); if(localFlags.fail) failSound();
+  }catch(e){}finally{setTimeout(()=>{buzzBusy=false;},200);}
 }
 
 
@@ -1964,26 +1909,12 @@ async function wrongAnswer(){
 }
 
 async function unresolved(){
-  if(role !== "host" || !roomCode || !currentRoom) return;
-
+  if(role!=="host"||!roomCode||!currentRoom)return;
   try{
-    const nextVal = (currentRoom.value || 1) + 1;
-    const nextQ = (currentRoom.question || 1) + 1;
-
-    await db.ref("rooms/" + roomCode).update({
-      status: "waiting",
-      winner: null,
-      question: nextQ,
-      value: nextVal,
-      failBlue: false,
-      failPink: false,
-      wrongBlue: false,
-      wrongPink: false,
-      startedAt: null,
-      timerEnd: null,
-      pausedRemaining: null
-    });
-
+    const nextQ=(currentRoom.question||1)+1, isThreePointMiss=Number(currentRoom.value||1)>=3;
+    const updates={status:"waiting",winner:null,question:nextQ,value:isThreePointMiss?1:Number(currentRoom.value||1)+1,failBlue:false,failPink:false,wrongBlue:false,wrongPink:false,startedAt:null,timerEnd:null,pausedRemaining:null,disqualifiedUntil:isThreePointMiss?serverNow()+3000:null};
+    if(isThreePointMiss){updates.blueScore=0;updates.pinkScore=0;}
+    await db.ref("rooms/"+roomCode).update(updates);
   }catch(e){}
 }
 
@@ -2018,7 +1949,7 @@ function setConnection(online){
 
   if(online){
     el.className = "connection";
-    el.textContent = "● Firebase bağlantısı aktivdir";
+    el.textContent = "Canlı bağlantı aktivdir";
   }else{
     el.className = "connection off";
     el.textContent = "○ Xətli/Oflayn (Yenidən qoşulur...)";
