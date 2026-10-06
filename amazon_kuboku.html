@@ -213,6 +213,9 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 @media(max-width:420px){
   .battle-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+   /* + / − işarələrini sil */
+.group-btn::after,
+.tour-group.open .group-btn::after{content:none;display:none}
 </style>
 </head>
 
