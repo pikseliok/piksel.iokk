@@ -186,6 +186,16 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   footer{min-height:88px}
   .footer-line{font-size:11px}
 }
+   /* Mövzu başlığı: ad + müəllif solda, bəyənmə sağda */
+.topic-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.topic-info{min-width:0}
+.topic-head .topic-title{margin-bottom:0}
+.topic-head .topic-author{margin-top:6px;padding-top:0;border-top:none;font-size:12px;font-weight:400;line-height:1.4;opacity:.9}
+.dark .topic-head .topic-author{border-top:none}
+.topic-head .like-wrap{flex:0 0 auto}
+.copy-row{display:flex;justify-content:flex-end}
+@media (max-width:700px){.topic-head .topic-author{font-size:11px}}
+@media (max-width:420px){.topic-head .topic-author{font-size:10px}}
 </style>
 </head>
 
@@ -195,7 +205,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
   <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
     <div class="nav-links rise">
       <a class="nav-link" href="index.html">Əsas Səhifə</a>
-      <a class="nav-link active" href="packages.html">Sual Paketləri</a>
+      <a class="nav-link active" href="paketkler">Sual Paketləri</a>
     </div>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
       <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
@@ -252,6 +262,23 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 </footer>
 
 <script>
+   /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (
+    e.keyCode === 123 || // F12
+    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+    (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+    (e.ctrlKey && e.keyCode === 85) || // Ctrl+U
+    (e.ctrlKey && e.keyCode === 83)    // Ctrl+S
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
 /* Turnirin unikal adı (bəyənmələr bu ada görə saxlanılır) */
 const PKG_ID = "khuamsa";
 
@@ -1332,7 +1359,6 @@ function renderQuestions(){
 
   tour.rounds.forEach((round, ri) => {
 
-    /* Raund adı (Bəlli raund, Şərtli raund və s.) */
     if(round.name){
       const roundTitle = document.createElement("div");
       roundTitle.className = "round-title rise";
@@ -1349,7 +1375,22 @@ function renderQuestions(){
       card.className = "q-card glow frame";
       card.style.setProperty("--i", Math.min(k++,9));
 
-      let html = `<div class="topic-title rise">Mövzu: ${formatText(topic.name)}</div>`;
+      let html = `
+        <div class="topic-head rise">
+          <div class="topic-info">
+            <div class="topic-title">Mövzu: ${formatText(topic.name)}</div>
+            <div class="topic-author">Müəllif: ${formatText(topicAuthor(topic))}</div>
+          </div>
+          <div class="like-wrap">
+            <button class="like-btn" type="button" data-k="${key}" aria-pressed="false" aria-label="Bəyən">
+              <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </button>
+            <span class="like-count" data-k="${key}">0</span>
+          </div>
+        </div>`;
 
       topic.questions.forEach((item,qi) => {
         html += `
@@ -1362,39 +1403,22 @@ function renderQuestions(){
             <div class="ans-panel">
               <div class="ans-row"><span class="ans-label">Cavab:</span> ${formatText(item.a)}</div>
               ${item.c ? `<div class="ans-row"><span class="ans-label">Şərh:</span> ${formatText(item.c)}</div>` : ""}
+
+              <div class="ans-row copy-row">
+                <button class="copy-btn" type="button" data-q="${qi}" aria-label="Sualı kopyala">
+                  <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g class="clip-path">
+                      <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+                      <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    </g>
+                    <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  </svg>
+                </button>
+              </div>
             </div>
 
           </div>`;
       });
-
-      html += `
-        <div class="topic-author author-row rise">
-          <span><span class="ans-label">Müəllif:</span> ${formatText(topicAuthor(topic))}</span>
-
-          <div class="act-group">
-
-            <div class="like-wrap">
-              <button class="like-btn" type="button" data-k="${key}" aria-pressed="false" aria-label="Bəyən">
-                <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-              </button>
-              <span class="like-count" data-k="${key}">0</span>
-            </div>
-
-            <button class="copy-btn" type="button" aria-label="Mövzunu kopyala">
-              <svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g class="clip-path">
-                  <rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                </g>
-                <path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              </svg>
-            </button>
-
-          </div>
-        </div>`;
 
       card.innerHTML = html;
 
@@ -1409,27 +1433,19 @@ function renderQuestions(){
 }
 
 
-/* =========================================================
-   SUALA BASANDA CAVAB AÇILIR / BƏYƏN / KOPYALA
-========================================================= */
+/* SUALA BASANDA CAVAB AÇILIR / BƏYƏN / KOPYALA */
 
 function toggleItem(item){
   const open = item.classList.toggle("active");
   item.querySelector(".q-text").setAttribute("aria-expanded", open);
 }
 
-function buildTopicText(topic){
-
-  let text = `Mövzu: ${topic.name}`;
-
-  topic.questions.forEach((item,qi) => {
-    text += `\n\n${qi + 1}. ${plainText(item.q)}`;
-    text += `\nCavab: ${item.a}`;
-    if(item.c) text += `\nŞərh: ${plainText(item.c)}`;
-  });
-
-  text += `\n\nMüəllif: ${topicAuthor(topic)}`;
-
+function buildQuestionText(topic, qi){
+  const item = topic.questions[qi];
+  let text = `${qi + 1}. ${plainText(item.q)}`;
+  text += `\n\nCavab: ${item.a}`;
+  if(item.c) text += `\nŞərh: ${plainText(item.c)}`;
+  text += `\nMüəllif: ${topicAuthor(topic)}`;
   return text;
 }
 
@@ -1454,25 +1470,28 @@ function bindTopicCard(card, topic, key){
 
   card.querySelector(".like-btn").addEventListener("click", () => toggleLike(key));
 
-  card.querySelector(".copy-btn").addEventListener("click", e => {
+  card.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
 
-    const btn = e.currentTarget;
-    const text = buildTopicText(topic);
+      const qi = Number(btn.dataset.q);
+      if(!topic.questions[qi]) return;
+      const text = buildQuestionText(topic, qi);
 
-    const showCopied = () => {
-      btn.classList.add("copied");
-      clearTimeout(btn._copyTimer);
-      btn._copyTimer = setTimeout(() => btn.classList.remove("copied"), 1600);
-    };
+      const showCopied = () => {
+        btn.classList.add("copied");
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(() => btn.classList.remove("copied"), 1600);
+      };
 
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
-    }else{
-      fallbackCopy(text, showCopied);
-    }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+      }else{
+        fallbackCopy(text, showCopied);
+      }
+    });
   });
 }
-
+   
 function fallbackCopy(text, onDone){
   const helper = document.createElement("textarea");
   helper.value = text;
