@@ -634,20 +634,16 @@ async function makeStory(a){
   bgBlob(900,300,300,260,"0,140,255",.18);
 
   function fitText(text,start,weight,maxW){
-    let s,lines;
-    for(s=start;s>=start*0.6;s-=2){
-      x.font=F(weight,s);
-      lines=wrapLines(x,text,maxW);
-      if(lines.length<=1) return {size:s,lines};
+  for(let s=start;s>=24;s-=2){
+    x.font=F(weight,s);
+    const lines=wrapLines(x,text,maxW);
+    if(lines.length<=2 && lines.every(line=>x.measureText(line).width<=maxW)){
+      return {size:s,lines};
     }
-    for(s=Math.round(start*0.8);s>=48;s-=2){
-      x.font=F(weight,s);
-      lines=wrapLines(x,text,maxW);
-      if(lines.length<=2) return {size:s,lines};
-    }
-    x.font=F(weight,48);
-    return {size:48,lines:wrapLines(x,text,maxW)};
   }
+  x.font=F(weight,24);
+  return {size:24,lines:[text]};
+}
 
   /* ---------- Yuxarı mətn ---------- */
   const TW=900;
