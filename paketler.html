@@ -33,6 +33,9 @@ a{color:inherit;text-decoration:none}
 /* ---------- Giriş animasiyası: əvvəl çərçivə, sonra içindəkilər ---------- */
 .frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+/* ---------- Siyahı dəyişəndə (axtarış / sıralama / filtr) kartların animasiyası ---------- */
+.enter{animation:frameIn .5s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--e,0) * .05s)}
+.enter-in{animation:riseIn .5s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--e,0) * .05s + .22s)}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
@@ -319,6 +322,7 @@ let activeTypes=new Set(TYPES.map(t=>t.key));
 let newestFirst=true;
 let query="";
 let firstRender=true;
+let lastKey="";
 
 const filtersEl=document.getElementById("filters");
 TYPES.forEach(t=>{
@@ -373,8 +377,12 @@ function render(){
     ?(b.date.localeCompare(a.date)||b.order-a.order)
     :(a.date.localeCompare(b.date)||a.order-b.order));
 
+  /* siyahı (tərkib və ya sıra) dəyişibsə kartlar animasiya ilə gəlir */
+  const key=list.map(p=>p.order).join(",");
+  const changed=key!==lastKey;
+  lastKey=key;
   cardsList.innerHTML="";
-  const anim=firstRender;   /* giriş animasiyası yalnız ilk yüklənmədə */
+  const first=firstRender;   /* ilk yüklənmə: tam giriş animasiyası */
   firstRender=false;
 
   list.forEach((p,i)=>{
@@ -382,9 +390,10 @@ function render(){
     const [y,m,d]=p.date.split("-");
     const card=document.createElement("a");
     card.href=p.link;
-    card.className="pkg-card"+(anim?" frame":"");
-    if(anim) card.style.setProperty("--i",4+i);
-    const r=anim?" rise":"";
+    card.className="pkg-card"+(first?" frame":(changed?" enter":""));
+    if(first) card.style.setProperty("--i",4+i);
+    else if(changed) card.style.setProperty("--e",Math.min(i,12));
+    const r=first?" rise":(changed?" enter-in":"");
     card.innerHTML=`
       <span class="pkg-icon${r}"><img src="${p.icon}" alt=""></span>
       <div class="pkg-right${r}">
@@ -610,7 +619,7 @@ async function makeStory(p){
   const w2=x.measureText("ksel-də").width;
   const sx0=W/2-(w1+w2)/2,cy2=y+logoH/2;
   x.save();
-  x.fillStyle="#ADCDFF";
+  x.fillStyle="#9DC3FF";
   x.font="italic 800 "+(ls*1.1)+"px Poppins, sans-serif";
   x.fillText("π",sx0,cy2);
   x.fillStyle="#9DC3FF";
