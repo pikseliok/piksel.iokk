@@ -563,11 +563,20 @@ function wrapLines(ctx,text,maxW){
   let cur="";
   words.forEach(w=>{
     const t=cur?cur+" "+w:w;
-    if(ctx.measureText(t).width>maxW&&cur){ lines.push(cur); cur=w; }
-    else cur=t;
+    if(ctx.measureText(t).width<=maxW){ cur=t; return; }
+    if(cur){ lines.push(cur); cur=""; }
+    if(ctx.measureText(w).width<=maxW){ cur=w; return; }
+    let part="";
+    for(const ch of Array.from(w)){
+      const next=part+ch;
+      if(ctx.measureText(next).width>maxW&&part){ lines.push(part); part=ch; }
+      else part=next;
+    }
+    cur=part;
   });
   if(cur) lines.push(cur);
   return lines;
+}
 }
 
 function placeholderBox(ctx,x,y,w,h,r,fontPx){
