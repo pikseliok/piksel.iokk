@@ -33,6 +33,9 @@ a{color:inherit;text-decoration:none}
 /* ---------- Giriş animasiyası: əvvəl çərçivə, sonra içindəkilər ---------- */
 .frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+/* ---------- Siyahı dəyişəndə (axtarış / sıralama / filtr) kartların animasiyası ---------- */
+.enter{animation:frameIn .5s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--e,0) * .05s)}
+.enter-in{animation:riseIn .5s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--e,0) * .05s + .22s)}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
@@ -340,6 +343,7 @@ const authors=[
 let ascending=true;
 let query="";
 let firstRender=true;
+let lastKey="";
 const openSet=new Set();
 
 const searchInput=document.getElementById("searchInput");
@@ -378,6 +382,10 @@ cardsList.addEventListener("pointermove",e=>{
 ========================= */
 function render(){
   const list=authors.filter(a=>!query||normalize(a.name).includes(query)).sort(authorCompare);
+  /* siyahı (tərkib və ya sıra) dəyişibsə kartlar animasiya ilə gəlir */
+  const key=list.map(a=>a.name).join("|")+"#"+(wide.matches?2:1);
+  const changed=key!==lastKey;
+  lastKey=key;
   cardsList.innerHTML="";
 
   if(!list.length){
@@ -393,7 +401,7 @@ function render(){
     return c;
   });
 
-  const anim=firstRender;   /* giriş animasiyası yalnız ilk yüklənmədə */
+  const first=firstRender;   /* ilk yüklənmə: tam giriş animasiyası */
   firstRender=false;
 
   list.forEach((author,idx)=>{
@@ -403,12 +411,13 @@ function render(){
     wrapper.className="author-wrapper"+(openSet.has(author.name)?" open":"");
 
     const card=document.createElement("div");
-    card.className="author-card"+(anim?" frame":"");
-    if(anim) card.style.setProperty("--i",3+Math.min(row,10)+col*0.5);
+    card.className="author-card"+(first?" frame":(changed?" enter":""));
+    if(first) card.style.setProperty("--i",3+Math.min(row,10)+col*0.5);
+    else if(changed) card.style.setProperty("--e",Math.min(row,10)+col*0.5);
     card.setAttribute("role","button");
     card.tabIndex=0;
     card.setAttribute("aria-expanded",openSet.has(author.name));
-    const r=anim?" rise":"";
+    const r=first?" rise":(changed?" enter-in":"");
     card.innerHTML=`
       <span class="author-icon${r}">
         <img class="icon-day" src="${DAY_ICON}" alt="">
@@ -549,7 +558,8 @@ async function makeStory(a){
   const parts=a.name.trim().split(/\s+/);
   let soyad="",ad=a.name.trim();
   if(parts.length>1){ soyad=parts[0]; ad=parts.slice(1).join(" "); }
-  soyad=soyad.toLocaleUpperCase("az");
+  /* yuxarıda soyad, aşağıda ad (böyük hərflə) */
+  const topTxt=soyad||ad, botTxt=soyad?ad.toLocaleUpperCase("az"):"";
 
   try{
     await Promise.all([
@@ -605,8 +615,8 @@ async function makeStory(a){
 
   /* ---------- Yuxarı mətn ---------- */
   const TW=900;
-  const A=fitText(ad,176,"800",TW);
-  const B=soyad?fitText(soyad,160,"800",TW):null;
+  const A=fitText(topTxt,176,"800",TW);
+  const B=botTxt?fitText(botTxt,160,"800",TW):null;
   const hA=A.lines.length*A.size*1.08;
   const hB=B?B.lines.length*B.size*1.08+4:0;
   const pillH=88,logoH=110;
@@ -641,7 +651,7 @@ async function makeStory(a){
   const pw=Math.min(920,x.measureText(label).width+110);
   roundRect(x,W/2-pw/2,y,pw,pillH,44);
   x.fillStyle="rgba(0,16,80,.65)";x.fill();
-  x.lineWidth=4;x.strokeStyle="#ADCDFF";x.stroke();
+  x.lineWidth=4;x.strokeStyle="#2D7BFF";x.stroke();
   x.fillStyle="#fff";
   x.fillText(label,W/2+2,y+pillH/2+3);
   try{x.letterSpacing="0px";}catch(e){}
@@ -655,7 +665,7 @@ async function makeStory(a){
   x.font=F("800",ls);
   const w2=x.measureText("ksel-də").width;
   const sx0=W/2-(w1+w2)/2,cy2=y+logoH/2;
-  x.fillStyle="#ADCDFF";
+  x.fillStyle="#9DC3FF";
   x.font="italic 800 "+(ls*1.1)+"px Poppins, sans-serif";
   x.fillText("π",sx0,cy2);
   x.font=F("800",ls);
