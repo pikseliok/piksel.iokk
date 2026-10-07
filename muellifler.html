@@ -556,7 +556,6 @@ function drawCover(ctx,im,x,y,w,h){
   const dw=im.naturalWidth*s,dh=im.naturalHeight*s;
   ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
 }
-
 function wrapLines(ctx,text,maxW){
   const words=text.split(" ");
   const lines=[];
@@ -576,7 +575,6 @@ function wrapLines(ctx,text,maxW){
   });
   if(cur) lines.push(cur);
   return lines;
-}
 }
 
 function placeholderBox(ctx,x,y,w,h,r,fontPx){
