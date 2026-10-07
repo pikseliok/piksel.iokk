@@ -229,17 +229,13 @@ footer{min-height:88px}
 <div class="sheet-overlay" id="shareOverlay" aria-hidden="true">
   <div class="sheet" role="dialog" aria-label="Paylaş">
     <div class="sheet-title">Paylaş</div>
-    <button class="sheet-opt" type="button" data-mode="instagram">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></svg>
-      Instagram Story
-    </button>
-    <button class="sheet-opt" type="button" data-mode="whatsapp">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-5A8.5 8.5 0 1 1 8 19.4L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.4-1.8-1.2-2.2-2.2l.8-.8-1-2L9 9.5z"/></svg>
-      WhatsApp Status
-    </button>
     <button class="sheet-opt" type="button" data-mode="download">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0l-4-4m4 4l4-4"/><path d="M5 20h14"/></svg>
       Afişanı yüklə
+    </button>
+    <button class="sheet-opt" type="button" data-mode="copy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+      Linki kopyala
     </button>
   </div>
 </div>
@@ -584,7 +580,7 @@ async function makeStory(p){
     B.lines.forEach((ln,i)=>{
       const lh=B.size*1.08;
       const cy=y+2+lh*(i+.5);
-      x.fillStyle="#ADCDFF";
+      x.fillStyle="#0024FF";
       x.fillText(ln,W/2,cy);
     });
     y+=hB;
@@ -617,7 +613,7 @@ async function makeStory(p){
   x.fillStyle="#9DC3FF";
   x.font="italic 800 "+(ls*1.1)+"px Poppins, sans-serif";
   x.fillText("π",sx0,cy2);
-  x.fillStyle="#ADCDFF";
+  x.fillStyle="#9DC3FF";
   x.font=F("800",ls);
   x.fillText("ksel-də",sx0+w1,cy2+4);
   x.restore();
@@ -831,39 +827,19 @@ function downloadFile(file){
 async function doShare(mode){
   if(shareIdx===null) return;
   const p=packages[shareIdx];
-  const url=absLink(p);
 
-  /* şəkil hazırdırsa gözləmədən (istifadəçi toxunuşu itməsin deyə) */
+  if(mode==="copy"){
+    await copyText(absLink(p));
+    toast("Link kopyalandı");
+    closeShare();
+    return;
+  }
+
+  /* afişanı yüklə */
   const file=shareFile||await sharePromise;
   if(!file){ toast("Afişa hazırlana bilmədi"); closeShare(); return; }
-
-  if(mode==="download"){
-    downloadFile(file);
-    toast("Afişa yükləndi");
-    closeShare();
-    return;
-  }
-
-  /* Story üçün link əvvəlcədən kopyalanır (Link stikerinə yapışdırmaq üçün) */
-  copyText(url);
-
-  const canFile=!!(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]}));
-  if(canFile){
-    try{
-      await navigator.share({files:[file],title:p.title,text:p.title+"\n"+url});
-      toast(mode==="instagram"
-        ? "Link kopyalandı. Story-də Link stikerinə yapışdır."
-        : "Link kopyalandı.");
-    }catch(e){}
-    closeShare();
-    return;
-  }
-
-  /* masaüstü: afişa yüklənir */
   downloadFile(file);
-  toast(mode==="instagram"
-    ? "Afişa yükləndi, link kopyalandı. Telefonda Instagram Story-yə əlavə et."
-    : "Afişa yükləndi, link kopyalandı. Telefonda WhatsApp Status-a əlavə et.");
+  toast("Afişa yükləndi");
   closeShare();
 }
 
