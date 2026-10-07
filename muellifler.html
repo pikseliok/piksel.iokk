@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#9DC3FF">
   <title>πksel - Müəlliflər</title>
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='8.5' r='5.5' fill='%232D4F83'/%3E%3Cpath d='M5 26a11 11 0 0 1 22 0 2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z' fill='%232D4F83'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='8.5' r='5.5' fill='%232D4F83'/%3E%3Cpath d='M5 26a11 11 0 0 1 22 0 2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z' fill='%232D4F83'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+  <link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +87,7 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 }
 /* Müəllif kartında basılma effekti yoxdur */
 .author-icon{width:64px;height:64px;flex:0 0 64px;border-radius:16px;overflow:hidden}
-.author-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.author-icon svg{width:100%;height:100%;display:block}
 .icon-night{display:none!important}
 body.dark .icon-day{display:none!important}
 body.dark .icon-night{display:block!important}
@@ -282,8 +282,6 @@ document.addEventListener("keydown", function(e) {
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
 
-const DAY_ICON="https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fb5303c34-5ba7-472a-baa1-8b9143bc98cb-1000463113.png";
-const NIGHT_ICON="https://cdn.phototourl.com/member/2026-09-27-be52e931-8795-498a-850b-3c147010701e.png";
 
 function animateRays(dark){
   rays.forEach(r=>{
@@ -452,8 +450,7 @@ function render(){
     const r=first?" rise":(changed?" enter-in":"");
     card.innerHTML=`
       <span class="author-icon${r}">
-        <img class="icon-day" src="${DAY_ICON}" alt="">
-        <img class="icon-night" src="${NIGHT_ICON}" alt="">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="8.5" r="5.5" fill="currentColor"/><path d="M5 26a11 11 0 0 1 22 0 2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z" fill="currentColor"/></svg>
       </span>
       <div class="author-right${r}">
         <div class="author-name">${highlight(author.name,query)}</div>
@@ -562,6 +559,17 @@ function loadImg(src){
   return tryLoad(src).then(im=>im||tryLoad("https://wsrv.nl/?url="+encodeURIComponent(src)));
 }
 
+function drawAuthorIcon(ctx,x,y,size,color){
+  const s=size/32;
+  ctx.save();ctx.fillStyle=color;
+  ctx.beginPath();ctx.arc(x+16*s,y+8.5*s,5.5*s,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.moveTo(x+5*s,y+26*s);
+  ctx.bezierCurveTo(x+5*s,y+20*s,x+10*s,y+15*s,x+16*s,y+15*s);
+  ctx.bezierCurveTo(x+22*s,y+15*s,x+27*s,y+20*s,x+27*s,y+26*s);
+  ctx.quadraticCurveTo(x+27*s,y+28*s,x+25*s,y+28*s);
+  ctx.lineTo(x+7*s,y+28*s);ctx.quadraticCurveTo(x+5*s,y+28*s,x+5*s,y+26*s);
+  ctx.closePath();ctx.fill();ctx.restore();
+}
 function drawCover(ctx,im,x,y,w,h){
   const s=Math.max(w/im.naturalWidth,h/im.naturalHeight);
   const dw=im.naturalWidth*s,dh=im.naturalHeight*s;
@@ -598,7 +606,6 @@ async function makeStory(a){
       document.fonts.load('800 30px Poppins')
     ]);
   }catch(e){}
-  const icon=await loadImg(DAY_ICON);
 
   const W=1080,H=1920;
   const c=document.createElement("canvas");
@@ -798,13 +805,7 @@ async function makeStory(a){
   roundRect(x,PAD,cy0,cw,ch,50);
   x.fillStyle=navG(PAD,cy0,cw);x.fill();
   const isz=116,ix=PAD+30,iy=cy0+(ch-isz)/2;
-  if(icon){
-    x.save();roundRect(x,ix,iy,isz,isz,30);x.clip();
-    drawCover(x,icon,ix,iy,isz,isz);
-    x.restore();
-  }else{
-    placeholderBox(x,ix,iy,isz,isz,30,70);
-  }
+  drawAuthorIcon(x,ix,iy,isz,"#9DC3FF");
   const shCx=PAD+cw-30-34,shCy=cy0+ch/2;
   const tx=ix+isz+26,tMaxW=(shCx-34-16)-tx;
   x.textAlign="left";
@@ -978,7 +979,7 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 }
 /* Müəllif kartında basılma effekti yoxdur */
 .author-icon{width:64px;height:64px;flex:0 0 64px;border-radius:16px;overflow:hidden}
-.author-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.author-icon svg{width:100%;height:100%;display:block}
 .icon-night{display:none!important}
 body.dark .icon-day{display:none!important}
 body.dark .icon-night{display:block!important}
@@ -1173,8 +1174,6 @@ document.addEventListener("keydown", function(e) {
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
 
-const DAY_ICON="https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fb5303c34-5ba7-472a-baa1-8b9143bc98cb-1000463113.png";
-const NIGHT_ICON="https://cdn.phototourl.com/member/2026-09-27-be52e931-8795-498a-850b-3c147010701e.png";
 
 function animateRays(dark){
   rays.forEach(r=>{
@@ -1343,8 +1342,7 @@ function render(){
     const r=first?" rise":(changed?" enter-in":"");
     card.innerHTML=`
       <span class="author-icon${r}">
-        <img class="icon-day" src="${DAY_ICON}" alt="">
-        <img class="icon-night" src="${NIGHT_ICON}" alt="">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="8.5" r="5.5" fill="currentColor"/><path d="M5 26a11 11 0 0 1 22 0 2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z" fill="currentColor"/></svg>
       </span>
       <div class="author-right${r}">
         <div class="author-name">${highlight(author.name,query)}</div>
@@ -1445,6 +1443,17 @@ function loadImg(src){
   return tryLoad(src).then(im=>im||tryLoad("https://wsrv.nl/?url="+encodeURIComponent(src)));
 }
 
+function drawAuthorIcon(ctx,x,y,size,color){
+  const s=size/32;
+  ctx.save();ctx.fillStyle=color;
+  ctx.beginPath();ctx.arc(x+16*s,y+8.5*s,5.5*s,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.moveTo(x+5*s,y+26*s);
+  ctx.bezierCurveTo(x+5*s,y+20*s,x+10*s,y+15*s,x+16*s,y+15*s);
+  ctx.bezierCurveTo(x+22*s,y+15*s,x+27*s,y+20*s,x+27*s,y+26*s);
+  ctx.quadraticCurveTo(x+27*s,y+28*s,x+25*s,y+28*s);
+  ctx.lineTo(x+7*s,y+28*s);ctx.quadraticCurveTo(x+5*s,y+28*s,x+5*s,y+26*s);
+  ctx.closePath();ctx.fill();ctx.restore();
+}
 function drawCover(ctx,im,x,y,w,h){
   const s=Math.max(w/im.naturalWidth,h/im.naturalHeight);
   const dw=im.naturalWidth*s,dh=im.naturalHeight*s;
@@ -1498,7 +1507,6 @@ async function makeStory(a){
       document.fonts.load('800 30px Poppins')
     ]);
   }catch(e){}
-  const icon=await loadImg(DAY_ICON);
 
   const W=1080,H=1920;
   const c=document.createElement("canvas");
@@ -1697,13 +1705,7 @@ async function makeStory(a){
   roundRect(x,PAD,cy0,cw,ch,50);
   x.fillStyle=navG(PAD,cy0,cw);x.fill();
   const isz=116,ix=PAD+30,iy=cy0+(ch-isz)/2;
-  if(icon){
-    x.save();roundRect(x,ix,iy,isz,isz,30);x.clip();
-    drawCover(x,icon,ix,iy,isz,isz);
-    x.restore();
-  }else{
-    placeholderBox(x,ix,iy,isz,isz,30,70);
-  }
+  drawAuthorIcon(x,ix,iy,isz,"#9DC3FF");
   const shCx=PAD+cw-30-34,shCy=cy0+ch/2;
   const tx=ix+isz+26,tMaxW=(shCx-34-16)-tx;
   x.textAlign="left";
