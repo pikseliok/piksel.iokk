@@ -93,10 +93,7 @@ body.dark .icon-night{display:block!important}
 .author-count{font-size:15px;font-weight:500;line-height:1.3;opacity:.92}
 
 /* ---------- Paylaş düyməsi (müəllif kartının ən sağı) ---------- */
-.share-btn{flex:0 0 auto;margin-left:auto;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;background:var(--mk);color:var(--fg);transition:transform .25s ease,background .3s ease}
-.share-btn svg{width:18px;height:18px;display:block}
-@media (hover:hover){.share-btn:hover{transform:scale(1.12)}}
-.share-btn:active{transform:scale(.88)}
+.share-btn{flex:0 0 auto;margin-left:auto;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;background:var(--page);color:var(--accent);transition:transform .25s ease,background .3s ease,color .65s ease}
 
 /* ---------- Paketlər: müəllif kartının altından aşağı düşür ---------- */
 .packages-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.4,0,.2,1)}
@@ -117,8 +114,8 @@ mark.hl{background:var(--mk);color:inherit;font-weight:800;border:2px solid curr
 .sheet-overlay.open{opacity:1;pointer-events:auto}
 .sheet{width:min(100%,520px);background:var(--grad);color:var(--fg);border-radius:28px 28px 0 0;padding:20px 18px calc(18px + var(--bx));transform:translateY(100%);transition:transform .4s cubic-bezier(.22,.8,.25,1)}
 .sheet-overlay.open .sheet{transform:translateY(0)}
-.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.4px;text-align:center;margin-bottom:8px}
-.sheet-opt{width:100%;height:52px;margin-top:8px;padding:0 16px;border:0;border-radius:16px;background:var(--mk);color:inherit;display:flex;align-items:center;gap:14px;font-size:16px;font-weight:500;cursor:pointer;text-align:left;transition:transform .2s ease}
+.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.4px;text-align:center;margin-bottom:8px;color:var(--accent)}
+.sheet-opt{width:100%;height:52px;margin-top:8px;padding:0 16px;border:0;border-radius:16px;background:var(--page);color:var(--accent);display:flex;align-items:center;gap:14px;font-size:16px;font-weight:500;cursor:pointer;text-align:left;transition:transform .2s ease}
 .sheet-opt:active{transform:scale(.97)}
 .sheet-opt svg{width:22px;height:22px;flex:0 0 22px}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--bx));z-index:120;max-width:min(92vw,420px);padding:12px 18px;border-radius:20px;background:var(--grad);color:var(--fg);font-size:14px;font-weight:500;text-align:center;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease}
@@ -257,6 +254,8 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 /* =========================
    THEME
 ========================= */
+const themeToggle=document.getElementById("themeToggle");
+const rays=[...document.querySelectorAll(".ray")];
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
 
