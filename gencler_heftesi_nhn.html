@@ -1,30 +1,1506 @@
-<!doctypehtml><html lang=az><meta charset=UTF-8><meta content="width=device-width,initial-scale=1,viewport-fit=cover"name=viewport><meta content=#9DC3FF name=theme-color><title>πksel - Gənclər həftəsi</title><link href=https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png rel=icon type=image/png><link href=https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png rel=apple-touch-icon><link href=https://fonts.googleapis.com rel=preconnect><link href=https://fonts.gstatic.com rel=preconnect crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"rel=stylesheet><script src=https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js></script><script src=https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js></script><style>:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--mode-bg-light:linear-gradient(135deg,#9DC3FF 0%,#8DB8F5 50%,#9DC3FF 100%);--mode-bg-dark:linear-gradient(135deg,#00072C 0%,#001044 50%,#00072C 100%);--transition:650ms cubic-bezier(.22,.8,.25,1);--glow:rgba(0,8,45,.30);--pt:25px;--pi:18px;--pr:17px;--pq:18px}body.dark{--glow:rgba(255,255,255,.40)}*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif;-webkit-tap-highlight-color:transparent}a,button{-webkit-touch-callout:none}html{scroll-behavior:smooth}body,html{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}body{overflow-x:hidden}body.dark{background:var(--dark-bg);color:var(--dark-ink)}a{color:inherit;text-decoration:none}button{font:inherit}.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}.glow{position:relative;overflow:hidden}.glow>*{position:relative;z-index:1}.glow::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;background:radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}@media (hover:hover){.glow:hover::before{opacity:1}}.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%)}.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}.dark .nav-link{color:var(--dark-ink)}.nav-link:hover{transform:translateY(-1px)}.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}.theme-toggle:active{transform:translateY(-50%) scale(.95)}.theme-icon{width:24px;height:24px;display:block}.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}body.dark .ray{opacity:0}.core{transform:scale(.68);transform-origin:16px 16px}.bite{transform:translate(14px,-14px)}body.dark .core{transform:scale(1)}body.dark .bite{transform:translate(0,0)}body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}.main-container{width:100%;display:flex;flex-direction:column;gap:14px;position:relative;margin-top:14px;padding-bottom:44px}.blur-content{display:flex;flex-direction:column;gap:14px;transition:filter .5s cubic-bezier(.25,1,.5,1);will-change:filter}body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}.info-card,.q-card,.tours-card{width:100%;border-radius:28px;padding:20px 22px;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition)}.dark .info-card,.dark .q-card,.dark .tours-card{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}.game-title{font-size:var(--pt);font-weight:700;line-height:1.15;letter-spacing:-.7px;margin-bottom:14px}.info-row{font-size:var(--pi);line-height:1.5;margin-bottom:6px;font-weight:400}.info-row:last-child{margin-bottom:0}.info-label{font-weight:700}.info-val{font-weight:400}.tour-buttons{display:flex;flex-direction:column;gap:8px}.tour-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:11px 16px;border-radius:16px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:left;transition:background .35s ease,color .35s ease,border .35s ease,transform .25s ease,box-shadow .25s ease}.dark .tour-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.1)}.tour-btn.active{background:var(--mode-bg-light);color:var(--deep);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(0,30,111,.08),0 5px 14px rgba(0,20,100,.08)}.dark .tour-btn.active{background:var(--mode-bg-dark);color:var(--dark-light);border-color:rgba(157,195,255,.12);box-shadow:inset 0 0 0 1px rgba(157,195,255,.08),0 5px 14px rgba(0,0,0,.16)}.global-toggle-btn:active,.tour-btn:active{transform:scale(.96);transition-duration:.3s}.global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:12px 16px;border-radius:20px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.1);transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease}.dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}.global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}.questions-container{display:flex;flex-direction:column;gap:14px}.q-text{font-size:var(--pq);font-weight:400;line-height:1.55;cursor:pointer}.q-text b{font-weight:700}.mat-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-top:10px}.mat-after{margin-top:12px}.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:6px;vertical-align:top}.req-img{display:block;width:auto;height:auto;max-height:40px;max-width:100%;border-radius:8px;cursor:pointer;transform-origin:center center;will-change:transform;position:relative;z-index:1}.req-img.extra{max-height:none;width:100%;max-width:240px;border-radius:12px}.ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:14px;padding-top:12px}.ans-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:8px}.ans-row:last-child{margin-bottom:0}.ans-label{font-weight:700}.ans-row a{text-decoration:underline;word-break:break-all}.author-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.act-group{flex:0 0 auto;display:flex;align-items:flex-start;gap:8px}.like-wrap{display:flex;flex-direction:column;align-items:center}.copy-btn,.like-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease}.dark .copy-btn,.dark .like-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}.copy-btn:hover,.like-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.28)}.dark .copy-btn:hover,.dark .like-btn:hover{background:rgba(0,7,44,.2)}.copy-btn:active,.like-btn:active{transform:scale(.9);transition-duration:.3s}.copy-btn.copied{background:var(--mode-bg-light);color:var(--deep)}.dark .copy-btn.copied{background:var(--mode-bg-dark);color:var(--dark-light)}.copy-icon{width:16px;height:16px;display:block}.copy-icon .check-path{display:none}.copy-btn.copied .copy-icon .clip-path{display:none}.copy-btn.copied .copy-icon .check-path{display:block}.like-icon{width:18px;height:18px;display:block;overflow:visible}.like-icon .outline{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}.like-icon .fill{fill:currentColor;transform:scale(0);transform-origin:12px 12.5px;transition:transform .3s ease-in}.like-btn.liked .fill{transform:scale(1);transition:transform .42s cubic-bezier(.34,1.56,.64,1)}.like-count{display:block;text-align:center;font-size:12px;font-weight:700;line-height:1;margin-top:4px;min-width:20px}footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}.dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}.footer-line{font-size:15px;line-height:1.4;font-weight:500}.footer-link{transition:opacity .25s ease,transform .25s ease}.footer-link:hover{opacity:.72;transform:translateY(-1px)}.copy-btn:focus-visible,.footer-link:focus-visible,.like-btn:focus-visible,.nav-link:focus-visible,.q-text:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}@media (prefers-reduced-motion:reduce){*,::after,::before{scroll-behavior:auto!important;animation-duration:NaNs!important;animation-iteration-count:1!important;transition-duration:NaNs!important}}@media (max-width:700px){:root{--pt:19px;--pi:16px;--pr:15px;--pq:16px}.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}.blur-content,.main-container,.questions-container{gap:10px}.main-container{margin-top:12px}.info-card,.q-card,.tours-card{border-radius:22px;padding:16px}footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}}@media (max-width:420px){:root{--pt:16px;--pi:14px;--pr:13px;--pq:13px}.page{width:calc(100vw - 36px)}.nav-links{gap:22px}.nav-link{font-size:11px}.top-nav{height:42px;padding:0 42px}.theme-toggle{width:32px;height:32px;right:5px}.theme-icon{width:20px;height:20px}.info-card,.q-card,.tours-card{padding:14px}footer{min-height:88px}.footer-line{font-size:11px}}</style><div class=page><nav aria-label="Əsas naviqasiya"class="frame top-nav"style=--i:0><div class="rise nav-links"><a class=nav-link href=index.html>Əsas Səhifə</a> <a class="active nav-link"href=paketler>Sual Paketləri</a></div><button class=theme-toggle id=themeToggle aria-label="Gecə rejiminə keç"type=button><svg aria-hidden=true class="rise theme-icon"id=themeIcon viewBox="0 0 32 32"><defs><mask height=32 id=biteMask maskUnits=userSpaceOnUse width=32 x=0 y=0><rect fill=#fff height=32 width=32 /><circle class=bite cx=21 cy=11 fill=#000 r=7.5 /></mask></defs><g class=rays><g transform="rotate(0 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(45 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(90 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(135 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(180 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(225 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(270 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g><g transform="rotate(315 16 16)"><line class=ray x1=16 x2=16 y1=3.5 y2=6.5 /></g></g><g mask=url(#biteMask)><circle class=core cx=16 cy=16 fill=currentColor r=9 /></g></svg></button></nav><div class=main-container id=mainContainer><div class=blur-content><div class="frame glow info-card"style=--i:1><div class="rise game-title">“Nə? Harada? Nə zaman?” intellektual turniri</div><div class="rise info-row"><span class=info-label>Təşkilatçı:</span> <span class=info-val>Azerbaijan Youth Network</span></div><div class="rise info-row"><span class=info-label>Əməkdaşlıq:</span> <span class=info-val>Breyn Fayt İOK</span></div><div class="rise info-row"><span class=info-label>Redaktor:</span> <span class=info-val>İsmayıl Məmmədquliyev</span></div><div class="rise info-row"><span class=info-label>Müəlliflər:</span> <span class=info-val>Elroman Əlizadə, İsmayıl Məmmədquliyev</span></div><div class="rise info-row"><span class=info-label>Tarix:</span> <span class=info-val>08.02.2025</span></div></div><div class="frame glow tours-card"style=--i:2><div class="rise tour-buttons"><button class="active tour-btn"onclick=loadTour(1)>I tur</button> <button class=tour-btn onclick=loadTour(2)>II tur</button></div></div><button class="frame glow global-toggle-btn"onclick=toggleAllAnswers() id=globalToggleBtn style=--i:3>Bütün cavabları göstər</button><div class=questions-container id=questionsContainer></div></div></div></div><footer><div class=footer-line>Unikal İntellektual Oyunlar Platforması</div><a class="footer-line footer-link"href=https://www.instagram.com/piksel.iok rel="noopener noreferrer"target=_blank>©πksel intellektual oyunlar klubu</a> <a class="footer-line footer-link"href=https://www.instagram.com/onurelzh rel="noopener noreferrer"target=_blank>©Onur Əlizadə</a></footer><script>document.addEventListener("contextmenu",function(e){e.preventDefault()}),document.addEventListener("keydown",function(e){if(123===e.keyCode||e.ctrlKey&&e.shiftKey&&73===e.keyCode||e.ctrlKey&&e.shiftKey&&74===e.keyCode||e.ctrlKey&&85===e.keyCode||e.ctrlKey&&83===e.keyCode)return e.preventDefault(),!1})</script><script>const PKG_ID="gencler_heftesi_breyn_fayt",toursData={1:[{"id":1,"question":"II Bəyazid tərəfindən inşa etdirilən böyük yaşayış iqamətgahlarından biri sonralar\nidman məktəbinə çevrilir. XX əsrin əvvələrində məktəbin “Gloria audace” [Qloria odis]\nadlanması təklif olunsa da, ləğv olmuşdur. Siz isə sözü gedən məktəbi hazırda hansı\nadla tanıdığımızı yazın.","answer":"Qalatasaray","criteria":"Qalatasarayla bağlı cavablar","comment":"Sualda türk hökmdar deyilməsi, idman məktəbi, böyük iqamətgah, yəni saray deyilməsi, Gloria deyilməsi, XX əsrin əvvələri qeyd olunması sizi Qalatasaraya çıxarmalı idi. Qalata sözü “dənizə daxil olan yol” mənasına gəlir. Biz də yarışımıza bu sualla daxil oluruq.","source":"https://www.galatasaray.org/s/galatasaray-nasil-kuruldu/13","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":2,"question":"Diqqət!\nAdolf Hitler bu şəxsin dediklərinə o qədər nifrət dolu idi ki, 1941-ci ildə ONUN dilini\ngətirəcək şəxsə 250.000 reyxsmark qoymuşdu. ONUN kim olduğunu yazın.","answer":"Yuri Levitan","criteria":"Borisoviç Levitan","comment":"Sualda «Внимание! Говорит Москва» - «Diqqət! Danışır Moskva» sözləri ilə məşhur olan Yuri Levitandan söhbət gedirdi. Sualın əvvəlində “Diqqət!” deyilməsi və məhz “dilinə” 250.000 reyxsmark qoyulması sizi cavaba çıxara bilərdi. Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","source":"https://tass.com/non-political/793415","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":3,"question":"Deyilənə görə, qumarxanalarda BELƏ musiqilərdən istifadə edilməsinə səbəb\ninsanların vaxtı hesablaya bilməməsidir. Bir jurnalda qeyd olunur ki, keçən əsrin 70-ci\nillərində Yaponiyadakı bir kəşf BELƏ mahnıların daha çox populyarlaşmasına səbəb\nolmuşdu. BELƏ ilə əvəz olunanı yazın.","answer":"Sözsüz","criteria":"Söz olmadan, Söz istifadə etmədən Karaoke və.s mənaya uyğun","comment":"Qumarxanalarda sözlü musiqilərdən istifafə edilmir. Çünki bu halda insanlar mahnının əvvəlini və axırını biıdikləri üçün vaxtı hesablaya bilirlər və orada uzun müddət keçirdiklərini başa düşürlər. 1971-ci ildə Yaponiyada karaokenin kəşfi bütün klassikləri kölgədə qoymuş və sözsüz mahnıların daha çox populyarlaşmasına səbəb olmuşdu. Mənbə 1. https://www.google.com/amp/s/amp.onedio.com/haber/kumar-ve-kumarhanelerle-il gili-birbirinden-ilginc-19-karanlik-gercek-722768 2. https://londonkaraokehire-com.translate.goog/blog/history-of-karaoke/?_x_tr_sl=en &_x_tr_tl=tr&_x_tr_hl=tr&_x_tr_pto=tc","source":"","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":4,"question":"Bu suala “kart oynamaq” cavabları da sayıldı.\nBir karikaturada Spike, Scooby Doo, Pluto və Drupi BUNU EDİRLƏR. Bir filmdə də\nsehrbaz və falçı hansının daha bacarıqlı olduğunu yoxlamaq üçün BUNU EDİRLƏR.\nBUNU ETMƏKlə əvəz olunmuş iki sözü yazın.","answer":"Poker oynamaq","criteria":"Kart oynamaq","comment":"Adları sadalananlar məşhur çizgi film personajı olan itlər idi. Kasius Kuliçin “Poker oynayan itlər” rəsm əsəri var. Sehrbaz və falçının da poker kartları ilə “göz boyama sehri” və ya “qismətə baxmaq” kimi xüsusiyyətlərini də yəqin ki bilirsiniz. Yeri gəlmişkən həmin rəsmdə 4 it var, biz də sizə 4 it sadalamışdıq. Sualın nömrəsi 4dür və poker də dördlük deməkdir.","source":"1. https://en.wikipedia.org/wiki/Dogs_Playing_Poker  2. https://www.dogsplayingpoker.org/stuff/scooby-doo-playing-poker.html  3. Dr. Terror’s house of horrors. dəq-48","author":"İsmayıl Məmmədquluyev --------------------------------------------------------------------------------------- Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK"},{"id":5,"question":"Bir mənbədə personajların sağ qalmaq üçün nəinki özlərini, hətta digərlərini də\ndüşünməsinin şahidi ola bilərik. Təsadüfi deyil ki, həmin mənbədəki əsas\npersonajlarından birinin adında 1884-cü il doğumlu bu şəxsin adını görürürük. Bizə\nhəmin şəxsin kim olduğunu yazın.","answer":"Yevgeni Zamyatin","criteria":"Zamyatin","comment":"Söhbət keçən ilin oktyabrında ekranlara çıxan platforma-2 filmindən gedirdi. Filmdəki əsas personajlardan biri də Zamyatindir. Sual mətninin sizə birinci şəxsin cəmində verməyimiz və sondakı sualın qoyuluşunda “biz”-dən istifadə etməyimiz də sizi Zamyatinin “Biz” əsərinə çıxarmaq üçün idi.","source":"1. https://en.m.wikipedia.org/wiki/The_Platform_2  2. https://ru.m.wikipedia.org/wiki/%D0%97%D0%B0%D0%BC%D1%8F%D1%82%D 0%B8%D0%BD,_%D0%95%D0%B2%D0%B3%D0%B5%D0%BD%D0%B8%D0% B9_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":6,"question":"Bir reportajda tərk edilmiş Azərbaycan Beynəlxalq Universitetində yerə\nsəpələnmiş və üstünü toz basmış kitablar universitetin ən təbii məhsulları adlandırılır.\nNövbəti cümlədə isə qeyri-işlək mühafizə kameraları İKS-ə bənzədilir. İKS-i sonor\nsamitlə başlayan qoşasamitli sözlə yazın.","answer":"Müqəvva","criteria":"Yalnız dəqiq cavablar","comment":"Reportaj məqsədilə ABU-ya gedən El Roman yerə səpələnmiş və üstünü toz basmış kitabları universitetin ən təbii məhsulları adlandırır və burada gördüyü illərdir qeyri-işlək olan mühafizə kameralarını bostan müqəvvalarına bənzədir. Biz insanlar hər nə qədər işlək olub olmamasını bilsək də, kamera gördükdə özümüzü düzgün aparmağa çalışır və bir növ qorxuruq. Sualda təbii məhsullar da sizi bağa, bostana çıxara bilərdi.","source":"https://lent.az/xeber/sosial/diplomlarinin-olum-sehadetnamesine-cevrildiyi-universitet den-reportaj-40627173","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":7,"question":"Əksər media işçiləri reportaj götürdükləri çox varlı şəxslərdən BUNU soruşurlar.\nQəribədir ki, taxıl istehsalında ən yuxarı pillələrdə olan Avstraliya BUNA əsasən olan\nsiyahıda da birinci yerdədir. Eşitdiyiniz fakta rast gələn sual müəllifi Avstraliyada ad\ngünülərin yaxşı keçdiyini düşünür. BU ilə əvəz etdiyimiz üçüncü növ təyini söz\nbirləşməsini yazın.","answer":"Çörəyin qiyməti Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","criteria":"Yalnız dəqiq cavablar","comment":"Maraqlıdır ki, taxıl istehsalat sahəsində ən yuxarı pillələrdən birində olan Avstraliya çörəyin qiyməti ilə bağlı siyahıda 3.32 dollarla zirvəni tutur. Avropa ölkələrində müxbirlər reportaj zamanı qarşılaşdıqları populyar və varlı simalardan çörəyin qiymətini soruşurlar və onların bu barədə məlumatsız olduqlarını işıqlandırırlar. Sonda deyilən ad günü fikiri isə Maria Antuanettanın \"çörək yoxdur, tort yesinlər\" ifadəsinə allüziya idi.","source":"1. https://wise.com/tr/blog/avustralya-yasam-masraflari  2. https://www.kibrispostasi.com/c42-INGILTERE/n115812-Ekmegin-fiyatini-bilmeyen-b asbakan","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":8,"question":"(Aparıcı üçün qeyd: Hər cür tematikanı əks etdirməyə çalışdığımız\npaketimizdə oyundan sonra əskikləri qeyd etməyinizi xahiş edirik)\nİKS-in mövcudluğu haqqında olan bir araşdırmada flaminqo, göyərçin və pinqvinin\nözlərinəməxsus mayeləri ilə balalarına güclü immunitet vermələrindən danışılır. Bir\nizahlı lüğətdə İKS Aristofanla əlaqəndirilir. İKS ilə əvəz etdiyimiz saitləri dodaqlanan\nolan iki sözü yazın.","answer":"Quş südü","criteria":"Yalnız dəqiq cavablar","comment":"Quşlar məməli olmasalar da, quş südü ifadəsi dünyaca məşhur bir ifadədir. Birinci tərəfdə sadalananlar quşlar idi və onların öz balalarına verdikləri özlərinəməxsus mayeləri onlarla vitaminlə zəngindir. Ehtimal olunur ki, quş südü ifadəsi buradan gəlir. İkinci tərəfdə isə söhbət Aristofanın “quşlar” komediyasından gedirdi, belə ki əsərdə insanlar quş südünə malik olduğu üçün çox sevinirlər. Sualdan əvvəl hər cür tematikanı əks etdirmək istəməyimiz və əksikləri qeyd etməyinizi istəməyimiz “süfrədə bircə quş südü yoxdur” ifadəsinə allüziya idi.","source":"1. https://web.stanford.edu/group/stanfordbirds/text/essays/Bird_Milk.html  2. https://gramota.ru/biblioteka/spravochniki/spravochnik-po-frazeologii/ptiche-moloko","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":9,"question":"“Kugel” sözü alman dilində “şar” mənasını verir, həmçinin 36-40 həftəlik bir dövrü\ntəyin etmək üçün istifadə edilir. Siz isə “kugelzeit” adlı tibbi dərmanların kimlər üçün\nnəzərdə tutulduğunu yazın.","answer":"Hamilələr","criteria":"Yalnız dəqiq cavablar","comment":"“Şar”, 36-40 həftəlik, daha dəqiq desək, 9 aylıq bir müddət sizi hamiləlik dövrünə aparmalı idi. Sualın nömrəsi də bir növ kömək idi. Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","source":"1. https://www.etymonline.com/word/kugel  2. https://shop.gu.de/products/45724-kugelzeit","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":10,"question":"BLİTS!\n1. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi sözügedən\nəsərinin ilk nüsxəsində insan olmayan varlıqlar barədə danışarkən İKS-dən istifadə\netdiyi üçün feministlər tərəfindən tənqid olunmuşdu. İKS-i yazın.\n2. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi kitabının ilk\nnüsxəsinə gələn çoxsaylı tənqidlərdən sonra İKS-ləri İQREK-lərlə əvəz etmiş və yenə\ndə çoxsaylı tənqidlərə məruz qalmışdı. İQREK-i yazın.\n3. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi kitabının ikinci\nnüsxəsinə gələn çoxsaylı tənqidlərdən sonra, nə qədər qəribə də olsa, İQREK-ləri\nZED-lərlə əvəz etmiş və tənqidçilər tərəfindən yüksək qiymətləndirilmişdi. ZED-i\nyazın.","answer":"1. He; 2. She; 3. It;","criteria":"1. Kişi cinsi; 2. Qadın cinsi; 3. Neytral cins; 1. Him; 2. Her; 3. It 1. His; 2. Her; 3. Its; 1. His; 2. Hers; 3. Its;","comment":"Söhbət Krober Le Guinin “Qaranlığın son əli” əsərindən gedirdi. Əsərdə dünyalı bir insan başqa bir planetdə cinsiyyəti olmayan məxluqların içərisinə düşür və onları başa düşməyə, cinsiyyət olmadan necə həyat sürüldüyünü qavramağa çalışır. Həmin varlıqları yazıçı öz əsərində iki başlarda daha çox kişi cinsi əvəzlikləri ilə əvəz etmiş, daha sonra qadın cinsi əvəzlikləri ilə əsr etdirmiş, nəhayət sonda hər nə qədər canlı varlıqlar da olsa, cansız və ya neytral əvəzliklə əvəz etdirərək çap etdirmişdi. Birinci sualda feministlər tərəfindən tənqidi sizi zəncirvarı blitsimizi qurmağa kömək edə bilərdi.","source":"1. https://en.wikipedia.org/wiki/The_Left_Hand_of_Darkness  2. https://library--of--babel.blogspot.com/2016/01/he-she-ve-it-language-and-gender-in .html?m=1","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":11,"question":"Bir məqalədə Səddam Hüseynə 9 dekabr 2003-cü ildə açılmış cinayət işindən\nsonra 26 dekabr 2006-cı ilədək davam edən və hər dəfə yarımçıq qalan məhkəmə\nprosesindən danışılır. Sual müəllifi təqsirkar şəxsin hər dəfə sağ qaldığı bu prosesi\nməşhur şərq mənbəsi ilə adlandırır. Həmin mənbənin adını yazın.","answer":"Min bir gecə","criteria":"1001 gecə Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","comment":"Məhkəmə prosesi təxminən 1000 gün çəkib. Sual müəllifi təxminən 1000 gün davam və hər dəfə yarımçıq qalan məhkəmə prosesinindən azad olan Səddam Hüseyni 1001 gün boyunca yarımçıq nağıllarla xilas olan Şəhrizada, prosesi isə 1001 gecə nağıllar toplusuna bənzətmişdi.","source":"1. https://az.wikipedia.org/wiki/Min_bir_gec%C9%99  2. https://en.wikipedia.org/wiki/Trial_of_Saddam_Hussein","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":12,"question":"Trajikomedik şəkildə yazılmış bir məqalədə kliniki ölüm sayının azaldılması üçün\nBUNU ETMƏK tövsiyə olunur. Karayip quldurları filmlər seriyasında döyüş olan\nsəhnələrdən sonrakı epizodlarda BUNU ETMƏYİ görə bilərsiniz. BUNU ETMƏKlə əvəz\nolunmuş 3 sözü yazın.","answer":"Tabutu dənizə atmaq","criteria":"Ölüləri suya atmaq; Ölənləri dənizə atmaq və.s mənaya uyğun cavablar","comment":"Bir yumoristik məqalədə qeyd olunur ki, kliniki ölüm sayı artdığı üçün tabutları dənizə atmaq onları basdırmaqdan daha yaxşıdır. Çünki bu halda bir neçə il sonra taxta aşınacaq və tabutdakı şəxsin sağ qurtulma ehtimalı yaranacaq. Karib dənizi quldurları filmində də səhnələr dənizdə keçir, döyüşlərdən sonra insanlar öldükdə tabutlara qoyub gəmidən dənizə atırdılar.","source":"1. https://eksisozluk.com/olumsuz-insani-tabuta-kitleyip-denize-atmak--7382119?nr=tru e&rf=%C3%B6l%C3%BCms%C3%BCz%20su%C3%A7luyu%20g%C3%BCne%C5 %9F%27e%20g%C3%B6ndermek  2. https://t.me/bpthaber/30972","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":13,"question":"Ötən il Ukrayna Andriyivkanı azad etdikdə kənddə bütöv bina qalmaması\nsəbəbilə hərbçilər BUNU ETMƏKDƏ çətinlik çəkdilər. 1945-ci ildə BUNU ETMƏK hansı\ntoponimdə Pulitzer mükafatı qazanmışdı?","answer":"İvodzima","criteria":"Iwo Jima","comment":"BUNU ETMƏKlə \"bayraq qaldırmaq\" əvəz olunmuşdu. Sözü gedən ildə amerikan yapon qoşunları arasında baş vermiş İvodzima döyüşündə Co Rozentalın 1945-ci il fevralın 23-də çəkdiyi və \"İvodzima üzərində bayrağın qaldırılması\" adlanan foto o il Pulitzer mükafatına layiq görülmüşdü. Sualda azad etmək və bütöv bina qalmaması sizi bayraq qaldırmağa, bayraq qaldırılan pulitzer mükafatı isə İvodzimaya çıxarmalı idi. Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","source":"1. https://www.google.com/amp/s/www.pravda.com.ua/eng/news/2023/09/18/742027 7/index.amp  2. https://en.wikipedia.org/wiki/Raising_the_Flag_on_Iwo_Jima","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":14,"question":"Kaspar Deyvid “Ayı düşünən iki adam” əsərini şərh edərkən hər iki ümidsiz şəxsin\ntanrını gözlədiyini qeyd edir. Siz isə bu rəsm əsərindən ilhamlanan 1906-cı il doğumlu\nyazıçını yazın.","answer":"Samuel Bekett","criteria":"Beckett","comment":"Əsərdə iki şəxs Aya baxaraq təsvir olunub və siz ilk baxışdan da onların nəyisə gözlədiyini görə bilərsiniz. Qəmgin və solğun təsir bağışlayan əsərdəki şəxslər həsrətlə Ayı, Deyvidin də şərh etdiyi kimi tanrını gözləyirlər. Bu rəsm əsəri ilə tanış olan Samuel Beckett “Qodonu gözləyərkən” əsərini yazır. Əksər tənqidçilər və ədəbiyyatşünaslar əsərdəki Qodonun tanrı və ya tanrı əvəzi üstün bir varlıq olduğunu iddia edir. Sualda “Tanrını gözləməsi” də sizə kömək etməli idi.","source":"1. https://richardgwyn.me/2012/05/01/waiting-for-godot-and-caspar-david-friedrich/  2. https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon  3. https://en.wikipedia.org/wiki/Samuel_Beckett","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":15,"question":"(Aparıcı üçün qeyd: Bu sualdan fasilə olacaq)\nİkinci dünya müharibəsində çəkilmiş məşhur fotoda öz əsgər yoldaşı üçün BUNU\nEDƏN əsgəri görə bilərsiniz. Bir filmində bir-birinə çox bənzəyən iki aləti fərqləndirə\nbilməyən Şener Şen cinayət işləmək yerinə BUNU EDİR. BUNU ETMƏKLƏ əvəz\netdiyimiz ilk ikisi eyni iki hərflə başlayan üç sözü yazın.","answer":"Silahla siqaret yandırmaq","criteria":"Siqareti silahla yandırmaq; Siqarı silahla yandırmaq;","comment":"1940-cı ildə İkinci Dünya Müharibəsi zamanı çəkilmiş məşhur fotolardan birində alman əsgər silahı ilə digər əsgərin siqaretini yandırır. \"Şabanoğlu Şaban\" filmində Şener Şenin məşhur \"Bu tabanca, bu çakmak\" replikasında Şabanı tapançayla öldürmək yerinə alışqanla siqaretini yandırdığını yəqin ki xatırladız. Həmçinin sualda müharibə illəri deyilməsi və ikinci tərəfdə bir birinə çox bənzəyən iki alətdən birinin cinayət üçün olduğu deyilməsi sizə cavabı tapmaq üçün kömək etməli idi.","source":"1. https://youtu.be/0On3v0uqCK8?si=nCSkgQwRCEw3cHck 2. https://t.me/bpthaber/31771","author":"Elroman Əlizadə Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK --------------------------------------------------------------------------------------- II TUR"}],2:[{"id":1,"question":"Maraqlıdır ki, siz YAŞIL YOLDA daşların üstündə əşya adları ilə birgə “oğul və qız”\nsözlərini də görə bilərsiniz. Bir mühafizə işçisi qeyd edir ki, statistika çıxarsanız, bəlkə\ndə siz düşündüyünüzün əksinə, insanların çoxu məhz YAŞIL YOLA gəlir. YAŞIL YOL ilə\nəvəz etdiyimiz iki və ya 3 sözü yazın.","answer":"Ev heyvanları məzarlığı","criteria":"Heyvan qəbiristanlığı; Heyvan məzarlığı; Ev heyvanları qəbiristanlığı;","comment":"Ev heyvanları məzarlığı haqqında danışılan məqalələrdən birində yazılıb ki, məzar daşlarının üstündə müxtəlif əşya adları yazılır, çünki ev heyvanlarına daha çox əşya adları verilir. Ən çox \"qızım\" və \"oğlum\" xitablarının işləndiyi bu heyvanların yatdığı məzarlıqda işləyən mühafizə işçisi öz müsahibələrindən birində deyir ki, insanlar ən çox buranı ziyarət edirlər, nəinki insan məzarlığını. Yaşıl yol və ev heyvanları məzarlığı Stiven Kinqin iki məşhur romanıdır. Mənbə 1. https://t.me/bpthaber/31021?single  2. https://www.istanbulhayvanmezarligi.com/kedi-kopek-hayvan-mezarligi/","source":"","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":2,"question":"XX əsrin əvvəllərində ABŞ-da heç bir zərurət olmadan ziqzaq formasında uzun\ndəmiryolları çəkilirdi. Bir mənbədə qeyd olunur ki, bu hadisəyə səbəb sahibkarların\nsudan sui-istifadə etməsidir. Əvvəlki cümlədə bir sözdə buraxılmış hərflər var, hərfləri\nbərpa edərək sözü orijinalda yazın.","answer":"Subsidiya","criteria":"Yalnız dəqiq cavablar","comment":"Həmin dövrdə qanunlara əsasən, dəmiryolu xətləri çəkən sahibkarlara hər mil üçün subsidiya ayrılırdı. Təbii ki, bəzi sahibkarlar bu subsidiyaları daha çox almaq üçün yolları daha uzun etmək məqsədilə lazımsız ziqzaqlar yaratmışdılar.","source":"1. \"Rifah paradoksu\" - Kleyton Kristenson, səh 301  2. https://ru.wikipedia.org/wiki/субсидия","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":3,"question":"2022-ci ilin may ayına aid bir jurnalda onun əlində quş qəfəsi tutduğunu görə\nbilərik. Keçən ilin sonlarında Donaldt Tramp imzaladığı sərəncamlardan birində onun\n\n\nda adını qeyd etmişdi. Əvvəlki iki cümlədə eyni hərflər buraxılıb, hərfləri bərpa\nedərək sözü orijinalda yazın.","answer":"Elon","criteria":"Elon Musk","comment":"2024-cü ilin dekabr ayında Donald Tramp imzaladığı sərəncamla Elon Maskı nazir təyin etmişdi. 2022-ci ildə \"Taym\" jurnalı əlində içərisində \"Tvitter\" quşları olan qəfəs tutmuş Elon Maskı üz qapağında təsvir etmişdi. Mənbə 1. https://time.com/magazine/us/6171751/may-9th-2022-vol-199-no-17-u-s/  2. https://tr.m.wikipedia.org/wiki/Elon_Musk","source":"","author":"Elroman Əlizadə ---------------------------------------------------------------------------------------"},{"id":4,"question":"Mövzunu davam etdirək!\nSualda əvəzetmə var!\nKeçən il avqust ayında Rusiyanın Fransa səfirliyinin qarşısında ONUN həbsinə etiraz\naksiyası baş tutmuşdur. Aksiyada iştirak edən on minlərlə şəxsin əlində nəyi\ntutduğunu birinci növ təyini söz birləşməsi ilə yazın.","answer":"Kağız təyyarə","criteria":"Yalnız dəqiq cavablar","comment":"Pavel Durov, Telegram-ın qurucusudur. O, İsrail təhlükəsizlik xidmətinin tələblərini yerinə yetirməkdən imtina etdiyi üçün Fransada həbs olunmuşdur. Mövzunu davam etdirməyimiz sosial şəbəkəyə işarə idi.","source":"1. https://www.google.com/amp/s/www.gulf-times.com/article/689284/international/uk europe/telegram-founder-durov-arrested-in-france/amp  2. https://nypost.com/2024/08/24/world-news/telegram-founder-pavel-durov-arrestedat-paris-airport-report/","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":5,"question":"Maraqlıdır ki müharibələrdə öz neytrallığını qoruyan İsveçrədə İKS-lər pendir\nistehsalı üçün istifadə edilir. Keçən əsrin 80-ci illərindən etibarən Çin hökuməti\nİKS-ləri yerli əhaliyə kirayəyə verirdi. İKS ilə əvəz etdiyimiz alman mənşəli sözü yazın.","answer":"Bunker","criteria":"Yalnız dəqiq cavablar","comment":"İsveçrədə bunkerlərdən pendir istehsalı üçün ideal şərait yaratmaq məqsədilə istifadə edilir. Bu, İsveçrənin müharibələrdə neytrallığını qoruması və bunkerlərin başqa məqsədlər üçün uyğunlaşdırılması ilə bağlıdır. Sualda müharibə deyilməsi, ikinci tərəfdə Çinin onları əhaliyə kirayəyə verməsi sizə kömək etməli idi.","source":"1. https://9gag.com/gag/axyVmQK Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK  2. https://www.toptenz.net/10-things-you-never-knew-about-nuclear-bunkers.php#goo gle_vignette","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":6,"question":"“Hər şey təkərdən başlayır” adlı mənbənin BU başlıqlı bölməsində Persey, Narsis,\nMeduza və Arximedin adı çəkilir. Sokrat BUnu əxlaqlı olmaq istəyənlərə tövsiyə edirdi.\nBUNU saitləri eyni olan bir sözlə yazın.","answer":"Güzgü","criteria":"Ayna","comment":"Bu kitabda ixtiralardan danışır. Arximed gəmiləri güzgülərdən istifadə edərək yandırmış, digər adı çəkilən şəxslərdən isə heç olmasa Narsis öz əksinə baxmaqla bağlı adını aldığı üçün sizi güzgüyə çıxara bilərdi.","source":"http://flibusta.site/b/800567/read","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":7,"question":"Bu yaxınlarda bir hava limanının daxili mağazasından ÜÇÜNCÜ oğurlandığı üçün\n30-a yaxın uçuş reysi ləğv edilmişdir. Maraqlıdır ki, yeni doğulan körpələr üçün\nnəzərdə tutulan ÜÇÜNCÜ leylək dimdiyi formasındadır. ÜÇÜNCÜ ilə əvəz etdiyimiz\nsözü yazın.","answer":"Qayçı","criteria":"Yalnız dəqiq cavablar","comment":"Təyyarəyə minərkən qadağan olunan əşyalar sırasında qayçı da mövcuddur. Kiminsə qayçını götürüb təyyarədə terror etməsindən ehtiyat edən New Chitose hava limanı uçuşları dayandırmışdı. İkinci tərəfdə isə söhbət qalın dimdikli leylək formasından olan qayçılarla körpələrin göbək bağının asanlıqla kəsilməsindən gedirdi. ÜÇÜNCÜ ilə əvəz edilməsi də daş, kağız, qayçı oyununa görə idi.","source":"1. https://www.rbc.ru/rbcfreenews/66c585529a79476106df8f1e  2. https://images.app.goo.gl/5dBhFNWswB6fmERE9","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":8,"question":"Paylama materialı\n\n\nPaylama materialında gördüyünüz şirkət tarix zamanı illərə bir simvol əlavə edir. Siz\nisə sözügedən şirkətin hazırkı ili (bu ili) necə yazdığını 5 simvolla cavab kartınıza qeyd\nedin.","answer":"02025","criteria":"Yalnız dəqiq cavablar","comment":"Adı Long Now olan bu şirkət uzun müddət fəaliyyət göstərəcəyini iddia etdiyi üçün bu adı seçib. Hətta bu iddiasından əmin olan şirkət bir çox təqvimlərdə olduğu kimi 10000-ci il problemini də düşünüb. Paylama materialında verilən X üzəri xətt rum rəqəmlərində 10000-i bildirir. Bu səbəbdən şirkət hər bir ilin əvvəlinə “0” əlavə edir.","source":"1. https://en.wikipedia.org/wiki/Long_Now_Foundation  2. https://www.cuemath.com/numbers/10000-in-roman-numerals/","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------","reqImg":"https://i.ibb.co/xtXCTnXk/Ekran-kli-2026-10-07-143548.png"},{"id":9,"question":"Bir müsahibədə qeyd olunur ki, breyn-rinq oyunlarında asan suallar güclü və zəif\nkomandalar arasındakı fərqi göstərmir, çünki kim düyməni daha tez basırsa, qalib\ngəlir. Növbəti cümlədə asan suallar BUNA bənzədilir. BUnu biri xüsusi olan iki sözlə\nyazın.","answer":"Kolt tapançası","criteria":"Yalnız dəqiq cavablar","comment":"Öz cümlələrində güclü və zəif təbəqələşməsi və asan sualların onları bərabərləşdirməsindən danışan Roman Morozovskiy məşhur ifadəyə istinad edir: \"Tanrı insanları fərqli yaratdı, amma polkovnik Kolt onları bərabərləşdirdi\".","source":"http://lib.ru/INDEXLESS/03/1.htm","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":10,"question":"Bir filmdə xatirələrə çox önəm verən yaşlı personaj Paris şəhərində əvvəllər\nolduğu və gəzdiyi bütün yerləri film boyunca yenidən gəzir. Vaxtınızı itirmədən bu\npersonajın adını yazın.","answer":"Madlen Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK","criteria":"Madeleine","comment":"Sualda personajın xatirələrə önəm verməsi və olduğu yerlərdən təkrar keçməsi onun keçmiş xatirələri xatırlamaq istəyinə eyham idi. Həmçinin “Parisdə olması” və “vaxtınızı itirmədən” sizi Marsel Prustun “İtirilmiş vaxtın axtarışında” əsərinə aparmalı idi. Həmin əsərdə qəhrəman Madlen peçenyesini çaya batırıb dişlədikdən sonra peçenye onu keçmişə, uşaqlıq illərinə qaytarmışdı. Məhz bu əsərdən sonra Madlen peçenyesi məşhurluq qazanır və keçmiş yaddaşda qalan anlarla əlaqələndirilir.","source":"1. https://m.imdb.com/title/tt14586118/  2. https://lapatisseriedumonde.com/recipes/madeleines-history/","author":"İsmayıl Məmmədquluyev ----------------------------------------------------------------------------- ---------------------------------------------------------------------------------------"},{"id":11,"question":"2024 Paris Olimpiadası gedişində dərc olunan bir yazıda Parisdəki ekoloji\nçirklilikdən danışılır. Növbəti cümlədə triatlonla olan bağlı olan hissədə \"Parisi görmək\nvə ölmək\" ifadəsi işlədilib. Əvvəlki cümlədə iki söz başqa iki sözlə əvəz olunub. Əvəz\nolunmuş iki sözü yazın.","answer":"Senada üzmək","criteria":"Senaya girmək","comment":"2024 Olimpiadasında bəzi üzgüçülük yarışları Sena çayında keçirilmişdi. Çayın çirklənmə səviyyəsinə görə bəzi idmançılar zəhərləndiyi üçün üzgüçülük ləğv olunmuşdu. Sualda triatlon və ekoloji çirklilik sizə kömək edə bilərdi. “Parisi görmək” - “Senada üzmək” ifadəsi ilə əvəz edilmişdi.","source":"“https://thegirl.ru/articles/pereplyt-senu-i-umeret-10-luchshikh-memov-s-olimpiady-2 024/","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":12,"question":"Çində gömrüyə işə girən şəxslərdən ilk növbədə BUNU ETMƏK tələb edilir. Keçən\nəsrin sonlarında bir şotland şəhərində bəzi şəxslər istəmədən BUNU EDİRDİ. Ötən\nəsrin 60-cı illərinə aid bir mənbədə personaj səmərəli bir sövdələşmədən sonra BUNU\nETMƏYİ itirir. Həmin personajın adını yazın.","answer":"Tim Taler","criteria":"Taler","comment":"Bir şotland şəhəri deyilməsi sizi Qlazqo gülüşünə çıxarmalı idi. BUNU ETMƏKlə gülmək sözü əvəz olunmuşdu. \"Tim Taler və satılmış gülüş\" romanında Tim öz gülüşünü zəngin, lakin zalım bir barona satır. Bunun qarşılığında isə o, hansı at yarışına pul qoysa, mütləq qalib gəlirdi.","source":"1. http://www.dailymail.co.uk/news/article-2224893/Getting-perfect-grin-How-Chinesepolice-taught-smile-holding-chopsticks-mouths.html Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK  2. https://en.m.wikipedia.org/wiki/Timm_Thaler_(novel)  3. https://extranet.space-engineering.co.uk/29027-unraveling-the-intriguing-story-behi nd-the-iconic-look.html","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":13,"question":"Paylama materialı\n******ize\nPaylama materialında sizdən bir hissəsini gizlətdiyimiz bu sözün mənası “bir şey üçün\nbirini işdahlandırıb, arzu etdirib sonra isə həmin şeyi əlçatmaz etmək” deməkdir. Bəs\nbu sözün etimologiyasında hansı mifoloji varlığın adına rast gəlinir?","answer":"Tantal","criteria":"Yalnız dəqiq cavablar","comment":"Söhbət ingilis dilindəki “tantalize” sözündən gedirdi. Bildiyimiz kimi Tantalın cəzası da hər tərəfi su olsa da, su içə bilməmək, hər yerdə meyvə görsə də, dərə bilməməsi idi.","source":"1. https://en.m.wikipedia.org/wiki/Tantalus 2. https://www.etymonline.com/word/tantalize","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":14,"question":"Bir müsahibədə kağız üzərindəki cızma-qara taktika sxemləri ilə uğur qazanan\nPep Quardiola ONUNLA müqayisə olunur. Keçən əsrin əvvəllərində O dostlarına\ngöndərdiyi məktubda artıq qalan ömrünü kilsəyə ayıracağını qeyd etmişdi. ONUN kim\nolduğunu yazın.","answer":"Antonio Qaudi","criteria":"Qaudi","comment":"Memarlıq nümunələrində səliqəli və incə işlənmiş eskizləri ilə fərqlənən və Quardiola kimi ispan olan Antonio Qaudi 19-cu əsrin sonunda “Müqəddəs Ailə” kilsəsi - “Sagrada Familia”-ya memar və dizayner olaraq təyin olunmuş, 20-ci əsrin əvvələrində bütün ailəsini itirdikdən sonra isə dostlarına geridə qalan ömrünü kilsəyə ayıracağını demişdi. Təəssüf ki, Qaudinin ömrü bu kilsənin tikintisinin başa çatmasına yetmədi. Yeri gəlmişkən Müqəddəs Ailə kilsəsi hələ də tikilib başa çatmayıb və hazırkı tikintisinin davamı da Qaudinin dizaynı əsasındadır.","source":"1. PEP GUARDIOLA left SPEECHLESS by shocking ANTONI GAUDÍ comparison 3-cü saniyə Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK  2. https://en.wikipedia.org/wiki/Antoni_Gaud%C3%AD","author":"İsmayıl Məmmədquluyev ---------------------------------------------------------------------------------------"},{"id":15,"question":"Sovet ittifaqı qəhrəmanı adını alan O, erkən yaşlarından yüksək dağlıq ərazilərdə\nöz təhlükəli hobbiləri ilə məşğul olmuş və ömrünün bir hissəsini Meksika\nhəbsxanasında keçirmişdir. ONA məşhurluq gətirən şücaəti barədə olan bir məqalədə\nBİRİNCİni ETMƏKdən danışılır. BİRİNCİni ETMƏKlə əvəz olunmuş xüsusi olmayan\nsözləri yazın.","answer":"Aslanı öldürmək","criteria":"aslanı qətlə yetirmək, aslanın canını almaq və.s aslan və şir işlədilməsi ilə mənaya uyğun cavablar","comment":"Haqqında danışılan şəxs Ramon Merkader idi, sualın birinci tərəfində onun yüksək dağlıqlarda hobbilərini həyata keçirməsi həvəskar alpinist olmasına aparmalı idi ki, bu da onun buz baltasını yaxşı işlətməsinə işarə idi. İkinci tərəfdə “Meksika” da sizi təqiblərdən sonra Meksikada sığınan Trotskiyə çıxara bilərdi. Həbsdən çıxdıqdan sonra Merkader Trotskini öldürdüyü üçün Sovet ittifaqı qəhrəmanı adına layiq görülmüşdü. Şücaət və qoçaqlıq sinonim sözlərdir, bu sözün işlənməsi Herakl qoçaqlıqlarına işarə idi. Heraklın birinci qoçaqlığı da məhz aslanı öldürməkdir, həmçinin “Lev” sözü də rusca aslan deməkdir, Paketimizdə birinci sualımıza Galatasarayla başladıq və sonuncu sualda da aslanı öldürdük.","source":"1. https://en.wikipedia.org/wiki/Assassination_of_Leon_Trotsky  2. https://ru.m.wikipedia.org/wiki/%D0%9C%D0%B5%D1%80%D0%BA%D0%B0%D 0%B4%D0%B5%D1%80,_%D0%A0%D0%B0%D0%BC%D0%BE%D0%BD  3. https://www.marxists.org/archive/trotsky/1930/mylife/ch01.htm","author":"İsmayıl Məmmədquluyev Əlavə suallar"},{"id":16,"question":"Xarkovun iks adlı futzal komandası əsas diviziona düşə bilməyən gənc futbolçulara\nikinci bir şans tanımaq məqsədilə yaradılıb. Əvvəlki cümlədə buraxılan 3 hərfi bərpa\nedərək sözü orijinalda yazın.","answer":"Feniks","criteria":"Yalnız dəqiq cavablar","comment":"Feniks quşu yenidən doğulmaq xüsusiyyətinə malikdir. Bu komanda da əsas heyətə düşə bilməyənlərə ikinci şans verirdi.","source":"https://en.wikipedia.org/wiki/FC_Phoenix_Kharkiv","author":"İsmayıl Məmmədquluyev --------------------------------------------------------------------------------------- Breyn Fayt İntellektual Oyunlar Klubu © Breyn Fayt İOK"},{"id":17,"question":"İlk dəfə XX əsrin əvvəllərində Amerikada satışa çıxarılan bu oyuncağın tez bir\nzamanda məşhur olmasına səbəb olan hadisə Ruzveltin ovçuluq zamanı göstərdiyi\nmərhəmət hissi idi. Bu oyuncağın adını biri xüsusi olan 2 sözlə yazın.","answer":"Teddi ayısı","criteria":"","comment":"Teddi ayısı (Teddy Bear) ABŞ prezidenti Teodor Ruzveltin adı ilə bağlıdır. Onun ayı ovlamaqdan imtina etməsi bu oyuncaq ayının yaradılmasına səbəb olmuşdur.","source":"https://en.wikipedia.org/wiki/Teddy_bear","author":"İsmayıl Məmmədquluyev --------------------------------------------------------------------------------------- Breyn Fayt İntellektual Oyunlar Klubu ©"}]};let currentTour=1,allExpanded=!1,activeZoomedImg=null,activeClone=null,firstRender=!0;const themeToggle=document.getElementById("themeToggle"),rays=[...document.querySelectorAll(".ray")];function animateRays(n){rays.forEach(a=>{a.getAnimations().forEach(a=>a.cancel());const i=a.animate(n?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]:[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}],{duration:n?520:620,delay:n?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});i.onfinish=()=>i.cancel()})}function setTheme(a,i){document.body.classList.toggle("dark",a);try{localStorage.setItem("piksel-theme",a?"dark":"light")}catch(a){}themeToggle.setAttribute("aria-label",a?"Gündüz rejiminə keç":"Gecə rejiminə keç"),i&&animateRays(a)}function initTheme(){let a=null;try{a=localStorage.getItem("piksel-theme")}catch(a){}return"dark"===a?setTheme(!0,!1):"light"===a?setTheme(!1,!1):void setTheme(!(!window.matchMedia||!window.matchMedia("(prefers-color-scheme: dark)").matches),!1)}function getDeviceId(){let i="";try{i=localStorage.getItem("piksel-dev")||"",i||(i=window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now(),localStorage.setItem("piksel-dev",i))}catch(a){i=i||"dev"+Math.random().toString(36).slice(2)+Date.now()}return i.replace(/[.#$\[\]\/]/g,"_")}themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),!0)),initTheme(),requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready"))),document.addEventListener("pointermove",a=>{const i=a.target.closest(".glow");var n;i&&(n=i.getBoundingClientRect(),i.style.setProperty("--mx",a.clientX-n.left+"px"),i.style.setProperty("--my",a.clientY-n.top+"px"))});const DEV=getDeviceId();let likeCounts={},myLikes={},countsRef=null,myRef=null;const likeBusy={};function likeKey(a,i){return"t"+a+"q"+i}try{const r={apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",authDomain:"piksel-breyn-rinq.firebaseapp.com",databaseURL:"https://piksel-breyn-rinq-default-rtdb.firebaseio.com",projectId:"piksel-breyn-rinq",storageBucket:"piksel-breyn-rinq.firebasestorage.app",messagingSenderId:"284823608972",appId:"1:284823608972:web:58dfcbcbfde0119affa5a9"};firebase.apps.length||firebase.initializeApp(r);const s=firebase.database();countsRef=s.ref("likeCounts/"+PKG_ID),myRef=s.ref("userLikes/"+DEV+"/"+PKG_ID)}catch(a){countsRef=null,myRef=null}try{const u=JSON.parse(localStorage.getItem("piksel-likes-"+PKG_ID)||"null");u&&(likeCounts=u.counts||{},myLikes=u.mine||{})}catch(a){}function saveLikeCache(){try{localStorage.setItem("piksel-likes-"+PKG_ID,JSON.stringify({counts:likeCounts,mine:myLikes}))}catch(a){}}function updateLikeUI(){document.querySelectorAll(".like-btn").forEach(a=>{var i=a.dataset.k,i=!!myLikes[i];a.classList.toggle("liked",i),a.setAttribute("aria-pressed",i),a.setAttribute("aria-label",i?"Bəyənməni geri çək":"Bəyən")}),document.querySelectorAll(".like-count").forEach(a=>{a.textContent=Math.max(0,likeCounts[a.dataset.k]||0)})}async function toggleLike(a){if(!likeBusy[a]&&countsRef){likeBusy[a]=!0;const r=!!myLikes[a];var i={...myLikes},n={...likeCounts};myLikes[a]=!r,myLikes[a]||delete myLikes[a],likeCounts[a]=Math.max(0,(likeCounts[a]||0)+(r?-1:1)),updateLikeUI();try{(await myRef.child(a).transaction(a=>r?a?null:void 0:!a||void 0)).committed&&await countsRef.child(a).transaction(a=>Math.max(0,(a||0)+(r?-1:1)))}catch(a){myLikes=i,likeCounts=n,updateLikeUI()}finally{saveLikeCache(),likeBusy[a]=!1}}}function loadTour(n){removeZoom(),currentTour=n,allExpanded=!1,document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər",document.querySelectorAll(".tour-btn").forEach((a,i)=>{a.classList.toggle("active",i+1===n)}),renderQuestions(),window.scrollTo(0,0)}function renderQuestions(){const m=document.getElementById("questionsContainer");m.innerHTML="",toursData[currentTour].forEach((a,i)=>{var n=likeKey(currentTour,a.id);const r=document.createElement("div");r.className="q-card glow frame",r.id=`q-card-${i}`,r.style.setProperty("--i",(firstRender?4:0)+Math.min(i,8));var l=a.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${a.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"",e=a.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${a.handout}</div>`:"",t=a.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${a.criteria}</div>`:"",d=a.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${a.comment}</div>`:"",s=a.extraImage?`<div class="req-img-wrapper" style="margin-top:8px;margin-bottom:8px;">
-          <img src="${a.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"",o=a.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${a.source}</div>`:"";r.innerHTML=`
+<!DOCTYPE html>
+<html lang="az">
 
-      <div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${l||e?`<b>${a.id}.</b> ${l}${e}<div class="mat-after">${a.question}</div>`:`<b>${a.id}.</b> ${a.question}`}</div>
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
+  <meta content="#9DC3FF" name="theme-color">
+  <title>πksel - Gənclər Həftəsi Turniri</title>
+  <link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="icon" type="image/png">
+  <link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --bg: #9DC3FF;
+      --ink: #9DC3FF;
+      --deep: #001E6F;
+      --bright: #002E92;
+      --dark-bg: #00072C;
+      --dark-ink: #00072C;
+      --dark-light: #9DC3FF;
+      --dark-bright: #6FA5FC;
+      --mode-bg-light: linear-gradient(135deg, #9DC3FF 0%, #8DB8F5 50%, #9DC3FF 100%);
+      --mode-bg-dark: linear-gradient(135deg, #00072C 0%, #001044 50%, #00072C 100%);
+      --transition: 650ms cubic-bezier(.22, .8, .25, 1);
+      --glow: rgba(0, 8, 45, .30);
+      --pt: 25px;
+      --pi: 18px;
+      --pr: 17px;
+      --pq: 18px;
+    }
+
+    body.dark {
+      --glow: rgba(255, 255, 255, .40);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Poppins, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a,
+    button {
+      -webkit-touch-callout: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body,
+    html {
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      transition: background .65s ease, color .65s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    body.dark {
+      background: var(--dark-bg);
+      color: var(--dark-ink);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(95vw, 820px);
+      margin: 0 auto;
+      padding: 12px 0 0;
+    }
+
+    .frame {
+      --d: calc(var(--i) * .1s);
+      animation: frameIn .6s cubic-bezier(.18, .8, .24, 1) backwards;
+      animation-delay: var(--d);
+    }
+
+    .rise {
+      animation: riseIn .6s cubic-bezier(.18, .8, .24, 1) backwards;
+      animation-delay: calc(var(--d) + .55s);
+    }
+
+    @keyframes frameIn {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+    }
+
+    .glow {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .glow::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s ease;
+      background:
+        radial-gradient(ellipse 170px 120px at var(--mx, 50%) var(--my, 50%), var(--glow), transparent 72%),
+        radial-gradient(ellipse 100px 150px at calc(var(--mx, 50%) + 16px) calc(var(--my, 50%) - 12px), var(--glow), transparent 72%);
+    }
+
+    @media (hover:hover) {
+      .glow:hover::before {
+        opacity: 1;
+      }
+    }
+
+    .top-nav {
+      height: 50px;
+      width: 100%;
+      border-radius: 40px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--deep) 0, var(--bright) 50%, var(--deep) 100%);
+      box-shadow: 0 10px 28px rgba(0, 20, 100, .08);
+    }
+
+    .dark .top-nav {
+      background: linear-gradient(135deg, var(--dark-light) 0, var(--dark-bright) 50%, var(--dark-light) 100%);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      height: 100%;
+    }
+
+    .nav-link {
+      position: relative;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: transform .25s ease;
+    }
+
+    .dark .nav-link {
+      color: var(--dark-ink);
+    }
+
+    .nav-link:hover {
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      opacity: .9;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--deep);
+      background: rgba(157, 195, 255, .98);
+      transition: transform .3s ease, background var(--transition), color var(--transition);
+    }
+
+    .dark .theme-toggle {
+      background: var(--dark-bg);
+      color: var(--dark-light);
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .theme-toggle:active {
+      transform: translateY(-50%) scale(.95);
+    }
+
+    .theme-icon {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .ray {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    body.dark .ray {
+      opacity: 0;
+    }
+
+    .core {
+      transform: scale(.68);
+      transform-origin: 16px 16px;
+    }
+
+    .bite {
+      transform: translate(14px, -14px);
+    }
+
+    body.dark .core {
+      transform: scale(1);
+    }
+
+    body.dark .bite {
+      transform: translate(0, 0);
+    }
+
+    body.ready .bite,
+    body.ready .core {
+      transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .main-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      margin-top: 14px;
+      padding-bottom: 44px;
+    }
+
+    .blur-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: filter .5s cubic-bezier(.25, 1, .5, 1);
+      will-change: filter;
+    }
+
+    body.img-zoomed .blur-content {
+      filter: blur(8px);
+      pointer-events: none;
+    }
+
+    .info-card,
+    .q-card,
+    .tours-card {
+      width: 100%;
+      border-radius: 28px;
+      padding: 20px 22px;
+      background: linear-gradient(135deg, var(--deep) 0, var(--bright) 49%, var(--deep) 100%);
+      color: var(--ink);
+      box-shadow: 0 10px 25px rgba(0, 20, 110, .09);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .dark .info-card,
+    .dark .q-card,
+    .dark .tours-card {
+      background: linear-gradient(135deg, var(--dark-light) 0, var(--dark-bright) 49%, var(--dark-light) 100%);
+      color: var(--dark-ink);
+    }
+
+    .game-title {
+      font-size: var(--pt);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.7px;
+      margin-bottom: 14px;
+    }
+
+    .info-row {
+      font-size: var(--pi);
+      line-height: 1.5;
+      margin-bottom: 6px;
+      font-weight: 400;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: 700;
+    }
+
+    .info-val {
+      font-weight: 400;
+    }
+
+    .tour-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, .14);
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, .22);
+      padding: 11px 16px;
+      border-radius: 16px;
+      font-size: var(--pr);
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: background .35s ease, color .35s ease, border .35s ease, transform .25s ease, box-shadow .25s ease;
+    }
+
+    .dark .tour-btn {
+      color: var(--dark-ink);
+      border: 1px solid rgba(0, 7, 44, .16);
+      background: rgba(0, 7, 44, .1);
+    }
+
+    .tour-btn.active {
+      background: var(--mode-bg-light);
+      color: var(--deep);
+      border-color: transparent;
+      box-shadow: inset 0 0 0 1px rgba(0, 30, 111, .08), 0 5px 14px rgba(0, 20, 100, .08);
+    }
+
+    .dark .tour-btn.active {
+      background: var(--mode-bg-dark);
+      color: var(--dark-light);
+      border-color: rgba(157, 195, 255, .12);
+      box-shadow: inset 0 0 0 1px rgba(157, 195, 255, .08), 0 5px 14px rgba(0, 0, 0, .16);
+    }
+
+    .global-toggle-btn:active,
+    .tour-btn:active {
+      transform: scale(.96);
+      transition-duration: .3s;
+    }
+
+    .global-toggle-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--deep) 0, var(--bright) 50%, var(--deep) 100%);
+      color: var(--ink);
+      border: none;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: var(--pr);
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 10px 22px rgba(0, 20, 110, .1);
+      transition: background var(--transition), color var(--transition), transform .25s ease, box-shadow .25s ease;
+    }
+
+    .dark .global-toggle-btn {
+      background: linear-gradient(135deg, var(--dark-light) 0, var(--dark-bright) 50%, var(--dark-light) 100%);
+      color: var(--dark-ink);
+    }
+
+    .global-toggle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0, 20, 110, .16);
+    }
+
+    .questions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .q-text {
+      font-size: var(--pq);
+      font-weight: 400;
+      line-height: 1.55;
+      cursor: pointer;
+    }
+
+    .q-text b {
+      font-weight: 700;
+    }
+
+    .mat-row {
+      font-size: var(--pq);
+      font-weight: 400;
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+
+    .mat-after {
+      margin-top: 12px;
+    }
+
+    .req-img-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      margin-top: 6px;
+      vertical-align: top;
+    }
+
+    .req-img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-height: 40px;
+      max-width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      transform-origin: center center;
+      will-change: transform;
+      position: relative;
+      z-index: 1;
+    }
+
+    .req-img.extra {
+      max-height: none;
+      width: 100%;
+      max-width: 240px;
+      border-radius: 12px;
+    }
+
+    .ans-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .35s cubic-bezier(0, 1, 0, 1), opacity .25s ease, margin-top .25s ease;
+      margin-top: 0;
+      border-top: 1px solid rgba(255, 255, 255, .22);
+    }
+
+    .dark .ans-panel {
+      border-top: 1px solid rgba(0, 7, 44, .18);
+    }
+
+    .q-card.active .ans-panel {
+      max-height: 3000px;
+      opacity: 1;
+      margin-top: 14px;
+      padding-top: 12px;
+    }
+
+    .ans-row {
+      font-size: var(--pq);
+      font-weight: 400;
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+
+    .ans-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .ans-label {
+      font-weight: 700;
+    }
+
+    .ans-row a {
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .author-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .act-group {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .like-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .copy-btn,
+    .like-btn {
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .16);
+      color: var(--ink);
+      transition: background .25s ease, color .25s ease, transform .2s ease;
+    }
+
+    .dark .copy-btn,
+    .dark .like-btn {
+      background: rgba(0, 7, 44, .12);
+      color: var(--dark-ink);
+    }
+
+    .copy-btn:hover,
+    .like-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, .28);
+    }
+
+    .dark .copy-btn:hover,
+    .dark .like-btn:hover {
+      background: rgba(0, 7, 44, .2);
+    }
+
+    .copy-btn:active,
+    .like-btn:active {
+      transform: scale(.9);
+      transition-duration: .3s;
+    }
+
+    .copy-btn.copied {
+      background: var(--mode-bg-light);
+      color: var(--deep);
+    }
+
+    .dark .copy-btn.copied {
+      background: var(--mode-bg-dark);
+      color: var(--dark-light);
+    }
+
+    .copy-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .copy-icon .check-path {
+      display: none;
+    }
+
+    .copy-btn.copied .copy-icon .clip-path {
+      display: none;
+    }
+
+    .copy-btn.copied .copy-icon .check-path {
+      display: block;
+    }
+
+    .like-icon {
+      width: 18px;
+      height: 18px;
+      display: block;
+      overflow: visible;
+    }
+
+    .like-icon .outline {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linejoin: round;
+    }
+
+    .like-icon .fill {
+      fill: currentColor;
+      transform: scale(0);
+      transform-origin: 12px 12.5px;
+      transition: transform .3s ease-in;
+    }
+
+    .like-btn.liked .fill {
+      transform: scale(1);
+      transition: transform .42s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .like-count {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      margin-top: 4px;
+      min-width: 20px;
+    }
+
+    footer {
+      width: 100%;
+      background: linear-gradient(100deg, var(--deep) 0, var(--bright) 50%, var(--deep) 100%);
+      color: var(--ink);
+      min-height: 110px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .dark footer {
+      background: linear-gradient(164deg, var(--dark-light) 0, var(--dark-bright) 50%, var(--dark-light) 100%);
+      color: var(--dark-ink);
+    }
+
+    .footer-line {
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .footer-link {
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .footer-link:hover {
+      opacity: .72;
+      transform: translateY(-1px);
+    }
+
+    .copy-btn:focus-visible,
+    .footer-link:focus-visible,
+    .like-btn:focus-visible,
+    .nav-link:focus-visible,
+    .q-text:focus-visible,
+    .theme-toggle:focus-visible {
+      outline: 3px solid currentColor;
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      *,
+      ::after,
+      ::before {
+        scroll-behavior: auto !important;
+        animation-duration: NaNs !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: NaNs !important;
+      }
+    }
+
+    @media (max-width:700px) {
+      :root {
+        --pt: 19px;
+        --pi: 16px;
+        --pr: 15px;
+        --pq: 16px;
+      }
+
+      .page {
+        width: calc(100vw - 44px);
+        padding-top: 11px;
+      }
+
+      .top-nav {
+        height: 46px;
+        padding: 0 46px;
+      }
+
+      .nav-links {
+        gap: 28px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+      }
+
+      .theme-toggle {
+        width: 34px;
+        height: 34px;
+        right: 6px;
+      }
+
+      .theme-icon {
+        width: 21px;
+        height: 21px;
+      }
+
+      .blur-content,
+      .main-container,
+      .questions-container {
+        gap: 10px;
+      }
+
+      .main-container {
+        margin-top: 12px;
+      }
+
+      .info-card,
+      .q-card,
+      .tours-card {
+        border-radius: 22px;
+        padding: 16px;
+      }
+
+      footer {
+        min-height: 96px;
+        padding: 16px 12px;
+        gap: 5px;
+      }
+
+      .footer-line {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width:420px) {
+      :root {
+        --pt: 16px;
+        --pi: 14px;
+        --pr: 13px;
+        --pq: 13px;
+      }
+
+      .page {
+        width: calc(100vw - 36px);
+      }
+
+      .nav-links {
+        gap: 22px;
+      }
+
+      .nav-link {
+        font-size: 11px;
+      }
+
+      .top-nav {
+        height: 42px;
+        padding: 0 42px;
+      }
+
+      .theme-toggle {
+        width: 32px;
+        height: 32px;
+        right: 5px;
+      }
+
+      .theme-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .info-card,
+      .q-card,
+      .tours-card {
+        padding: 14px;
+      }
+
+      footer {
+        min-height: 88px;
+      }
+
+      .footer-line {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <nav aria-label="Əsas naviqasiya" class="frame top-nav" style="--i:0">
+      <div class="rise nav-links">
+        <a class="nav-link" href="index.html">Əsas Səhifə</a>
+        <a class="active nav-link" href="paketler">Sual Paketləri</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Gecə rejiminə keç" type="button">
+        <svg aria-hidden="true" class="rise theme-icon" id="themeIcon" viewBox="0 0 32 32">
+          <defs>
+            <mask height="32" id="biteMask" maskUnits="userSpaceOnUse" width="32" x="0" y="0">
+              <rect fill="#fff" height="32" width="32" />
+              <circle class="bite" cx="21" cy="11" fill="#000" r="7.5" />
+            </mask>
+          </defs>
+          <g class="rays">
+            <g transform="rotate(0 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(45 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(90 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(135 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(180 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(225 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(270 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+            <g transform="rotate(315 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" /></g>
+          </g>
+          <g mask="url(#biteMask)">
+            <circle class="core" cx="16" cy="16" fill="currentColor" r="9" />
+          </g>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="main-container" id="mainContainer">
+      <div class="blur-content">
+
+        <div class="frame glow info-card" style="--i:1">
+          <div class="rise game-title">Gənclər həftəsi: "Nə? Harada? Nə zaman?" intellektual turniri</div>
+          <div class="rise info-row"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Azerbaijan Youth Network &amp; Breyn Fayt İOK</span></div>
+          <div class="rise info-row"><span class="info-label">Redaktor:</span> <span class="info-val">Məmmədquluyev İsmayıl</span></div>
+          <div class="rise info-row"><span class="info-label">Müəllif(lər):</span> <span class="info-val">Əlizadə Elroman, Məmmədquluyev İsmayıl</span></div>
+          <div class="rise info-row"><span class="info-label">Oynadığı tarix:</span> <span class="info-val">08.02.2025</span></div>
+          <div class="rise info-row"><span class="info-label">Əlavə olunduğu tarix:</span> <span class="info-val">07.10.2026</span></div>
+        </div>
+
+        <div class="frame glow tours-card" style="--i:2">
+          <div class="rise tour-buttons">
+            <button class="active tour-btn" onclick="loadTour(1)">I tur</button>
+            <button class="tour-btn" onclick="loadTour(2)">II tur</button>
+            <button class="tour-btn" onclick="loadTour(3)">Əlavə suallar</button>
+          </div>
+        </div>
+
+        <button class="frame glow global-toggle-btn" onclick="toggleAllAnswers()" id="globalToggleBtn" style="--i:3">Bütün cavabları göstər</button>
+
+        <div class="questions-container" id="questionsContainer"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
+    <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a>
+    <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a>
+  </footer>
+
+  <script>
+    document.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+        (e.ctrlKey && e.keyCode === 85) ||
+        (e.ctrlKey && e.keyCode === 83)
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  </script>
+
+  <script>
+    const PKG_ID = "gencler_heftesi_turniri";
+
+    const toursData = {
+
+      /* ===================== I TUR ===================== */
+      1: [
+        {
+          id: 0,
+          question: `<i>(Aparıcı üçün qeyd: Sıfırıncı sual vurğu edilsin)</i><br>Əksər mənbələr denominasiyanı BUNLARIN “yoxa çıxması” kimi tərif edir. Deyilənə görə, Con Keyc 4.33 əsərinə gələn tənqidlərə cavab olaraq növbəti əsərin adında yalnız BUNLARA yer vermişdi. BUNU bir simvol və ya bir sözlə yazın.`,
+          answer: `Sıfır`,
+          criteria: `0`,
+          comment: `Denominasiya köhnə pulları yeni pullarla əvəz edərək nizama salan islahatdır. Əksər mənbələr buna qısaca sıfırları silmək islahatı adını verir. İkinci tərəfdə söhbət Con Keycin bu dəfə səssiz yox, ümumiyyətlə olmayan 0’00” əsərini yazmasından gedirdi. Sualın nömrəsinin sıfırıncı olması da sizə kömək edə bilərdi.`,
+          source: `<a href='https://www.wikimedia.az-az.nina.az/Denominasiya.html' target='_blank'>Link 1</a>, <a href='https://rosewhitemusic.com/piano/2018/09/24/the-silent-piece-rebooted-0-00/' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 1,
+          question: `II Bəyazid tərəfindən inşa etdirilən böyük yaşayış iqamətgahlarından biri sonralar idman məktəbinə çevrilir. XX əsrin əvvələrində məktəbin “Gloria audace” [Qloria odis] adlanması təklif olunsa da, ləğv olmuşdur. Siz isə sözü gedən məktəbi hazırda hansı adla tanıdığımızı yazın.`,
+          answer: `Qalatasaray`,
+          criteria: `Qalatasarayla bağlı cavablar`,
+          comment: `Sualda türk hökmdar deyilməsi, idman məktəbi, böyük iqamətgah, yəni saray deyilməsi, Gloria deyilməsi, XX əsrin əvvələri qeyd olunması sizi Qalatasaraya çıxarmalı idi. Qalata sözü “dənizə daxil olan yol” mənasına gəlir. Biz də yarışımıza bu sualla daxil oluruq.`,
+          source: `<a href='https://www.galatasaray.org/s/galatasaray-nasil-kuruldu/13' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 2,
+          question: `<b>Diqqət!</b><br>Adolf Hitler bu şəxsin dediklərinə o qədər nifrət dolu idi ki, 1941-ci ildə ONUN dilini gətirəcək şəxsə 250.000 reyxsmark qoymuşdu. ONUN kim olduğunu yazın.`,
+          answer: `Yuri Levitan`,
+          criteria: `Borisoviç Levitan`,
+          comment: `Sualda «Внимание! Говорит Москва» - «Diqqət! Danışır Moskva» sözləri ilə məşhur olan Yuri Levitandan söhbət gedirdi. Sualın əvvəlində “Diqqət!” deyilməsi və məhz “dilinə” 250.000 reyxsmark qoyulması sizi cavaba çıxara bilərdi.`,
+          source: `<a href='https://tass.com/non-political/793415' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 3,
+          question: `Deyilənə görə, qumarxanalarda BELƏ musiqilərdən istifadə edilməsinə səbəb insanların vaxtı hesablaya bilməməsidir. Bir jurnalda qeyd olunur ki, keçən əsrin 70-ci illərində Yaponiyadakı bir kəşf BELƏ mahnıların daha çox populyarlaşmasına səbəb olmuşdu. BELƏ ilə əvəz olunanı yazın.`,
+          answer: `Sözsüz`,
+          criteria: `Söz olmadan, Söz istifadə etmədən Karaoke və.s mənaya uyğun`,
+          comment: `Qumarxanalarda sözlü musiqilərdən istifadə edilmir. Çünki bu halda insanlar mahnının əvvəlini və axırını bildikləri üçün vaxtı hesablaya bilirlər və orada uzun müddət keçirdiklərini başa düşürlər. 1971-ci ildə Yaponiyada karaokenin kəşfi bütün klassikləri kölgədə qoymuş və sözsüz mahnıların daha çox populyarlaşmasına səbəb olmuşdu.`,
+          source: `<a href='https://www.google.com/amp/s/amp.onedio.com/haber/kumar-ve-kumarhanelerle-ilgili-birbirinden-ilginc-19-karanlik-gercek-722768' target='_blank'>Link 1</a>, <a href='https://londonkaraokehire-com.translate.goog/blog/history-of-karaoke/?_x_tr_sl=en&amp;_x_tr_tl=tr&amp;_x_tr_hl=tr&amp;_x_tr_pto=tc' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 4,
+          question: `Bir karikaturada Spike, Scooby Doo, Pluto və Drupi BUNU EDİRLƏR. Bir filmdə də sehrbaz və falçı hansının daha bacarıqlı olduğunu yoxlamaq üçün BUNU EDİRLƏR. BUNU ETMƏKlə əvəz olunmuş iki sözü yazın.`,
+          answer: `Poker oynamaq`,
+          criteria: `Kart oynamaq`,
+          comment: `Adları sadalananlar məşhur çizgi film personajı olan itlər idi. Kasius Kuliçin “Poker oynayan itlər” rəsm əsəri var. Sehrbaz və falçının da poker kartları ilə “göz boyama sehri” və ya “qismətə baxmaq” kimi xüsusiyyətlərini də yəqin ki bilirsiniz. Yeri gəlmişkən həmin rəsmdə 4 it var, biz də sizə 4 it sadalamışdıq. Sualın nömrəsi 4dür və poker də dördlük deməkdir.`,
+          source: `<a href='https://en.wikipedia.org/wiki/Dogs_Playing_Poker' target='_blank'>Link 1</a>, <a href='https://www.dogsplayingpoker.org/stuff/scooby-doo-playing-poker.html' target='_blank'>Link 2</a>, Dr. Terror’s house of horrors. dəq-48`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 5,
+          question: `Bir mənbədə personajların sağ qalmaq üçün nəinki özlərini, hətta digərlərini də düşünməsinin şahidi ola bilərik. Təsadüfi deyil ki, həmin mənbədəki əsas personajlarından birinin adında 1884-cü il doğumlu bu şəxsin adını görürük. Bizə həmin şəxsin kim olduğunu yazın.`,
+          answer: `Yevgeni Zamyatin`,
+          criteria: `Zamyatin`,
+          comment: `Söhbət keçən ilin oktyabrında ekranlara çıxan platforma-2 filmindən gedirdi. Filmdəki əsas personajlardan biri də Zamyatindir. Sual mətnində bizə birinci şəxsin cəmində verməyimiz və sondakı sualın qoyuluşunda “biz”-dən istifadə etməyimiz də sizi Zamyatinin “Biz” əsərinə çıxarmaq üçün idi.`,
+          source: `<a href='https://en.m.wikipedia.org/wiki/The_Platform_2' target='_blank'>Link 1</a>, <a href='https://ru.m.wikipedia.org/wiki/%D0%97%D0%B0%D0%BC%D1%8F%D1%82%D0%B8%D0%BD,_%D0%95%D0%B2%D0%B3%D0%B5%D0%BD%D0%B8%D0%B9_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 6,
+          question: `Bir reportajda tərk edilmiş Azərbaycan Beynəlxalq Universitetində yerə səpələnmiş və üstünü toz basmış kitablar universitetin ən təbii məhsulları adlandırılır. Növbəti cümlədə isə qeyri-işlək mühafizə kameraları İKS-ə bənzədilir. İKS-i sonor samitlə başlayan qoşasamitli sözlə yazın.`,
+          answer: `Müqəvva`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Reportaj məqsədilə ABU-ya gedən El Roman yerə səpələnmiş və üstünü toz basmış kitabları universitetin ən təbii məhsulları adlandırır və burada gördüyü illərdir qeyri-işlək olan mühafizə kameralarını bostan müqəvvalarına bənzədir. Biz insanlar hər nə qədər işlək olub olmamasını bilsək də, kamera gördükdə özümüzü düzgün aparmağa çalışır və bir növ qorxuruq. Sualda təbii məhsullar da sizi bağa, bostana çıxara bilərdi.`,
+          source: `<a href='https://lent.az/xeber/sosial/diplomlarinin-olum-sehadetnamesine-cevrildiyi-universitetden-reportaj-40627173' target='_blank'>Link</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 7,
+          question: `Əksər media işçiləri reportaj götürdükləri çox varlı şəxslərdən BUNU soruşurlar. Qəribədir ki, taxıl istehsalında ən yuxarı pillələrdə olan Avstraliya BUNA əsasən olan siyahıda da birinci yerdədir. Eşitdiyiniz fakta rast gələn sual müəllifi Avstraliyada ad günlərinin yaxşı keçdiyini düşünür. BU ilə əvəz etdiyimiz üçüncü növ təyini söz birləşməsini yazın.`,
+          answer: `Çörəyin qiyməti`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Maraqlıdır ki, taxıl istehsalat sahəsində ən yuxarı pillələrdən birində olan Avstraliya çörəyin qiyməti ilə bağlı siyahıda 3.32 dollarla zirvəni tutur. Avropa ölkələrində müxbirlər reportaj zamanı qarşılaşdıqları populyar və varlı simalardan çörəyin qiymətini soruşurlar və onların bu barədə məlumatsız olduqlarını işıqlandırırlar. Sonda deyilən ad günü fikri isə Maria Antuanettanın "çörək yoxdur, tort yesinlər" ifadəsinə allüziya idi.`,
+          source: `<a href='https://wise.com/tr/blog/avustralya-yasam-masraflari' target='_blank'>Link 1</a>, <a href='https://www.kibrispostasi.com/c42-INGILTERE/n115812-Ekmegin-fiyatini-bilmeyen-basbakan' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 8,
+          question: `<i>(Aparıcı üçün qeyd: Hər cür tematikanı əks etdirməyə çalışdığımız paketimizdə oyundan sonra əskikləri qeyd etməyinizi xahiş edirik)</i><br>İKS-in mövcudluğu haqqında olan bir araşdırmada flaminqo, göyərçin və pinqvinin özlərinəməxsus mayeləri ilə balalarına güclü immunitet vermələrindən danışılır. Bir izahlı lüğətdə İKS Aristofanla əlaqəndirilir. İKS ilə əvəz etdiyimiz saitləri dodaqlanan olan iki sözü yazın.`,
+          answer: `Quş südü`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Quşlar məməli olmasalar da, quş südü ifadəsi dünyaca məşhur bir ifadədir. Birinci tərəfdə sadalananlar quşlar idi və onların öz balalarına verdikləri özlərinəməxsus mayeləri onlarla vitaminlə zəngindir. Ehtimal olunur ki, quş südü ifadəsi buradan gəlir. İkinci tərəfdə isə söhbət Aristofanın “quşlar” komediyasından gedirdi, belə ki əsərdə insanlar quş südünə malik olduğu üçün çox sevinirlər. Sualdan əvvəl hər cür tematikanı əks etdirmək istəməyimiz və əksikləri qeyd etməyinizi istəməyimiz “süfrədə bircə quş südü yoxdur” ifadəsinə allüziya idi.`,
+          source: `<a href='https://web.stanford.edu/group/stanfordbirds/text/essays/Bird_Milk.html' target='_blank'>Link 1</a>, <a href='https://gramota.ru/biblioteka/spravochniki/spravochnik-po-frazeologii/ptiche-moloko' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 9,
+          question: `“Kugel” sözü alman dilində “şar” mənasını verir, həmçinin 36-40 həftəlik bir dövrü təyin etmək üçün istifadə edilir. Siz isə “kugelzeit” adlı tibbi dərmanların kimlər üçün nəzərdə tutulduğunu yazın.`,
+          answer: `Hamilələr`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `“Şar”, 36-40 həftəlik, daha dəqiq desək, 9 aylıq bir müddət sizi hamiləlik dövrünə aparmalı idi. Sualın nömrəsi də bir növ kömək idi.`,
+          source: `<a href='https://www.etymonline.com/word/kugel' target='_blank'>Link 1</a>, <a href='https://shop.gu.de/products/45724-kugelzeit' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 10,
+          question: `<b>BLİTZ!</b><br><b>1</b>. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi sözügedən əsərinin ilk nüsxəsində insan olmayan varlıqlar barədə danışarkən İKS-dən istifadə etdiyi üçün feministlər tərəfindən tənqid olunmuşdu. İKS-i yazın.<br><b>2</b>. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi kitabının ilk nüsxəsinə gələn çoxsaylı tənqidlərdən sonra İKS-ləri İQREK-lərlə əvəz etmiş və yenə də çoxsaylı tənqidlərə məruz qalmışdı. İQREK-i yazın.<br><b>3</b>. Feminist elmi fantastika janrında olan bir ingilis dilli romanın müəllifi kitabının ikinci nüsxəsinə gələn çoxsaylı tənqidlərdən sonra, nə qədər qəribə də olsa, İQREK-ləri ZED-lərlə əvəz etmiş və tənqidçilər tərəfindən yüksək qiymətləndirilmişdi. ZED-i yazın.`,
+          answer: `He, She, It`,
+          criteria: `1. Kişi cinsi; 2. Qadın cinsi; 3. Neytral cins;<br>1. Him; 2. Her; 3. It<br>1. His; 2. Her; 3. Its<br>1. His; 2. Hers; 3. Its`,
+          comment: `Söhbət Krober Le Guinin “Qaranlığın son əli” əsərindən gedirdi. Əsərdə dünyalı bir insan başqa bir planetdə cinsiyyəti olmayan məxluqların içərisinə düşür və onları başa düşməyə, cinsiyyət olmadan necə həyat sürüldüyünü qavramağa çalışır. Həmin varlıqları yazıçı öz əsərində iki başlarda daha çox kişi cinsi əvəzlikləri ilə əvəz etmiş, daha sonra qadın cinsi əvəzlikləri ilə əsr etdirmiş, nəhayət sonda hər nə qədər canlı varlıqlar da olsa, cansız və ya neytral əvəzliklə əvəz etdirərək çap etdirmişdi. Birinci sualda feministlər tərəfindən tənqidi sizi zəncirvarı blitsimizi qurmağa kömək edə bilərdi.`,
+          source: `<a href='https://en.wikipedia.org/wiki/The_Left_Hand_of_Darkness' target='_blank'>Link 1</a>, <a href='https://library--of--babel.blogspot.com/2016/01/he-she-ve-it-language-and-gender-in.html?m=1' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 11,
+          question: `Bir məqalədə Səddam Hüseynə 9 dekabr 2003-cü ildə açılmış cinayət işindən sonra 26 dekabr 2006-cı ilədək davam edən və hər dəfə yarımçıq qalan məhkəmə prosesindən danışılır. Sual müəllifi təqsirkar şəxsin hər dəfə sağ qaldığı bu prosesi məşhur şərq mənbəsi ilə adlandırır. Həmin mənbənin adını yazın.`,
+          answer: `Min bir gecə`,
+          criteria: `1001 gecə`,
+          comment: `Məhkəmə prosesi təxminən 1000 gün çəkib. Sual müəllifi təxminən 1000 gün davam və hər dəfə yarımçıq qalan məhkəmə prosesindən azad olan Səddam Hüseyni 1001 gün boyunca yarımçıq nağıllarla xilas olan Şəhrizada, prosesi isə 1001 gecə nağıllar toplusuna bənzətmişdi.`,
+          source: `<a href='https://az.wikipedia.org/wiki/Min_bir_gec%C9%99' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Trial_of_Saddam_Hussein' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 12,
+          question: `Trajikomedik şəkildə yazılmış bir məqalədə kliniki ölüm sayının azaldılması üçün BUNU ETMƏK tövsiyə olunur. Karayip quldurları filmlər seriyasında döyüş olan səhnələrdən sonrakı epizodlarda BUNU ETMƏYİ görə bilərsiniz. BUNU ETMƏKlə əvəz olunmuş 3 sözü yazın.`,
+          answer: `Tabutu dənizə atmaq`,
+          criteria: `Ölüləri suya atmaq; Ölənləri dənizə atmaq və.s mənaya uyğun cavablar`,
+          comment: `Bir yumoristik məqalədə qeyd olunur ki, kliniki ölüm sayı artdığı üçün tabutları dənizə atmaq onları basdırmaqdan daha yaxşıdır. Çünki bu halda bir neçə il sonra taxta aşınacaq və tabutdakı şəxsin sağ qurtulma ehtimalı yaranacaq. Karib dənizi quldurları filmində də səhnələr dənizdə keçir, döyüşlərdən sonra insanlar öldükdə tabutlara qoyub gəmidən dənizə atırdılar.`,
+          source: `<a href='https://eksisozluk.com/olumsuz-insani-tabuta-kitleyip-denize-atmak--7382119?nr=true&amp;rf=%C3%B6l%C3%BCms%C3%BCz%20su%C3%A7luyu%20g%C3%BCne%C5%9F%27e%20g%C3%B6ndermek' target='_blank'>Link 1</a>, <a href='https://t.me/bpthaber/30972' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 13,
+          question: `Ötən il Ukrayna Andriyivkanı azad etdikdə kənddə bütöv bina qalmaması səbəbilə hərbçilər BUNU ETMƏKDƏ çətinlik çəkdilər. 1945-ci ildə BUNU ETMƏK hansı toponimdə Pulitzer mükafatı qazanmışdı?`,
+          answer: `İvodzima`,
+          criteria: `Iwo Jima`,
+          comment: `BUNU ETMƏKlə "bayraq qaldırmaq" əvəz olunmuşdu. Sözü gedən ildə amerikan yapon qoşunları arasında baş vermiş İvodzima döyüşündə Co Rozentalın 1945-ci il fevralın 23-də çəkdiyi və "İvodzima üzərində bayrağın qaldırılması" adlanan foto o il Pulitzer mükafatına layiq görülmüşdü. Sualda azad etmək və bütöv bina qalmaması sizi bayraq qaldırmağa, bayraq qaldırılan pulitzer mükafatı isə İvodzimaya çıxarmalı idi.`,
+          source: `<a href='https://www.google.com/amp/s/www.pravda.com.ua/eng/news/2023/09/18/7420277/index.amp' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Raising_the_Flag_on_Iwo_Jima' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 14,
+          question: `Kaspar Deyvid “Ayı düşünən iki adam” əsərini şərh edərkən hər iki ümidsiz şəxsin tanrını gözlədiyini qeyd edir. Siz isə bu rəsm əsərindən ilhamlanan 1906-cı il doğumlu yazıçını yazın.`,
+          answer: `Samuel Bekett`,
+          criteria: `Beckett`,
+          comment: `Əsərdə iki şəxs Aya baxaraq təsvir olunub və siz ilk baxışdan da onların nəyisə gözlədiyini görə bilərsiniz. Qəmgin və solğun təsir bağışlayan əsərdəki şəxslər həsrətlə Ayı, Deyvidin də şərh etdiyi kimi tanrını gözləyirlər. Bu rəsm əsəri ilə tanış olan Samuel Beckett “Qodonu gözləyərkən” əsərini yazır. Əksər tənqidçilər və ədəbiyyatşünaslar əsərdəki Qodonun tanrı və ya tanrı əvəzi üstün bir varlıq olduğunu iddia edir. Sualda “Tanrını gözləməsi” də sizə kömək etməli idi.`,
+          source: `<a href='https://richardgwyn.me/2012/05/01/waiting-for-godot-and-caspar-david-friedrich/' target='_blank'>Link 1</a>, <a href='https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon' target='_blank'>Link 2</a>, <a href='https://en.wikipedia.org/wiki/Samuel_Beckett' target='_blank'>Link 3</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 15,
+          question: `<i>(Aparıcı üçün qeyd: Bu sualdan fasilə olacaq)</i><br>İkinci dünya müharibəsində çəkilmiş məşhur fotoda öz əsgər yoldaşı üçün BUNU EDƏN əsgəri görə bilərsiniz. Bir filmində bir-birinə çox bənzəyən iki aləti fərqləndirə bilməyən Şener Şen cinayət işləmək yerinə BUNU EDİR. BUNU ETMƏKLƏ əvəz etdiyimiz ilk ikisi eyni iki hərflə başlayan üç sözü yazın.`,
+          answer: `Silahla siqaret yandırmaq`,
+          criteria: `Siqareti silahla yandırmaq; Siqarı silahla yandırmaq`,
+          comment: `1940-cı ildə İkinci Dünya Müharibəsi zamanı çəkilmiş məşhur fotolardan birində alman əsgər silahı ilə digər əsgərin siqaretini yandırır. "Şabanoğlu Şaban" filmində Şener Şenin məşhur "Bu tabanca, bu çakmak" replikasında Şabanı tapançayla öldürmək yerinə alışqanla siqaretini yandırdığını yəqin ki xatırladız. Həmçinin sualda müharibə illəri deyilməsi və ikinci tərəfdə bir birinə çox bənzəyən iki alətdən birinin cinayət üçün olduğu deyilməsi sizə cavabı tapmaq üçün kömək etməli idi.`,
+          source: `<a href='https://youtu.be/0On3v0uqCK8?si=nCSkgQwRCEw3cHck' target='_blank'>Link 1</a>, <a href='https://t.me/bpthaber/31771' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        }
+      ],
+
+      /* ===================== II TUR ===================== */
+      2: [
+        {
+          id: 1,
+          question: `Maraqlıdır ki, siz YAŞIL YOLDA daşların üstündə əşya adları ilə birgə “oğul və qız” sözlərini də görə bilərsiniz. Bir mühafizə işçisi qeyd edir ki, statistika çıxarsanız, bəlkə də siz düşündüyünüzün əksinə, insanların çoxu məhz YAŞIL YOLA gəlir. YAŞIL YOL ilə əvəz etdiyimiz iki və ya 3 sözü yazın.`,
+          answer: `Ev heyvanları məzarlığı`,
+          criteria: `Heyvan qəbiristanlığı; Heyvan məzarlığı; Ev heyvanları qəbiristanlığı`,
+          comment: `Ev heyvanları məzarlığı haqqında danışılan məqalələrdən birində yazılıb ki, məzar daşlarının üstündə müxtəlif əşya adları yazılır, çünki ev heyvanlarına daha çox əşya adları verilir. Ən çox "qızım" və "oğlum" xitablarının işləndiyi bu heyvanların yatdığı məzarlıqda işləyən mühafizə işçisi öz müsahibələrindən birində deyir ki, insanlar ən çox buranı ziyarət edirlər, nəinki insan məzarlığını. Yaşıl yol və ev heyvanları məzarlığı Stiven Kinqin iki məşhur romanıdır.`,
+          source: `<a href='https://t.me/bpthaber/31021?single' target='_blank'>Link 1</a>, <a href='https://www.istanbulhayvanmezarligi.com/kedi-kopek-hayvan-mezarligi/' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 2,
+          question: `XX əsrin əvvəllərində ABŞ-da heç bir zərurət olmadan ziqzaq formasında uzun dəmiryolları çəkilirdi. Bir mənbədə qeyd olunur ki, bu hadisəyə səbəb sahibkarların sudan sui-istifadə etməsidir. Əvvəlki cümlədə bir sözdə buraxılmış hərflər var, hərfləri bərpa edərək sözü orijinalda yazın.`,
+          answer: `Subsidiya`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Həmin dövrdə qanunlara əsasən, dəmiryolu xətləri çəkən sahibkarlara hər mil üçün subsidiya ayrılırdı. Təbii ki, bəzi sahibkarlar bu subsidiyaları daha çox almaq üçün yolları daha uzun etmək məqsədilə lazımsız ziqzaqlar yaratmışdılar.`,
+          source: `"Rifah paradoksu" - Kleyton Kristenson, səh 301, <a href='https://ru.wikipedia.org/wiki/%D1%81%D1%83%D0%B1%D1%81%D0%B8%D0%B4%D0%B8%D1%8F' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 3,
+          question: `2022-ci ilin may ayına aid bir jurnalda onun əlində quş qəfəsi tutduğunu görə bilərik. Keçən ilin sonlarında Donaldt Tramp imzaladığı sərəncamlardan birində onun da adını qeyd etmişdi. Əvvəlki iki cümlədə eyni hərflər buraxılıb, hərfləri bərpa edərək sözü orijinalda yazın.`,
+          answer: `Elon`,
+          criteria: `Elon Musk`,
+          comment: `2024-cü ilin dekabr ayında Donald Tramp imzaladığı sərəncamla Elon Maskı nazir təyin etmişdi. 2022-ci ildə "Taym" jurnalı əlində içərisində "Tvitter" quşları olan qəfəs tutmuş Elon Maskı üz qapağında təsvir etmişdi.`,
+          source: `<a href='https://time.com/magazine/us/6171751/may-9th-2022-vol-199-no-17-u-s/' target='_blank'>Link 1</a>, <a href='https://tr.m.wikipedia.org/wiki/Elon_Musk' target='_blank'>Link 2</a>`,
+          author: `Əlizadə Elroman`
+        },
+        {
+          id: 4,
+          question: `<b>Mövzunu davam etdirək!</b><br><b>Sualda əvəzetmə var!</b><br>Keçən il avqust ayında Rusiyanın Fransa səfirliyinin qarşısında ONUN həbsinə etiraz aksiyası baş tutmuşdur. Aksiyada iştirak edən on minlərlə şəxsin əlində nəyi tutduğunu birinci növ təyini söz birləşməsi ilə yazın.`,
+          answer: `Kağız təyyarə`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Pavel Durov, Telegram-ın qurucusudur. O, İsrail təhlükəsizlik xidmətinin tələblərini yerinə yetirməkdən imtina etdiyi üçün Fransada həbs olunmuşdur. Mövzunu davam etdirməyimiz sosial şəbəkəyə işarə idi.`,
+          source: `<a href='https://www.google.com/amp/s/www.gulf-times.com/article/689284/international/ukeurope/telegram-founder-durov-arrested-in-france/amp' target='_blank'>Link 1</a>, <a href='https://nypost.com/2024/08/24/world-news/telegram-founder-pavel-durov-arrestedat-paris-airport-report/' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 5,
+          question: `Maraqlıdır ki müharibələrdə öz neytrallığını qoruyan İsveçrədə İKS-lər pendir istehsalı üçün istifadə edilir. Keçən əsrin 80-ci illərindən etibarən Çin hökuməti İKS-ləri yerli əhaliyə kirayəyə verirdi. İKS ilə əvəz etdiyimiz alman mənşəli sözü yazın.`,
+          answer: `Bunker`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `İsveçrədə bunkerlərdən pendir istehsalı üçün ideal şərait yaratmaq məqsədilə istifadə edilir. Bu, İsveçrənin müharibələrdə neytrallığını qoruması və bunkerlərin başqa məqsədlər üçün uyğunlaşdırılması ilə bağlıdır. Sualda müharibə deyilməsi, ikinci tərəfdə Çinin onları əhaliyə kirayəyə verməsi sizə kömək etməli idi.`,
+          source: `<a href='https://9gag.com/gag/axyVmQK' target='_blank'>Link 1</a>, <a href='https://www.toptenz.net/10-things-you-never-knew-about-nuclear-bunkers.php#google_vignette' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 6,
+          question: `“Hər şey təkərdən başlayır” adlı mənbənin BU başlıqlı bölməsində Persey, Narsis, Meduza və Arximedin adı çəkilir. Sokrat BUnu əxlaqlı olmaq istəyənlərə tövsiyə edirdi. BUNU saitləri eyni olan bir sözlə yazın.`,
+          answer: `Güzgü`,
+          criteria: `Ayna`,
+          comment: `Bu kitabda ixtiralardan danışır. Arximed gəmiləri güzgülərdən istifadə edərək yandırmış, digər adı çəkilən şəxslərdən isə heç olmasa Narsis öz əksinə baxmaqla bağlı adını aldığı üçün sizi güzgüyə çıxara bilərdi.`,
+          source: `<a href='http://flibusta.site/b/800567/read' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 7,
+          question: `Bu yaxınlarda bir hava limanının daxili mağazasından ÜÇÜNCÜ oğurlandığı üçün 30-a yaxın uçuş reysi ləğv edilmişdir. Maraqlıdır ki, yeni doğulan körpələr üçün nəzərdə tutulan ÜÇÜNCÜ leylək dimdiyi formasındadır. ÜÇÜNCÜ ilə əvəz etdiyimiz sözü yazın.`,
+          answer: `Qayçı`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Təyyarəyə minərkən qadağan olunan əşyalar sırasında qayçı da mövcuddur. Kiminsə qayçını götürüb təyyarədə terror etməsindən ehtiyat edən New Chitose hava limanı uçuşları dayandırmışdı. İkinci tərəfdə isə söhbət qalın dimdikli leylək formasından olan qayçılarla körpələrin göbək bağının asanlıqla kəsilməsindən gedirdi. ÜÇÜNCÜ ilə əvəz edilməsi də daş, kağız, qayçı oyununa görə idi.`,
+          source: `<a href='https://www.rbc.ru/rbcfreenews/66c585529a79476106df8f1e' target='_blank'>Link 1</a>, <a href='https://images.app.goo.gl/5dBhFNWswB6fmERE9' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 8,
+          reqImg: `https://i.ibb.co/xtXCTnXk/Ekran-kli-2026-10-07-143548.png`,
+          question: `Paylama materialında gördüyünüz şirkət tarix zamanı illərə bir simvol əlavə edir. Siz isə sözügedən şirkətin hazırkı ili (bu ili) necə yazdığını 5 simvolla cavab kartınıza qeyd edin.`,
+          answer: `02025`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Adı Long Now olan bu şirkət uzun müddət fəaliyyət göstərəcəyini iddia etdiyi üçün bu adı seçib. Hətta bu iddiasından əmin olan şirkət bir çox təqvimlərdə olduğu kimi 10000-ci il problemini də düşünüb. Paylama materialında verilən X üzəri xətt rum rəqəmlərində 10000-i bildirir. Bu səbəbdən şirkət hər bir ilin əvvəlinə “0” əlavə edir.`,
+          source: `<a href='https://en.wikipedia.org/wiki/Long_Now_Foundation' target='_blank'>Link 1</a>, <a href='https://www.cuemath.com/numbers/10000-in-roman-numerals/' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 9,
+          question: `Bir müsahibədə qeyd olunur ki, breyn-rinq oyunlarında asan suallar güclü və zəif komandalar arasındakı fərqi göstərmir, çünki kim düyməni daha tez basırsa, qalib gəlir. Növbəti cümlədə asan suallar BUNA bənzədilir. BUnu biri xüsusi olan iki sözlə yazın.`,
+          answer: `Kolt tapançası`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Öz cümlələrində güclü və zəif təbəqələşməsi və asan sualların onları bərabərləşdirməsindən danışan Roman Morozovskiy məşhur ifadəyə istinad edir: "Tanrı insanları fərqli yaratdı, amma polkovnik Kolt onları bərabərləşdirdi".`,
+          source: `<a href='http://lib.ru/INDEXLESS/03/1.htm' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 10,
+          question: `Bir filmdə xatirələrə çox önəm verən yaşlı personaj Paris şəhərində əvvəllər olduğu və gəzdiyi bütün yerləri film boyunca yenidən gəzir. Vaxtınızı itirmədən bu personajın adını yazın.`,
+          answer: `Madlen`,
+          criteria: `Madeleine`,
+          comment: `Sualda personajın xatirələrə önəm verməsi və olduğu yerlərdən təkrar keçməsi onun keçmiş xatirələri xatırlamaq istəyinə eyham idi. Həmçinin “Parisdə olması” və “vaxtınızı itirmədən” sizi Marsel Prustun “İtirilmiş vaxtın axtarışında” əsərinə aparmalı idi. Həmin əsərdə qəhrəman Madlen peçenyesini çaya batırıb dişlədikdən sonra peçenye onu keçmişə, uşaqlıq illərinə qaytarmışdı. Məhz bu əsərdən sonra Madlen peçenyesi məşhurluq qazanır və keçmiş yaddaşda qalan anlarla əlaqələndirilir.`,
+          source: `<a href='https://m.imdb.com/title/tt14586118/' target='_blank'>Link 1</a>, <a href='https://lapatisseriedumonde.com/recipes/madeleines-history/' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 11,
+          question: `2024 Paris Olimpiadası gedişində dərc olunan bir yazıda Parisdəki ekoloji çirklilikdən danışılır. Növbəti cümlədə triatlonla olan bağlı olan hissədə "Parisi görmək və ölmək" ifadəsi işlədilib. Əvvəlki cümlədə iki söz başqa iki sözlə əvəz olunub. Əvəz olunmuş iki sözü yazın.`,
+          answer: `Senada üzmək`,
+          criteria: `Senaya girmək`,
+          comment: `2024 Olimpiadasında bəzi üzgüçülük yarışları Sena çayında keçirilmişdi. Çayın çirklənmə səviyyəsinə görə bəzi idmançılar zəhərləndiyi üçün üzgüçülük ləğv olunmuşdu. Sualda triatlon və ekoloji çirklilik sizə kömək edə bilərdi. “Parisi görmək” - “Senada üzmək” ifadəsi ilə əvəz edilmişdi.`,
+          source: `<a href='https://thegirl.ru/articles/pereplyt-senu-i-umeret-10-luchshikh-memov-s-olimpiady-2024/' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 12,
+          question: `Çində gömrüyə işə girən şəxslərdən ilk növbədə BUNU ETMƏK tələb edilir. Keçən əsrin sonlarında bir şotland şəhərində bəzi şəxslər istəmədən BUNU EDİRDİ. Ötən əsrin 60-cı illərinə aid bir mənbədə personaj səmərəli bir sövdələşmədən sonra BUNU ETMƏYİ itirir. Həmin personajın adını yazın.`,
+          answer: `Tim Taler`,
+          criteria: `Taler`,
+          comment: `Bir şotland şəhəri deyilməsi sizi Qlazqo gülüşünə çıxarmalı idi. BUNU ETMƏKlə gülmək sözü əvəz olunmuşdu. "Tim Taler və satılmış gülüş" romanında Tim öz gülüşünü zəngin, lakin zalım bir barona satır. Bunun qarşılığında isə o, hansı at yarışına pul qoysa, mütləq qalib gəlirdi.`,
+          source: `<a href='http://www.dailymail.co.uk/news/article-2224893/Getting-perfect-grin-How-Chinesepolice-taught-smile-holding-chopsticks-mouths.html' target='_blank'>Link 1</a>, <a href='https://en.m.wikipedia.org/wiki/Timm_Thaler_(novel)' target='_blank'>Link 2</a>, <a href='https://extranet.space-engineering.co.uk/29027-unraveling-the-intriguing-story-behind-the-iconic-look.html' target='_blank'>Link 3</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 13,
+          question: `<b>Paylama materialı:</b><br><b>******ize</b><br>Paylama materialında sizdən bir hissəsini gizlətdiyimiz bu sözün mənası “bir şey üçün birini işdahlandırıb, arzu etdirib sonra isə həmin şeyi əlçatmaz etmək” deməkdir. Bəs bu sözün etimologiyasında hansı mifoloji varlığın adına rast gəlinir?`,
+          answer: `Tantal`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Söhbət ingilis dilindəki “tantalize” sözündən gedirdi. Bildiyimiz kimi Tantalın cəzası da hər tərəfi su olsa da, su içə bilməmək, hər yerdə meyvə görsə də, dərə bilməməsi idi.`,
+          source: `<a href='https://en.m.wikipedia.org/wiki/Tantalus' target='_blank'>Link 1</a>, <a href='https://www.etymonline.com/word/tantalize' target='_blank'>Link 2</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 14,
+          question: `Bir müsahibədə kağız üzərindəki cızma-qara taktika sxemləri ilə uğur qazanan Pep Quardiola ONUNLA müqayisə olunur. Keçən əsrin əvvəllərində O dostlarına göndərdiyi məktubda artıq qalan ömrünü kilsəyə ayıracağını qeyd etmişdi. ONUN kim olduğunu yazın.`,
+          answer: `Antonio Qaudi`,
+          criteria: `Qaudi`,
+          comment: `Memarlıq nümunələrində səliqəli və incə işlənmiş eskizləri ilə fərqlənən və Quardiola kimi ispan olan Antonio Qaudi 19-cu əsrin sonunda “Müqəddəs Ailə” kilsəsi - “Sagrada Familia”-ya memar və dizayner olaraq təyin olunmuş, 20-ci əsrin əvvələrində bütün ailəsini itirdikdən sonra isə dostlarına geridə qalan ömrünü kilsəyə ayıracağını demişdi. Təəssüf ki, Qaudinin ömrü bu kilsənin tikintisinin başa çatmasına yetmədi. Yeri gəlmişkən Müqəddəs Ailə kilsəsi hələ də tikilib başa çatmayıb və hazırkı tikintisinin davamı da Qaudinin dizaynı əsasındadır.`,
+          source: `PEP GUARDIOLA left SPEECHLESS by shocking ANTONI GAUDÍ comparison 3-cü saniyə, <a href='https://en.wikipedia.org/wiki/Antoni_Gaud%C3%AD' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 15,
+          question: `Sovet ittifaqı qəhrəmanı adını alan O, erkən yaşlarından yüksək dağlıq ərazilərdə öz təhlükəli hobbiləri ilə məşğul olmuş və ömrünün bir hissəsini Meksika həbsxanasında keçirmişdir. ONA məşhurluq gətirən şücaəti barədə olan bir məqalədə BİRİNCİni ETMƏKdən danışılır. BİRİNCİni ETMƏKlə əvəz olunmuş xüsusi olmayan sözləri yazın.`,
+          answer: `Aslanı öldürmək`,
+          criteria: `aslanı qətlə yetirmək, aslanın canını almaq və.s aslan və şir işlədilməsi ilə mənaya uyğun cavablar`,
+          comment: `Haqqında danışılan şəxs Ramon Merkader idi, sualın birinci tərəfində onun yüksək dağlıqlarda hobbilərini həyata keçirməsi həvəskar alpinist olmasına aparmalı idi ki, bu da onun buz baltasını yaxşı işlətməsinə işarə idi. İkinci tərəfdə “Meksika” da sizi təqiblərdən sonra Meksikada sığınan Trotskiyə çıxara bilərdi. Həbsdən çıxdıqdan sonra Merkader Trotskini öldürdüyü üçün Sovet ittifaqı qəhrəmanı adına layiq görülmüşdü. Şücaət və qoçaqlıq sinonim sözlərdir, bu sözün işlənməsi Herakl qoçaqlıqlarına işarə idi. Heraklın birinci qoçaqlığı da məhz aslanı öldürməkdir, həmçinin “Lev” sözü də rusca aslan deməkdir, Paketimizdə birinci sualımıza Galatasarayla başladıq və sonuncu sualda da aslanı öldürdük.`,
+          source: `<a href='https://en.wikipedia.org/wiki/Assassination_of_Leon_Trotsky' target='_blank'>Link 1</a>, <a href='https://ru.m.wikipedia.org/wiki/%D0%9C%D0%B5%D1%80%D0%BA%D0%B0%D0%B4%D0%B5%D1%80,_%D0%A0%D0%B0%D0%BC%D0%BE%D0%BD' target='_blank'>Link 2</a>, <a href='https://www.marxists.org/archive/trotsky/1930/mylife/ch01.htm' target='_blank'>Link 3</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        }
+      ],
+
+      /* ===================== ƏLAVƏ SUALLAR ===================== */
+      3: [
+        {
+          id: 1,
+          question: `Xarkovun iks adlı futzal komandası əsas diviziona düşə bilməyən gənc futbolçulara ikinci bir şans tanımaq məqsədilə yaradılıb. Əvvəlki cümlədə buraxılan 3 hərfi bərpa edərək sözü orijinalda yazın.`,
+          answer: `Feniks`,
+          criteria: `Yalnız dəqiq cavablar`,
+          comment: `Feniks quşu yenidən doğulmaq xüsusiyyətinə malikdir. Bu komanda da əsas heyətə düşə bilməyənlərə ikinci şans verirdi.`,
+          source: `<a href='https://en.wikipedia.org/wiki/FC_Phoenix_Kharkiv' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        },
+        {
+          id: 2,
+          question: `İlk dəfə XX əsrin əvvəllərində Amerikada satışa çıxarılan bu oyuncağın tez bir zamanda məşhur olmasına səbəb olan hadisə Ruzveltin ovçuluq zamanı göstərdiyi mərhəmət hissi idi. Bu oyuncağın adını biri xüsusi olan 2 sözlə yazın.`,
+          answer: `Teddi ayısı`,
+          comment: `Teddi ayısı (Teddy Bear) ABŞ prezidenti Teodor Ruzveltin adı ilə bağlıdır. Onun ayı ovlamaqdan imtina etməsi bu oyuncaq ayının yaradılmasına səbəb olmuşdur.`,
+          source: `<a href='https://en.wikipedia.org/wiki/Teddy_bear' target='_blank'>Link</a>`,
+          author: `Məmmədquluyev İsmayıl`
+        }
+      ]
+    };
+
+    let currentTour = 1;
+    let allExpanded = false;
+    let activeZoomedImg = null;
+    let activeClone = null;
+    let firstRender = true;
+
+    const themeToggle = document.getElementById("themeToggle");
+    const rays = [...document.querySelectorAll(".ray")];
+
+
+    /* ---------- Theme ---------- */
+
+    function animateRays(isDark) {
+      rays.forEach(function (ray) {
+        ray.getAnimations().forEach(function (anim) {
+          anim.cancel();
+        });
+
+        const animation = ray.animate(
+          isDark
+            ? [
+                { transform: "translateY(0)", opacity: 1 },
+                { transform: "translateY(-14px)", opacity: 0 }
+              ]
+            : [
+                { transform: "translateY(11px)", opacity: 0 },
+                { transform: "translateY(0)", opacity: 1 }
+              ],
+          {
+            duration: isDark ? 520 : 620,
+            delay: isDark ? 0 : 180,
+            easing: "cubic-bezier(.4,0,.2,1)",
+            fill: "both"
+          }
+        );
+
+        animation.onfinish = function () {
+          animation.cancel();
+        };
+      });
+    }
+
+    function setTheme(isDark, animate) {
+      document.body.classList.toggle("dark", isDark);
+
+      try {
+        localStorage.setItem("piksel-theme", isDark ? "dark" : "light");
+      } catch (e) {}
+
+      themeToggle.setAttribute("aria-label", isDark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+
+      if (animate) animateRays(isDark);
+    }
+
+    function initTheme() {
+      let saved = null;
+
+      try {
+        saved = localStorage.getItem("piksel-theme");
+      } catch (e) {}
+
+      if (saved === "dark") return setTheme(true, false);
+      if (saved === "light") return setTheme(false, false);
+
+      setTheme(
+        !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches),
+        false
+      );
+    }
+
+    function getDeviceId() {
+      let id = "";
+
+      try {
+        id = localStorage.getItem("piksel-dev") || "";
+
+        if (!id) {
+          id = window.crypto && crypto.randomUUID
+            ? crypto.randomUUID()
+            : String(Math.random()).slice(2) + Date.now();
+          localStorage.setItem("piksel-dev", id);
+        }
+      } catch (e) {
+        id = id || "dev" + Math.random().toString(36).slice(2) + Date.now();
+      }
+
+      return id.replace(/[.#$\[\]\/]/g, "_");
+    }
+
+    themeToggle.addEventListener("click", function () {
+      setTheme(!document.body.classList.contains("dark"), true);
+    });
+
+    initTheme();
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.body.classList.add("ready");
+      });
+    });
+
+    document.addEventListener("pointermove", function (e) {
+      const glowEl = e.target.closest(".glow");
+
+      if (glowEl) {
+        const rect = glowEl.getBoundingClientRect();
+        glowEl.style.setProperty("--mx", (e.clientX - rect.left) + "px");
+        glowEl.style.setProperty("--my", (e.clientY - rect.top) + "px");
+      }
+    });
+
+
+    /* ---------- Likes (Firebase) ---------- */
+
+    const DEV = getDeviceId();
+    let likeCounts = {};
+    let myLikes = {};
+    let countsRef = null;
+    let myRef = null;
+    const likeBusy = {};
+
+    function likeKey(tour, id) {
+      return "t" + tour + "q" + id;
+    }
+
+    try {
+      const firebaseConfig = {
+        apiKey: "AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",
+        authDomain: "piksel-breyn-rinq.firebaseapp.com",
+        databaseURL: "https://piksel-breyn-rinq-default-rtdb.firebaseio.com",
+        projectId: "piksel-breyn-rinq",
+        storageBucket: "piksel-breyn-rinq.firebasestorage.app",
+        messagingSenderId: "284823608972",
+        appId: "1:284823608972:web:58dfcbcbfde0119affa5a9"
+      };
+
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+      const db = firebase.database();
+      countsRef = db.ref("likeCounts/" + PKG_ID);
+      myRef = db.ref("userLikes/" + DEV + "/" + PKG_ID);
+    } catch (e) {
+      countsRef = null;
+      myRef = null;
+    }
+
+    try {
+      const cached = JSON.parse(localStorage.getItem("piksel-likes-" + PKG_ID) || "null");
+
+      if (cached) {
+        likeCounts = cached.counts || {};
+        myLikes = cached.mine || {};
+      }
+    } catch (e) {}
+
+    function saveLikeCache() {
+      try {
+        localStorage.setItem(
+          "piksel-likes-" + PKG_ID,
+          JSON.stringify({ counts: likeCounts, mine: myLikes })
+        );
+      } catch (e) {}
+    }
+
+    function updateLikeUI() {
+      document.querySelectorAll(".like-btn").forEach(function (btn) {
+        const key = btn.dataset.k;
+        const liked = !!myLikes[key];
+
+        btn.classList.toggle("liked", liked);
+        btn.setAttribute("aria-pressed", liked);
+        btn.setAttribute("aria-label", liked ? "Bəyənməni geri çək" : "Bəyən");
+      });
+
+      document.querySelectorAll(".like-count").forEach(function (el) {
+        el.textContent = Math.max(0, likeCounts[el.dataset.k] || 0);
+      });
+    }
+
+    async function toggleLike(key) {
+      if (likeBusy[key] || !countsRef) return;
+
+      likeBusy[key] = true;
+
+      const wasLiked = !!myLikes[key];
+      const prevMine = { ...myLikes };
+      const prevCounts = { ...likeCounts };
+
+      myLikes[key] = !wasLiked;
+      if (!myLikes[key]) delete myLikes[key];
+
+      likeCounts[key] = Math.max(0, (likeCounts[key] || 0) + (wasLiked ? -1 : 1));
+      updateLikeUI();
+
+      try {
+        const result = await myRef.child(key).transaction(function (value) {
+          return wasLiked ? (value ? null : undefined) : (!value || undefined);
+        });
+
+        if (result.committed) {
+          await countsRef.child(key).transaction(function (value) {
+            return Math.max(0, (value || 0) + (wasLiked ? -1 : 1));
+          });
+        }
+      } catch (e) {
+        myLikes = prevMine;
+        likeCounts = prevCounts;
+        updateLikeUI();
+      } finally {
+        saveLikeCache();
+        likeBusy[key] = false;
+      }
+    }
+
+
+    /* ---------- Tours & Questions ---------- */
+
+    function loadTour(n) {
+      removeZoom();
+      currentTour = n;
+      allExpanded = false;
+
+      document.getElementById("globalToggleBtn").textContent = "Bütün cavabları göstər";
+
+      document.querySelectorAll(".tour-btn").forEach(function (btn, index) {
+        btn.classList.toggle("active", index + 1 === n);
+      });
+
+      renderQuestions();
+      window.scrollTo(0, 0);
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      container.innerHTML = "";
+
+      toursData[currentTour].forEach(function (q, i) {
+        const key = likeKey(currentTour, q.id);
+        const card = document.createElement("div");
+
+        card.className = "q-card glow frame";
+        card.id = `q-card-${i}`;
+        card.style.setProperty("--i", (firstRender ? 4 : 0) + Math.min(i, 8));
+
+        const reqImgHtml = q.reqImg
+          ? `<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`
+          : "";
+
+        const handoutHtml = q.handout
+          ? `<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`
+          : "";
+
+        const criteriaHtml = q.criteria
+          ? `<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${q.criteria}</div>`
+          : "";
+
+        const commentHtml = q.comment
+          ? `<div class="ans-row"><span class="ans-label">Şərh:</span> ${q.comment}</div>`
+          : "";
+
+        const extraImgHtml = q.extraImage
+          ? `<div class="req-img-wrapper" style="margin-top:8px;margin-bottom:8px;">
+          <img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`
+          : "";
+
+        const sourceHtml = q.source
+          ? `<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`
+          : "";
+
+        card.innerHTML = `
+
+      <div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${reqImgHtml || handoutHtml ? `<b>${q.id}.</b> ${reqImgHtml}${handoutHtml}<div class="mat-after">${q.question}</div>` : `<b>${q.id}.</b> ${q.question}`}</div>
 
       <div class="ans-panel">
 
-        <div class="ans-row"><span class="ans-label">Cavab:</span> ${a.answer}</div>
+        <div class="ans-row"><span class="ans-label">Cavab:</span> ${q.answer}</div>
 
-        ${t}
-        ${d}
-        ${s}
-        ${o}
+        ${criteriaHtml}
+        ${commentHtml}
+        ${extraImgHtml}
+        ${sourceHtml}
 
         <div class="ans-row author-row">
-          <span><span class="ans-label">Müəllif:</span> ${a.author}</span>
+          <span><span class="ans-label">Müəllif:</span> ${q.author}</span>
 
           <div class="act-group">
 
             <div class="like-wrap">
-              <button class="like-btn" type="button" data-k="${n}" aria-pressed="false" aria-label="Bəyən" onclick="toggleLike('${n}')">
+              <button class="like-btn" type="button" data-k="${key}" aria-pressed="false" aria-label="Bəyən" onclick="toggleLike('${key}')">
                 <svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                   <path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </button>
-              <span class="like-count" data-k="${n}">0</span>
+              <span class="like-count" data-k="${key}">0</span>
             </div>
 
             <button class="copy-btn" type="button" onclick="copyQuestion(${i},this)" aria-label="Sualı kopyala">
@@ -41,4 +1517,218 @@
         </div>
 
       </div>
-    `,m.appendChild(r)}),firstRender=!1,updateLikeUI()}function toggleSingleCard(a){const i=document.getElementById(`q-card-${a}`);a=i.classList.toggle("active");i.querySelector(".q-text").setAttribute("aria-expanded",a)}function qTextClick(a,i){a.target.closest("a, .req-img")||window.getSelection&&window.getSelection().toString()||toggleSingleCard(i)}function qTextKey(a,i){"Enter"!==a.key&&" "!==a.key||(a.preventDefault(),toggleSingleCard(i))}function toggleAllAnswers(){allExpanded=!allExpanded,document.querySelectorAll(".q-card").forEach(a=>{a.classList.toggle("active",allExpanded),a.querySelector(".q-text").setAttribute("aria-expanded",allExpanded)}),document.getElementById("globalToggleBtn").textContent=allExpanded?"Bütün cavabları gizlə":"Bütün cavabları göstər"}function questionHtmlToText(a){return a.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").trim()}function buildQuestionText(a){let i=`${a.id}. ${questionHtmlToText(a.question)}`;return i+=`\n\nCavab: ${a.answer}`,a.criteria&&(i+=`\nSayılma meyarı: ${a.criteria}`),a.comment&&(i+=`\nŞərh: ${questionHtmlToText(a.comment)}`),a.source&&(i+=`\nMənbə: ${questionHtmlToText(a.source)}`),i+=`\nMüəllif: ${a.author}`,i}function copyQuestion(a,i){a=(toursData[currentTour]||[])[a];if(a){const r=buildQuestionText(a);function n(){i.classList.add("copied"),clearTimeout(i._copyTimer),i._copyTimer=setTimeout(()=>i.classList.remove("copied"),1600)}navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(r).then(n).catch(()=>fallbackCopy(r,n)):fallbackCopy(r,n)}}function fallbackCopy(a,i){const n=document.createElement("textarea");n.value=a,n.style.position="fixed",n.style.opacity="0",document.body.appendChild(n),n.select();try{document.execCommand("copy"),i()}catch(a){}document.body.removeChild(n)}function toggleZoom(a,i){if(i.stopPropagation(),activeZoomedImg!==a){removeZoom();var n=a.getBoundingClientRect();const l=a.cloneNode(!0);l.removeAttribute("onclick"),l.classList.remove("extra"),l.style.position="fixed",l.style.top=n.top+"px",l.style.left=n.left+"px",l.style.width=n.width+"px",l.style.height=n.height+"px",l.style.margin="0",l.style.maxWidth="none",l.style.maxHeight="none",l.style.zIndex="9999",l.style.transformOrigin="center center",l.style.transform="translate(0px,0px) scale(1)",l.style.transition="transform .55s cubic-bezier(.25,1,.5,1), box-shadow .55s ease",l.style.cursor="pointer",l._start={top:n.top,left:n.left},l.onclick=function(a){a.stopPropagation(),removeZoom()},document.body.appendChild(l),a.style.visibility="hidden",document.body.classList.add("img-zoomed");var r=window.innerWidth,i=window.innerHeight;const e=Math.min(.92*r/n.width,.86*i/n.height),t=r/2-(n.left+n.width/2),d=i/2-(n.top+n.height/2);requestAnimationFrame(()=>requestAnimationFrame(()=>{l.style.transform=`translate(${t}px,${d}px) scale(${e})`,l.style.boxShadow="0 10px 30px rgba(0,0,0,.3)"})),activeZoomedImg=a,activeClone=l}else removeZoom()}function removeZoom(){if(activeClone){const n=activeClone,r=activeZoomedImg;var a=r.getBoundingClientRect(),i=a.left-n._start.left,a=a.top-n._start.top;n.style.transform=`translate(${i}px,${a}px) scale(1)`,n.style.boxShadow="none",setTimeout(()=>{n.remove(),r&&(r.style.visibility="visible")},550),activeClone=null}activeZoomedImg=null,document.body.classList.remove("img-zoomed")}countsRef&&(countsRef.on("value",a=>{likeCounts=a.val()||{},saveLikeCache(),updateLikeUI()}),myRef.on("value",a=>{myLikes=a.val()||{},saveLikeCache(),updateLikeUI()})),document.addEventListener("click",function(a){activeZoomedImg&&a.target!==activeClone&&removeZoom()}),loadTour(1)</script>
+    `;
+
+        container.appendChild(card);
+      });
+
+      firstRender = false;
+      updateLikeUI();
+    }
+
+    function toggleSingleCard(index) {
+      const card = document.getElementById(`q-card-${index}`);
+      const isActive = card.classList.toggle("active");
+      card.querySelector(".q-text").setAttribute("aria-expanded", isActive);
+    }
+
+    function qTextClick(e, index) {
+      if (e.target.closest("a, .req-img")) return;
+      if (window.getSelection && window.getSelection().toString()) return;
+
+      toggleSingleCard(index);
+    }
+
+    function qTextKey(e, index) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleSingleCard(index);
+      }
+    }
+
+    function toggleAllAnswers() {
+      allExpanded = !allExpanded;
+
+      document.querySelectorAll(".q-card").forEach(function (card) {
+        card.classList.toggle("active", allExpanded);
+        card.querySelector(".q-text").setAttribute("aria-expanded", allExpanded);
+      });
+
+      document.getElementById("globalToggleBtn").textContent = allExpanded
+        ? "Bütün cavabları gizlə"
+        : "Bütün cavabları göstər";
+    }
+
+
+    /* ---------- Copy ---------- */
+
+    function questionHtmlToText(html) {
+      return html
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<[^>]+>/g, "")
+        .trim();
+    }
+
+    function buildQuestionText(q) {
+      let text = `${q.id}. ${questionHtmlToText(q.question)}`;
+
+      text += `\n\nCavab: ${q.answer}`;
+
+      if (q.criteria) text += `\nSayılma meyarı: ${q.criteria}`;
+      if (q.comment) text += `\nŞərh: ${questionHtmlToText(q.comment)}`;
+      if (q.source) text += `\nMənbə: ${questionHtmlToText(q.source)}`;
+
+      text += `\nMüəllif: ${q.author}`;
+
+      return text;
+    }
+
+    function copyQuestion(index, btn) {
+      const q = (toursData[currentTour] || [])[index];
+
+      if (!q) return;
+
+      const text = buildQuestionText(q);
+
+      function onCopied() {
+        btn.classList.add("copied");
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(function () {
+          btn.classList.remove("copied");
+        }, 1600);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(onCopied).catch(function () {
+          fallbackCopy(text, onCopied);
+        });
+      } else {
+        fallbackCopy(text, onCopied);
+      }
+    }
+
+    function fallbackCopy(text, onDone) {
+      const ta = document.createElement("textarea");
+
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+
+      try {
+        document.execCommand("copy");
+        onDone();
+      } catch (e) {}
+
+      document.body.removeChild(ta);
+    }
+
+
+    /* ---------- Image zoom ---------- */
+
+    function toggleZoom(img, e) {
+      e.stopPropagation();
+
+      if (activeZoomedImg === img) {
+        removeZoom();
+        return;
+      }
+
+      removeZoom();
+
+      const rect = img.getBoundingClientRect();
+      const clone = img.cloneNode(true);
+
+      clone.removeAttribute("onclick");
+      clone.classList.remove("extra");
+      clone.style.position = "fixed";
+      clone.style.top = rect.top + "px";
+      clone.style.left = rect.left + "px";
+      clone.style.width = rect.width + "px";
+      clone.style.height = rect.height + "px";
+      clone.style.margin = "0";
+      clone.style.maxWidth = "none";
+      clone.style.maxHeight = "none";
+      clone.style.zIndex = "9999";
+      clone.style.transformOrigin = "center center";
+      clone.style.transform = "translate(0px,0px) scale(1)";
+      clone.style.transition = "transform .55s cubic-bezier(.25,1,.5,1), box-shadow .55s ease";
+      clone.style.cursor = "pointer";
+      clone._start = { top: rect.top, left: rect.left };
+
+      clone.onclick = function (ev) {
+        ev.stopPropagation();
+        removeZoom();
+      };
+
+      document.body.appendChild(clone);
+      img.style.visibility = "hidden";
+      document.body.classList.add("img-zoomed");
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scale = Math.min(0.92 * vw / rect.width, 0.86 * vh / rect.height);
+      const dx = vw / 2 - (rect.left + rect.width / 2);
+      const dy = vh / 2 - (rect.top + rect.height / 2);
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          clone.style.transform = `translate(${dx}px,${dy}px) scale(${scale})`;
+          clone.style.boxShadow = "0 10px 30px rgba(0,0,0,.3)";
+        });
+      });
+
+      activeZoomedImg = img;
+      activeClone = clone;
+    }
+
+    function removeZoom() {
+      if (activeClone) {
+        const clone = activeClone;
+        const original = activeZoomedImg;
+        const rect = original.getBoundingClientRect();
+        const dx = rect.left - clone._start.left;
+        const dy = rect.top - clone._start.top;
+
+        clone.style.transform = `translate(${dx}px,${dy}px) scale(1)`;
+        clone.style.boxShadow = "none";
+
+        setTimeout(function () {
+          clone.remove();
+          if (original) original.style.visibility = "visible";
+        }, 550);
+
+        activeClone = null;
+      }
+
+      activeZoomedImg = null;
+      document.body.classList.remove("img-zoomed");
+    }
+
+
+    /* ---------- Init ---------- */
+
+    if (countsRef) {
+      countsRef.on("value", function (snap) {
+        likeCounts = snap.val() || {};
+        saveLikeCache();
+        updateLikeUI();
+      });
+
+      myRef.on("value", function (snap) {
+        myLikes = snap.val() || {};
+        saveLikeCache();
+        updateLikeUI();
+      });
+    }
+
+    document.addEventListener("click", function (e) {
+      if (activeZoomedImg && e.target !== activeClone) removeZoom();
+    });
+
+    loadTour(1);
+  </script>
+</body>
+
+</html>
