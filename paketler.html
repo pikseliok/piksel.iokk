@@ -451,13 +451,15 @@ function roundRect(ctx,x,y,w,h,r){
 }
 
 function loadImg(src){
-  return new Promise(res=>{
+  const tryLoad=(u)=>new Promise(res=>{
     const im=new Image();
     im.crossOrigin="anonymous";
     im.onload=()=>res(im);
     im.onerror=()=>res(null);
-    im.src=src;
+    im.src=u;
   });
+  /* əvvəl birbaşa, alınmasa CORS dəstəkləyən proxy ilə */
+  return tryLoad(src).then(im=>im||tryLoad("https://wsrv.nl/?url="+encodeURIComponent(src)));
 }
 
 function drawCover(ctx,im,x,y,w,h){
@@ -571,13 +573,8 @@ async function makeStory(p){
   x.font=F("800",A.size);
   A.lines.forEach((ln,i)=>{
     const cy=y+A.size*1.08*(i+.5);
-    x.save();
-    x.shadowColor="rgba(90,170,255,.95)";x.shadowBlur=46;
-    x.fillStyle="#ffffff";
+    x.fillStyle="#9DC3FF";
     x.fillText(ln,W/2,cy);
-    x.shadowBlur=14;
-    x.fillText(ln,W/2,cy);
-    x.restore();
   });
   y+=hA;
 
@@ -587,15 +584,8 @@ async function makeStory(p){
     B.lines.forEach((ln,i)=>{
       const lh=B.size*1.08;
       const cy=y+2+lh*(i+.5);
-      const g=x.createLinearGradient(0,cy-B.size/2,0,cy+B.size/2);
-      g.addColorStop(0,"#8FE9FF");g.addColorStop(1,"#1E8CFF");
-      x.save();
-      x.shadowColor="rgba(40,150,255,.95)";x.shadowBlur=44;
-      x.fillStyle=g;
+      x.fillStyle="#0024FF";
       x.fillText(ln,W/2,cy);
-      x.shadowBlur=12;
-      x.fillText(ln,W/2,cy);
-      x.restore();
     });
     y+=hB;
   }
@@ -604,7 +594,6 @@ async function makeStory(p){
   /* PAKETİ çərçivəsi */
   const pw=500;
   x.save();
-  x.shadowColor="rgba(40,140,255,.9)";x.shadowBlur=28;
   roundRect(x,W/2-pw/2,y,pw,pillH,44);
   x.fillStyle="rgba(0,16,80,.65)";x.fill();
   x.lineWidth=4;x.strokeStyle="#2D7BFF";x.stroke();
@@ -625,13 +614,10 @@ async function makeStory(p){
   const w2=x.measureText("ksel-də").width;
   const sx0=W/2-(w1+w2)/2,cy2=y+logoH/2;
   x.save();
-  x.shadowColor="rgba(60,160,255,.8)";x.shadowBlur=26;
-  const pg=x.createLinearGradient(0,cy2-50,0,cy2+50);
-  pg.addColorStop(0,"#7CC4FF");pg.addColorStop(1,"#1F7BFF");
-  x.fillStyle=pg;
+  x.fillStyle="#9DC3FF";
   x.font="italic 800 "+(ls*1.1)+"px Poppins, sans-serif";
   x.fillText("π",sx0,cy2);
-  x.fillStyle="#fff";
+  x.fillStyle="#9DC3FF";
   x.font=F("800",ls);
   x.fillText("ksel-də",sx0+w1,cy2+4);
   x.restore();
@@ -678,7 +664,9 @@ async function makeStory(p){
   const PAD=36;
 
   /* naviqasiya */
-  let ny=44;
+  let ny=60;
+  /* ön kamera */
+  x.beginPath();x.arc(SW/2,30,14,0,Math.PI*2);x.fillStyle="#000";x.fill();
   roundRect(x,PAD,ny,SW-2*PAD,92,46);
   x.fillStyle=navG(PAD,ny,SW-2*PAD);x.fill();
   x.fillStyle="#9DC3FF";
