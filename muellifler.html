@@ -314,28 +314,36 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add(
 ========================= */
 const PKG={
   vesper1:{title:'"Vesper" kuboku',link:"/vesper_kuboku"},
-  vesper2:{title:'II "Vesper" kuboku',link:"/vesper_kuboku_2"},
   amazon:{title:'"Amazon" kuboku',link:"/amazon_kuboku"},
   moonopoly:{title:'"Moonopoly" turniri',link:"/moonopoly_turniri"},
-  yubiley:{title:'"Yubiley" turniri',link:"/yubiley_turniri"},
-  maqrit:{title:'"Maqrit" kuboku',link:"/maqrit_kuboku"},
-  solo:{title:'"Solo Leveling" kuboku',link:"/solo_leveling"},
   whatsapp:{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paket_1"},
   diamonds1:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm I oyun',link:"/diamonds2_1"},
+  vesper2:{title:'II "Vesper" kuboku',link:"/vesper_kuboku_2"},
   diamonds2:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm II oyun',link:"/diamonds2_2"},
-  diamonds3:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm III oyun',link:"/diamonds2_3"}
+  gencler:{title:'Gənclər həftəsi NHN kuboku',link:"/gencler_heftesi_nhn"},
+  solo:{title:'"Solo Leveling" kuboku',link:"/solo_leveling"},
+  maqrit:{title:'"Maqrit" kuboku',link:"/maqrit_kuboku"},
+  diamonds3:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm III oyun',link:"/diamonds2_3"},
+  yubiley:{title:'"Yubiley" kuboku',link:"/yubiley_turniri"},
+  khuamsa:{title:'"Khuamsa" turniri',link:"/khuamsa"},
+  sentyabr:{title:'"Sentyabr" kuboku',link:"/sentyabr_kuboku"},
+ 
 };
 
 /* Yeni müəllif əlavə etmək üçün sadəcə bir sətir əlavə edin. */
 const authors=[
+const authors=[
+  {name:"Məmmədquliyev İsmayıl",packages:[PKG.gencler,PKG.sentyabr]},
   {name:"Abbaslı Nigar",packages:[PKG.whatsapp]},
   {name:"Bəylərov Kamal",packages:[PKG.yubiley]},
   {name:"Cəfərzadə Yəhya",packages:[PKG.yubiley]},
   {name:"Əliyeva Zəhra",packages:[PKG.whatsapp]},
   {name:"Əlizadə Onur",packages:[PKG.whatsapp]},
   {name:"Əlizadə Rüfət",packages:[PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},
-  {name:"Hacızadə Nihad",packages:[PKG.maqrit]},
+  {name:"Hacızadə Nihad",packages:[PKG.maqrit,PKG.khuamsa]},
   {name:"Həsənov Kamil",packages:[PKG.diamonds3]},
+  {name:"Həsənli Şehra",packages:[PKG.khuamsa]},
+  {name:"Heydərli Hüseyn",packages:[PKG.khuamsa]},
   {name:"Hüseynli Muhəmməd",packages:[PKG.whatsapp]},
   {name:"Hüseynli Qabil",packages:[PKG.vesper2,PKG.vesper1]},
   {name:"Hüseynzadə Yusif",packages:[PKG.diamonds3]},
@@ -344,18 +352,21 @@ const authors=[
   {name:"Məhərrəmov Ağasəf",packages:[PKG.solo]},
   {name:"Məmmədli Nurşad",packages:[PKG.yubiley]},
   {name:"Məmmədov Şəmil",packages:[PKG.yubiley]},
-  {name:"Nəhmətli Turqut",packages:[PKG.maqrit,PKG.solo,PKG.diamonds3,PKG.vesper2,PKG.vesper1]},
+  {name:"Nəhmətli Adil",packages:[PKG.khuamsa]},
+  {name:"Nəhmətli Turqut",packages:[PKG.maqrit,PKG.solo,PKG.diamonds3,PKG.vesper2,PKG.vesper1,PKG.khuamsa]},
   {name:"Pənahov Səmral",packages:[PKG.solo]},
   {name:"Qarayev Ramiz",packages:[PKG.whatsapp]},
   {name:"Rzalı Üsyan",packages:[PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},
   {name:"Seyidova Aydan",packages:[PKG.amazon]},
   {name:"Səmədov İslam",packages:[PKG.vesper2,PKG.vesper1]},
   {name:"Şentürk Serkan",packages:[PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},
+  {name:"Şükürov Tərlan",packages:[PKG.khuamsa]},
   {name:"Vəlili Murad",packages:[PKG.yubiley]},
   {name:"Yuniszadə Ema",packages:[PKG.whatsapp]},
-  {name:"Yusifov Zeynal",packages:[PKG.vesper2,PKG.amazon,PKG.moonopoly,PKG.vesper1]}
+  {name:"Yusifov Zeynal",packages:[PKG.vesper2,PKG.amazon,PKG.moonopoly,PKG.vesper1]},
+  {name:"Brahimli Şükran",packages:[PKG.khuamsa]},
+  {name:"Cəfərov Saday",packages:[PKG.khuamsa]}
 ];
-
 /* =========================
    SEARCH / SORT
 ========================= */
