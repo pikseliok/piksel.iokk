@@ -76,17 +76,17 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .pkg-card>*{position:relative;z-index:1}
 /* Mausın ətrafında yumşaq, qeyri-dəqiq formalı rəng dəyişimi */
 .pkg-card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
-  background:
-    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
-    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+background:
+radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){
-  .pkg-card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
-  .pkg-card:hover::before{opacity:1}
+.pkg-card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+.pkg-card:hover::before{opacity:1}
 }
-  .pkg-card:active{
-  transform:translateY(0) scale(.97);
-  box-shadow:0 6px 14px rgba(0,20,110,.12);
-  transition-duration:.3s;
+.pkg-card:active{
+transform:translateY(0) scale(.97);
+box-shadow:0 6px 14px rgba(0,20,110,.12);
+transition-duration:.3s;
 }
 .filter-pill:active,.sort-btn:active{transform:scale(.94)}
 .pkg-icon{width:80px;height:80px;flex:0 0 80px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.15)}
@@ -125,59 +125,56 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 
 /* ---------- TELEFON ≤700px ---------- */
 @media (max-width:700px){
-  .page{width:calc(100vw - 44px);padding:11px 0 26px}
-  .top-nav{height:46px;padding:0 46px}
-  .nav-links{gap:28px}
-  .nav-link{font-size:13px}
-  .theme-toggle{width:34px;height:34px;right:6px}
-  .theme-icon{width:21px;height:21px}
-  .search-wrap{margin-top:12px;height:46px;padding:0 14px}
-  #searchInput{font-size:16px}
-  .filters{gap:8px;margin-top:12px}
-  .filter-pill{height:34px;padding:0 14px;font-size:13px}
-  .section-title{font-size:17px;margin:20px 0 12px}
-  .cards-list{gap:10px}
-  .pkg-card{height:100px;padding:12px 16px;gap:12px;border-radius:22px}
-  .pkg-icon{width:56px;height:56px;flex-basis:56px;border-radius:14px}
-  .pkg-title{font-size:17px;letter-spacing:-.5px}
-  .pkg-type,.pkg-date{font-size:9px}
-  .share-btn{width:32px;height:32px}
-  .share-btn svg{width:16px;height:16px}
-  footer{min-height:96px;padding:16px 12px;gap:5px}
-  .footer-line{font-size:13px}
+.page{width:calc(100vw - 44px);padding:11px 0 26px}
+.top-nav{height:46px;padding:0 46px}
+.nav-links{gap:28px}
+.nav-link{font-size:13px}
+.theme-toggle{width:34px;height:34px;right:6px}
+.theme-icon{width:21px;height:21px}
+.search-wrap{margin-top:12px;height:46px;padding:0 14px}
+#searchInput{font-size:16px}
+.filters{gap:8px;margin-top:12px}
+.filter-pill{height:34px;padding:0 14px;font-size:13px}
+.section-title{font-size:17px;margin:20px 0 12px}
+.cards-list{gap:10px}
+.pkg-card{height:100px;padding:12px 16px;gap:12px;border-radius:22px}
+.pkg-icon{width:56px;height:56px;flex-basis:56px;border-radius:14px}
+.pkg-title{font-size:17px;letter-spacing:-.5px}
+.pkg-type,.pkg-date{font-size:9px}
+.share-btn{width:32px;height:32px}
+.share-btn svg{width:16px;height:16px}
+footer{min-height:96px;padding:16px 12px;gap:5px}
+.footer-line{font-size:13px}
 }
 
 /* ---------- DAR TELEFON ≤420px ---------- */
 @media (max-width:420px){
-  .page{width:calc(100vw - 36px)}
-  .top-nav{height:42px;padding:0 42px}
-  .nav-links{gap:22px}
-  .nav-link{font-size:11px}
-  .theme-toggle{width:32px;height:32px;right:5px}
-  .theme-icon{width:20px;height:20px}
-  #searchInput{font-size:15px}
-  .filter-pill{height:32px;padding:0 12px;font-size:12px}
-  .section-title{font-size:15px}
-  .pkg-card{height:94px;padding:12px 14px;gap:10px}
-  .pkg-icon{width:50px;height:50px;flex-basis:50px}
-  .pkg-title{font-size:15px}
-  .pkg-type,.pkg-date{font-size:8px}
-  .share-btn{width:30px;height:30px}
-  footer{min-height:88px}
-  .footer-line{font-size:11px}
+.page{width:calc(100vw - 36px)}
+.top-nav{height:42px;padding:0 42px}
+.nav-links{gap:22px}
+.nav-link{font-size:11px}
+.theme-toggle{width:32px;height:32px;right:5px}
+.theme-icon{width:20px;height:20px}
+#searchInput{font-size:15px}
+.filter-pill{height:32px;padding:0 12px;font-size:12px}
+.section-title{font-size:15px}
+.pkg-card{height:94px;padding:12px 14px;gap:10px}
+.pkg-icon{width:50px;height:50px;flex-basis:50px}
+.pkg-title{font-size:15px}
+.pkg-type,.pkg-date{font-size:8px}
+.share-btn{width:30px;height:30px}
+footer{min-height:88px}
+.footer-line{font-size:11px}
 }
 </style>
 </head>
-
 <body>
 <div class="page">
-
   <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
     <div class="nav-links rise">
       <a class="nav-link" href="index.html">Əsas Səhifə</a>
       <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
     </div>
-
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
       <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
         <defs>
@@ -220,7 +217,6 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   <h2 class="section-title rise" style="--d:.3s">Paketlər</h2>
 
   <div class="cards-list" id="cardsList"></div>
-
 </div>
 
 <footer>
@@ -308,19 +304,19 @@ const TYPES=[
 ];
 
 const packages=[
-  {title:'"Khuamsa" turniri',type:"xemse",date:"2026-10-04",icon:"https://i.ibb.co/qYSJssPG/Whats-App-mage-2026-10-05-at-21-08-18.jpg", link:"/khuamsa"},
-  {title:'"Sentyabr" kuboku',type:"nhn",date:"2026-10-04",icon:"https://i.ibb.co/Y4bHPk8h/Sentyabr-kuboku-pdf-20261004-145048605-8648351852407212920.png", link:"/sentyabr_kuboku"},
-  {title:'"Yubiley" kuboku',type:"nhn",date:"2026-10-01",icon:"https://cdn.phototourl.com/member/2026-10-01-804d0314-2498-436e-9c96-696215c38d46.jpg", link:"/yubiley_turniri"},
-  {title:'"Solo Leveling" kuboku',type:"ferdi",date:"2026-09-30",icon:"https://cdn.phototourl.com/member/2026-09-30-898d4d3c-9393-4b11-a865-45d9a646a11e.jpg",link:"/solo_leveling"},
-  {title:'"Maqrit" kuboku',type:"nhn",date:"2026-09-30",icon:"https://cdn.phototourl.com/member/2026-09-30-30a800f8-7bc9-4426-a446-9a87b6d1a6bd.jpg",link:"/maqrit_kuboku"},
-  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - III Tur',type:"ferdi",date:"2026-09-30",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_3"},
-  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - II Tur',type:"ferdi",date:"2026-09-27",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_2"},
-  {title:'II "Vesper" kuboku',type:"breyn",date:"2026-09-26",icon:"https://cdn.phototourl.com/member/2026-09-29-ccbb5ca3-5c5d-4604-886e-181a1a4e864c.jpg",link:"/vesper_kuboku_2"},
-  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I Tur',type:"ferdi",date:"2026-09-13",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_1"},
-  {title:'"πksel.iok" WhatsApp paketi',type:"nhn",date:"2026-09-11",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F090a63bd-9071-4ad1-8715-9b740f9085ed-1000462820.png",link:"/piksel_paketi_1"},
-  {title:'"Moonopoly" turniri',type:"xemse",date:"2026-09-04",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F2abbcfb9-c048-415c-a82f-e7e0e54fc2fb-1000463171.jpg",link:"/moonopoly_turniri"},
-  {title:'"Amazon" kuboku',type:"breyn",date:"2026-09-03",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fa1b06e64-66d0-4513-9138-68fd62788ba6-1000463172.jpg",link:"/amazon_kuboku"},
-  {title:'"Vesper" kuboku - Məktəblilərarası',type:"nhn",date:"2026-09-01",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F435a026b-b566-4e8e-844b-086936ce2e88-1000463173.jpg",link:"/vesper_kuboku"}
+  {title:'"Khuamsa" turniri',type:"xemse",date:"2026-10-04",icon:"https://i.ibb.co/qYSJssPG/Whats-App-mage-2026-10-05-at-21-08-18.jpg", link:"/khuamsa.html"},
+  {title:'"Sentyabr" kuboku',type:"nhn",date:"2026-10-04",icon:"https://i.ibb.co/Y4bHPk8h/Sentyabr-kuboku-pdf-20261004-145048605-8648351852407212920.png", link:"/sentyabr_kuboku.html"},
+  {title:'"Yubiley" kuboku',type:"nhn",date:"2026-10-01",icon:"https://cdn.phototourl.com/member/2026-10-01-804d0314-2498-436e-9c96-696215c38d46.jpg", link:"/yubiley_turniri.html"},
+  {title:'"Solo Leveling" kuboku',type:"ferdi",date:"2026-09-30",icon:"https://cdn.phototourl.com/member/2026-09-30-898d4d3c-9393-4b11-a865-45d9a646a11e.jpg",link:"/solo_leveling.html"},
+  {title:'"Maqrit" kuboku',type:"nhn",date:"2026-09-30",icon:"https://cdn.phototourl.com/member/2026-09-30-30a800f8-7bc9-4426-a446-9a87b6d1a6bd.jpg",link:"/maqrit_kuboku.html"},
+  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - III Tur',type:"ferdi",date:"2026-09-30",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_3.html"},
+  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - II Tur',type:"ferdi",date:"2026-09-27",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_2.html"},
+  {title:'II "Vesper" kuboku',type:"breyn",date:"2026-09-26",icon:"https://cdn.phototourl.com/member/2026-09-29-ccbb5ca3-5c5d-4604-886e-181a1a4e864c.jpg",link:"/vesper_kuboku_2.html"},
+  {title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I Tur',type:"ferdi",date:"2026-09-13",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fc4f82efb-a58f-4012-a2ea-58e0413e8a8e-1000463166.jpg",link:"/diamonds2_1.html"},
+  {title:'"πksel.iok" WhatsApp paketi',type:"nhn",date:"2026-09-11",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F090a63bd-9071-4ad1-8715-9b740f9085ed-1000462820.png",link:"/piksel_paketi_1.html"},
+  {title:'"Moonopoly" turniri',type:"xemse",date:"2026-09-04",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F2abbcfb9-c048-415c-a82f-e7e0e54fc2fb-1000463171.jpg",link:"/moonopoly_turniri.html"},
+  {title:'"Amazon" kuboku',type:"breyn",date:"2026-09-03",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2Fa1b06e64-66d0-4513-9138-68fd62788ba6-1000463172.jpg",link:"/amazon_kuboku.html"},
+  {title:'"Vesper" kuboku - Məktəblilərarası',type:"nhn",date:"2026-09-01",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F435a026b-b566-4e8e-844b-086936ce2e88-1000463173.jpg",link:"/vesper_kuboku.html"}
 ].map((p,i)=>({...p,order:i}));
 
 let activeTypes=new Set(TYPES.map(t=>t.key));
@@ -407,7 +403,8 @@ function render(){
   });
 }
 render();
-  /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
+
+/* Basma effekti görünsün deyə keçid 0.3 san gecikir */
 cardsList.addEventListener("click",e=>{
   /* Paylaş düyməsi: karta keçid olmasın, paylaşma pəncərəsi açılsın */
   const sb=e.target.closest(".share-btn");
@@ -425,12 +422,11 @@ cardsList.addEventListener("click",e=>{
 
 /* =========================================================
    PAYLAŞ
-   - Story/status üçün 1080x1920 foto (dizayna uyğun) canvas ilə hazırlanır.
+   - Story/status üçün 1080x1920 afişa canvas ilə hazırlanır.
    - Telefonda sistem paylaşma menyusu açılır (WhatsApp, Instagram, Telegram və s.),
      şəkil fayl kimi, başlıq + link isə mesaj mətni kimi göndərilir.
-   - Masaüstündə WhatsApp linki açılır, Instagram üçün şəkil yüklənir.
+   - Masaüstündə şəkil yüklənir, link kopyalanır.
 ========================================================= */
-const LOGO="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png";
 const overlay=document.getElementById("shareOverlay");
 const toastEl=document.getElementById("toast");
 let shareIdx=null,sharePromise=null,shareFile=null,toastTimer=null;
@@ -494,7 +490,7 @@ function placeholderBox(ctx,x,y,w,h,r,fontPx){
   ctx.fillText("π",x+w/2,y+h/2);
 }
 
-/* Köhnə makeStory funksiyasını bununla əvəz edin */
+/* ---------- Afişa (story) çəkilişi ---------- */
 async function makeStory(p){
   const t=TYPES.find(x=>x.key===p.type);
   const dd=p.date.split("-")[2],mm=p.date.split("-")[1],yy=p.date.split("-")[0];
@@ -800,67 +796,10 @@ async function makeStory(p){
   x.restore(); /* ekran */
   x.restore(); /* telefon */
 
-  const blob=await new Promise(res=>c.toBlob(res,"image/png"));
-  if(!blob) return null;
+  const pngBlob=await new Promise(res=>c.toBlob(res,"image/png"));
+  if(!pngBlob) return null;
   const name=(p.link.split("/").pop()||"paket").replace(".html","")||"paket";
-  return new File([blob],name+".png",{type:"image/png"});
-}
-
-  /* fon */
-  const bg=x.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,"#A9C9FF");bg.addColorStop(1,"#68A5F8");
-  x.fillStyle=bg;x.fillRect(0,0,W,H);
-
-  /* yuxarıdakı logo */
-  if(logo){
-    x.save();roundRect(x,483,170,113,113,28);x.clip();
-    drawCover(x,logo,483,170,113,113);
-    x.restore();
-  }else{
-    placeholderBox(x,483,170,113,113,28,64);
-  }
-
-  /* paket kartı */
-  const cg=x.createLinearGradient(0,457,0,1463);
-  cg.addColorStop(0,"#001A6B");cg.addColorStop(1,"#0537A4");
-  x.fillStyle=cg;
-  roundRect(x,103,457,874,1006,72);x.fill();
-
-  /* ikon yeri */
-  if(icon){
-    x.save();roundRect(x,263,500,553,553,100);x.clip();
-    drawCover(x,icon,263,500,553,553);
-    x.restore();
-  }else{
-    placeholderBox(x,263,500,553,553,100,300);
-  }
-
-  /* başlıq (uzun olarsa kiçilir və sətirlərə bölünür) */
-  x.textAlign="center";x.textBaseline="middle";x.fillStyle="#9DC3FF";
-  let size=88,lines=[];
-  for(;size>=52;size-=4){
-    x.font="700 "+size+"px Poppins, sans-serif";
-    lines=wrapLines(x,p.title,826);
-    if(lines.length<=(size>=64?2:3)) break;
-  }
-  const lh=size*1.14,top=1085;
-  lines.forEach((ln,i)=>x.fillText(ln,W/2,top+lh*i+lh/2));
-  const bottom=top+lh*lines.length;
-
-  /* növ və tarix */
-  x.font="300 48px Poppins, sans-serif";
-  x.fillText(typeText,W/2,bottom+53);
-  x.fillText(d1+"."+d2+"."+d3,W/2,bottom+130);
-
-  /* alt yazı */
-  x.fillStyle="#00309A";
-  x.font="700 72px Poppins, sans-serif";
-  x.fillText("πksel-də bax",W/2,1510);
-
-  const blob=await new Promise(res=>c.toBlob(res,"image/png"));
-  if(!blob) return null;
-  const name=(p.link.split("/").pop()||"paket").replace(".html","")||"paket";
-  return new File([blob],name+".png",{type:"image/png"});
+  return new File([pngBlob],name+".png",{type:"image/png"});
 }
 
 function openShare(i){
@@ -944,6 +883,5 @@ overlay.querySelectorAll(".sheet-opt").forEach(b=>{
   b.addEventListener("click",()=>doShare(b.dataset.mode));
 });
 </script>
-
 </body>
 </html>
