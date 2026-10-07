@@ -257,6 +257,25 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 /* =========================
    THEME
 ========================= */
+/* Sağ klik və klaviatura qısayollarını bloklama */
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}, true);
+
+document.addEventListener("keydown", function(e) {
+  const key = e.key.toLowerCase();
+
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && (key === "i" || key === "j")) ||
+    (e.ctrlKey && key === "u") ||
+    (e.ctrlKey && key === "s")
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}, true);
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
 
