@@ -784,7 +784,16 @@ function want(i){
   const w=x=>(R.status==='answered'&&ah(x))||(R.status==='wait'&&x===R.talk);
   return w(pid)||w(i);
 }
-function applyMute(){for(const i in auds)auds[i].muted=!hear(i)}
+let mixCtx=null;
+function mixer(){
+  if(!mixCtx)mixCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(mixCtx.state==='suspended')mixCtx.resume();
+  return mixCtx;
+}
+function applyMute(){
+  if(!mixCtx)return;
+  for(const i in auds)auds[i].g.gain.setTargetAtTime(hear(i)?1:0,mixCtx.currentTime,.02);
+}
 const sg=(i,d)=>rf('sig/'+i).push({from:pid,d:JSON.stringify(d)});
 
 function mkpc(i){
@@ -795,10 +804,15 @@ function mkpc(i){
   pc.onconnectionstatechange=showNet;
   pc.oniceconnectionstatechange=showNet;
   pc.ontrack=e=>{
-    let a=auds[i];
-    if(!a){a=auds[i]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
-    a.srcObject=e.streams[0];
+    const ms=e.streams[0];
+    if(auds[i]){try{auds[i].src.disconnect();auds[i].g.disconnect()}catch(x){}auds[i].a.remove()}
+    const a=document.createElement('audio');
+    a.srcObject=ms;a.muted=true;a.autoplay=true;a.playsInline=true;
+    document.body.appendChild(a);
     a.play().catch(()=>{});
+    const c=mixer(),src=c.createMediaStreamSource(ms),g=c.createGain();
+    g.gain.value=0;src.connect(g);g.connect(c.destination);
+    auds[i]={a,src,g};
     applyMute();
   };
   pcs[i]=pc;
@@ -806,7 +820,7 @@ function mkpc(i){
 }
 function drop(i){
   if(pcs[i]){pcs[i].close();delete pcs[i]}
-  if(auds[i]){auds[i].srcObject=null;auds[i].remove();delete auds[i]}
+  if(auds[i]){try{auds[i].src.disconnect();auds[i].g.disconnect()}catch(x){}auds[i].a.srcObject=null;auds[i].a.remove();delete auds[i]}
 }
 async function reconcile(){
   if(!stream||!R)return;
@@ -823,6 +837,7 @@ async function reconcile(){
 function sigIn(from,d){if(!stream)pend.push([from,d]);else onSig(from,d)}
 async function onSig(from,d){
   if(!R||!(want(from)||from===R.host||P()[from]))return;
+  if(d.sdp&&d.sdp.type==='offer'&&pcs[from]&&pcs[from].remoteDescription)drop(from);
   const pc=pcs[from]||mkpc(from);
   try{
     if(d.sdp){
@@ -835,7 +850,7 @@ async function onSig(from,d){
   }catch(e){}
 }
 async function getMic(){
-  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
   catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
   await Promise.race([iceReady,new Promise(r=>setTimeout(r,3000))]);
   const me=P()[pid]||{};
@@ -854,10 +869,16 @@ function showNet(){
 }
 setInterval(()=>{
   if(!R)return;
-  Object.keys(pcs).forEach(i=>{const c=pcs[i].connectionState;if(c==='failed'||c==='closed')drop(i)});
+  Object.keys(pcs).forEach(i=>{
+    const c=pcs[i].connectionState;
+    if(c==='failed'||c==='closed')drop(i);
+    else if(c==='disconnected'){if(!pcs[i]._dt)pcs[i]._dt=Date.now();else if(Date.now()-pcs[i]._dt>5000)drop(i)}
+    else pcs[i]._dt=0;
+  });
+  applyMute();
   reconcile();showNet();
 },3000);
-document.addEventListener('pointerdown',()=>{for(const i in auds)auds[i].play().catch(()=>{})},{passive:true});
+document.addEventListener('pointerdown',()=>{try{mixer()}catch(e){}for(const i in auds)auds[i].a.play().catch(()=>{})},{passive:true});
 </script>
 <script>
 /* ===== SƏSLƏR + REAKSİYALAR + YENİ DÜYMƏSİXAN ===== */
