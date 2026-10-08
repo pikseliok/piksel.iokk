@@ -759,12 +759,8 @@ document.addEventListener('pointerdown',e=>{
 });
 
 /* SƏS (WebRTC, siqnal Firebase ilə) */
-let ICE=[
-  {urls:'stun:stun.l.google.com:19302'},
-  {urls:'stun:openrelay.metered.ca:80'},
-  {urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turn:openrelay.metered.ca:443?transport=tcp','turns:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}
-];
-fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length)ICE=ICE.concat(j.iceServers)}).catch(()=>{});
+let ICE=[{urls:'stun:stun.l.google.com:19302'}],relayOk=false;
+const iceReady=fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length){ICE=ICE.concat(j.iceServers);relayOk=true}}).catch(()=>{});
 const pcs={},auds={},pend=[];
 
 function ah(i){const x=P()[i];return !!x&&x.team===R.winner&&((x.cap&&!R.speaker)||i===R.speaker)}
@@ -796,6 +792,8 @@ function mkpc(i){
   pc._q=[];
   stream.getTracks().forEach(t=>pc.addTrack(t,stream));
   pc.onicecandidate=e=>e.candidate&&sg(i,{ice:e.candidate});
+  pc.onconnectionstatechange=showNet;
+  pc.oniceconnectionstatechange=showNet;
   pc.ontrack=e=>{
     let a=auds[i];
     if(!a){a=auds[i]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
@@ -824,7 +822,7 @@ async function reconcile(){
 }
 function sigIn(from,d){if(!stream)pend.push([from,d]);else onSig(from,d)}
 async function onSig(from,d){
-  if(!R||!want(from))return;
+  if(!R||!(want(from)||from===R.host||P()[from]))return;
   const pc=pcs[from]||mkpc(from);
   try{
     if(d.sdp){
@@ -839,11 +837,27 @@ async function onSig(from,d){
 async function getMic(){
   try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
   catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
+  await Promise.race([iceReady,new Promise(r=>setTimeout(r,3000))]);
   const me=P()[pid]||{};
   stream.getAudioTracks().forEach(t=>{t.enabled=!muted&&!me.pen});
   await reconcile();
+  showNet();
   pend.splice(0).forEach(([f,d])=>onSig(f,d));
 }
+$('teams').insertAdjacentHTML('afterend','<div class="note" id="net"></div>');
+const NETTR={connected:'qoşuldu',connecting:'qoşulur',new:'başlayır',failed:'alınmadı',disconnected:'kəsildi',closed:'bağlandı'};
+function showNet(){
+  if(!R||!$('net'))return;
+  const nm=i=>i===R.host?'Aparıcı':((P()[i]||{}).name||i);
+  const l=Object.keys(pcs).map(i=>nm(i)+': '+(NETTR[pcs[i].connectionState]||pcs[i].connectionState));
+  $('net').textContent='Mikrofon: '+(stream?'var':'yoxdur')+' | Relay: '+(relayOk?'var':'yoxdur')+' | Səs: '+(l.length?l.join(', '):'əlaqə yoxdur');
+}
+setInterval(()=>{
+  if(!R)return;
+  Object.keys(pcs).forEach(i=>{const c=pcs[i].connectionState;if(c==='failed'||c==='closed')drop(i)});
+  reconcile();showNet();
+},3000);
+document.addEventListener('pointerdown',()=>{for(const i in auds)auds[i].play().catch(()=>{})},{passive:true});
 </script>
 <script>
 /* ===== SƏSLƏR + REAKSİYALAR + YENİ DÜYMƏSİXAN ===== */
