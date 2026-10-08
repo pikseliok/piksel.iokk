@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel - Breyn Rinq səsli otaq</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);--red:#ff3b30;--err:#ff8a82;--t:24px;--b:15px;--c:15px;--glow:rgba(0,8,45,.30);
+--blue-grad:linear-gradient(135deg,#4F76D7,#2454D1 55%,#003DBF);--pink-grad:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)}
+body{--grad:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));--track:rgba(157,195,255,.3)}
+body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));--track:rgba(0,7,44,.25);--glow:rgba(255,255,255,.40);--err:#c4160c}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+button,input,a{font:inherit}a{color:inherit;text-decoration:none}[hidden]{display:none!important}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d,0s) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+.card,.tcard{position:relative;overflow:hidden}.card>*,.tcard>*{position:relative;z-index:1}
+.card::before,.tcard::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;background:radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%)}
+@media (hover:hover){.card:hover::before,.tcard:hover::before{opacity:1}}
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light))}
+.nav-links{display:flex;gap:40px;height:100%;align-items:center}
+.nav-link{color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s}.dark .nav-link{color:var(--dark-ink)}.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px}.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}.bite{transform:translate(14px,-14px)}body.dark .core{transform:scale(1)}body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+h1{text-align:center;color:var(--deep);font-size:var(--t);font-weight:700;line-height:1.3;letter-spacing:-.7px;margin:24px 0 14px}.dark h1{color:var(--dark-light)}
+.note{color:var(--deep);text-align:center;font-size:var(--b);font-weight:500;margin-top:8px}.dark .note{color:var(--dark-light)}
+.card{width:100%;border-radius:28px;padding:22px 24px;margin-top:14px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition),color var(--transition)}
+.dark .card{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
+.sm{font-size:var(--b);font-weight:500;opacity:.9;margin-top:6px;line-height:1.45}.center{text-align:center}
+.big{font-weight:700;font-size:var(--t);line-height:1.2;letter-spacing:-.7px}.code{font-weight:700;letter-spacing:3px}
+#lobby{margin-top:20px}#lobby .big{margin-bottom:20px}
+.pill{display:block;width:100%;height:46px;border:0;border-radius:999px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:800;font-size:var(--c);cursor:pointer;transition:transform .25s}
+.dark .pill{background:var(--dark-ink);color:var(--dark-light)}.pill:hover{transform:translateY(-2px)}.pill.on{outline:3px solid currentColor;outline-offset:3px}
+input{width:100%;border:0;border-radius:20px;padding:10px 16px;margin-top:10px;background:var(--ink);color:var(--deep);font-weight:500;font-size:var(--c);outline:none}.dark input{background:var(--dark-ink);color:var(--dark-light)}
+.info{margin-top:24px;font-size:var(--b);line-height:1.5;text-align:center}.info p+p{margin-top:12px}
+.pbtn{border:0;border-radius:999px;padding:10px 28px;margin:10px auto 0;display:block;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);font-weight:600;font-size:var(--c);cursor:pointer;transition:transform .25s,opacity .25s}
+.dark .pbtn{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
+.pbtn:hover{transform:translateY(-2px)}.pbtn:disabled{opacity:.4;cursor:default;transform:none}
+.pbtn.sq{width:56px;height:56px;padding:0;display:grid;place-items:center;margin:0}.pbtn.s{padding:10px 20px}.mic{width:28px;height:28px}
+.pill:active,.pbtn:not(:disabled):active,.mini:active{transform:scale(.96);transition-duration:.2s}
+.mini{border:0;border-radius:999px;padding:5px 14px;font-weight:700;font-size:var(--c);cursor:pointer;background:var(--ink);color:var(--deep)}.dark .mini{background:var(--dark-ink);color:var(--dark-light)}.mini:disabled{opacity:.3;cursor:default}
+.mini.ico{padding:5px 9px;line-height:1}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.pgrid .pbtn{margin:0;padding:10px 5px}
+.ctrl{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}.ctrl:empty{display:none}
+#dock{margin-top:16px}.mixrow{display:flex;justify-content:center;align-items:center;gap:12px}
+.pbtn.sq.rx{width:52px;height:52px;font-size:24px;touch-action:manipulation}.rx,.emo,#rxlayer{-webkit-user-select:none;user-select:none}.emo{pointer-events:none;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+#rxlayer{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+.rxe{position:fixed;width:30px;height:30px;margin:-15px 0 0 -15px;font-size:26px;line-height:30px;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;pointer-events:none}
+.volbar{display:flex;align-items:center;gap:12px;width:100%;height:46px;border-radius:999px;padding:0 20px;margin-top:14px;background:var(--grad);color:var(--ink)}.dark .volbar{color:var(--dark-ink)}
+.volbar svg{width:20px;height:20px;flex:0 0 20px}
+#vol{-webkit-appearance:none;appearance:none;flex:1;min-width:0;width:auto;height:26px;margin:0;padding:0;background:transparent;border-radius:0;color:inherit;cursor:pointer}
+#vol::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,currentColor var(--p,50%),var(--track) var(--p,50%))}
+#vol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:currentColor}
+#vol::-moz-range-track{height:4px;background:var(--track)}#vol::-moz-range-progress{height:4px;background:currentColor}#vol::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
+.qv{font-size:var(--b);font-weight:500}.qv b{font-size:var(--c)}
+.timer{font-size:clamp(44px,11vw,68px);line-height:1;font-weight:600;margin:8px 0 2px;font-variant-numeric:tabular-nums}.timer.w{color:var(--err)}
+.tcard{margin-top:10px;border-radius:22px;padding:12px 18px;color:#F5F7FA;box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.tcard.blue{background:linear-gradient(135deg,#4E73D7,#1E4DC7 55%,#2C62D7)}.tcard.pink{background:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)}.tcard.wait{background:var(--grad);color:var(--ink)}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:10px}.thead.tg{cursor:pointer}
+.tt{display:flex;align-items:center;gap:8px;font-weight:700;font-size:clamp(15px,4.2vw,19px);word-break:break-word;flex:1}
+.tt .sc{margin-left:auto;font-weight:800;font-size:28px;line-height:1}
+.hand{border:0;border-radius:50%;width:32px;height:32px;font-size:17px;cursor:pointer;background:#fff}
+.chev{flex:none;transition:transform .35s}.tcard.open .chev{transform:rotate(180deg)}
+.tbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s}.tcard.open .tbody{grid-template-rows:1fr}.tin{overflow:hidden;min-height:0}
+.tpad{margin-top:10px;border-top:2px solid rgba(255,255,255,.3);padding-top:8px;font-size:var(--b);font-weight:500}.mem{margin-top:6px}
+.x{opacity:.45}
+#evbox{border-radius:22px;padding:14px 18px}#ev{font-weight:700;font-size:var(--c);line-height:1.4;word-break:break-word}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:var(--b);font-weight:500}.row .nm{flex:1;word-break:break-word}.row .bt{display:flex;gap:6px}
+#roster .hd{font-weight:700;font-size:var(--c)}
+.big-buzz{display:flex;align-items:center;justify-content:center;width:100%;min-height:clamp(110px,18vh,150px);border-radius:30px;margin-top:14px;font-weight:800;border:0;padding:8px;cursor:pointer;font-size:clamp(30px,10vw,52px)}
+.big-buzz:active{transform:scale(.97)}.big-buzz.blue{background:var(--blue-grad);color:#F5F7FA}.big-buzz.pink{background:var(--pink-grad);color:#F5F7FA}
+.big-buzz.locked{background:rgba(157,195,255,.16);color:var(--ink);border:2px solid currentColor;opacity:.75;font-size:clamp(12px,3.6vw,17px);cursor:default}.dark .big-buzz.locked{color:var(--dark-ink);background:rgba(0,7,44,.1)}
+#nb{position:fixed;left:50%;top:70px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:150;background:var(--deep);color:var(--dark-light);border-radius:22px;padding:14px 22px;font-weight:700;font-size:var(--c);transition:opacity .3s,transform .3s;text-align:center}
+.dark #nb{background:var(--dark-light);color:var(--dark-bg)}#nb.show{opacity:1;transform:translate(-50%,0)}
+footer{width:100%;background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.dark footer{background:linear-gradient(164deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
+.footer-line{font-size:15px;font-weight:500}.footer-link:hover{opacity:.72}
+.copy-code{display:inline-flex;border:0;cursor:pointer;color:inherit;background:transparent;font-family:inherit}
+.host-room-code{margin-top:5px;font-size:clamp(32px,4vw,52px);line-height:1;font-weight:800;letter-spacing:5px}.captain-team-code{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:4px;margin-top:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(min-width:701px){.page{width:min(92vw,1100px)}#cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}#lobby{max-width:760px;margin:30px auto 0;padding:24px 30px}}
+@media(max-width:700px){:root{--t:17px;--b:9px;--c:11px}.page{width:calc(100vw - 44px)}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px}.theme-icon{width:21px;height:21px}
+.card{border-radius:22px;padding:18px 16px}.footer-line{font-size:13px}footer{min-height:96px}#cols{display:flex;flex-direction:column}#colL,#colR{display:contents}#bzbox{order:1}#teams{order:2}#evbox{order:3}#hc{order:4}#roster{order:5}.tt .sc{font-size:22px}}
+@media(max-width:420px){:root{--t:15px;--b:8px;--c:10px}.page{width:calc(100vw - 36px)}.nav-link{font-size:11px}.nav-links{gap:22px}.top-nav{height:42px}.theme-toggle{width:32px;height:32px}.pbtn.sq,.pbtn.sq.rx{width:46px;height:46px}.mixrow{gap:8px}.footer-line{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="page">
+<nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+  <div class="nav-links rise"><a class="nav-link" href="index.html">Əsas Səhifə</a><a class="nav-link" href="contact.html">Bizimlə Əlaqə</a></div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş">
+    <svg class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs>
+    <g><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g>
+    <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg>
+  </button>
+</nav>
+
+<section class="card frame" id="lobby" style="--i:1">
+  <div class="big center rise">"Breyn Rinq"<br>Səsli otaq</div>
+  <button class="pill rise" data-m="host">APARICI</button>
+  <button class="pill rise" data-m="cap">KAPİTAN</button>
+  <button class="pill rise" data-m="pl">OYUNÇU</button>
+  <div id="form" hidden>
+    <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden>
+    <input id="fTeam" placeholder="Komanda adı" hidden>
+    <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden>
+    <input id="fName" placeholder="Adın">
+    <button class="pbtn" id="go" style="margin-top:14px">Daxil ol</button>
+  </div>
+  <div class="info rise"><p>Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.</p><p>Kapitanlar öz komanda kodunu oyunçularına verməlidir.</p></div>
+</section>
+
+<div id="game" hidden>
+  <h1>"Breyn Rinq"<br>Səsli otaq</h1>
+  <section class="card center" id="head"></section>
+  <section class="card center" id="timerCard">
+    <div class="qv">Sual <b id="qn">1</b> &nbsp;•&nbsp; Dəyər <b>+<span id="qv">1</span></b></div>
+    <button class="mini" id="bRqv" data-a="rqv" hidden style="margin-top:6px">Dəyəri sıfırla</button>
+    <div class="timer" id="num">20</div>
+  </section>
+  <div id="cols">
+    <div id="colL">
+      <div id="teams"></div>
+      <section class="card center" id="evbox"><div id="ev"></div></section>
+      <div id="hc"></div>
+    </div>
+    <div id="colR">
+      <div id="bzbox"></div>
+      <section class="card" id="roster"></section>
+    </div>
+  </div>
+  <div id="dock">
+    <div class="mixrow">
+      <button class="pbtn sq rx" type="button" data-e="👍"><span class="emo">👍</span></button>
+      <button class="pbtn sq rx" type="button" data-e="👏"><span class="emo">👏</span></button>
+      <button class="pbtn sq" id="bMute" type="button" aria-label="Mikrofon"></button>
+      <button class="pbtn sq rx" type="button" data-e="❤️"><span class="emo">❤️</span></button>
+      <button class="pbtn sq rx" type="button" data-e="🦉"><span class="emo">🦉</span></button>
+    </div>
+    <div class="volbar">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="range" id="vol" min="0" max="100" value="50" aria-label="Ümumi otaq səsi">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="ctrl"><button class="pbtn s" id="bSound" hidden>Səsi aç</button></div>
+  </div>
+</div>
+</div>
+<div id="nb"></div>
+<div id="rxlayer" aria-hidden="true"></div>
+<footer>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+/* ===== YENİ FIREBASE LAYİHƏSİNİN AYARLARINI BURAYA YAZ ===== */
+const CFG={apiKey:"YENI_API_KEY",authDomain:"YENI-LAYIHE.firebaseapp.com",databaseURL:"https://YENI-LAYIHE-default-rtdb.firebaseio.com",projectId:"YENI-LAYIHE",appId:"YENI_APP_ID"};
+const TURN_URL='https://piksel-nhn.pikseliok.workers.dev/turn';
+firebase.initializeApp(CFG);const db=firebase.database();
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const rnd=n=>Array.from({length:n},()=>ALPHA[Math.random()*ALPHA.length|0]).join('');
+const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const opp=k=>k==='blue'?'pink':'blue';
+const VT=v=>v===2?'2 XALLIQ SUAL SƏSLƏNİR!':v>=3?'3 XALLIQ SUAL, TAPILMASA DİSKVALİFİKASİYA':'';
+
+/* TEMA */
+const rays=[...document.querySelectorAll('.ray')];
+function setTheme(d,anim){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}
+ if(anim)rays.forEach(r=>{r.getAnimations().forEach(a=>a.cancel());const a=r.animate(d?[{transform:'translateY(0)',opacity:1},{transform:'translateY(-14px)',opacity:0}]:[{transform:'translateY(11px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:d?520:620,delay:d?0:180,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});a.onfinish=()=>a.cancel()})}
+let sv=null;try{sv=localStorage.getItem('piksel-theme')}catch(e){}
+setTheme(sv?sv==='dark':!!(matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),false);
+$('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'),true);
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('ready')));
+document.addEventListener('pointermove',e=>{const c=e.target.closest('.card,.tcard');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+
+/* DƏYİŞƏNLƏR */
+let R,me,tk,mode='host',off=0,stream,muted=false,micAsk=false,curVol=.5,audioCtx=null,entered=false;
+let S={g:{},t:{},p:{},req:{},host:null},loaded={};
+let ICE=[{urls:'stun:stun.l.google.com:19302'}];
+const pcs={},auds={},open={};
+const now=()=>Date.now()+off;
+const ref=p=>db.ref('rooms/'+R+(p?'/'+p:''));
+db.ref('.info/serverTimeOffset').on('value',s=>off=s.val()||0);
+const isHost=()=>mode==='host';
+const role=()=>{if(isHost())return'host';const t=S.t[tk];return t&&t.cap===me?'cap':t&&t.bz===me?'bz':'pl'};
+const mem=k=>Object.entries(S.p).filter(([i,p])=>p.tk===k).map(([id,p])=>({id,...p}));
+const pen=id=>!!(S.g.pen&&S.g.pen[id]);
+const pname=id=>(S.p[id]&&S.p[id].name)||'';
+function ensureAudio(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}catch(e){}}
+document.addEventListener('pointerdown',ensureAudio,{passive:true});
+
+/* GİRİŞ */
+function setMode(m){mode=m;document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m&&m!=='host'));$('form').hidden=m==='host';$('fRoom').hidden=$('fTeam').hidden=m!=='cap';$('fCode').hidden=m!=='pl';$('go').textContent=m==='cap'?'Komandanı yarat':'Komandaya qoş'}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==='host')start()});
+$('go').onclick=()=>start();
+setMode('host');
+
+async function start(){
+ ensureAudio();me=db.ref().push().key;const pn=$('fName').value.trim();
+ try{
+  if(mode==='host'){
+   R=rnd(5);await ref().set({host:me,g:{st:'wait',q:1,v:1,ev:''}});ref().onDisconnect().remove();
+  }else if(mode==='cap'){
+   R=norm($('fRoom').value);const nm=$('fTeam').value.trim();
+   if(R.length<4||!nm||!pn)return alert('Otaq kodunu, komanda adını və adını yaz');
+   if(!(await ref('host').once('value')).val())return alert('Belə otaq yoxdur');
+   const ts=(await ref('t').once('value')).val()||{};
+   if(Object.values(ts).some(t=>t.name.toLowerCase()===nm.toLowerCase()))return alert('Bu komanda adı artıq istifadə olunub');
+   const k=['blue','pink'].find(c=>!ts[c]);if(!k)return alert('Bu otaqda artıq 2 komanda var');
+   const r=await ref('t/'+k).transaction(c=>c===null?{name:nm,score:0,cap:me,code:rnd(4)}:undefined);
+   if(!r.committed)return alert('Yer tutuldu, yenidən cəhd et');
+   tk=k;await ref('p/'+me).set({name:pn,tk});ref('p/'+me).onDisconnect().remove();
+  }else{
+   const raw=norm($('fCode').value);if(raw.length<8||!pn)return alert('Komanda kodunu və adını yaz');
+   R=raw.slice(0,-4);const c=raw.slice(-4);
+   const ts=(await ref('t').once('value')).val()||{};const k=['blue','pink'].find(x=>ts[x]&&ts[x].code===c);
+   if(!k)return alert('Komanda tapılmadı');
+   const ps=(await ref('p').once('value')).val()||{};
+   if(Object.values(ps).filter(p=>p.tk===k).length>=6)return alert('Komandada 6 nəfər var (maksimum)');
+   tk=k;await ref('p/'+me).set({name:pn,tk});ref('p/'+me).onDisconnect().remove();
+  }
+ }catch(e){return alert('Xəta: '+e.message)}
+ try{const j=await (await fetch(TURN_URL)).json();if(j.iceServers&&j.iceServers.length)ICE=j.iceServers}catch(e){}
+ ['g','t','p','req','host'].forEach(k=>ref(k).on('value',s=>{
+   const v=s.val();
+   if(k==='host'){if(loaded.host&&!v&&!isHost()){alert('Aparıcı otaqdan çıxdı');location.reload()}S.host=v}else S[k]=v||{};
+   loaded[k]=1;if(['g','t','p','host'].every(x=>loaded[x]))render();
+ }));
+ const sg=ref('sig/'+me);sg.onDisconnect().remove();
+ sg.on('child_added',s=>{const v=s.val();s.ref.remove();if(v)sig(v.f,JSON.parse(v.d))});
+ rxStart();
+}
+
+/* WEBRTC (siqnal Firebase üzərindən) */
+const sendSig=(to,d)=>ref('sig/'+to).push({f:me,d:JSON.stringify(d)});
+const same=id=>S.p[id]&&S.p[id].tk===tk;
+const want=id=>isHost()||id===S.host||same(id)||id===S.g.ac||me===S.g.ac;
+const hear=id=>isHost()?id===S.g.ac:(id===S.host||id===S.g.ac||same(id));
+const applyMute=()=>{for(const id in auds)auds[id].muted=!hear(id)};
+function applyMic(){if(!stream)return;const on=!muted&&!pen(me);stream.getAudioTracks().forEach(t=>t.enabled=on);$('bMute').innerHTML=micIco(!on);$('bMute').disabled=pen(me)}
+function mk(id){
+ const pc=new RTCPeerConnection({iceServers:ICE});pc._q=[];
+ stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+ pc.onicecandidate=e=>e.candidate&&sendSig(id,{ice:e.candidate.toJSON()});
+ pc.ontrack=e=>{let a=auds[id];if(!a){a=auds[id]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}a.srcObject=e.streams[0];a.volume=curVol;a.play().catch(()=>{$('bSound').hidden=false});applyMute()};
+ pcs[id]=pc;return pc}
+function drop(id){if(pcs[id]){pcs[id].close();delete pcs[id]}if(auds[id]){auds[id].srcObject=null;auds[id].remove();delete auds[id]}}
+$('bSound').onclick=()=>{for(const id in auds)auds[id].play().catch(()=>{});$('bSound').hidden=true};
+async function reconcile(){
+ if(!stream)return;
+ const ids=[...Object.keys(S.p),S.host].filter(i=>i&&i!==me);
+ Object.keys(pcs).forEach(id=>{if(!ids.includes(id))drop(id)});
+ for(const id of ids){const has=!!pcs[id],w=want(id);
+  if(!w&&has)drop(id);
+  else if(w&&!has&&me<id){const pc=mk(id);await pc.setLocalDescription(await pc.createOffer());sendSig(id,{sdp:pc.localDescription.toJSON()})}}
+ applyMute();applyMic()}
+let pending=[];
+function sig(from,d){if(!stream)pending.push([from,d]);else onSignal(from,d)}
+async function onSignal(from,d){
+ const pc=pcs[from]||mk(from);
+ try{
+  if(d.sdp){await pc.setRemoteDescription(d.sdp);for(const c of pc._q.splice(0))await pc.addIceCandidate(c);
+   if(d.sdp.type==='offer'){await pc.setLocalDescription(await pc.createAnswer());sendSig(from,{sdp:pc.localDescription.toJSON()})}}
+  else if(d.ice){if(pc.remoteDescription)await pc.addIceCandidate(d.ice);else pc._q.push(d.ice)}
+ }catch(e){}}
+async function getMic(){
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
+ await reconcile();pending.splice(0).forEach(([f,d])=>onSignal(f,d))}
+
+/* REAKSİYALAR */
+let rxLast=0;
+function rxStart(){ref('rx').orderByKey().startAt(db.ref().push().key).on('child_added',s=>{const v=s.val();if(v&&v.f!==me)spawn(v.e)})}
+document.querySelectorAll('.rx').forEach(b=>{b.addEventListener('contextmenu',e=>e.preventDefault());
+ b.addEventListener('pointerdown',e=>{e.preventDefault();fire(b.dataset.e)})});
+function spawn(e){
+ const b=[...document.querySelectorAll('.rx')].find(x=>x.dataset.e===e);if(!b||$('game').hidden)return;
+ const r=b.getBoundingClientRect(),n=document.createElement('span');n.className='rxe';n.textContent=e;
+ n.style.left=(r.left+r.width/2+(Math.random()-.5)*18)+'px';n.style.top=(r.top+r.height/2)+'px';$('rxlayer').appendChild(n);
+ const dx=(Math.random()-.5)*50;
+ const a=n.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,-120px) scale(.45)`,opacity:0}],{duration:600,easing:'cubic-bezier(.12,.75,.3,1)',fill:'forwards'});a.onfinish=()=>n.remove()}
+function fire(e){if(!R)return;spawn(e);const t=Date.now();if(t-rxLast<120)return;rxLast=t;const r=ref('rx').push({e,f:me});setTimeout(()=>r.remove(),4000)}
+
+/* SƏS */
+$('vol').addEventListener('input',e=>{curVol=e.target.value/100;$('vol').style.setProperty('--p',e.target.value+'%');for(const id in auds)auds[id].volume=curVol});
+$('vol').style.setProperty('--p','50%');
+function beep(ms,f){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain(),n=audioCtx.currentTime,d=ms/1000,pk=.22*Math.min(1,curVol*2);
+ o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(pk,n+.015);g.gain.setValueAtTime(pk,n+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(0,n+d);o.connect(g).connect(audioCtx.destination);o.start(n);o.stop(n+d+.03)}
+const micIco=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
+$('bMute').innerHTML=micIco(false);
+$('bMute').onclick=()=>{if(!stream||pen(me))return;muted=!muted;applyMic()};
+
+/* TAYMER */
+let lastLeft=-1,prevSt='',expiring=false;
+setInterval(()=>{
+ if(!loaded.g)return;const g=S.g;let left=20;
+ if(g.st==='run'&&g.end)left=Math.max(0,Math.ceil((g.end-now())/1000));
+ else if(g.st==='ans')left=g.rem||0;else if(g.st==='exp'||g.st==='fin')left=0;
+ $('num').textContent=left;$('num').classList.toggle('w',g.st==='run'&&left<=10);
+ if(g.st==='run'&&left!==lastLeft){lastLeft=left;if(left===10)beep(700,1000);if(left>=1&&left<=3)beep(180,1300)}
+ if(prevSt==='run'&&g.st==='exp')beep(2000,700);prevSt=g.st;
+ if(isHost()&&g.st==='run'&&g.end&&now()>=g.end&&!expiring){expiring=true;ref('g').update({st:'exp',end:null,ac:null,ev:'VAXT ÇIXDI'}).finally(()=>setTimeout(()=>expiring=false,500))}
+ if(g.st==='run')renderBuzz();
+},250);
+
+/* OYUN MƏNTİQİ (aparıcı) */
+function penReset(u){u['g/pen']=null;['blue','pink'].forEach(k=>{const t=S.t[k];if(t&&t.bz0)u['t/'+k+'/bz']=t.bz0})}
+function nextQ(u,v,ev){Object.assign(u,{'g/st':'wait','g/q':(S.g.q||1)+1,'g/v':v,'g/lock':null,'g/bt':null,'g/ac':null,'g/tlk':null,'g/spk':null,'g/first':null,'g/end':null,'g/rem':null,'g/t0':null,'g/ev':ev})}
+function hStart(){const g=S.g;if(g.st!=='wait'||!S.t.blue||!S.t.pink||(g.lock&&g.lock.blue&&g.lock.pink))return;ensureAudio();beep(700,1000);
+ const t=now();ref().update({'g/st':'run','g/t0':t,'g/end':t+20000,'g/ac':null,'g/tlk':null,'g/ev':'VAXT!!'})}
+function hReset(){if(S.g.st==='wait')ref().update({'g/lock':null,'g/ev':VT(S.g.v||1)})}
+function hPts(p){const g=S.g;if(g.st!=='ans')return;const k=g.bt,t=S.t[k],sc=(t.score||0)+p,u={['t/'+k+'/score']:sc};
+ if(sc>=5){Object.assign(u,{'g/st':'fin','g/ac':null,'g/bt':null,'g/spk':null,'g/lock':null,'g/ev':'🏆 '+t.name+' QALİB OLDU!'});penReset(u)}
+ else nextQ(u,1,t.name+' KOMANDASI +'+p+' XAL QAZANDI');ref().update(u)}
+function hUnres(msg){const g=S.g,v=g.v||1,d=v>=3,u={};
+ nextQ(u,d?1:v+1,(msg?msg+' · ':'')+(d?'DİSKVALİFİKASİYA! XALLAR SIFIRLANDI':VT(v+1)));
+ if(d){['blue','pink'].forEach(k=>{if(S.t[k])u['t/'+k+'/score']=0});penReset(u)}ref().update(u)}
+function hWrong(){const g=S.g;if(g.st!=='ans')return;const k=g.bt,o=opp(k),a=g.ac,nm=pname(a)||('KAPİTAN '+pname(S.t[k].cap));
+ if(g.lock&&g.lock[o])return hUnres(nm+' SƏHV CAVAB VERİR, DOĞRU CAVAB YOXDUR');
+ const t=now(),u={'g/st':'run','g/end':t+(g.rem||20)*1000,'g/t0':null,'g/ac':null,'g/bt':null,'g/first':null,'g/lock/'+k:true};
+ const cap=S.t[k].cap===a;
+ if(g.first&&!cap){u['g/pen/'+a]=true;u['g/ev']=nm.toUpperCase()+' CƏRİMƏLƏNDİ! QALAN VAXT '+S.t[o].name+' KOMANDASININ'}
+ else u['g/ev']=nm.toUpperCase()+' SƏHV CAVAB VERDİ. QALAN VAXT '+S.t[o].name+' KOMANDASININ';
+ beep(700,1000);ref().update(u)}
+function hNew(){const u={'t/blue/score':0,'t/pink/score':0,'g/q':0};nextQ(u,1,'');penReset(u);ref().update(u)}
+function hForgive(id){const u={['g/pen/'+id]:null};['blue','pink'].forEach(k=>{if(S.t[k]&&S.t[k].bz0===id)u['t/'+k+'/bz']=id});ref().update(u)}
+function hGrant(k){const g=S.g,t=S.t[k];if(g.st!=='wait'||g.ac||!t)return;ref().update({'g/ac':t.cap,'g/tlk':k,'g/ev':t.name+' KOMANDASININ KAPİTANI '+pname(t.cap).toUpperCase()+' APARICİ İLƏ DANIŞIR','req/'+k:null})}
+const hEndTalk=()=>ref().update({'g/ac':null,'g/tlk':null,'g/ev':VT(S.g.v||1)});
+
+/* BASMA (oyunçu) */
+let bbusy=false;
+async function buzz(){
+ if(bbusy||role()!=='bz'||!tk)return;bbusy=true;const T=S.t[tk],my=pname(me);
+ try{await ref('g').transaction(g=>{
+   if(!g)return;const t=now();g.lock=g.lock||{};g.pen=g.pen||{};if(g.pen[me])return;
+   if(g.st==='wait'){if(g.lock[tk])return;g.lock[tk]=true;g.pen[me]=true;g.ev=T.name+' KOMANDASI FALSTART ETDİ! DÜYMƏSİXAN '+my.toUpperCase()+' CƏRİMƏLƏNDİ!'}
+   else if(g.st==='run'){if(g.lock[tk]||!g.end||t>=g.end)return;g.first=!!g.t0&&(t-g.t0)<=1000;g.rem=Math.ceil((g.end-t)/1000);g.st='ans';g.bt=tk;g.ac=T.cap;g.end=null;
+     g.ev=(g.first?'İLK SANİYƏ! ':'')+T.name+' KOMANDASI DÜYMƏNİ SIXDI. '+T.name+' KOMANDASININ KAPİTANI '+pname(T.cap).toUpperCase()+' DANIŞIR'}
+   else return;return g})}catch(e){}
+ setTimeout(()=>bbusy=false,200)}
+
+/* KAPİTAN */
+function cMic(id){const g=S.g,t=S.t[tk];if(g.st!=='ans'||g.bt!==tk||g.ac!==me||(g.spk&&g.spk[tk])||pen(id))return;ref().update({'g/ac':id,['g/spk/'+tk]:id,'g/ev':pname(id).toUpperCase()+' CAVAB VERİR'})}
+function cBz(id){const g=S.g,t=S.t[tk];if(g.st!=='wait'||g.ac||pen(id)||id===t.cap)return;const u={['t/'+tk+'/bz']:id};
+ if(!(t.bz&&pen(t.bz)))u['t/'+tk+'/bz0']=id;
+ else u['g/ev']=t.name+' KOMANDASINDA YENİ DÜYMƏSİXAN: '+pname(id).toUpperCase()+'. FALSTART ETDİYİ ÜÇÜN '+t.name+' KOMANDASI BU SUALA CAVAB VERMƏK HÜQUQUNU İTİRİR';
+ ref().update(u)}
+const cReq=()=>ref('req/'+tk).set(true);
+
+/* "YENİ DÜYMƏSİXAN SEÇ" bildirişi */
+let nbKey='',nbT=0,nbA,nbB;
+function hideNb(){clearTimeout(nbA);clearTimeout(nbB);$('nb').classList.remove('show')}
+function checkNb(){
+ const t=S.t[tk],k=(role()==='cap'&&t&&t.bz&&pen(t.bz)&&S.g.st==='wait')?t.bz:'';
+ if(k&&k!==nbKey){nbKey=k;nbT=Date.now();$('nb').textContent='YENİ DÜYMƏSİXAN SEÇ';$('nb').classList.add('show');nbA=setTimeout(hideNb,3000)}
+ if(!k)nbKey=''}
+document.addEventListener('pointerdown',()=>{if($('nb').classList.contains('show')&&Date.now()-nbT>=1000)hideNb()});
+
+/* EKRAN */
+function render(){
+ const g=S.g,h=isHost(),r=role(),t=S.t,mt=t[tk],st=g.st;
+ $('lobby').hidden=true;$('game').hidden=false;
+ $('head').innerHTML=h?`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(R)}" type="button">${esc(R)}</button><div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün kodun üzərinə toxun</div>`
+  :r==='cap'&&mt?`<div class="big">${esc(mt.name)} komandası</div><div class="sm">Komanda kodu</div><button class="copy-code captain-team-code" data-copy="${esc(R+mt.code)}" type="button">${esc(R+mt.code)}</button><div class="sm">Kodu komanda yoldaşlarına ver - Kopyalamaq üçün toxun</div>`
+  :`<div class="big">${esc(mt?mt.name:'')} komandası</div><div class="sm">Otaq kodu: <span class="code">${esc(R)}</span></div>`;
+ $('qn').textContent=g.q||1;$('qv').textContent=g.v||1;$('bRqv').hidden=!h;$('bRqv').disabled=st!=='wait';
+
+ const chev=`<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges"><path d="M0 0h2v1H0zM6 0h2v1H6z"/><path d="M1 1h2v1H1zM5 1h2v1H5z"/><path d="M2 2h4v1H2z"/><path d="M3 3h2v1H3z"/></svg>`;
+ $('teams').innerHTML=['blue','pink'].map(k=>{const x=t[k];if(!x)return`<div class="tcard wait"><div class="thead"><div class="tt"><span>Gözləyir...</span></div></div></div>`;
+  const exp=h||k!==tk;
+  const ms=mem(k).sort((a,b)=>(x.cap===b.id)-(x.cap===a.id)||pen(a.id)-pen(b.id));
+  return`<div class="tcard ${k}${exp&&open[k]?' open':''}"><div class="thead${exp?' tg':''}" ${exp?`data-tg="${k}"`:''}><div class="tt">${h&&S.req[k]&&st==='wait'?`<button class="hand" data-a="grant" data-k="${k}">✋</button>`:''}<span>"${esc(x.name)}" komandası</span><span class="sc">${x.score||0}</span></div>${exp?chev:''}</div>
+  ${exp?`<div class="tbody"><div class="tin"><div class="tpad">${ms.map(m=>`<div class="mem">${nameH(m,k)}${m.id===g.ac?' 🎙':''}</div>`).join('')}</div></div></div>`:''}</div>`}).join('');
+
+ let ev=g.ev;if(!ev)ev=st==='wait'?VT(g.v||1)||'Aparıcı sualı oxuyur.':'';
+ if(st==='wait'&&(!t.blue||!t.pink))ev='İki komandanın qoşulması gözlənilir...';
+ $('ev').textContent=ev;
+
+ /* oz komanda heyyeti */
+ $('roster').hidden=h||!mt;
+ if(!h&&mt){const ms=mem(tk).sort((a,b)=>(mt.cap===b.id)-(mt.cap===a.id)||pen(a.id)-pen(b.id));
+  $('roster').innerHTML=`<div class="hd">${esc(mt.name)} komandası</div>`+ms.map(m=>{const c=r==='cap'&&m.id!==mt.cap;
+   const canMic=c&&st==='ans'&&g.bt===tk&&g.ac===me&&!(g.spk&&g.spk[tk])&&!pen(m.id);
+   const canBz=c&&st==='wait'&&!g.ac&&!pen(m.id);
+   return`<div class="row"><span class="nm">${nameH(m,tk)}${m.id===g.ac?' 🎙':''}</span>${c?`<span class="bt"><button class="mini ico" data-a="mic" data-id="${m.id}" ${canMic?'':'disabled'}>🎙</button><button class="mini ico" data-a="bz" data-id="${m.id}" ${canBz?'':'disabled'}>🔔</button></span>`:''}</div>`}).join('')
+   +(r==='cap'?`<button class="pbtn s" data-a="req" ${st==='wait'&&!g.ac&&!S.req[tk]?'':'disabled'}>${S.req[tk]?'İstək göndərildi, gözləyin':'Aparıcı ilə danışmaq istəyirəm'}</button>`:'')}
+ renderBuzz();
+ if(h)renderHost();else $('hc').innerHTML='';
+ if(!micAsk){micAsk=true;getMic()}else{reconcile()}
+ applyMute();applyMic();checkNb();
+ if(!entered){entered=true;[...$('game').children].forEach((e,i)=>{e.classList.add('frame');e.style.setProperty('--i',Math.min(i+1,9))})}
+}
+function nameH(m,k){const x=S.t[k];let n=esc(m.name);if(x.cap===m.id)return`<b>${n} (K)</b>`;if(x.bz===m.id)n+=' (D)';return pen(m.id)?`<span class="x">${n} (X)</span>`:n}
+function renderBuzz(){
+ const b=$('bzbox');if(role()!=='bz'){b.innerHTML='';return}
+ const g=S.g;let lab='BAS!',cls=tk,dis=false;const left=g.st==='run'&&g.end?Math.ceil((g.end-now())/1000):1;
+ if(pen(me)){lab='CƏRİMƏLƏNDİNİZ';dis=true}
+ else if(g.st==='wait'){if(g.lock&&g.lock[tk]){lab='CAVAB HÜQUQU YOXDUR';dis=true}}
+ else if(g.st==='run'){if(g.lock&&g.lock[tk]){lab='CAVAB HÜQUQU YOXDUR';dis=true}else if(left<=0){lab='VAXT BİTDİ';dis=true}}
+ else if(g.st==='ans'){lab=g.bt===tk?'SİZ BASDINIZ':'RƏQİB BASDI';dis=true}
+ else{lab=g.st==='fin'?'OYUN BİTDİ':'VAXT BİTDİ';dis=true}
+ const html=`<button class="big-buzz ${dis?'locked':cls}" data-a="buzz" ${dis?'disabled':''}>${lab}</button>`;
+ if(b.dataset.h!==html){b.dataset.h=html;b.innerHTML=html}}
+function renderHost(){
+ const g=S.g,st=g.st,ready=S.t.blue&&S.t.pink,both=g.lock&&g.lock.blue&&g.lock.pink;
+ const pens=Object.keys(g.pen||{}).filter(id=>S.p[id]);
+ let h='';
+ if(st==='wait')h+=`<button class="pbtn" data-a="start" ${ready&&!both?'':'disabled'}>VAXT! - 20 SANİYƏ</button><button class="pbtn" data-a="reset">DÜYMƏLƏRİ SIFIRLA</button>`;
+ if(g.ac&&g.tlk)h+=`<button class="pbtn" data-a="endtalk">${esc(pname(g.ac))} ilə danışığı bitir</button>`;
+ if(st==='ans'){const k=g.bt,nm=pname(g.ac);h+=`<div class="sm center" style="margin-top:12px">${esc(nm)} cavab verir</div><div class="pgrid"><button class="pbtn" data-a="pts" data-p="1">+1</button><button class="pbtn" data-a="pts" data-p="2">+2</button><button class="pbtn" data-a="pts" data-p="3">+3</button></div><button class="pbtn" data-a="wrong">QALAN VAXT RƏQİB KOMANDANIN</button><button class="pbtn" data-a="unres">DOĞRU CAVAB YOXDUR</button>`}
+ if(st==='exp')h+=`<button class="pbtn" data-a="unres">DOĞRU CAVAB YOXDUR</button>`;
+ if(st==='fin')h+=`<button class="pbtn" data-a="new">YENİ OYUN</button>`;
+ if(pens.length)h+=`<div class="card" style="padding:14px 18px"><div class="sm" style="margin:0;font-weight:700">Cərimələnənlər</div>${pens.map(id=>`<div class="row"><span class="nm">${esc(pname(id))} <span class="x">(${esc((S.t[S.p[id].tk]||{}).name||'')})</span></span><button class="mini" data-a="forgive" data-id="${id}">Bağışla</button></div>`).join('')}</div>`;
+ $('hc').innerHTML=h;
+ if(st==='wait'&&both&&!window._sk){window._sk=1;setTimeout(()=>{window._sk=0;if(S.g.st==='wait'&&S.g.lock&&S.g.lock.blue&&S.g.lock.pink)hUnres('Hər iki komanda FALSTART etdi')},900)}}
+
+/* DÜYMƏLƏR */
+document.addEventListener('click',async e=>{
+ const c=e.target.closest('[data-copy]');
+ if(c){try{await navigator.clipboard.writeText(c.dataset.copy);const o=c.textContent;c.textContent='KOPYALANDI ✓';setTimeout(()=>c.textContent=o,900)}catch(x){}return}
+ const tg=e.target.closest('[data-tg]');if(tg&&!e.target.closest('[data-a]')){const k=tg.dataset.tg;open[k]=!open[k];tg.parentElement.classList.toggle('open',open[k]);return}
+ const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const a=b.dataset.a,d=b.dataset;
+ ({start:hStart,reset:hReset,pts:()=>hPts(+d.p),wrong:hWrong,unres:()=>hUnres(''),new:hNew,forgive:()=>hForgive(d.id),grant:()=>hGrant(d.k),endtalk:hEndTalk,rqv:()=>S.g.st==='wait'&&ref().update({'g/v':1,'g/q':1,'g/ev':''}),mic:()=>cMic(d.id),bz:()=>cBz(d.id),req:cReq,buzz:buzz})[a]();
+});
+</script>
+</body>
+</html>
+ 
