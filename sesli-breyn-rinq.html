@@ -524,6 +524,14 @@ db.ref('.info/serverTimeOffset').on('value',s=>{off=s.val()||0});
 const now=()=>Date.now()+off,rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
 const T=()=>R.teams||{},P=()=>R.players||{},opn={},isH=()=>role==='host';
 const isPen=i=>!!(P()[i]&&P()[i].pen);
+const skip={},sk=n=>Date.now()<(skip[n]||0);
+function tl(){
+  if(!R)return 20;
+  if(R.status==='running')return Math.max(0,Math.ceil((R.timerEnd-now())/1000));
+  if(R.status==='answered')return R.pausedRem||0;
+  if(R.status==='expired'||R.status==='finished')return 0;
+  return 20;
+}
 
 function members(tid){
   return Object.entries(P()).filter(([,v])=>v.team===tid).map(([id,v])=>({id,...v}))
@@ -546,7 +554,7 @@ function render(){
       :`<div class="sm">Oyunçu · Komanda kodu: <span class="code">${esc(room+mt)}</span></div>`}`;
 
   $('tcard').hidden=st==='lobby';
-  $('tcard').innerHTML=`<div class="sm">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">20</div>`+(h&&st==='wait'?'<button class="mini" data-act="resv">Dəyəri sıfırla</button>':'');
+  $('tcard').innerHTML=`<div class="sm">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">${tl()}</div>`+(h&&st==='wait'?'<button class="mini" data-act="resv">Dəyəri sıfırla</button>':'');
 
   const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
   $('bStart').hidden=!(h&&st==='lobby');$('bStart').disabled=!ready;
@@ -598,11 +606,7 @@ $('teams').insertAdjacentHTML('beforebegin','<div id="ctl" class="row"></div>');
 setInterval(()=>{
   if(!R)return;
   const el=$('tm');
-  let l=20;
-  if(R.status==='running')l=Math.max(0,Math.ceil((R.timerEnd-now())/1000));
-  else if(R.status==='answered')l=R.pausedRem||0;
-  else if(R.status==='expired'||R.status==='finished')l=0;
-  if(el)el.textContent=l;
+  if(el)el.textContent=tl();
   if(isH()&&R.status==='running'&&R.timerEnd<=now()&&!xp){
     xp=1;
     rf().transaction(r=>{
@@ -617,6 +621,8 @@ function buzz(){
   const me=P()[pid];
   if(!me||me.cap)return;
   const tid=me.team;
+  if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
+  else if(R.status==='wait'){SND.fail();skip.fail=Date.now()+2500}
   rf().transaction(r=>{
     if(!r)return;
     const p=(r.players||{})[pid];
@@ -625,7 +631,7 @@ function buzz(){
     if(fs[tid]||wr[tid])return;
     const t=Date.now()+off;
     if(r.status==='wait'){
-      fs[tid]=true;r.fs=fs;p.pen=true;
+      fs[tid]=true;r.fs=fs;p.pen=true;{const f2=r.fst||{};f2[tid]=t;r.fst=f2}
       r.ev=r.teams[tid].name+' FALSTART ETDİ! '+p.name+' CƏRİMƏLƏNDİ!';
       const o=Object.keys(r.teams).find(x=>x!==tid);
       if(o&&(fs[o]||(r.wrong||{})[o])){r.status='expired';r.ev='Hər iki komanda cavab hüququnu itirdi'}
@@ -653,13 +659,36 @@ function pickSpeaker(id){
 
 /* APARICI HƏRƏKƏTLƏRİ */
 function nextQ(x){
-  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,ev:null,talk:null,q:(R.q||1)+1};
+  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,ev:null,talk:null,q:(R.q||1)+1};
   Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
   Object.keys(T()).forEach(t=>{u['teams/'+t+'/req']=null});
   return Object.assign(u,x);
 }
 const A={
-  vaxt(){if(R.status!=='wait')return;rf().update({status:'running',startedAt:now(),timerEnd:now()+20000,ev:'VAXT!',winner:null,speaker:null,talk:null,first:null})},
+  vaxt(){
+    if(R.status!=='wait')return;
+    const tc=now();
+    rf().transaction(r=>{
+      if(!r||r.status!=='wait')return;
+      const fs=r.fs||{},fst=r.fst||{},tm=r.teams||{};
+      let w=null;
+      Object.keys(fs).forEach(t=>{if(fst[t]>=tc-100&&(!w||fst[t]<fst[w]))w=t});
+      r.talk=null;r.speaker=null;r.winner=null;
+      if(w){
+        const pr=tm[w]&&tm[w].presser;
+        if(pr&&r.players&&r.players[pr])r.players[pr].pen=null;
+        delete fs[w];r.fs=Object.keys(fs).length?fs:null;
+        r.startedAt=tc;r.first=(fst[w]-tc)<=1000;
+        r.status='answered';r.winner=w;r.buzzAt=fst[w];
+        r.pausedRem=Math.max(1,Math.ceil((tc+20000-fst[w])/1000));r.timerEnd=null;
+        r.ev=(r.first?'İLK SANİYƏ! ':'')+tm[w].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
+      }else{
+        r.status='running';r.startedAt=tc;r.timerEnd=tc+20000;r.ev='VAXT!';r.first=null;
+      }
+      return r;
+    });
+    SND.beep();skip.beep=Date.now()+2500;
+  },
   p1(){A.pts(1)},p2(){A.pts(2)},p3(){A.pts(3)},
   pts(n){
     const w=R.winner;
@@ -717,7 +746,12 @@ document.addEventListener('click',e=>{
   }
   if(d.pick&&role==='captain'&&(R.status==='lobby'||R.status==='wait')&&!isPen(d.pick))rf('teams/'+me.team+'/presser').set(d.pick);
   if(d.spk&&role==='captain')pickSpeaker(d.spk);
-  if(d.rest&&isH())rf('players/'+d.rest+'/pen').set(null);
+  if(d.rest&&isH()){
+    const t=(P()[d.rest]||{}).team,u={};
+    u['players/'+d.rest+'/pen']=null;
+    if(t&&(R.fs||{})[t]){u['fs/'+t]=null;u['fst/'+t]=null;u.ev=null;if(R.status==='expired'&&!R.startedAt)u.status='wait'}
+    rf().update(u);
+  }
 });
 document.addEventListener('pointerdown',e=>{
   const b=e.target.closest('[data-act="buzz"]');
@@ -725,8 +759,12 @@ document.addEventListener('pointerdown',e=>{
 });
 
 /* SƏS (WebRTC, siqnal Firebase ilə) */
-let ICE=[{urls:'stun:stun.l.google.com:19302'}];
-fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length)ICE=j.iceServers}).catch(()=>{});
+let ICE=[
+  {urls:'stun:stun.l.google.com:19302'},
+  {urls:'stun:openrelay.metered.ca:80'},
+  {urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turn:openrelay.metered.ca:443?transport=tcp','turns:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}
+];
+fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length)ICE=ICE.concat(j.iceServers)}).catch(()=>{});
 const pcs={},auds={},pend=[];
 
 function ah(i){const x=P()[i];return !!x&&x.team===R.winner&&((x.cap&&!R.speaker)||i===R.speaker)}
@@ -884,11 +922,11 @@ render=function(){
   _render();
   const k=R.status,sa=R.startedAt,fsn=Object.keys(R.fs||{}).length;
   if(last.init){
-    if(k==='running'&&sa!==last.sa)SND.beep();
-    if(k==='answered'&&last.k!=='answered')SND.buzz();
+    if(k==='running'&&sa!==last.sa&&!sk('beep'))SND.beep();
+    if(k==='answered'&&last.k!=='answered'&&!sk('buzz'))SND.buzz();
     if(k==='expired'&&last.k!=='expired')SND.up();
     if(k==='finished'&&last.k!=='finished')SND.win();
-    if(fsn>last.fs)SND.fail();
+    if(fsn>last.fs&&!sk('fail'))SND.fail();
   }
   last={init:1,k,sa,fs:fsn};
 
