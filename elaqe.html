@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
 <title>πksel.iok - Bizimlə Əlaqə</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,15 +24,16 @@
   --dark-bright:#6FA5FC;
   --transition:650ms cubic-bezier(.22,.8,.25,1);
 }
+body{--page:#9DC3FF;--c1:#001E6F;--c2:#002E92;--fg:#9DC3FF;--accent:#001E6F;--glow:rgba(0,8,45,.30);--grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%)}
+body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF;--glow:rgba(255,255,255,.40)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  min-height:100vh;background:var(--bg);color:var(--ink);
+  min-height:100vh;background:var(--page);color:var(--fg);
   font-family:"Poppins",sans-serif;overflow-x:hidden;
   transition:background .65s ease,color .65s ease;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
-body.dark{background:var(--dark-bg);color:var(--dark-ink)}
 button,a{font:inherit}
 a{color:inherit;text-decoration:none}
 
@@ -59,23 +62,19 @@ a{color:inherit;text-decoration:none}
 
 /* Navbar */
 .top-nav{
-  height:60px;width:100%;border-radius:40px;
+  height:50px;width:100%;border-radius:40px;
   padding:0 14px 0 26px;
   display:flex;align-items:center;justify-content:center;
   position:relative;
-  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
+  background:var(--grad);
   box-shadow:0 10px 28px rgba(0,20,100,.08);
   transition:background var(--transition),box-shadow var(--transition);
 }
-.dark .top-nav{
-  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:58px;height:100%}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
 .nav-link{
-  position:relative;color:var(--ink);font-size:20px;font-weight:500;
+  position:relative;color:var(--fg);font-size:15px;font-weight:500;
   white-space:nowrap;transition:transform .25s ease,opacity .25s ease;
 }
-.dark .nav-link{color:var(--dark-ink)}
 .nav-link:hover{transform:translateY(-1px)}
 .nav-link.active::after{
   content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
@@ -83,71 +82,66 @@ a{color:inherit;text-decoration:none}
 }
 .theme-toggle{
   position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
-  display:grid;place-items:center;color:var(--deep);
-  background:rgba(157,195,255,.98);
+  width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;
+  display:grid;place-items:center;color:var(--accent);
+  background:var(--page);
   transition:transform .3s ease,background var(--transition),color var(--transition);
 }
-.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
 .theme-icon{width:25px;height:25px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
 /* Başlıq */
 .page-title{
-  margin-top:18px;margin-bottom:14px;text-align:center;color:var(--deep);
+  margin-top:24px;margin-bottom:14px;text-align:center;color:var(--accent);
   font-size:35px;line-height:1.05;font-weight:700;letter-spacing:-1px;
   transition:color var(--transition);
 }
-.dark .page-title{color:var(--dark-light)}
 
 /* Kartlar */
 .contact-grid{
   margin-top:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;
 }
 .contact-card{
-  min-width:0;min-height:135px;border-radius:31px;padding:20px 25px;
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  position:relative;overflow:hidden;cursor:pointer;color:var(--ink);
-  background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);
+  min-width:0;min-height:135px;border-radius:28px;padding:22px 24px;
+  display:flex;align-items:center;justify-content:flex-start;text-align:left;
+  position:relative;overflow:hidden;cursor:pointer;color:var(--fg);
+  background:var(--grad);
   box-shadow:0 10px 25px rgba(0,20,110,.07);
   transition:transform .32s cubic-bezier(.18,.8,.22,1),box-shadow .32s ease,
              background var(--transition),color var(--transition);
 }
-.dark .contact-card{
-  color:var(--dark-ink);
-  background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);
-}
 .contact-card::before{
-  content:"";position:absolute;inset:-80% -35%;
-  background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.10) 50%,transparent 58%);
-  transform:translateX(-55%) rotate(8deg);opacity:0;
-  transition:transform .7s ease,opacity .35s ease;pointer-events:none;
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%);
 }
-.contact-card:hover{
-  transform:translateY(-5px) scale(1.018);
-  box-shadow:0 17px 35px rgba(0,20,110,.16);z-index:5;
-}
-.contact-card:hover::before{transform:translateX(55%) rotate(8deg);opacity:1}
-.contact-card:active{transform:scale(.985)}
+@media (hover:hover){.contact-card:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}.contact-card:hover::before{opacity:1}}
+.contact-grid > .contact-card:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 16px 34px rgba(0,20,110,.18);z-index:10}
+.contact-grid > .contact-card:active{transform:scale(.97)}
+.contact-card:active{transform:scale(.97);box-shadow:0 6px 14px rgba(0,20,110,.12)}
 .contact-card.full{grid-column:1 / -1}
 .contact-text{
-  position:relative;z-index:2;width:100%;
+  position:relative;z-index:2;flex:1;min-width:0;text-align:left;
   font-size:24px;line-height:1.28;font-weight:700;letter-spacing:-.7px;
 }
+.contact-icon{position:relative;z-index:1;width:clamp(30px,5vw,48px);height:clamp(30px,5vw,48px);flex:0 0 clamp(30px,5vw,48px);margin-right:clamp(8px,1.7vw,16px);color:inherit}
+.contact-icon svg{display:block;width:100%;height:100%}
 
 /* Footer */
 footer{
   width:100%;
-  background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);
-  color:var(--ink);min-height:170px;padding:27px 20px 24px;
+  background:var(--grad);
+  color:var(--fg);min-height:110px;padding:20px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:9px;text-align:center;
   transition:background var(--transition),color var(--transition);
-}
-.dark footer{
-  background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);
-  color:var(--dark-ink);
 }
 .footer-line{font-size:15px;line-height:1.45;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
@@ -167,37 +161,55 @@ footer{
 /* Telefon */
 @media (max-width:700px){
   .page{width:calc(100vw - 44px);padding-top:11px;padding-bottom:76px}
-  .top-nav{height:52px;padding-left:18px;padding-right:60px}
-  .nav-links{gap:34px}
-  .nav-link{font-size:15px}
-  .theme-toggle{width:39px;height:39px;right:8px}
-  .theme-icon{width:22px;height:22px}
-  .page-title{margin-top:16px;margin-bottom:13px;font-size:27px;letter-spacing:-.8px}
+  .top-nav{height:46px;padding-left:18px;padding-right:46px}
+  .nav-links{gap:28px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;right:6px}
+  .theme-icon{width:21px;height:21px}
+  .page-title{margin-top:20px;margin-bottom:13px;font-size:20px;letter-spacing:-.8px}
   .contact-grid{grid-template-columns:1fr 1fr;gap:12px}
-  .contact-card{min-height:135px;border-radius:24px;padding:18px 14px}
-  .contact-text{font-size:18px;line-height:1.27;letter-spacing:-.55px}
+  .contact-card{min-height:105px;border-radius:22px;padding:14px 16px}
+  .contact-icon{width:36px;height:36px;flex-basis:36px;margin-right:10px}
+  .contact-text{font-size:15px;line-height:1.3;letter-spacing:-.3px}
   .contact-card.full{grid-column:1 / -1}
-  footer{min-height:185px;padding-left:12px;padding-right:12px}
-  .footer-line{font-size:14px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}
+  .footer-line{font-size:13px}
 }
 
 /* Çox dar telefonlar */
 @media (max-width:420px){
   .page{width:calc(100vw - 36px)}
-  .nav-links{gap:25px}
-  .nav-link{font-size:13px}
-  .top-nav{height:48px}
-  .theme-toggle{width:36px;height:36px;right:6px}
+  .nav-links{gap:22px}
+  .nav-link{font-size:11px}
+  .top-nav{height:42px}
+  .theme-toggle{width:32px;height:32px;right:5px}
   .theme-icon{width:20px;height:20px}
-  .page-title{font-size:24px;margin-top:15px;margin-bottom:12px}
+  .page-title{font-size:17px;margin-top:20px;margin-bottom:12px}
   .contact-grid{gap:11px}
-  .contact-card{min-height:116px;border-radius:23px;padding:15px 10px}
-  .contact-text{font-size:15px;line-height:1.28;letter-spacing:-.45px}
+  .contact-card{min-height:94px;border-radius:21px;padding:12px 12px}
+  .contact-icon{width:30px;height:30px;flex-basis:30px;margin-right:8px}
+  .contact-text{font-size:12px;line-height:1.3;letter-spacing:-.2px}
 }
 @media (max-width:350px){
-  .contact-text{font-size:13.5px}
-  .contact-card{min-height:110px}
+  .contact-text{font-size:11px}
+  .contact-card{min-height:90px}
 }
+
+/* İdarə heyəti düyməsi və açılan adlar */
+.board-wrap{grid-column:1/-1;width:100%;margin:0}
+.board-toggle{width:100%;min-height:46px;padding:10px 18px;border:0;border-radius:24px;background:var(--grad);color:var(--fg);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;font-size:15px;font-weight:600;line-height:1.25;box-shadow:0 8px 20px rgba(0,20,100,.07);transition:transform .25s ease,filter .25s ease}
+.board-toggle:hover{transform:translateY(-2px) scale(1.025);filter:brightness(1.06)}
+.board-toggle:active{transform:scale(.97)}
+.board-panel{display:block;max-height:0;overflow:hidden;opacity:0;transform:translateY(-10px);transition:max-height .55s cubic-bezier(.18,.8,.24,1),opacity .35s ease,transform .4s ease}
+.board-panel:not([hidden]){max-height:260px;opacity:1;transform:translateY(0)}
+.board-panel[hidden]{display:block}
+.board-panel.closing{max-height:0;opacity:0;transform:translateY(-10px)}
+.board-members{min-height:0;overflow:hidden;list-style:none;margin-top:10px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px 12px}
+.board-members li{padding:10px 8px;border-radius:16px;background:var(--grad);color:var(--fg);font-size:13px;font-weight:500;text-align:center;box-shadow:0 6px 16px rgba(0,20,100,.06);animation:memberRise .45s cubic-bezier(.18,.8,.24,1) both}
+.board-members li:nth-child(2){animation-delay:.04s}.board-members li:nth-child(3){animation-delay:.08s}.board-members li:nth-child(4){animation-delay:.12s}.board-members li:nth-child(5){animation-delay:.16s}.board-members li:nth-child(6){animation-delay:.20s}.board-members li:nth-child(7){animation-delay:.24s}
+@keyframes memberRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.board-toggle{min-height:42px;padding:9px 12px;font-size:13px}.board-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.board-members li{font-size:12px;padding:9px 5px}}
+@media(max-width:350px){.board-toggle{font-size:11px;gap:6px}.board-members li{font-size:11px}}
 </style>
 </head>
 
@@ -212,7 +224,7 @@ footer{
 
     <button class="theme-toggle" id="themeToggle" type="button"
             aria-label="Gecə rejiminə keç">
-      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"></svg>
+      <svg id="themeIcon" class="theme-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg>
     </button>
   </nav>
 
@@ -224,7 +236,7 @@ footer{
       <a class="contact-card reveal r3"
          href="https://www.instagram.com/piksel.iok/?action=follow"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="40" height="40" rx="12" fill="currentColor"/><rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="var(--c1)" stroke-width="3.5"/><circle cx="24" cy="24" r="6" fill="none" stroke="var(--c1)" stroke-width="3.5"/><circle cx="33" cy="15" r="2.2" fill="var(--c1)"/></svg></span><div class="contact-text">
           "Instagram" səhifəmizi<br>
           izləmək üçün<br>
           klikləyin
@@ -234,7 +246,7 @@ footer{
       <a class="contact-card reveal r4"
          href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 3.5A20 20 0 0 0 6.9 33.9L4 44l10.4-2.7A20 20 0 1 0 24 3.5Z" fill="currentColor"/><g transform="translate(5 5) scale(.78)"><path d="M17.4 14.3c-.5-1.1-1-1.1-1.5-1.1h-1.3c-.5 0-1.2.2-1.8.9-.6.7-2.3 2.2-2.3 5.4s2.4 6.3 2.7 6.8c.3.4 4.6 7.4 11.4 10.1 5.7 2.3 6.8 1.8 8 1.7 1.2-.1 3.8-1.5 4.3-3 .5-1.5.5-2.8.4-3.1-.2-.3-.6-.5-1.3-.9s-3.8-1.9-4.4-2.1c-.6-.2-1-.3-1.4.4-.4.7-1.7 2.1-2.1 2.6-.4.4-.8.5-1.5.2-.7-.4-2.8-1-5.4-3.3-2-1.8-3.3-4-3.7-4.7-.4-.7 0-1.1.3-1.4.3-.3.7-.8 1-1.2.3-.4.4-.7.7-1.1.2-.5.1-.9 0-1.2-.2-.3-1.4-3.5-2-4.8Z" fill="var(--c1)"/></g></svg></span><div class="contact-text">
           "WhatsApp" qrupumuza<br>
           qoşulmaq üçün<br>
           klikləyin
@@ -244,7 +256,7 @@ footer{
       <a class="contact-card full reveal r5"
          href="https://api.whatsapp.com/send/?phone=994508377942&text=Salam.+M%C9%99n+sayt%C4%B1n%C4%B1za+paket+%C9%99lav%C9%99+etdirm%C9%99k+ist%C9%99yir%C9%99m&type=phone_number&app_absent=0"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M5 14a3 3 0 0 1 3-3h10l4 5h18a3 3 0 0 1 3 3v16a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V14Z" fill="currentColor"/></svg></span><div class="contact-text">
           Saytımıza öz paketlərinizi pulsuz əlavə<br>
           etdirmək üçün klikləyin
         </div>
@@ -253,7 +265,7 @@ footer{
       <a class="contact-card full reveal r6"
          href="https://api.whatsapp.com/send/?phone=994508377942&text=Salam.+M%C9%99n+sayt%C4%B1n%C4%B1za+elan+%C9%99lav%C9%99+etdirm%C9%99k+ist%C9%99yir%C9%99m&type=phone_number&app_absent=0"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M5 18a2 2 0 0 1 2-2h7l22-10v36L14 32H7a2 2 0 0 1-2-2V18Z"/><path d="m14 31 5 12h7l-5.5-10.5"/><path d="M39 15l5-4v5l-4 3zm1 9h6v4h-6zm-1 8 4 3v5l-5-4z"/></g></svg></span><div class="contact-text">
           Saytımıza yarışlarınızın elanını pulsuz<br>
           şəkildə əlavə etdirmək üçün klikləyin
         </div>
@@ -262,7 +274,7 @@ footer{
       <a class="contact-card full reveal r7"
          href="https://ig.me/m/piksel.iok"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="38" height="29" rx="4" fill="currentColor"/><path d="m7 14 17 14 17-14" fill="none" stroke="var(--c1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="contact-text">
           Sizlər üçün formalaşdırdığımız saytımıza<br>
           töhfə, təklif vermək üçün klikləyin
         </div>
@@ -271,7 +283,7 @@ footer{
       <a class="contact-card reveal r7"
          href="https://wa.me/994508377942?text=Salam.%20M%C9%99n%20sizd%C9%99n%20sual%20paketi%20almaq%20ist%C9%99yir%C9%99m"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h5l4 23h25l5-17H12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="38" r="3" fill="currentColor"/><circle cx="35" cy="38" r="3" fill="currentColor"/><g transform="rotate(-9 26 19)"><path d="M20 14h15l3 5-3 9H19v-9z" fill="currentColor"/></g></svg></span><div class="contact-text">
           Paket sifariş etmək<br>
           üçün klikləyin
         </div>
@@ -280,13 +292,20 @@ footer{
       <a class="contact-card reveal r7"
          href="https://wa.me/994508377942"
          target="_blank" rel="noopener noreferrer">
-        <div class="contact-text">
+        <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="31" height="25" rx="2.5" fill="currentColor"/><rect x="8" y="9" width="23" height="17" rx="1" fill="var(--c1)"/><path d="M14 31h11v4h7v3H8v-3h6z" fill="currentColor"/><rect x="37" y="8" width="8" height="32" rx="1.5" fill="currentColor"/><circle cx="41" cy="35" r="1.5" fill="var(--c1)"/></svg></span><div class="contact-text">
           Dizayn və rəqəmsal<br>
           xidmətlər üçün klikləyin
         </div>
       </a>
 
+      <div class="board-wrap reveal r7">
+        <button class="board-toggle" id="boardToggle" type="button" aria-expanded="false" aria-controls="boardMembers"><span>πksel İntellektual Oyunlar Klubu idarə heyəti</span></button>
+        <div class="board-panel" id="boardMembers" hidden><ul class="board-members"><li>Əlizadə Onur</li><li>Abbaslı Nigar</li><li>Yuniszadə Ema</li><li>Əliyeva Zəhra</li><li>Hüseynli Muhəmməd</li><li>Qarayev Ramiz</li><li>Quliyev Ömər</li></ul></div>
+      </div>
     </section>
+
+
+
   </main>
 </div>
 
@@ -306,63 +325,17 @@ footer{
   </a>
 </footer>
 
+
 <script>
-function sunIcon(){
-  return `
-    <circle cx="16" cy="16" r="6" fill="currentColor"/>
-    <g stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
-      <path d="M16 2.7v3"/>
-      <path d="M16 26.3v3"/>
-      <path d="m2.7 16 3 0"/>
-      <path d="m26.3 16-3 0"/>
-      <path d="m6.6 6.6 2.1 2.1"/>
-      <path d="m23.3 23.3 2.1 2.1"/>
-      <path d="m25.4 6.6-2.1 2.1"/>
-      <path d="m8.7 23.3-2.1 2.1"/>
-    </g>`;
-}
-
-function moonIcon(){
-  return `
-    <path d="M25.4 20.8A11.7 11.7 0 0 1 11.2 6.6a11.8 11.8 0 1 0 14.2 14.2Z"
-          fill="currentColor"/>`;
-}
-
-const themeToggle=document.getElementById("themeToggle");
-const themeIcon=document.getElementById("themeIcon");
-
-function updateThemeIcon(){
-  const dark=document.body.classList.contains("dark");
-  themeIcon.innerHTML=dark ? moonIcon() : sunIcon();
-  themeToggle.setAttribute(
-    "aria-label",
-    dark ? "Gündüz rejiminə keç" : "Gecə rejiminə keç"
-  );
-}
-
-function setTheme(dark){
-  document.body.classList.toggle("dark",dark);
-  localStorage.setItem("piksel-theme",dark ? "dark" : "light");
-  updateThemeIcon();
-}
-
-function initTheme(){
-  const saved=localStorage.getItem("piksel-theme");
-
-  if(saved==="dark"){setTheme(true);return}
-  if(saved==="light"){setTheme(false);return}
-
-  const prefersDark=window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  setTheme(prefersDark);
-}
-
-themeToggle.addEventListener("click",()=>{
-  setTheme(!document.body.classList.contains("dark"));
-});
-
-initTheme();
+document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('keydown',e=>{if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74))||(e.ctrlKey&&(e.keyCode===85||e.keyCode===83))){e.preventDefault();return false}});
+const themeToggle=document.getElementById("themeToggle"),rays=[...document.querySelectorAll(".ray")];
+function animateRays(dark){rays.forEach(r=>{r.getAnimations().forEach(a=>a.cancel());const a=r.animate(dark?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]:[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}],{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});a.onfinish=()=>a.cancel()})}
+function setTheme(dark,animate){document.body.classList.toggle("dark",dark);try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");if(animate)animateRays(dark)}
+function initTheme(){let saved=null;try{saved=localStorage.getItem("piksel-theme")}catch(e){}if(saved==="dark")return setTheme(true,false);if(saved==="light")return setTheme(false,false);setTheme(!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false)}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));document.querySelectorAll(".contact-card").forEach(c=>c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect();c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(e.clientY-r.top)+"px")}));initTheme();requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+const boardToggle=document.getElementById("boardToggle"),boardMembers=document.getElementById("boardMembers");
+function toggleBoard(){const opening=boardToggle.getAttribute("aria-expanded")!=="true";boardToggle.setAttribute("aria-expanded",String(opening));if(opening){boardMembers.hidden=false}else{boardMembers.classList.add("closing");setTimeout(()=>{boardMembers.hidden=true;boardMembers.classList.remove("closing")},550)}}
+boardToggle.addEventListener("click",toggleBoard);
 </script>
 
 </body>
