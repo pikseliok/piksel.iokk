@@ -1,1 +1,801 @@
 
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel - Breyn Rinq səsli otaq</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+/* Yazı ölçüləri (komp+planşet / telefon / dar telefon): --t başlıq 24/17/15, --b adi yazı 15/9/8, --c düymə/input 15/11/10. */
+:root{
+  --bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;
+  --dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;
+  --transition:650ms cubic-bezier(.22,.8,.25,1);
+  --red:#ff3b30;
+  --t:24px;--b:15px;--c:15px;--glow:rgba(0,8,45,.30)
+}
+body.dark{--glow:rgba(255,255,255,.40)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+button,input,textarea,a{font:inherit}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
+
+/* GİRİŞ ANİMASİYASI */
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+
+/* Maus işığı */
+.card,.tcard{position:relative;overflow:hidden}
+.card>*,.tcard>*{position:relative;z-index:1}
+.card::before,.tcard::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){.card:hover::before,.tcard:hover::before{opacity:1}}
+
+/* NAVİQASİYA */
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background var(--transition)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+
+/* BAŞLIQLAR */
+h1{text-align:center;color:var(--deep);font-size:var(--t);font-weight:700;line-height:1.3;letter-spacing:-.7px;margin:24px 0 14px}
+.dark h1,.dark .note{color:var(--dark-light)}
+.note{color:var(--deep);text-align:center;font-size:var(--b);font-weight:500;margin-top:8px;line-height:1.4}
+
+/* KARTLAR */
+.card{width:100%;border-radius:28px;padding:22px 24px;margin-top:14px;background:linear-gradient(135deg,var(--deep) 0%,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition),color var(--transition)}
+.dark .card{background:linear-gradient(135deg,var(--dark-light) 0%,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.sm{font-size:var(--b);font-weight:500;opacity:.9;margin-top:6px;line-height:1.45}
+.center{text-align:center}
+.big{font-weight:700;font-size:var(--t);line-height:1.2;letter-spacing:-.7px}
+.code{font-weight:700;letter-spacing:3px}
+
+/* GİRİŞ */
+#lobby{margin-top:20px}
+#lobby .big{margin-bottom:20px}
+.pill{display:block;width:100%;height:46px;border:0;border-radius:999px;padding:0 10px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:800;font-size:var(--c);cursor:pointer;transition:transform .25s ease,outline .1s}
+.dark .pill{background:var(--dark-ink);color:var(--dark-light)}
+.pill:hover{transform:translateY(-2px)}
+.pill.on{outline:3px solid currentColor;outline-offset:3px}
+input{width:100%;border:0;border-radius:20px;padding:10px 16px;margin-top:10px;background:var(--ink);color:var(--deep);font-weight:500;font-size:var(--c);outline:none}
+.dark input{background:var(--dark-ink);color:var(--dark-light)}
+.info{margin-top:24px;font-size:var(--b);font-weight:400;line-height:1.5;text-align:center}
+.info p+p{margin-top:12px}
+
+/* DÜYMƏLƏR */
+.pbtn{border:0;border-radius:999px;padding:10px 28px;margin:10px auto 0;display:block;background:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--ink);font-weight:600;font-size:var(--c);cursor:pointer;transition:transform .25s ease,opacity .25s}
+.dark .pbtn{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));color:var(--dark-ink)}
+.pbtn:hover{transform:translateY(-2px)}
+.pbtn:disabled{opacity:.4;cursor:default;transform:none}
+.mini{border:0;border-radius:999px;padding:3px 12px;font-weight:700;font-size:var(--c);cursor:pointer;background:var(--ink);color:var(--deep)}
+.dark .mini{background:var(--dark-ink);color:var(--dark-light)}
+.mini:disabled{opacity:.5;cursor:default}
+.pill:active,.pbtn:not(:disabled):active,.mini:active{transform:scale(.96);transition-duration:.2s}
+
+/* KOMANDA KARTLARI */
+.tcard{margin-top:12px;border-radius:22px;padding:12px 18px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition)}
+.dark .tcard{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
+.tt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:clamp(15px,4.2vw,19px);line-height:1.3;word-break:break-word}
+.sc{font-weight:500;font-size:13px;opacity:.85}
+.tpad{margin-top:10px;border-top:2px solid rgba(157,195,255,.3);padding-top:8px;font-size:var(--b);font-weight:500}
+.dark .tpad{border-color:rgba(0,7,44,.25)}
+.mem{margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+
+/* FOOTER */
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition);flex-shrink:0}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0%,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+
+/* KOPYALANAN KODLAR */
+.copy-code{display:inline-flex;border:0;cursor:pointer;color:inherit;background:transparent;font-family:"Poppins",sans-serif;transition:opacity .2s ease,transform .2s ease}
+.copy-code:hover{opacity:.75;transform:translateY(-1px)}
+.host-room-code{margin-top:5px;font-size:clamp(32px,4vw,52px);line-height:1;font-weight:800;letter-spacing:5px}
+.captain-team-code{font-size:clamp(28px,4vw,44px);line-height:1;font-weight:800;letter-spacing:4px}
+.captain-code-label{font-size:var(--b);font-weight:500;opacity:.7;text-transform:uppercase;letter-spacing:1px;margin-top:10px}
+
+:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+@media(min-width:701px){
+  .page{width:min(92vw,1100px);padding-top:16px;padding-bottom:24px}
+  #lobby{width:100%;max-width:760px;margin:30px auto 0;padding:24px 30px 26px}
+  #teams{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+}
+@media(max-width:700px){
+  :root{--t:17px;--b:9px;--c:11px}
+  .page{width:calc(100vw - 44px);padding-top:11px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;right:6px}
+  .theme-icon{width:21px;height:21px}
+  h1{margin:20px 0 12px}
+  .card{border-radius:22px;padding:18px 16px}
+  .tcard{padding:12px 16px}
+  .pill{height:44px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}
+  .footer-line{font-size:13px}
+  .host-room-code{font-size:32px}
+  .captain-team-code{font-size:29px}
+}
+@media(max-width:420px){
+  :root{--t:15px;--b:8px;--c:10px}
+  .page{width:calc(100vw - 36px)}
+  .nav-links{gap:22px}
+  .nav-link{font-size:11px}
+  .top-nav{height:42px;padding:0 42px}
+  .theme-toggle{width:32px;height:32px;right:5px}
+  .theme-icon{width:20px;height:20px}
+  .card{padding:16px 14px}
+  .pill{height:42px}
+  footer{min-height:88px}
+  .footer-line{font-size:11px}
+}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.row .pbtn{margin:6px 0}
+.pbtn.s{padding:10px 20px}
+.tm{font-size:clamp(48px,14vw,72px);font-weight:600;line-height:1.1}
+.mem.pen{opacity:.55}
+.tcard[data-tg]{cursor:pointer}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+  <div class="nav-links rise">
+    <a class="nav-link" href="index.html">Əsas Səhifə</a>
+    <a class="nav-link" href="contact.html">Bizimlə Əlaqə</a>
+  </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş">
+    <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
+      <defs>
+        <mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+          <rect width="32" height="32" fill="#fff"/>
+          <circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/>
+        </mask>
+      </defs>
+      <g class="rays">
+        <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+      </g>
+      <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+    </svg>
+  </button>
+</nav>
+
+<!-- GİRİŞ -->
+<section class="card frame" id="lobby" style="--i:1">
+  <div class="big center rise">"Breyn Rinq"<br>Səsli otaq</div>
+  <button class="pill rise" data-m="host">APARICI</button>
+  <button class="pill rise" data-m="cap">KAPİTAN</button>
+  <button class="pill rise" data-m="pl">OYUNÇU</button>
+  <div id="form" hidden>
+    <input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden autocapitalize="characters">
+    <input id="fTeam" placeholder="Komanda adı" hidden maxlength="30">
+    <input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden autocapitalize="characters">
+    <input id="fName" placeholder="Adın" maxlength="25">
+    <button class="pbtn" id="go" style="margin-top:14px">Daxil ol</button>
+  </div>
+  <div class="info rise">
+    <p>Aparıcı otaq yaradıb kodu Kapitanlara verməlidir.</p>
+    <p>Kapitanlar öz komanda kodunu oyunçularına verməlidir.</p>
+  </div>
+</section>
+
+<!-- OYUN -->
+<div id="game" hidden>
+  <h1>"Breyn Rinq"<br>Səsli otaq</h1>
+  <section class="card center" id="head"></section>
+  <div class="note" id="phase"></div>
+  <button class="pbtn" id="bStart" hidden>Oyuna başla</button>
+  <div id="teams"></div>
+</div>
+
+</div>
+
+<footer>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+/* FIREBASE */
+firebase.initializeApp({
+  apiKey:"AIzaSyBmo0VWzQ-K4s_yvt89ZMLqKWJx4cJBLUk",
+  authDomain:"piksel-sesli-breyn-rinq.firebaseapp.com",
+  databaseURL:"https://piksel-sesli-breyn-rinq-default-rtdb.firebaseio.com",
+  projectId:"piksel-sesli-breyn-rinq",
+  storageBucket:"piksel-sesli-breyn-rinq.firebasestorage.app",
+  messagingSenderId:"147223095536",
+  appId:"1:147223095536:web:08b9501bae3bca64763a35"
+});
+const db=firebase.database();
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const rnd=n=>Array.from({length:n},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join('');
+const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const MAX_TEAM=6, MIN_TEAM=2;
+
+/* Hər cihaza öz kimlik nömrəsi (səhifə yenilənəndə də qalır) */
+let pid=null;
+try{pid=sessionStorage.getItem('piksel-br-pid')}catch(e){}
+if(!pid){pid='p'+rnd(8);try{sessionStorage.setItem('piksel-br-pid',pid)}catch(e){}}
+
+let mode='host',room=null,role=null,R=null,entered=false;
+
+/* =========================
+   TEMA — gün / ay animasiyası
+========================= */
+const rays=[...document.querySelectorAll('.ray')];
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark
+      ?[{transform:'translateY(0)',opacity:1},{transform:'translateY(-14px)',opacity:0}]
+      :[{transform:'translateY(11px)',opacity:0},{transform:'translateY(0)',opacity:1}];
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+    a.onfinish=()=>a.cancel();
+  });
+}
+function setTheme(d,anim){
+  document.body.classList.toggle('dark',d);
+  try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}
+  $('themeToggle').setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');
+  if(anim)animateRays(d);
+}
+let sv=null;
+try{sv=localStorage.getItem('piksel-theme')}catch(e){}
+setTheme(sv?sv==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),false);
+$('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'),true);
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('ready')));
+
+document.addEventListener('pointermove',e=>{
+  const c=e.target.closest('.card,.tcard');
+  if(!c)return;
+  const r=c.getBoundingClientRect();
+  c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+  c.style.setProperty('--my',(e.clientY-r.top)+'px');
+});
+
+/* =========================
+   GİRİŞ
+========================= */
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m===m&&m!=='host'));
+  $('form').hidden=m==='host';
+  $('fRoom').hidden=$('fTeam').hidden=m!=='cap';
+  $('fCode').hidden=m!=='pl';
+  $('go').textContent=m==='cap'?'Komandanı yarat':'Komandaya qoş';
+}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{
+  setMode(b.dataset.m);
+  if(b.dataset.m==='host')start();
+});
+$('go').onclick=()=>start();
+
+let busy=false;
+async function start(){
+  if(busy)return;
+  busy=true;
+  try{
+    if(mode==='host'){
+      let code=null;
+      for(let i=0;i<10;i++){
+        const c=rnd(5);
+        const s=await db.ref('rooms/'+c).once('value');
+        if(!s.exists()){code=c;break}
+      }
+      if(!code)return alert('Otaq kodu yaradıla bilmədi, yenidən yoxla');
+      await db.ref('rooms/'+code).set({createdAt:firebase.database.ServerValue.TIMESTAMP,status:'lobby',host:pid});
+      room=code;role='host';
+    }else if(mode==='cap'){
+      const rc=norm($('fRoom').value),tn=$('fTeam').value.trim(),nm=$('fName').value.trim();
+      if(rc.length<4||!tn||!nm)return alert('Otaq kodunu, komanda adını və adını yaz');
+      const s=await db.ref('rooms/'+rc).once('value');
+      const r=s.val();
+      if(!r)return alert('Belə otaq yoxdur');
+      if(r.status!=='lobby')return alert('Oyun artıq başlayıb');
+      const teams=r.teams||{};
+      if(Object.keys(teams).length>=2)return alert('Otaqda artıq 2 komanda var');
+      if(Object.values(teams).some(t=>t.name.trim().toLowerCase()===tn.toLowerCase()))
+        return alert('Bu komanda adı artıq var, fərqli ad seç');
+      let tid;
+      do{tid=rnd(4)}while(teams[tid]);
+      await db.ref('rooms/'+rc+'/teams/'+tid).set({name:tn,captain:pid,presser:null,createdAt:firebase.database.ServerValue.TIMESTAMP});
+      const pr=db.ref('rooms/'+rc+'/players/'+pid);
+      await pr.set({name:nm,team:tid,cap:true,joinedAt:firebase.database.ServerValue.TIMESTAMP});
+      pr.onDisconnect().remove();
+      room=rc;role='captain';
+    }else{
+      const raw=norm($('fCode').value),nm=$('fName').value.trim();
+      if(raw.length<8||!nm)return alert('Komanda kodunu və adını yaz');
+      const rc=raw.slice(0,-4),tid=raw.slice(-4);
+      const s=await db.ref('rooms/'+rc).once('value');
+      const r=s.val();
+      if(!r||!r.teams||!r.teams[tid])return alert('Komanda kodu yanlışdır');
+      if(r.status!=='lobby')return alert('Oyun artıq başlayıb');
+      let full=false;
+      const res=await db.ref('rooms/'+rc+'/players').transaction(cur=>{
+        cur=cur||{};
+        if(cur[pid]){return cur}
+        const n=Object.values(cur).filter(p=>p.team===tid).length;
+        if(n>=MAX_TEAM){full=true;return}
+        cur[pid]={name:nm,team:tid,cap:false,joinedAt:Date.now()};
+        return cur;
+      });
+      if(!res.committed)return alert(full?'Komanda doludur (maksimum 6 nəfər)':'Qoşulmaq alınmadı, yenidən yoxla');
+      db.ref('rooms/'+rc+'/players/'+pid).onDisconnect().remove();
+      room=rc;role='player';
+    }
+    listen();
+  }catch(e){
+    alert('Xəta: '+e.message);
+  }finally{
+    setTimeout(()=>{busy=false},400);
+  }
+}
+
+function listen(){
+  db.ref('rooms/'+room).on('value',s=>{
+    const r=s.val();
+    if(!r){alert('Otaq bağlandı');return location.reload()}
+    if(role!=='host'&&!(r.players&&r.players[pid])){
+      alert('Otaqdan çıxdın');return location.reload();
+    }
+    R=r;
+    render();
+  },()=>{alert('Əlaqə kəsildi');location.reload()});
+}
+
+/* =========================
+   EKRAN
+========================= */
+function intro(){
+  let k=1;
+  [...$('game').children].forEach(e=>{
+    if(e.hidden)return;
+    e.classList.add('frame');
+    e.style.setProperty('--i',Math.min(k++,9));
+    if(e.matches('.card'))[...e.children].forEach(x=>x.classList.add('rise'));
+  });
+}
+
+function members(tid){
+  const p=R.players||{};
+  return Object.entries(p).filter(([,v])=>v.team===tid)
+    .map(([id,v])=>({id,...v}))
+    .sort((a,b)=>(b.cap?1:0)-(a.cap?1:0)||(a.joinedAt||0)-(b.joinedAt||0));
+}
+function presserOf(tid){
+  const t=R.teams[tid],m=members(tid);
+  return t.presser&&m.some(x=>x.id===t.presser&&!x.cap)?t.presser:null;
+}
+
+function render(){
+  $('lobby').hidden=true;
+  $('game').hidden=false;
+
+  const h=role==='host',cap=role==='captain';
+  const me=(R.players||{})[pid];
+  const myTid=me?me.team:null;
+  const teams=R.teams||{};
+  const tids=Object.keys(teams).sort((a,b)=>(teams[a].createdAt||0)-(teams[b].createdAt||0));
+  const lobbyPhase=R.status==='lobby';
+
+  /* BAŞLIQ KARTI */
+  $('head').innerHTML=h
+    ?`<div class="big">Otaq kodu:</div>
+      <button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button>
+      <div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün kodun üzərinə toxun</div>`
+    :`<div class="big">${esc(teams[myTid]&&teams[myTid].name)} komandası</div>
+      ${cap
+        ?`<div class="captain-code-label">Komanda kodu</div>
+          <button class="copy-code captain-team-code" data-copy="${esc(room+myTid)}" type="button">${esc(room+myTid)}</button>
+          <div class="sm">Kodu komanda yoldaşlarına ver - Kopyalamaq üçün kodun üzərinə toxun</div>`
+        :`<div class="sm">Oyunçu · Komanda kodu: <span class="code">${esc(room+myTid)}</span></div>`}`;
+
+  /* BAŞLA DÜYMƏSİ (aparıcı) */
+  const ready=tids.length>=2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
+  $('bStart').hidden=!(h&&lobbyPhase);
+  $('bStart').disabled=!ready;
+
+  /* VƏZİYYƏT YAZISI */
+  let msg='';
+  if(!lobbyPhase){
+    msg='Oyun başladı. (Oyun ekranı növbəti addımda əlavə olunacaq.)';
+  }else if(h){
+    msg=ready?'Hər şey hazırdır. Oyunu başlada bilərsən.'
+      :'Ən azı 2 komanda lazımdır. Hər komandada ən azı 2 nəfər və seçilmiş düyməsixan olmalıdır.';
+  }else if(cap){
+    msg=presserOf(myTid)?'Düyməsixan seçilib. Dəyişmək üçün başqa oyunçunun yanındakı D düyməsinə bas.'
+      :'Komandandan bir nəfəri düyməsixan seç (adının yanındakı D düyməsi).';
+  }else{
+    msg='Kapitan düyməsixanı seçir. Aparıcı oyunu başladacaq.';
+  }
+  $('phase').textContent=msg;
+
+  /* KOMANDALAR */
+  $('teams').innerHTML=tids.length?tids.map(tid=>{
+    const t=teams[tid],m=members(tid),pr=presserOf(tid);
+    const canPick=cap&&tid===myTid&&lobbyPhase;
+    return `<div class="tcard">
+      <div class="tt"><span>"${esc(t.name)}" komandası</span><span class="sc">${m.length}/${MAX_TEAM} nəfər</span></div>
+      <div class="tpad">
+        ${h?`<div class="sm" style="margin:0 0 6px">Komanda kodu: <span class="code">${esc(room+tid)}</span></div>`:''}
+        ${m.map(x=>`<div class="mem">
+          <span>${x.cap?'<b>'+esc(x.name)+' (K)</b>':esc(x.name)+(x.id===pr?' (D)':'')}</span>
+          ${canPick&&!x.cap?`<button class="mini" data-pick="${x.id}" ${x.id===pr?'disabled':''}>${x.id===pr?'D ✓':'D'}</button>`:''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join(''):'<div class="note">Hələ komanda yoxdur.</div>';
+
+  if(!entered){entered=true;intro()}
+}
+
+/* =========================
+   DÜYMƏLƏR
+========================= */
+document.addEventListener('click',async e=>{
+  const c=e.target.closest('[data-copy]');
+  if(c){
+    const v=c.dataset.copy,old=c.textContent;
+    const ok=()=>{c.textContent='KOPYALANDI ✓';setTimeout(()=>{c.textContent=old},900)};
+    try{await navigator.clipboard.writeText(v);ok()}
+    catch(err){
+      try{
+        const ta=document.createElement('textarea');
+        ta.value=v;ta.style.position='fixed';ta.style.opacity='0';
+        document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();ok();
+      }catch(x){}
+    }
+    return;
+  }
+  const p=e.target.closest('[data-pick]');
+  if(p&&role==='captain'&&R&&R.status==='lobby'){
+    const me=R.players[pid];
+    db.ref('rooms/'+room+'/teams/'+me.team+'/presser').set(p.dataset.pick);
+  }
+});
+
+$('bStart').onclick=()=>{
+  if(role==='host'&&R&&R.status==='lobby')db.ref('rooms/'+room+'/status').set('playing');
+};
+</script>
+<script>
+/* ===== OYUN + SƏS ===== */
+let off=0,muted=false,stream=null,micAsk=0,sigOn=0,xp=0;
+db.ref('.info/serverTimeOffset').on('value',s=>{off=s.val()||0});
+const now=()=>Date.now()+off,rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
+const T=()=>R.teams||{},P=()=>R.players||{},opn={},isH=()=>role==='host';
+const isPen=i=>!!(P()[i]&&P()[i].pen);
+
+function members(tid){
+  return Object.entries(P()).filter(([,v])=>v.team===tid).map(([id,v])=>({id,...v}))
+    .sort((a,b)=>(a.pen?1:0)-(b.pen?1:0)||(b.cap?1:0)-(a.cap?1:0)||(a.joinedAt||0)-(b.joinedAt||0));
+}
+function presserOf(tid){
+  const t=T()[tid];
+  return t&&t.presser&&members(tid).some(x=>x.id===t.presser&&!x.cap)?t.presser:null;
+}
+
+function render(){
+  const h=isH(),me=P()[pid]||{},mt=me.team,cap=role==='captain',st=R.status,v=R.val||1;
+  const tids=Object.keys(T()).sort((a,b)=>(T()[a].createdAt||0)-(T()[b].createdAt||0));
+  $('lobby').hidden=true;$('game').hidden=false;
+
+  $('head').innerHTML=h
+    ?`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button><div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün toxun</div>`
+    :`<div class="big">${esc(T()[mt]&&T()[mt].name)} komandası</div>${cap
+      ?`<div class="captain-code-label">Komanda kodu</div><button class="copy-code captain-team-code" data-copy="${esc(room+mt)}" type="button">${esc(room+mt)}</button><div class="sm">Kodu komanda yoldaşlarına ver - Kopyalamaq üçün toxun</div>`
+      :`<div class="sm">Oyunçu · Komanda kodu: <span class="code">${esc(room+mt)}</span></div>`}`;
+
+  $('tcard').hidden=st==='lobby';
+  $('tcard').innerHTML=`<div class="sm">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">20</div>`+(h&&st==='wait'?'<button class="mini" data-act="resv">Dəyəri sıfırla</button>':'');
+
+  const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
+  $('bStart').hidden=!(h&&st==='lobby');$('bStart').disabled=!ready;
+
+  let ev=R.ev;
+  if(st==='lobby')ev=h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Tam 2 komanda, hər komandada ən azı 2 nəfər və düyməsixan lazımdır.'):cap?'Komandandan düyməsixan seç (D düyməsi).':'Kapitan düyməsixanı seçir.';
+  else if(st==='wait'&&!ev)ev=`${v} XALLIQ SUAL SƏSLƏNİR!`+(v>=3?' TAPILMASA DİSKVALİFİKASİYA':'');
+  else if(st==='finished')ev='🏆 '+((T()[R.winner]||{}).name||'')+' QALİB OLDU!';
+  $('phase').textContent=ev||'';
+
+  const mk=(a,t,d)=>`<button class="pbtn s" data-act="${a}"${d?' disabled':''}>${t}</button>`;
+  let b='';
+  if(h){
+    if(st==='wait')b+=mk('vaxt','VAXT! - 20 SANİYƏ',tids.length<2||tids.every(t=>(R.fs||{})[t]))+(R.talk?mk('endtalk','Danışığı bitir'):'');
+    if(st==='answered')b+=mk('p1','+1')+mk('p2','+2')+mk('p3','+3')+mk('wrong','QALAN VAXT RƏQİBİN')+mk('none','DOĞRU CAVAB YOXDUR');
+    if(st==='expired')b+=mk('none','DOĞRU CAVAB YOXDUR');
+    if(st==='finished')b+=mk('newg','YENİ OYUN');
+  }else{
+    if(!cap&&mt&&presserOf(mt)===pid&&(st==='wait'||st==='running')){
+      const ok=!me.pen&&!(R.fs||{})[mt]&&!(R.wrong||{})[mt];
+      b+=`<button class="pbtn" data-act="buzz" style="font-size:28px;padding:22px 60px"${ok?'':' disabled'}>BAS!</button>`;
+    }
+    if(cap&&st==='wait'&&!T()[mt].req&&R.talk!==pid)b+=mk('req','Aparıcı ilə danışmaq istəyirəm');
+  }
+  b+=mk('mute',me.pen?'Mikrofon bağlıdır (cərimə)':muted?'Mikrofonu aç':'Mikrofonu bağla',!!me.pen);
+  $('ctl').innerHTML=b;
+
+  $('teams').innerHTML=tids.map(t=>{
+    const tm=T()[t],m=members(t),pr=presserOf(t),mine=t===mt,show=h||mine||opn[t],ans=st==='answered'&&R.winner===t;
+    const title=esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):'KAPİTAN'):'');
+    return `<div class="tcard" data-tg="${t}"><div class="tt"><span>${h&&tm.req?`<button class="mini" data-act="grant" data-t="${t}">✋</button> `:''}${title}</span><span class="sc">${tm.score||0} xal</span></div>`+
+      (show?`<div class="tpad">${h?`<div class="sm" style="margin:0 0 6px">Komanda kodu: <span class="code">${esc(room+t)}</span></div>`:''}${m.map(x=>{
+        const canD=cap&&mine&&(st==='lobby'||st==='wait')&&!x.cap&&!x.pen;
+        const canM=cap&&mine&&st==='answered'&&R.winner===t&&!R.speaker&&!x.cap&&!x.pen;
+        return `<div class="mem${x.pen?' pen':''}"><span>${x.cap?`<b>${esc(x.name)} (K)</b>`:esc(x.name)+(x.id===pr?' (D)':'')}${x.pen?' (X)':''}${R.speaker===x.id?' 🎙':''}</span><span>${canD?`<button class="mini" data-pick="${x.id}"${x.id===pr?' disabled':''}>D</button>`:''}${canM?`<button class="mini" data-spk="${x.id}">🎙</button>`:''}${h&&x.pen?`<button class="mini" data-rest="${x.id}">Geri qaytar</button>`:''}</span></div>`;
+      }).join('')}</div>`:'')+'</div>';
+  }).join('')||'<div class="note">Hələ komanda yoxdur.</div>';
+
+  if(!entered){entered=true;intro()}
+  if(stream)stream.getAudioTracks().forEach(t=>{t.enabled=!muted&&!me.pen});
+  reconcile();applyMute();
+  if(!micAsk){micAsk=1;getMic()}
+  if(!sigOn){sigOn=1;rf('sig/'+pid).on('child_added',s=>{const x=s.val();s.ref.remove();if(x)sigIn(x.from,JSON.parse(x.d))})}
+}
+$('phase').insertAdjacentHTML('beforebegin','<section class="card center" id="tcard"></section>');
+$('teams').insertAdjacentHTML('beforebegin','<div id="ctl" class="row"></div>');
+
+/* TAYMER */
+setInterval(()=>{
+  if(!R)return;
+  const el=$('tm');
+  let l=20;
+  if(R.status==='running')l=Math.max(0,Math.ceil((R.timerEnd-now())/1000));
+  else if(R.status==='answered')l=R.pausedRem||0;
+  else if(R.status==='expired'||R.status==='finished')l=0;
+  if(el)el.textContent=l;
+  if(isH()&&R.status==='running'&&R.timerEnd<=now()&&!xp){
+    xp=1;
+    rf().transaction(r=>{
+      if(r&&r.status==='running'&&r.timerEnd<=Date.now()+off){r.status='expired';r.timerEnd=null;r.ev='VAXT ÇIXDI - DOĞRU CAVAB YOXDUR'}
+      return r;
+    }).finally(()=>setTimeout(()=>{xp=0},500));
+  }
+},200);
+
+/* DÜYMƏ BASMA */
+function buzz(){
+  const me=P()[pid];
+  if(!me||me.cap)return;
+  const tid=me.team;
+  rf().transaction(r=>{
+    if(!r)return;
+    const p=(r.players||{})[pid];
+    if(!p||p.pen||!r.teams[tid]||r.teams[tid].presser!==pid)return;
+    const fs=r.fs||{},wr=r.wrong||{};
+    if(fs[tid]||wr[tid])return;
+    const t=Date.now()+off;
+    if(r.status==='wait'){
+      fs[tid]=true;r.fs=fs;p.pen=true;
+      r.ev=r.teams[tid].name+' FALSTART ETDİ! '+p.name+' CƏRİMƏLƏNDİ!';
+      const o=Object.keys(r.teams).find(x=>x!==tid);
+      if(o&&(fs[o]||(r.wrong||{})[o])){r.status='expired';r.ev='Hər iki komanda cavab hüququnu itirdi'}
+    }else if(r.status==='running'){
+      const rem=Math.ceil((r.timerEnd-t)/1000);
+      if(rem<=0)return;
+      r.first=(t-r.startedAt)<=1000;
+      r.status='answered';r.winner=tid;r.buzzAt=t;r.pausedRem=rem;r.timerEnd=null;r.speaker=null;
+      r.ev=(r.first?'İLK SANİYƏ! ':'')+r.teams[tid].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
+    }else return;
+    return r;
+  });
+}
+
+/* KAPİTAN MİKROFON SEÇİMİ (bir sualda yalnız bir dəfə) */
+function pickSpeaker(id){
+  rf().transaction(r=>{
+    if(!r||r.status!=='answered'||r.speaker)return;
+    const c=(r.players||{})[pid],p=(r.players||{})[id];
+    if(!c||!c.cap||c.team!==r.winner||!p||p.team!==r.winner||p.pen||p.cap)return;
+    r.speaker=id;r.ev=p.name.toUpperCase()+' CAVAB VERİR';
+    return r;
+  });
+}
+
+/* APARICI HƏRƏKƏTLƏRİ */
+function nextQ(x){
+  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,ev:null,talk:null,q:(R.q||1)+1};
+  Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
+  Object.keys(T()).forEach(t=>{u['teams/'+t+'/req']=null});
+  return Object.assign(u,x);
+}
+const A={
+  vaxt(){if(R.status!=='wait')return;rf().update({status:'running',startedAt:now(),timerEnd:now()+20000,ev:'VAXT!',winner:null,speaker:null,talk:null,first:null})},
+  p1(){A.pts(1)},p2(){A.pts(2)},p3(){A.pts(3)},
+  pts(n){
+    const w=R.winner;
+    if(R.status!=='answered'||!w)return;
+    const s=(T()[w].score||0)+n;
+    const u=s>=5?nextQ({status:'finished',winner:w,q:R.q||1,val:1}):nextQ({val:1});
+    u['teams/'+w+'/score']=s;
+    rf().update(u);
+  },
+  wrong(){
+    const w=R.winner;
+    if(R.status!=='answered'||!w)return;
+    const o=Object.keys(T()).find(t=>t!==w);
+    if((R.wrong||{})[o]||(R.fs||{})[o])return A.none();
+    const u={};let pn='';
+    if(R.first&&R.speaker&&P()[R.speaker]){u['players/'+R.speaker+'/pen']=true;pn=P()[R.speaker].name.toUpperCase()+' CƏRİMƏLƏNDİ! '}
+    Object.assign(u,{status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ','wrong/'+w:true});
+    rf().update(u);
+  },
+  none(){
+    if(R.status!=='answered'&&R.status!=='expired')return;
+    const v=R.val||1,m3=v>=3;
+    const u=nextQ({val:m3?1:v+1,ev:m3?'3 XALLIQ SUAL TAPILMADI - DİSKVALİFİKASİYA! XALLAR SIFIRLANDI':null});
+    if(m3)Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
+    rf().update(u);
+  },
+  newg(){
+    if(R.status!=='finished')return;
+    const u=nextQ({val:1,q:1,winner:null});
+    Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
+    rf().update(u);
+  },
+  resv(){if(R.status==='wait')rf().update({q:1,val:1})},
+  grant(t){rf().update({talk:T()[t].captain,['teams/'+t+'/req']:null})},
+  endtalk(){rf().update({talk:null})},
+  req(){const m=P()[pid];if(m&&m.cap)rf('teams/'+m.team+'/req').set(true)},
+  mute(){muted=!muted;render()}
+};
+const HOSTACT=['vaxt','p1','p2','p3','wrong','none','newg','resv','grant','endtalk'];
+$('bStart').onclick=()=>{
+  if(!isH()||R.status!=='lobby')return;
+  const u={status:'wait',q:1,val:1,ev:null};
+  Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
+  rf().update(u);
+};
+document.addEventListener('click',e=>{
+  if(!R)return;
+  const b=e.target.closest('button'),tg=e.target.closest('[data-tg]');
+  if(tg&&!b){const k=tg.dataset.tg;opn[k]=!opn[k];render();return}
+  if(!b)return;
+  const d=b.dataset,me=P()[pid]||{};
+  if(d.act&&A[d.act]&&d.act!=='buzz'){
+    if(HOSTACT.includes(d.act)&&!isH())return;
+    A[d.act](d.t);
+  }
+  if(d.pick&&role==='captain'&&(R.status==='lobby'||R.status==='wait')&&!isPen(d.pick))rf('teams/'+me.team+'/presser').set(d.pick);
+  if(d.spk&&role==='captain')pickSpeaker(d.spk);
+  if(d.rest&&isH())rf('players/'+d.rest+'/pen').set(null);
+});
+document.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('[data-act="buzz"]');
+  if(b&&!b.disabled&&R)buzz();
+});
+
+/* SƏS (WebRTC, siqnal Firebase ilə) */
+let ICE=[{urls:'stun:stun.l.google.com:19302'}];
+fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length)ICE=j.iceServers}).catch(()=>{});
+const pcs={},auds={},pend=[];
+
+function ah(i){const x=P()[i];return !!x&&x.team===R.winner&&((x.cap&&!R.speaker)||i===R.speaker)}
+function allH(i){
+  if(i===R.host)return true;
+  if(isPen(i))return false;
+  return (R.status==='answered'&&ah(i))||(R.status==='wait'&&i===R.talk);
+}
+function hear(i){
+  if(i===pid)return false;
+  if(allH(i))return true;
+  const a=P()[pid],b=P()[i];
+  if(role==='host'||!a||!b||b.pen)return false;
+  return a.team===b.team&&!(R.status==='answered'&&b.team===R.winner);
+}
+function want(i){
+  if(role==='host'||i===R.host)return true;
+  const a=P()[pid],b=P()[i];
+  if(!a||!b)return false;
+  if(a.team===b.team)return true;
+  const w=x=>(R.status==='answered'&&ah(x))||(R.status==='wait'&&x===R.talk);
+  return w(pid)||w(i);
+}
+function applyMute(){for(const i in auds)auds[i].muted=!hear(i)}
+const sg=(i,d)=>rf('sig/'+i).push({from:pid,d:JSON.stringify(d)});
+
+function mkpc(i){
+  const pc=new RTCPeerConnection({iceServers:ICE});
+  pc._q=[];
+  stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+  pc.onicecandidate=e=>e.candidate&&sg(i,{ice:e.candidate});
+  pc.ontrack=e=>{
+    let a=auds[i];
+    if(!a){a=auds[i]=document.createElement('audio');a.autoplay=true;a.playsInline=true;document.body.appendChild(a)}
+    a.srcObject=e.streams[0];
+    a.play().catch(()=>{});
+    applyMute();
+  };
+  pcs[i]=pc;
+  return pc;
+}
+function drop(i){
+  if(pcs[i]){pcs[i].close();delete pcs[i]}
+  if(auds[i]){auds[i].srcObject=null;auds[i].remove();delete auds[i]}
+}
+async function reconcile(){
+  if(!stream||!R)return;
+  const ids=Object.keys(P()).concat(R.host).filter(i=>i&&i!==pid);
+  Object.keys(pcs).forEach(i=>{if(!ids.includes(i)||!want(i))drop(i)});
+  for(const i of ids){
+    if(!pcs[i]&&want(i)&&pid<i){
+      const pc=mkpc(i);
+      try{await pc.setLocalDescription(await pc.createOffer());sg(i,{sdp:pc.localDescription})}catch(e){}
+    }
+  }
+  applyMute();
+}
+function sigIn(from,d){if(!stream)pend.push([from,d]);else onSig(from,d)}
+async function onSig(from,d){
+  if(!R||!want(from))return;
+  const pc=pcs[from]||mkpc(from);
+  try{
+    if(d.sdp){
+      await pc.setRemoteDescription(d.sdp);
+      for(const c of pc._q.splice(0))await pc.addIceCandidate(c);
+      if(d.sdp.type==='offer'){await pc.setLocalDescription(await pc.createAnswer());sg(from,{sdp:pc.localDescription})}
+    }else if(d.ice){
+      if(pc.remoteDescription)await pc.addIceCandidate(d.ice);else pc._q.push(d.ice);
+    }
+  }catch(e){}
+}
+async function getMic(){
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
+  catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
+  const me=P()[pid]||{};
+  stream.getAudioTracks().forEach(t=>{t.enabled=!muted&&!me.pen});
+  await reconcile();
+  pend.splice(0).forEach(([f,d])=>onSig(f,d));
+}
+</script>
+</body>
+</html>
