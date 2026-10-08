@@ -88,6 +88,8 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .card.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.85fr) 2px minmax(0,1.5fr);align-items:center;column-gap:18px;padding:18px 24px}
 
 .card-head{display:flex;align-items:center;gap:14px;min-width:0}
+.brain-room{overflow:hidden}
+.brain-room-ribbon{position:absolute;top:13px;right:-42px;z-index:2;width:160px;padding:5px 0;transform:rotate(45deg);background:#d71920;color:#fff;text-align:center;font-size:11px;line-height:1.2;font-weight:700;letter-spacing:.5px;box-shadow:0 3px 8px rgba(0,0,0,.22);pointer-events:none}
 .card-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center}
 .card-icon svg,.card-icon img,.brain-logo img{width:100%;height:100%;object-fit:contain;display:block}
 .brain-logo{width:50px;height:46px;flex:0 0 50px;display:grid;place-items:center}
@@ -318,7 +320,8 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
         <p class="card-description rise">"Nə? Harada? Nə Zaman?" İntellektual Oyunları üçün səsli oyun sistemi</p>
       </a>
 
-          <a class="card frame brain-room" style="--i:9" href="...">
+      <!-- 8. Minioyunlar -->
+      <a class="card frame brain-room" style="--i:9" href="...">
         <span class="brain-room-ribbon" aria-label="Tezliklə">TEZLİKLƏ...</span>
 <div class="card-head rise">
           <span class="card-icon" aria-hidden="true">
@@ -484,3 +487,4 @@ document.querySelectorAll("a.card").forEach(a=>{
 </script>
 </body>
 </html>
+
