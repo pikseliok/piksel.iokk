@@ -676,7 +676,7 @@ const A={
     if((R.wrong||{})[o]||(R.fs||{})[o])return A.none();
     const u={};let pn='';
     if(R.first&&R.speaker&&P()[R.speaker]){u['players/'+R.speaker+'/pen']=true;pn=P()[R.speaker].name.toUpperCase()+' CƏRİMƏLƏNDİ! '}
-    Object.assign(u,{status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ','wrong/'+w:true});
+    Object.assign(u,{status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ',['wrong/'+w]:true});
     rf().update(u);
   },
   none(){
