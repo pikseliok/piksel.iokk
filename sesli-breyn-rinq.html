@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="az">
 <head>
@@ -170,6 +169,17 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 .tm{font-size:clamp(48px,14vw,72px);font-weight:600;line-height:1.1}
 .mem.pen{opacity:.55}
 .tcard[data-tg]{cursor:pointer}
+#np{position:fixed;left:50%;top:90px;transform:translateX(-50%);z-index:150;width:min(86vw,420px);text-align:center;padding:16px;border-radius:22px;font-weight:700;font-size:var(--c);background:var(--dark-light);color:var(--deep);box-shadow:0 10px 30px rgba(0,20,110,.3)}
+.dark #np{background:var(--dark-bg);color:var(--dark-light)}
+#rxlayer{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+.rxe{position:fixed;font-size:26px;line-height:1}
+@media(min-width:701px){
+  #game{width:100%;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;align-items:start}
+  #game>h1,#game>#head{grid-column:1/-1}
+  #teams{grid-column:1;grid-row:3/span 6;display:block}
+  #tcard,#phase,#ctl,#bStart{grid-column:2}
+  #tcard{margin-top:0}
+}
 </style>
 </head>
 
@@ -796,6 +806,105 @@ async function getMic(){
   await reconcile();
   pend.splice(0).forEach(([f,d])=>onSig(f,d));
 }
+</script>
+<script>
+/* ===== SƏSLƏR + REAKSİYALAR + YENİ DÜYMƏSİXAN ===== */
+let ac=null,last={},bk='',rxOn=0,pshown=0,pkey='';
+const unlock=()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume()}catch(e){}};
+document.addEventListener('pointerdown',unlock,{passive:true});
+function tone(f,d,ty,v,at){
+  if(!ac)return;
+  const t=ac.currentTime+(at||0),o=ac.createOscillator(),g=ac.createGain();
+  o.type=ty||'sine';o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v||.25,t+.015);
+  g.gain.setValueAtTime(v||.25,t+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(.0001,t+d);
+  o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d+.03);
+}
+const SND={
+  beep:()=>tone(880,.7),
+  up:()=>tone(700,2),
+  buzz:()=>{tone(1568,.22,'sine',.28);tone(1976,.22,'sine',.28,.08)},
+  fail:()=>tone(220,.28,'sawtooth',.25),
+  win:()=>[523,659,784,1046].forEach((f,i)=>tone(f,.3,'triangle',.3,i*.12))
+};
+
+/* Taymer səsləri: 10 və 4 saniyə qalanda */
+setInterval(()=>{
+  if(!R||R.status!=='running')return;
+  const l=Math.ceil((R.timerEnd-now())/1000),k=R.timerEnd+'|'+l;
+  if((l===10||l===4)&&bk!==k){bk=k;SND.beep()}
+},200);
+
+/* Reaksiyalar */
+const RX=['👍','👏','❤️','🦉'];
+document.body.insertAdjacentHTML('beforeend','<div id="rxlayer"></div><div id="np" hidden>YENİ DÜYMƏSİXAN SEÇ</div>');
+function spawn(e,el){
+  const r=el?el.getBoundingClientRect():{left:innerWidth/2-20+(Math.random()-.5)*160,top:innerHeight-120,width:40,height:40};
+  const n=document.createElement('span');
+  n.className='rxe';n.textContent=e;
+  n.style.left=(r.left+r.width/2-13+(Math.random()-.5)*18)+'px';
+  n.style.top=(r.top+r.height/2-13)+'px';
+  $('rxlayer').appendChild(n);
+  const a=n.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${(Math.random()-.5)*40}px,-130px) scale(.45)`,opacity:0}],{duration:650,easing:'cubic-bezier(.12,.75,.3,1)',fill:'forwards'});
+  a.onfinish=()=>n.remove();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-rx]');
+  if(b&&R){
+    spawn(b.dataset.rx,b);
+    rf('rx').push({e:b.dataset.rx,t:now(),f:pid}).then(r=>setTimeout(()=>r.remove(),4000)).catch(()=>{});
+  }
+  /* Aparıcı ekrana toxunanda "yeni düyməsixan" yazısı bağlanır */
+  if(R&&isH()&&R.status==='wait'&&Object.keys(R.fs||{}).length)rf('pz').set(now());
+  /* Falstartdan sonra yeni düyməsixan seçiləndə elan */
+  const p=e.target.closest('[data-pick]');
+  if(p&&R&&role==='captain'&&R.status==='wait'){
+    const t=(P()[pid]||{}).team,n=P()[p.dataset.pick];
+    if(t&&(R.fs||{})[t]&&n&&!n.pen)rf('ev').set(T()[t].name.toUpperCase()+' KOMANDASINDA YENİ DÜYMƏSİXAN: '+n.name.toUpperCase()+'. FALSTART ETDİYİ ÜÇÜN BU SUALA CAVAB HÜQUQUNU İTİRİR.');
+  }
+});
+
+/* "YENİ DÜYMƏSİXAN SEÇ" yazısı: 0.3 san yuxarı qalxaraq gəlir, 3 san qalır, 0.3 san solur */
+function showNp(){
+  const n=$('np');
+  pshown=now();n.hidden=false;
+  n.animate([{opacity:0,transform:'translate(-50%,18px)'},{opacity:1,transform:'translate(-50%,0)'}],{duration:300,easing:'ease-out'});
+  setTimeout(hideNp,3000);
+}
+function hideNp(){
+  if(!pshown)return;
+  pshown=0;
+  const n=$('np');
+  n.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'}).onfinish=()=>{n.hidden=true};
+}
+
+/* render-ə əlavə */
+const _render=render;
+render=function(){
+  _render();
+  const k=R.status,sa=R.startedAt,fsn=Object.keys(R.fs||{}).length;
+  if(last.init){
+    if(k==='running'&&sa!==last.sa)SND.beep();
+    if(k==='answered'&&last.k!=='answered')SND.buzz();
+    if(k==='expired'&&last.k!=='expired')SND.up();
+    if(k==='finished'&&last.k!=='finished')SND.win();
+    if(fsn>last.fs)SND.fail();
+  }
+  last={init:1,k,sa,fs:fsn};
+
+  $('ctl').insertAdjacentHTML('beforeend',RX.map(x=>`<button class="pbtn s" data-rx="${x}">${x}</button>`).join(''));
+  if(!rxOn){
+    rxOn=1;
+    rf('rx').on('child_added',s=>{const x=s.val();if(x&&x.f!==pid&&now()-x.t<3000)spawn(x.e)});
+  }
+
+  if(role==='captain'&&k==='wait'){
+    const mt=(P()[pid]||{}).team,pr=presserOf(mt),need=!!(pr&&isPen(pr)&&(R.fs||{})[mt]);
+    const key=R.q+'|'+pr;
+    if(need&&!pshown&&pkey!==key){pkey=key;showNp()}
+    if((!need&&pshown)||(pshown&&(R.pz||0)>pshown+1000))hideNp();
+  }else if(pshown)hideNp();
+};
 </script>
 </body>
 </html>
