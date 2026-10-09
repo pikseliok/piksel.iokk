@@ -206,7 +206,7 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .hb:active,.ib:active{transform:scale(.96);transition:transform .2s}
 .hg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 #bars{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;align-items:start}
-.bh{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;border-radius:999px;padding:12px 22px;color:#F5F7FA;font-weight:700;font-size:var(--c);cursor:pointer}
+.bh{display:flex;justify-content:center;align-items:center;width:100%;border:0;border-radius:999px;padding:12px 22px;color:#F5F7FA;font-weight:700;font-size:var(--c);cursor:pointer}
 .bh.n{background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep))}
 .dark .bh.n{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
 .bb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
@@ -605,7 +605,7 @@ function presserOf(tid){
 
 const MICSVG=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
 const BTNSVG='<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>';
-const CHEV='<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges"><path d="M0 0h2v1H0zM6 0h2v1H6z"/><path d="M1 1h2v1H1zM5 1h2v1H5z"/><path d="M2 2h4v1H2z"/><path d="M3 3h2v1H3z"/></svg>';
+const CHEV='';
 
 function render(){
   const h=isH(),me=P()[pid]||{},mt=me.team,cap=role==='captain',st=R.status,v=R.val||1;
@@ -656,8 +656,9 @@ function render(){
     right=`<section class="card">${p}</section>`;
   }else if(isPresser){
     const bad=me.pen||(R.fs||{})[mt]||(R.wrong||{})[mt];
-    const ok=!bad&&(st==='wait'||st==='running');
-    right=`<button class="buzz ${cl(mt)}${bad?' sm2':''}" data-act="buzz"${ok?'':' disabled'}>${bad?'CAVAB HÜQUQU YOXDUR':'BAS!'}</button>`;
+    const wt2=st==='wait'&&tids.some(t=>t!==mt&&(R.fs||{})[t]);
+    const ok=!bad&&!wt2&&(st==='wait'||st==='running');
+    right=`<button class="buzz ${cl(mt)}${bad||wt2?' sm2':''}" data-act="buzz"${ok?'':' disabled'}>${bad?'CAVAB HÜQUQU YOXDUR':wt2?'APARICI VAXTI VERƏNƏ QƏDƏR GÖZLƏ':'BAS!'}</button>`;
   }else{
     right=members(mt).map(x=>row(x,mt,{ic:cap})).join('');
     if(cap&&st==='wait'){
@@ -667,13 +668,13 @@ function render(){
   }
   $('colR').innerHTML=right;
 
-  const bar=(k,label,c,rows)=>`<div class="bar${opn[k]?' open':''}" data-k="${k}"><button class="bh ${c}" type="button"><span>${label}</span>${CHEV}</button><div class="bb"><div class="bi"><div class="bg2">${rows||'<div class="sm">Boşdur</div>'}</div></div></div></div>`;
+  const bar=(k,label,c,rows)=>`<div class="bar${opn[k]?' open':''}" data-k="${k}"><button class="bh ${c}" type="button"><span>${label}</span></button><div class="bb"><div class="bi"><div class="bg2">${rows||'<div class="sm">Boşdur</div>'}</div></div></div></div>`;
   let bars='';
   if(h)tids.forEach(t=>{bars+=bar(t,esc(T()[t].name),cl(t),members(t).map(x=>row(x,t,{rest:1})).join(''))});
   else{
-    if(isPresser)bars+=bar('own','Öz komandası',cl(mt),members(mt).map(x=>row(x,mt)).join(''));
+    if(isPresser)bars+=bar('own',esc(T()[mt].name),cl(mt),members(mt).map(x=>row(x,mt)).join(''));
     const o=tids.find(t=>t!==mt);
-    if(o)bars+=bar('riv','Rəqib komanda',cl(o),members(o).map(x=>row(x,o)).join(''));
+    if(o)bars+=bar('riv',esc(T()[o].name),cl(o),members(o).map(x=>row(x,o)).join(''));
   }
   const pens=Object.entries(P()).filter(([,x])=>x.pen).map(([id,x])=>({id,...x}));
   bars+=bar('ben','Cərimə skamyası'+(pens.length?' ('+pens.length+')':''),'n',pens.map(x=>row(x,x.team,{rest:1})).join(''));
@@ -686,7 +687,7 @@ function render(){
   if(stream)stream.getAudioTracks().forEach(t=>{t.enabled=!muted&&!me.pen});
   reconcile();applyMute();
   if(!micAsk){micAsk=1;getMic()}
-  if(!sigOn){sigOn=1;rf('sig/'+pid).on('child_added',s=>{const x=s.val();s.ref.remove();if(x)sigIn(x.from,JSON.parse(x.d))})}
+  if(!sigOn){sigOn=1;db.ref('sig/'+room+'/'+pid).on('child_added',s=>{const x=s.val();s.ref.remove();if(x)sigIn(x.from,JSON.parse(x.d))})}
 }
 $('vol').addEventListener('input',e=>{vol=e.target.value/100;e.target.style.setProperty('--p',e.target.value+'%');applyMute()});
 
@@ -710,7 +711,7 @@ function buzz(){
   if(!me||me.cap)return;
   const tid=me.team;
   if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
-  else if(R.status==='wait'){SND.fail();skip.fail=Date.now()+2500}
+  else if(R.status==='wait'&&!Object.keys(T()).some(t=>t!==tid&&(R.fs||{})[t])){SND.fail();skip.fail=Date.now()+2500}
   rf().transaction(r=>{
     if(!r)return;
     const p=(r.players||{})[pid];
@@ -719,6 +720,8 @@ function buzz(){
     if(fs[tid]||wr[tid])return;
     const t=Date.now()+off;
     if(r.status==='wait'){
+      const o0=Object.keys(r.teams).find(x=>x!==tid);
+      if(o0&&fs[o0])return;
       fs[tid]=true;r.fs=fs;p.pen=true;{const f2=r.fst||{};f2[tid]=t;r.fst=f2}
       r.ev=r.teams[tid].name+' FALSTART ETDİ! '+p.name+' CƏRİMƏLƏNDİ!';
       const o=Object.keys(r.teams).find(x=>x!==tid);
@@ -871,17 +874,10 @@ function hear(i){
   if(role==='host'||!a||!b||b.pen)return false;
   return a.team===b.team&&!(R.status==='answered'&&b.team===R.winner);
 }
-function want(i){
-  if(role==='host'||i===R.host)return true;
-  const a=P()[pid],b=P()[i];
-  if(!a||!b)return false;
-  if(a.team===b.team)return true;
-  const w=x=>(R.status==='answered'&&ah(x))||(R.status==='wait'&&x===R.talk);
-  return w(pid)||w(i);
-}
+function want(i){return !!R&&(role==='host'||i===R.host||!!P()[i])}
 let mixCtx=null;
 function mixer(){
-  if(!mixCtx)mixCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(!mixCtx)mixCtx=new(window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
   if(mixCtx.state==='suspended')mixCtx.resume();
   return mixCtx;
 }
@@ -889,7 +885,7 @@ function applyMute(){
   if(!mixCtx)return;
   for(const i in auds)auds[i].g.gain.setTargetAtTime(hear(i)?vol*2:0,mixCtx.currentTime,.02);
 }
-const sg=(i,d)=>rf('sig/'+i).push({from:pid,d:JSON.stringify(d)});
+const sg=(i,d)=>db.ref('sig/'+room+'/'+i).push({from:pid,d:JSON.stringify(d)});
 
 function mkpc(i){
   const pc=new RTCPeerConnection({iceServers:ICE});
@@ -900,6 +896,8 @@ function mkpc(i){
   pc.oniceconnectionstatechange=showNet;
   pc.ontrack=e=>{
     const ms=e.streams[0];
+    try{e.receiver.jitterBufferTarget=20}catch(x){}
+    try{e.receiver.playoutDelayHint=0}catch(x){}
     if(auds[i]){try{auds[i].src.disconnect();auds[i].g.disconnect()}catch(x){}auds[i].a.remove()}
     const a=document.createElement('audio');
     a.srcObject=ms;a.muted=true;a.autoplay=true;a.playsInline=true;
@@ -945,7 +943,7 @@ async function onSig(from,d){
   }catch(e){}
 }
 async function getMic(){
-  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,latency:0,channelCount:1}})}
   catch(e){return alert('Mikrofon icazəsi lazımdır. Brauzer ayarlarından icazə ver.')}
   await Promise.race([iceReady,new Promise(r=>setTimeout(r,3000))]);
   const me=P()[pid]||{};
@@ -959,7 +957,7 @@ function showNet(){
   if(!R||!$('net'))return;
   const nm=i=>i===R.host?'Aparıcı':((P()[i]||{}).name||i);
   const l=Object.keys(pcs).map(i=>nm(i)+': '+(NETTR[pcs[i].connectionState]||pcs[i].connectionState));
-  $('net').textContent='Mikrofon: '+(stream?'var':'yoxdur')+' | Relay: '+(relayOk?'var':'yoxdur')+' | Səs: '+(l.length?l.join(', '):'əlaqə yoxdur');
+  $('net').textContent='Mikrofon: '+(stream?'var':'yoxdur')+(mixCtx&&mixCtx.state!=='running'?' | SƏS BLOKLANIB: ekrana toxun':'')+' | Relay: '+(relayOk?'var':'yoxdur')+' | Səs: '+(l.length?l.join(', '):'əlaqə yoxdur');
 }
 setInterval(()=>{
   if(!R)return;
@@ -972,7 +970,7 @@ setInterval(()=>{
   applyMute();
   reconcile();showNet();
 },3000);
-document.addEventListener('pointerdown',()=>{try{mixer()}catch(e){}for(const i in auds)auds[i].a.play().catch(()=>{})},{passive:true});
+['pointerdown','pointerup','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{try{mixer()}catch(e){}for(const i in auds)auds[i].a.play().catch(()=>{})},{passive:true,capture:true}));
 </script>
 <script>
 /* ===== SƏSLƏR + REAKSİYALAR + YENİ DÜYMƏSİXAN ===== */
@@ -1019,7 +1017,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-rx]');
   if(b&&R){
     spawn(b.dataset.rx,b);
-    rf('rx').push({e:b.dataset.rx,t:now(),f:pid}).then(r=>setTimeout(()=>r.remove(),4000)).catch(()=>{});
+    db.ref('rx/'+room).push({e:b.dataset.rx,t:now(),f:pid}).then(r=>setTimeout(()=>r.remove(),4000)).catch(()=>{});
   }
   /* Aparıcı ekrana toxunanda "yeni düyməsixan" yazısı bağlanır */
   if(R&&isH()&&R.status==='wait'&&Object.keys(R.fs||{}).length)rf('pz').set(now());
@@ -1061,7 +1059,7 @@ render=function(){
 
   if(!rxOn){
     rxOn=1;
-    rf('rx').on('child_added',s=>{const x=s.val();if(x&&x.f!==pid&&now()-x.t<3000)spawn(x.e)});
+    db.ref('rx/'+room).on('child_added',s=>{const x=s.val();if(x&&x.f!==pid&&now()-x.t<3000)spawn(x.e)});
   }
 
   if(role==='captain'&&k==='wait'){
