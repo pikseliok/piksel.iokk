@@ -173,13 +173,63 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 .dark #np{background:var(--dark-bg);color:var(--dark-light)}
 #rxlayer{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
 .rxe{position:fixed;font-size:26px;line-height:1}
-@media(min-width:701px){
-  #game{width:100%;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;align-items:start}
-  #game>h1,#game>#head{grid-column:1/-1}
-  #teams{grid-column:1;grid-row:3/span 6;display:block}
-  #tcard,#phase,#ctl,#bStart{grid-column:2}
-  #tcard{margin-top:0}
-}
+
+:root{--blue-grad:linear-gradient(135deg,#4F76D7,#2454D1 55%,#003DBF);--pink-grad:linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)}
+body{--grad:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));--track:rgba(157,195,255,.3)}
+body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%,var(--dark-light));--track:rgba(0,7,44,.25)}
+#cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:stretch}
+#colL,#colR{display:flex;flex-direction:column;gap:10px;min-width:0}
+#colL>*{flex:1}
+#cols .card{margin-top:0}
+.sbox{border-radius:26px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#F5F7FA;min-height:76px}
+.sbox.b,.mr.b,.bh.b,.buzz.b{background:var(--blue-grad)}
+.sbox.p,.mr.p,.bh.p,.buzz.p{background:var(--pink-grad)}
+.sn{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;max-width:100%;word-break:break-word}
+.ss{font-size:34px;font-weight:800;line-height:1;margin-top:2px}
+.evt{font-size:var(--b);font-weight:500;margin-top:6px;line-height:1.35}
+.mr{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:42px;border-radius:999px;padding:8px 16px;color:#F5F7FA;font-size:var(--b);font-weight:500}
+.mr b{font-weight:700}
+.mr.pen{opacity:.5}
+.nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ic{display:flex;gap:6px;flex:none}
+.ib{width:30px;height:30px;border:0;border-radius:50%;padding:0;display:grid;place-items:center;background:rgba(255,255,255,.2);color:#F5F7FA;cursor:pointer}
+.ib.on{background:#F5F7FA;color:#001E6F}
+.ib:disabled{opacity:.35;cursor:default}
+.ib .mic{width:18px;height:18px}
+.buzz{flex:1;min-height:200px;width:100%;border:0;border-radius:30px;color:#F5F7FA;font-weight:800;font-size:clamp(34px,9vw,60px);padding:8px;cursor:pointer}
+.buzz.sm2{font-size:clamp(14px,3.6vw,20px)}
+.buzz:disabled{opacity:.45;cursor:default}
+.hb{display:block;width:100%;height:46px;border:0;border-radius:999px;padding:0 10px;margin-top:10px;background:var(--ink);color:var(--deep);font-weight:800;font-size:var(--c);cursor:pointer}
+.dark .hb{background:var(--dark-ink);color:var(--dark-light)}
+.hb.o{background:transparent;color:inherit;border:2px solid currentColor}
+.hb:disabled{opacity:.4;cursor:default}
+.hb:active,.ib:active{transform:scale(.96);transition:transform .2s}
+.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#bars{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;align-items:start}
+.bh{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;border-radius:999px;padding:12px 22px;color:#F5F7FA;font-weight:700;font-size:var(--c);cursor:pointer}
+.bh.n{background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep))}
+.dark .bh.n{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
+.bb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.bar.open .bb{grid-template-rows:1fr}
+.bi{overflow:hidden;min-height:0}
+.bg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:10px}
+.bar .chev{transition:transform .35s ease}
+.bar.open .chev{transform:rotate(180deg)}
+#dock{margin-top:16px}
+.mixrow{display:flex;justify-content:center;align-items:center;gap:12px}
+.pbtn.sq{width:52px;height:52px;padding:0;margin:0;display:grid;place-items:center;font-size:24px;line-height:1}
+.pbtn.sq:disabled{opacity:.4}
+.mic{width:28px;height:28px}
+.volbar{display:flex;align-items:center;gap:12px;width:100%;height:46px;border-radius:999px;padding:0 20px;margin-top:14px;background:var(--grad);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.dark .volbar{color:var(--dark-ink)}
+.volbar svg{width:20px;height:20px;flex:0 0 20px}
+#vol{-webkit-appearance:none;appearance:none;flex:1;min-width:0;width:auto;height:26px;margin:0;padding:0;background:transparent;border:0;border-radius:0;color:inherit;cursor:pointer;outline:none}
+#vol::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,currentColor var(--p,50%),var(--track) var(--p,50%))}
+#vol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
+#vol::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
+#vol::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
+#vol::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
+@media(min-width:701px){#bars{grid-template-columns:1fr 1fr}.bar:last-child{grid-column:1/-1}}
 </style>
 </head>
 
@@ -237,9 +287,23 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 <div id="game" hidden>
   <h1>"Breyn Rinq"<br>Səsli otaq</h1>
   <section class="card center" id="head"></section>
-  <div class="note" id="phase"></div>
-  <button class="pbtn" id="bStart" hidden>Oyuna başla</button>
-  <div id="teams"></div>
+  <div id="cols"><div id="colL"></div><div id="colR"></div></div>
+  <div id="bars"></div>
+  <div id="dock">
+    <div class="mixrow">
+      <button class="pbtn sq" type="button" data-rx="👍">👍</button>
+      <button class="pbtn sq" type="button" data-rx="👏">👏</button>
+      <button class="pbtn sq" id="bMute" type="button" data-act="mute" aria-label="Mikrofon"></button>
+      <button class="pbtn sq" type="button" data-rx="❤️">❤️</button>
+      <button class="pbtn sq" type="button" data-rx="🦉">🦉</button>
+    </div>
+    <div class="volbar">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="range" id="vol" min="0" max="100" value="50" step="1" aria-label="Ümumi otaq səsi">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+  <div class="note" id="net"></div>
 </div>
 
 </div>
@@ -513,13 +577,10 @@ document.addEventListener('click',async e=>{
   }
 });
 
-$('bStart').onclick=()=>{
-  if(role==='host'&&R&&R.status==='lobby')db.ref('rooms/'+room+'/status').set('playing');
-};
 </script>
 <script>
 /* ===== OYUN + SƏS ===== */
-let off=0,muted=false,stream=null,micAsk=0,sigOn=0,xp=0;
+let vol=.5,off=0,muted=false,stream=null,micAsk=0,sigOn=0,xp=0;
 db.ref('.info/serverTimeOffset').on('value',s=>{off=s.val()||0});
 const now=()=>Date.now()+off,rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
 const T=()=>R.teams||{},P=()=>R.players||{},opn={},isH=()=>role==='host';
@@ -542,56 +603,84 @@ function presserOf(tid){
   return t&&t.presser&&members(tid).some(x=>x.id===t.presser&&!x.cap)?t.presser:null;
 }
 
+const MICSVG=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
+const BTNSVG='<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>';
+const CHEV='<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges"><path d="M0 0h2v1H0zM6 0h2v1H6z"/><path d="M1 1h2v1H1zM5 1h2v1H5z"/><path d="M2 2h4v1H2z"/><path d="M3 3h2v1H3z"/></svg>';
+
 function render(){
   const h=isH(),me=P()[pid]||{},mt=me.team,cap=role==='captain',st=R.status,v=R.val||1;
   const tids=Object.keys(T()).sort((a,b)=>(T()[a].createdAt||0)-(T()[b].createdAt||0));
+  const cl=t=>tids.indexOf(t)===1?'p':'b';
+  const isPresser=!h&&!cap&&!!mt&&presserOf(mt)===pid;
   $('lobby').hidden=true;$('game').hidden=false;
 
-  $('head').innerHTML=h
-    ?`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button><div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün toxun</div>`
-    :`<div class="big">${esc(T()[mt]&&T()[mt].name)} komandası</div>${cap
-      ?`<div class="captain-code-label">Komanda kodu</div><button class="copy-code captain-team-code" data-copy="${esc(room+mt)}" type="button">${esc(room+mt)}</button><div class="sm">Kodu komanda yoldaşlarına ver - Kopyalamaq üçün toxun</div>`
-      :`<div class="sm">Oyunçu · Komanda kodu: <span class="code">${esc(room+mt)}</span></div>`}`;
-
-  $('tcard').hidden=st==='lobby';
-  $('tcard').innerHTML=`<div class="sm">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">${tl()}</div>`+(h&&st==='wait'?'<button class="mini" data-act="resv">Dəyəri sıfırla</button>':'');
+  $('head').innerHTML=`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button>`+
+    (h?'<div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün kodun üzərinə toxun</div>'
+      :`<div class="sm">Komanda kodu: <button class="copy-code code" data-copy="${esc(room+mt)}" type="button">${esc(room+mt)}</button>${cap?' - komanda yoldaşlarına ver':''}</div>`);
 
   const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
-  $('bStart').hidden=!(h&&st==='lobby');$('bStart').disabled=!ready;
-
   let ev=R.ev;
-  if(st==='lobby')ev=h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Tam 2 komanda, hər komandada ən azı 2 nəfər və düyməsixan lazımdır.'):cap?'Komandandan düyməsixan seç (D düyməsi).':'Kapitan düyməsixanı seçir.';
+  if(st==='lobby')ev=tids.length<2?'Komandaların qoşulması gözlənilir...':h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Hər komandada ən azı 2 nəfər və düyməsixan lazımdır.'):cap?'Komandandan düyməsixan seç.':'Kapitan düyməsixanı seçir.';
   else if(st==='wait'&&!ev)ev=`${v} XALLIQ SUAL SƏSLƏNİR!`+(v>=3?' TAPILMASA DİSKVALİFİKASİYA':'');
   else if(st==='finished')ev='🏆 '+((T()[R.winner]||{}).name||'')+' QALİB OLDU!';
-  $('phase').textContent=ev||'';
 
-  const mk=(a,t,d)=>`<button class="pbtn s" data-act="${a}"${d?' disabled':''}>${t}</button>`;
-  let b='';
+  const sb=i=>{
+    const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t;
+    const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):'KAPİTAN'):''):'Gözləyir...';
+    return `<div class="sbox ${i?'p':'b'}"><div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div></div>`;
+  };
+  $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center">${st==='lobby'?'':`<div class="sm" style="margin:0">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">${tl()}</div>`}<div class="evt">${esc(ev||'')}</div></section>`;
+
+  const canD=x=>cap&&x.team===mt&&(st==='lobby'||st==='wait')&&!x.pen;
+  const canM=x=>cap&&x.team===mt&&st==='answered'&&R.winner===mt&&!R.speaker&&!x.pen;
+  const row=(x,tid,o)=>{
+    const isP=x.id===presserOf(tid);
+    const ic=o&&o.ic&&!x.cap?`<span class="ic"><button class="ib${R.speaker===x.id?' on':''}" data-spk="${x.id}"${canM(x)?'':' disabled'}>${MICSVG(0)}</button><button class="ib${isP?' on':''}" data-pick="${x.id}"${canD(x)?'':' disabled'}>${BTNSVG}</button></span>`:'';
+    const rs=h&&x.pen&&o&&o.rest?`<button class="mini" data-rest="${x.id}">Geri qaytar</button>`:'';
+    return `<div class="mr ${cl(tid)}${x.pen?' pen':''}"><span class="nm">${x.cap?`<b>${esc(x.name)} (K)</b>`:esc(x.name)+(isP?' (D)':'')}${x.pen?' (X)':''}</span>${ic}${rs}</div>`;
+  };
+
+  const hb=(a,t,o,d,x)=>`<button class="hb${o?' o':''}" data-act="${a}"${d?' disabled':''}${x||''}>${t}</button>`;
+  let right='';
   if(h){
-    if(st==='wait')b+=mk('vaxt','VAXT! - 20 SANİYƏ',tids.length<2||tids.every(t=>(R.fs||{})[t]))+(R.talk?mk('endtalk','Danışığı bitir'):'');
-    if(st==='answered')b+=mk('p1','+1')+mk('p2','+2')+mk('p3','+3')+mk('wrong','QALAN VAXT RƏQİBİN')+mk('none','DOĞRU CAVAB YOXDUR');
-    if(st==='expired')b+=mk('none','DOĞRU CAVAB YOXDUR');
-    if(st==='finished')b+=mk('newg','YENİ OYUN');
-  }else{
-    if(!cap&&mt&&presserOf(mt)===pid&&(st==='wait'||st==='running')){
-      const ok=!me.pen&&!(R.fs||{})[mt]&&!(R.wrong||{})[mt];
-      b+=`<button class="pbtn" data-act="buzz" style="font-size:28px;padding:22px 60px"${ok?'':' disabled'}>BAS!</button>`;
+    let p='<div class="sm" style="margin:0;text-align:center"><b>Aparıcı paneli:</b></div>';
+    if(st==='lobby')p+=hb('begin','OYUNA BAŞLA',0,!ready);
+    if(st==='wait'){
+      p+=hb('vaxt','VAXT! - 20 SANİYƏ',0,tids.length<2||tids.every(t=>(R.fs||{})[t]))+hb('rst','DÜYMƏLƏRİ SIFIRLA',1)+hb('resv','DƏYƏRİ SIFIRLA',1);
+      tids.filter(t=>T()[t].req).forEach(t=>{p+=hb('grant','✋ '+esc(T()[t].name)+' danışmaq istəyir',1,0,` data-t="${t}"`)});
+      if(R.talk)p+=hb('endtalk','DANIŞIĞI BİTİR',1);
     }
-    if(cap&&st==='wait'&&!T()[mt].req&&R.talk!==pid)b+=mk('req','Aparıcı ilə danışmaq istəyirəm');
+    if(st==='answered')p+=`<div class="hg">${hb('p1','+1')+hb('p2','+2')+hb('p3','+3')}</div>`+hb('wrong','QALAN VAXT RƏQİBİN',1)+hb('none','DOĞRU CAVAB YOXDUR',1)+hb('endspk','DANIŞIĞI BİTİR',1,!!R.sil);
+    if(st==='expired')p+=hb('none','DOĞRU CAVAB YOXDUR',1);
+    if(st==='finished')p+=hb('newg','YENİ OYUN',0);
+    right=`<section class="card">${p}</section>`;
+  }else if(isPresser){
+    const bad=me.pen||(R.fs||{})[mt]||(R.wrong||{})[mt];
+    const ok=!bad&&(st==='wait'||st==='running');
+    right=`<button class="buzz ${cl(mt)}${bad?' sm2':''}" data-act="buzz"${ok?'':' disabled'}>${bad?'CAVAB HÜQUQU YOXDUR':'BAS!'}</button>`;
+  }else{
+    right=members(mt).map(x=>row(x,mt,{ic:cap})).join('');
+    if(cap&&st==='wait'){
+      const rq=T()[mt]&&T()[mt].req;
+      right+=hb('req',rq?'İstək göndərildi':'Aparıcı ilə danışmaq istəyirəm',1,rq||R.talk===pid);
+    }
   }
-  b+=mk('mute',me.pen?'Mikrofon bağlıdır (cərimə)':muted?'Mikrofonu aç':'Mikrofonu bağla',!!me.pen);
-  $('ctl').innerHTML=b;
+  $('colR').innerHTML=right;
 
-  $('teams').innerHTML=tids.map(t=>{
-    const tm=T()[t],m=members(t),pr=presserOf(t),mine=t===mt,show=h||mine||opn[t],ans=st==='answered'&&R.winner===t;
-    const title=esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):'KAPİTAN'):'');
-    return `<div class="tcard" data-tg="${t}"><div class="tt"><span>${h&&tm.req?`<button class="mini" data-act="grant" data-t="${t}">✋</button> `:''}${title}</span><span class="sc">${tm.score||0} xal</span></div>`+
-      (show?`<div class="tpad">${h?`<div class="sm" style="margin:0 0 6px">Komanda kodu: <span class="code">${esc(room+t)}</span></div>`:''}${m.map(x=>{
-        const canD=cap&&mine&&(st==='lobby'||st==='wait')&&!x.cap&&!x.pen;
-        const canM=cap&&mine&&st==='answered'&&R.winner===t&&!R.speaker&&!x.cap&&!x.pen;
-        return `<div class="mem${x.pen?' pen':''}"><span>${x.cap?`<b>${esc(x.name)} (K)</b>`:esc(x.name)+(x.id===pr?' (D)':'')}${x.pen?' (X)':''}${R.speaker===x.id?' 🎙':''}</span><span>${canD?`<button class="mini" data-pick="${x.id}"${x.id===pr?' disabled':''}>D</button>`:''}${canM?`<button class="mini" data-spk="${x.id}">🎙</button>`:''}${h&&x.pen?`<button class="mini" data-rest="${x.id}">Geri qaytar</button>`:''}</span></div>`;
-      }).join('')}</div>`:'')+'</div>';
-  }).join('')||'<div class="note">Hələ komanda yoxdur.</div>';
+  const bar=(k,label,c,rows)=>`<div class="bar${opn[k]?' open':''}" data-k="${k}"><button class="bh ${c}" type="button"><span>${label}</span>${CHEV}</button><div class="bb"><div class="bi"><div class="bg2">${rows||'<div class="sm">Boşdur</div>'}</div></div></div></div>`;
+  let bars='';
+  if(h)tids.forEach(t=>{bars+=bar(t,esc(T()[t].name),cl(t),members(t).map(x=>row(x,t,{rest:1})).join(''))});
+  else{
+    if(isPresser)bars+=bar('own','Öz komandası',cl(mt),members(mt).map(x=>row(x,mt)).join(''));
+    const o=tids.find(t=>t!==mt);
+    if(o)bars+=bar('riv','Rəqib komanda',cl(o),members(o).map(x=>row(x,o)).join(''));
+  }
+  const pens=Object.entries(P()).filter(([,x])=>x.pen).map(([id,x])=>({id,...x}));
+  bars+=bar('ben','Cərimə skamyası'+(pens.length?' ('+pens.length+')':''),'n',pens.map(x=>row(x,x.team,{rest:1})).join(''));
+  $('bars').innerHTML=bars;
+
+  $('bMute').innerHTML=MICSVG(muted||me.pen);
+  $('bMute').disabled=!!me.pen;
 
   if(!entered){entered=true;intro()}
   if(stream)stream.getAudioTracks().forEach(t=>{t.enabled=!muted&&!me.pen});
@@ -599,8 +688,7 @@ function render(){
   if(!micAsk){micAsk=1;getMic()}
   if(!sigOn){sigOn=1;rf('sig/'+pid).on('child_added',s=>{const x=s.val();s.ref.remove();if(x)sigIn(x.from,JSON.parse(x.d))})}
 }
-$('phase').insertAdjacentHTML('beforebegin','<section class="card center" id="tcard"></section>');
-$('teams').insertAdjacentHTML('beforebegin','<div id="ctl" class="row"></div>');
+$('vol').addEventListener('input',e=>{vol=e.target.value/100;e.target.style.setProperty('--p',e.target.value+'%');applyMute()});
 
 /* TAYMER */
 setInterval(()=>{
@@ -659,7 +747,7 @@ function pickSpeaker(id){
 
 /* APARICI HƏRƏKƏTLƏRİ */
 function nextQ(x){
-  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,ev:null,talk:null,q:(R.q||1)+1};
+  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null,talk:null,q:(R.q||1)+1};
   Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
   Object.keys(T()).forEach(t=>{u['teams/'+t+'/req']=null});
   return Object.assign(u,x);
@@ -705,7 +793,7 @@ const A={
     if((R.wrong||{})[o]||(R.fs||{})[o])return A.none();
     const u={};let pn='';
     if(R.first&&R.speaker&&P()[R.speaker]){u['players/'+R.speaker+'/pen']=true;pn=P()[R.speaker].name.toUpperCase()+' CƏRİMƏLƏNDİ! '}
-    Object.assign(u,{status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ',['wrong/'+w]:true});
+    Object.assign(u,{sil:null,status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ',['wrong/'+w]:true});
     rf().update(u);
   },
   none(){
@@ -722,22 +810,29 @@ const A={
     rf().update(u);
   },
   resv(){if(R.status==='wait')rf().update({q:1,val:1})},
+  begin(){
+    if(R.status!=='lobby')return;
+    const u={status:'wait',q:1,val:1,ev:null};
+    Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
+    rf().update(u);
+  },
+  rst(){
+    if(R.status!=='wait')return;
+    const u={fs:null,fst:null,wrong:null,ev:null};
+    Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
+    rf().update(u);
+  },
+  endspk(){if(R.status==='answered')rf('sil').set(true)},
   grant(t){rf().update({talk:T()[t].captain,['teams/'+t+'/req']:null})},
   endtalk(){rf().update({talk:null})},
   req(){const m=P()[pid];if(m&&m.cap)rf('teams/'+m.team+'/req').set(true)},
   mute(){muted=!muted;render()}
 };
-const HOSTACT=['vaxt','p1','p2','p3','wrong','none','newg','resv','grant','endtalk'];
-$('bStart').onclick=()=>{
-  if(!isH()||R.status!=='lobby')return;
-  const u={status:'wait',q:1,val:1,ev:null};
-  Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
-  rf().update(u);
-};
+const HOSTACT=['begin','rst','endspk','vaxt','p1','p2','p3','wrong','none','newg','resv','grant','endtalk'];
 document.addEventListener('click',e=>{
   if(!R)return;
-  const b=e.target.closest('button'),tg=e.target.closest('[data-tg]');
-  if(tg&&!b){const k=tg.dataset.tg;opn[k]=!opn[k];render();return}
+  const b=e.target.closest('button'),bh=e.target.closest('.bh');
+  if(bh){const bar=bh.parentElement;bar.classList.toggle('open');opn[bar.dataset.k]=bar.classList.contains('open');return}
   if(!b)return;
   const d=b.dataset,me=P()[pid]||{};
   if(d.act&&A[d.act]&&d.act!=='buzz'){
@@ -763,7 +858,7 @@ let ICE=[{urls:'stun:stun.l.google.com:19302'}],relayOk=false;
 const iceReady=fetch('https://piksel-nhn.pikseliok.workers.dev/turn').then(r=>r.json()).then(j=>{if(j.iceServers&&j.iceServers.length){ICE=ICE.concat(j.iceServers);relayOk=true}}).catch(()=>{});
 const pcs={},auds={},pend=[];
 
-function ah(i){const x=P()[i];return !!x&&x.team===R.winner&&((x.cap&&!R.speaker)||i===R.speaker)}
+function ah(i){const x=P()[i];return !!x&&!R.sil&&x.team===R.winner&&((x.cap&&!R.speaker)||i===R.speaker)}
 function allH(i){
   if(i===R.host)return true;
   if(isPen(i))return false;
@@ -792,7 +887,7 @@ function mixer(){
 }
 function applyMute(){
   if(!mixCtx)return;
-  for(const i in auds)auds[i].g.gain.setTargetAtTime(hear(i)?1:0,mixCtx.currentTime,.02);
+  for(const i in auds)auds[i].g.gain.setTargetAtTime(hear(i)?vol*2:0,mixCtx.currentTime,.02);
 }
 const sg=(i,d)=>rf('sig/'+i).push({from:pid,d:JSON.stringify(d)});
 
@@ -859,7 +954,6 @@ async function getMic(){
   showNet();
   pend.splice(0).forEach(([f,d])=>onSig(f,d));
 }
-$('teams').insertAdjacentHTML('afterend','<div class="note" id="net"></div>');
 const NETTR={connected:'qoşuldu',connecting:'qoşulur',new:'başlayır',failed:'alınmadı',disconnected:'kəsildi',closed:'bağlandı'};
 function showNet(){
   if(!R||!$('net'))return;
@@ -965,7 +1059,6 @@ render=function(){
   }
   last={init:1,k,sa,fs:fsn};
 
-  $('ctl').insertAdjacentHTML('beforeend',RX.map(x=>`<button class="pbtn s" data-rx="${x}">${x}</button>`).join(''));
   if(!rxOn){
     rxOn=1;
     rf('rx').on('child_added',s=>{const x=s.val();if(x&&x.f!==pid&&now()-x.t<3000)spawn(x.e)});
