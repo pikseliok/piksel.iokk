@@ -15,10 +15,10 @@ body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF
 *{box-sizing:border-box;margin:0;padding:0}
 a,button{-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
-body{min-height:100vh;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
 button,a{font:inherit}
 a{color:inherit}
-.page{width:min(95vw,1100px);margin:0 auto;padding:12px 0 32px}
+.page{flex:1 0 auto;width:min(95vw,1100px);margin:0 auto;padding:12px 0 32px}
 
 .frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--i) * .1s)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.5s}
@@ -54,7 +54,7 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
     radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){
-  .doc:hover{transform:translateY(-2px) scale(1.002);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+  .doc:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
   .doc:hover::before{opacity:1}
 }
 .doc-head{width:100%;display:flex;align-items:center;gap:14px;padding:22px 26px 0;background:none;border:0;color:inherit;text-align:left;cursor:default;pointer-events:none}
@@ -101,11 +101,33 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
   .doc-body{font-size:12px}
 }
 
-footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
-.footer-line{font-size:15px;line-height:1.4;font-weight:500;text-decoration:none}
-a.footer-line{transition:opacity .25s ease}
-a.footer-line:hover{opacity:.72}
-@media (max-width:700px){footer{min-height:96px}.footer-line{font-size:13px}}
+/* ===== FOOTER (başqa səhifələrə kopyalanmaq üçün: CSS + HTML + JS hissələri) ===== */
+footer{position:relative;overflow:hidden;flex-shrink:0;margin-top:auto;background:var(--grad);color:var(--fg);padding:22px 20px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){footer:hover::before{opacity:1}}
+footer>*{position:relative;z-index:1}
+.f-title{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.f-social{display:flex;align-items:center;justify-content:center;gap:18px}
+.f-social a{width:26px;height:26px;display:grid;place-items:center;color:inherit;transition:transform .2s ease,opacity .25s ease}
+.f-social a:hover{opacity:.75}
+.f-social a:active{transform:scale(.88)}
+.f-social svg{width:100%;height:100%;display:block}
+.f-legal{display:flex;align-items:center;justify-content:center;gap:26px}
+.f-link{font-size:13px;font-weight:500;white-space:nowrap;text-decoration:none;transition:transform .25s ease,opacity .25s ease}
+.f-link:hover{opacity:.72}
+.f-link:active,.f-link.go{transform:scale(.94);opacity:.6}
+.f-line{width:100%;height:1px;border-radius:1px;background:currentColor;opacity:.2}
+.f-text{font-size:13px;font-weight:500;line-height:1.4;text-decoration:none}
+.f-note{font-size:12px;font-weight:700;line-height:1.5;opacity:.6}
+@media (max-width:700px){
+  .f-title{font-size:13px}
+  .f-legal{gap:18px}
+  .f-link,.f-text{font-size:12px}
+  .f-note{font-size:10.5px}
+}
 .doc-head:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -271,9 +293,28 @@ a.footer-line:hover{opacity:.72}
 </div>
 
 <footer>
-  <div class="footer-line">Unikal İntellektual Oyunlar Platforması </div>
-  <a class="footer-line" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
-  <a class="footer-line" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+  <div class="f-title">Unikal İntellektual Oyunlar Platforması</div>
+
+  <div class="f-social">
+    <a href="https://www.instagram.com/piksel.iok/?action=follow" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 20.8l1.5-4.6A8.7 8.7 0 1 1 8 19.5z"/><path d="M9.2 8.2c-.4.5-.5 1.3 0 2.3.9 1.9 2.4 3.4 4.3 4.3 1 .5 1.8.4 2.3 0l.5-.8c.1-.2.1-.4-.1-.5l-1.4-.8c-.2-.1-.4-.1-.5.1l-.5.6c-.9-.4-1.7-1.1-2.1-2l.6-.5c.2-.1.2-.3.1-.5l-.8-1.4c-.1-.2-.3-.2-.5-.1z" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+
+  <div class="f-legal">
+    <a class="f-link" href="/mexfilik_ve_istifade_sertleri">Məxfilik Siyasəti</a>
+    <a class="f-link" href="/mexfilik_ve_istifade_sertleri">İstifadə Şərtləri</a>
+  </div>
+
+  <div class="f-line"></div>
+  <div class="f-text">©2026 πksel İntellektual Oyunlar Klubu</div>
+  <a class="f-text f-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+
+  <div class="f-line"></div>
+  <div class="f-note">Bu saytda layihələndirilmiş unikal funksiyaların hər biri Müəllif hüquqları ilə qorunur.</div>
 </footer>
 
 <script>
@@ -295,6 +336,20 @@ document.querySelectorAll(".doc").forEach(d=>{
     d.style.setProperty("--my",(e.clientY-r.top)+"px");
   });
 });
+
+/* Footer: maus işığı + daxili keçid animasiyası */
+const ft=document.querySelector("footer");
+ft.addEventListener("pointermove",e=>{
+  const r=ft.getBoundingClientRect();
+  ft.style.setProperty("--mx",(e.clientX-r.left)+"px");
+  ft.style.setProperty("--my",(e.clientY-r.top)+"px");
+});
+document.querySelectorAll(".f-legal a").forEach(a=>a.addEventListener("click",e=>{
+  if(e.ctrlKey||e.metaKey||e.shiftKey)return;
+  e.preventDefault();
+  a.classList.add("go");
+  setTimeout(()=>{location.href=a.href},250);
+}));
 
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
