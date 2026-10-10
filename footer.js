@@ -4,6 +4,8 @@
        <script src="/footer.js"></script>
    Köhnə <footer> avtomatik silinir və yenisi səhifənin ən sonuna qoyulur.
    Footer-i dəyişmək üçün yalnız bu faylı redaktə edin.
+   Footer-in rəngi gündüz/gecə rejiminə uyğun avtomatik dəyişir
+   (index-dəki çərçivələr kimi), səhifənin öz dəyişənlərindən asılı deyil.
    ===================================================================== */
 (function () {
   "use strict";
@@ -12,15 +14,18 @@
      telefon 9px, dar telefon (≤420px) 8px. */
   var css = `
 body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
-footer.pk-footer{position:relative;overflow:hidden;flex-shrink:0;margin:auto 0 0;width:100%;min-height:0;
-  background:var(--grad,linear-gradient(135deg,#001E6F 0%,#002E92 50%,#001E6F 100%));color:var(--fg,#9DC3FF);
+footer.pk-footer{
+  --fc1:#001E6F;--fc2:#002E92;--ffg:#9DC3FF;--fglow:rgba(0,8,45,.30);
+  position:relative;overflow:hidden;flex-shrink:0;margin:auto 0 0;width:100%;min-height:0;
+  background:linear-gradient(135deg,var(--fc1) 0%,var(--fc2) 50%,var(--fc1) 100%);color:var(--ffg);
   padding:10px 14px calc(8px + env(safe-area-inset-bottom,0px));
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center;
   font-family:"Poppins",sans-serif;-webkit-font-smoothing:antialiased}
+footer.pk-footer.pk-dark{--fc1:#9DC3FF;--fc2:#6FA5FC;--ffg:#00072C;--fglow:rgba(255,255,255,.40)}
 footer.pk-footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
   background:
-    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow,rgba(0,8,45,.3)),transparent 72%),
-    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow,rgba(0,8,45,.3)),transparent 72%)}
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--fglow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--fglow),transparent 72%)}
 @media (hover:hover){footer.pk-footer:hover::before{opacity:1}}
 footer.pk-footer>*{position:relative;z-index:1}
 footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
@@ -74,6 +79,19 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
 <div class="pk-line"></div>
 <div class="pk-note">Bu saytda layihələndirilmiş unikal funksiyaların hər biri Müəllif hüquqları ilə qorunur.</div>`;
 
+  /* ---------- Rejim (gündüz/gecə) ---------- */
+  function isDark() {
+    if (document.body && document.body.classList.contains("dark")) return true;
+    try { return localStorage.getItem("piksel-theme") === "dark"; } catch (e) { return false; }
+  }
+
+  function syncTheme() {
+    var d = isDark();
+    document.querySelectorAll("footer.pk-footer").forEach(function (f) {
+      f.classList.toggle("pk-dark", d);
+    });
+  }
+
   function build() {
     /* köhnə footer-ləri sil */
     document.querySelectorAll("footer").forEach(function (f) { f.remove(); });
@@ -91,6 +109,11 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
     ft.className = "pk-footer";
     ft.innerHTML = html;
     document.body.appendChild(ft);
+
+    /* rejimə uyğun rəng: indi və hər dəyişəndə */
+    syncTheme();
+    new MutationObserver(syncTheme).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("storage", syncTheme);
 
     /* maus işığı */
     ft.addEventListener("pointermove", function (e) {
@@ -116,8 +139,3 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
     build();
   }
 })();
-
-
-
-
-
