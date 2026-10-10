@@ -269,8 +269,27 @@ const ORG_INSTA="onurelzh";
 const HOURS=26,AUTOPLAY=3000;
 const $=id=>document.getElementById(id);
 const wide=matchMedia("(min-width:701px)");
-function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+function onlyDate(v){
+  const s=String(v==null?"":v).trim();
+  if(!s)return s;
+  /* Google Sheets ISO formatı göndərərsə (2026-10-15T08:00:00.000Z) */
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)){
+    const d=new Date(s);
+    if(!isNaN(d)){
+      const p=n=>String(n).padStart(2,"0");
+      return p(d.getDate())+"."+p(d.getMonth()+1)+"."+d.getFullYear();
+    }
+  }
+  /* Mətn formatında saatı silir: "15.10.2026 14:00", "15 Oktyabr, saat 14:00" və s. */
+  return s
+    .replace(/[,\s]*(saat\s*)?\d{1,2}:\d{2}(:\d{2})?(\s*[AaPp][Mm])?/g,"")
+    .replace(/[\s,\-–]+$/,"")
+    .trim();
+}
 function replay(box){[...box.children].forEach(e=>{e.style.animation="none";void e.offsetWidth;e.style.animation=""})}
+
+  
 
 /* Gün / Ay animasiyası */
 const rays=[...document.querySelectorAll(".ray")];
@@ -311,7 +330,7 @@ function slide(c){
   if(c.afisa){const i=new Image();i.src=c.afisa;i.alt=c.ad;i.onerror=()=>{i.remove();p.textContent="afişa bura yüklənəcək"};p.appendChild(i)}
   else p.textContent="afişa bura yüklənəcək";
   const f=el("div","info"),top=el("div");
-  top.append(el("div","n",c.ad),el("div","l",c.teskilatci),el("div","l",c.muellif),el("div","l",c.vaxt),el("div","l",c.yer));
+  top.append(el("div","n",c.ad),el("div","l",c.teskilatci),el("div","l",c.muellif),el("div","l",onlyDate(c.vaxt)),el("div","l",c.yer));
   const fee=String(c.haqq==null||c.haqq===""?"0":c.haqq).replace(/[^\d.,]/g,"")||"0";
   f.append(top,el("div","fee","İştirak ₼ "+fee));
   s.append(p,f);return s;
