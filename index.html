@@ -10,6 +10,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<script>
+/* ---------- Təsdiq yaddaşı (flaşın qarşısını almaq üçün head-də) ---------- */
+(function(){
+  var KEY="piksel-consent";
+  window.pikselConsent={
+    has:function(){
+      try{ if(localStorage.getItem(KEY)==="1") return true; }catch(e){}
+      return /(?:^|; )piksel_consent=1/.test(document.cookie);
+    },
+    save:function(){
+      try{ localStorage.setItem(KEY,"1"); }catch(e){}
+      document.cookie="piksel_consent=1; max-age=315360000; path=/; SameSite=Lax";
+    }
+  };
+  if(!window.pikselConsent.has()) document.documentElement.classList.add("need-consent");
+})();
+</script>
 <style>	
 /* Ölçülər: Komp+Planşet (701px+) / Telefon (≤700px) / Dar telefon (≤420px) */
 body{
@@ -109,6 +126,40 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.hero-qr:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+/* ---------- Təsdiq paneli ---------- */
+.consent-overlay{display:none;position:fixed;inset:0;z-index:9998;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .5s ease}
+/* Sayt əvvəl blursuz açılır; 2 saniyə sonra 1 saniyəyə blurlanır (panel də eyni vaxtda gəlir) */
+html.need-consent .consent-overlay{display:block;animation:ovIn 1s ease 2s backwards}
+html.need-consent body{overflow:hidden}
+html.consent-rejected .consent-bar{display:none}
+.consent-overlay.hide{opacity:0}
+@keyframes ovIn{from{-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+
+.consent-bar{display:none;position:fixed;left:0;right:0;margin:0 auto;bottom:max(14px,env(safe-area-inset-bottom));z-index:9999;width:min(95vw,820px);border-radius:28px;padding:20px 24px;background:var(--grad);color:var(--fg);box-shadow:0 14px 34px rgba(0,20,110,.22);overflow:hidden;transition:transform .35s cubic-bezier(.18,.8,.22,1),box-shadow .35s ease,opacity .45s ease}
+html.need-consent .consent-bar{display:block;animation:consentIn 1s cubic-bezier(.18,.8,.24,1) 2s backwards}
+.consent-bar.hide{opacity:0;transform:translateY(40px)!important;pointer-events:none}
+@keyframes consentIn{from{opacity:0;visibility:hidden;transform:translateY(120px)}}
+.consent-bar.out{transform:translateY(170%)!important;opacity:0;pointer-events:none;transition:transform .8s cubic-bezier(.5,0,.75,0),opacity .8s ease}
+.consent-bar>*{position:relative;z-index:1}
+.consent-bar::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){
+  .consent-bar:hover{transform:scale(1.0004)}
+  .consent-bar:hover::before{opacity:1}
+}
+.consent-bar:active{transform:scale(.996)}
+.consent-text{font-size:15px;line-height:1.5;font-weight:500;text-align:center}
+.consent-text a{font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.consent-actions{display:flex;flex-direction:row-reverse;gap:12px;margin-top:16px}
+.consent-btn{flex:1;height:46px;border-radius:40px;cursor:pointer;font-size:15px;color:var(--fg);transition:transform .25s ease,opacity .25s ease}
+.consent-btn.yes{background:var(--fg);color:var(--c1);border:2px solid var(--fg);font-weight:500}
+.consent-btn.no{background:transparent;border:2px solid var(--fg);font-weight:500}
+@media (hover:hover){.consent-btn:hover{transform:scale(1.0004)}}
+.consent-btn:active{transform:scale(.985)}
+.consent-btn:focus-visible,.consent-text a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+
 /* ---------- TELEFON ≤700px: bütün kartlar eyni ölçüdə, simmetrik ---------- */
 @media (max-width:700px){
   .page{width:calc(100vw - 44px);padding:11px 0 26px}
@@ -140,6 +191,11 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 
   footer{min-height:96px;padding:16px 12px;gap:5px}
   .footer-line{font-size:13px}
+
+  .consent-bar{width:calc(100vw - 44px);padding:16px;border-radius:22px}
+  .consent-text{font-size:12px}
+  .consent-actions{flex-direction:column;margin-top:12px;gap:8px}
+  .consent-btn{flex:none;width:100%;height:40px;font-size:13px}
 }
 
 /* ---------- DAR TELEFON ≤420px ---------- */
@@ -169,6 +225,9 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 
   footer{min-height:88px}
   .footer-line{font-size:11px}
+
+  .consent-bar{width:calc(100vw - 36px)}
+  .consent-text{font-size:11px}
 }
 </style>
 </head>
@@ -363,6 +422,20 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
+<!-- Təsdiq paneli -->
+<div class="consent-overlay" id="consentOverlay" aria-hidden="true"></div>
+<div class="consent-bar" id="consentBar" role="dialog" aria-modal="true" aria-label="Məxfilik və istifadə şərtləri">
+  <p class="consent-text">
+    <a href="/mexfilik_ve_istifade_sertleri">Məxfilik Siyasətinizi</a> və
+    <a href="/mexfilik_ve_istifade_sertleri">İstifadə Şərtlərinizi</a>
+    oxudum və platformada qalmağı, istifadə etməyi təstiqləyirəm.
+  </p>
+  <div class="consent-actions">
+    <button class="consent-btn yes" id="consentYes" type="button">Təstiqləyirəm</button>
+    <button class="consent-btn no" id="consentNo" type="button">Rədd edirəm</button>
+  </div>
+</div>
+
 <script>
 /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
 document.addEventListener('contextmenu', function(e) {
@@ -481,6 +554,62 @@ document.querySelectorAll("a.card").forEach(a=>{
     setTimeout(()=>{location.href=a.href},300);
   });
 });
+
+/* ---------- Təsdiq paneli ---------- */
+(function(){
+  const root=document.documentElement;
+  const bar=document.getElementById("consentBar");
+  const overlay=document.getElementById("consentOverlay");
+  const yes=document.getElementById("consentYes");
+  const no=document.getElementById("consentNo");
+  const keep=new Set([bar,overlay]);
+  const locked=[];
+
+  if(window.pikselConsent.has()){
+    root.classList.remove("need-consent");
+    bar.remove();overlay.remove();
+    return;
+  }
+
+  /* Klaviatura ilə də saytda gəzməyi blokla */
+  [...document.body.children].forEach(el=>{
+    if(keep.has(el)||el.tagName==="SCRIPT") return;
+    el.setAttribute("inert","");locked.push(el);
+  });
+
+  /* Mausın altında kölgə */
+  bar.addEventListener("pointermove",e=>{
+    const r=bar.getBoundingClientRect();
+    bar.style.setProperty("--mx",(e.clientX-r.left)+"px");
+    bar.style.setProperty("--my",(e.clientY-r.top)+"px");
+  });
+
+  yes.addEventListener("click",()=>{
+    window.pikselConsent.save();
+    bar.classList.add("hide");overlay.classList.add("hide");
+    locked.forEach(el=>el.removeAttribute("inert"));
+    setTimeout(()=>{
+      root.classList.remove("need-consent","consent-rejected");
+      bar.remove();overlay.remove();
+    },500);
+  });
+
+  no.addEventListener("click",()=>{
+    /* Yadda saxlanmır: yenilədikdə panel yenidən çıxacaq */
+    bar.classList.add("out");                      // panel animasiya ilə aşağı gedir
+    setTimeout(()=>{
+      root.classList.add("consent-rejected");
+      if(history.length>1) history.back();         // 1) əvvəlki səhifə
+      setTimeout(()=>{
+        try{window.close()}catch(e){}              // 2) bağlamağa cəhd
+      },450);
+    },800);
+    /* 3) Heç biri alınmasa, ekran tam blurlu və bloklu qalır */
+  });
+
+  /* Geri düyməsi ilə (bfcache) qayıdanda rədd vəziyyəti qalmasın */
+  window.addEventListener("pageshow",e=>{ if(e.persisted) location.reload(); });
+})();
 </script>  <script src="/footer.js"></script>
 </body>
 </html>
