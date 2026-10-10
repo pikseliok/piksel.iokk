@@ -269,6 +269,46 @@ const HOURS=26,AUTOPLAY=3000;
 const $=id=>document.getElementById(id);
 const wide=matchMedia("(min-width:701px)");
 function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const AZ_MONTHS={yanvar:0,fevral:1,mart:2,aprel:3,may:4,iyun:5,iyul:6,avqust:7,sentyabr:8,oktyabr:9,noyabr:10,dekabr:11};
+function contestEnd(c){
+  if(!c)return null;
+  const s=String(c.vaxt==null?"":c.vaxt).trim();
+  if(!s)return null;
+  let d=null;
+  /* ISO: 2026-10-15T08:00:00.000Z */
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)){
+    const x=new Date(s);
+    if(!isNaN(x))d=new Date(x.getFullYear(),x.getMonth(),x.getDate());
+  }
+  /* 15.10.2026, 15/10/2026, 15-10-2026 */
+  if(!d){
+    const m=s.match(/(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})/);
+    if(m)d=new Date(+m[3],+m[2]-1,+m[1]);
+  }
+  /* 28 fevral 2027 (il yoxdursa aşağıdakı qayda işləyir) */
+  if(!d){
+    const m=s.toLowerCase().replace(/\u0307/g,"").match(/(\d{1,2})\s+([a-zəıöüçşğ]+)\s*(\d{4})?/);
+    if(m&&AZ_MONTHS[m[2]]!=null){
+      const now=new Date();
+      d=new Date(m[3]?+m[3]:now.getFullYear(),AZ_MONTHS[m[2]],+m[1]);
+      /* İl yazılmayıbsa və tarix 6 aydan çox əvvəldədirsə, gələn il sayılır */
+      if(!m[3]&&now-d>180*86400000)d=new Date(d.getFullYear()+1,d.getMonth(),d.getDate());
+    }
+  }
+  /* Yarış gününün ertəsi 00:00 */
+  return d?new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime():null;
+}
+function activeOnly(list){
+  const now=Date.now();
+  return (list||[]).filter(c=>{const e=contestEnd(c);return !e||now<e});
+}
+  /* 15 Oktyabr 2026 (il yoxdursa cari il götürülür) */
+  if(!d){
+    const m=s.toLowerCase().replace(/\u0307/g,"").match(/(\d{1,2})\s+([a-zəıöüçşğ]+)\s*(\d{4})?/);
+    if(m&&AZ_MONTHS[m[2]]!=null)d=new Date(m[3]?+m[3]:new Date().getFullYear(),AZ_MONTHS[m[2]],+m[1]);
+  }
+  return d?d.getTime()+86400000:null; /* yarış günün sonu */
+};
 function onlyDate(v){
   const s=String(v==null?"":v).trim();
   if(!s)return s;
@@ -395,9 +435,11 @@ function renderList(){
   const box=$("list");box.innerHTML="";
   if(!type)return;
   const now=Date.now(),T=TYPES[type];
-  const g=String(items[idx]?items[idx].ad:"").trim();const live=ads.filter(a=>String(a.game).trim()===g&&now-new Date(a.tarix).getTime()<HOURS*3600000).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
-  const mine=live.filter(a=>a.mine&&a.type===type),oth=live.filter(a=>a.type===T.other);
-  if(mine.length){box.appendChild(el("p","empty","Sənin elanın:"));mine.forEach((a,i)=>box.appendChild(adEl(a,i)))}
+const end=contestEnd(items.find(c=>String(c.ad).trim()===g));
+const live=ads.filter(a=>{
+  if(String(a.game).trim()!==g)return false;
+  return end?now<end:now-new Date(a.tarix).getTime()<HOURS*3600000;
+}).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
   box.appendChild(el("p","empty",T.list+":"));
   if(!oth.length)box.appendChild(el("p","empty","Hələ elan yoxdur."));
   oth.forEach((a,i)=>box.appendChild(adEl(a,i)));
@@ -480,7 +522,7 @@ $("contactBtn").onclick=()=>{
 function showMsg(m){track.innerHTML='<p class="empty">'+m+'</p>'}
 async function load(){
   const c=cacheGet();
-  if(c&&c.contests&&c.contests.length){items=c.contests;ads=c.ads||[];build();sched()}
+if(c&&c.contests&&activeOnly(c.contests).length){items=activeOnly(c.contests);ads=c.ads||[];build();sched()};
   let data=null,why="";
   try{
     const r=await fetch(API+"?dev="+encodeURIComponent(DEV),{cache:"no-store"});
@@ -488,7 +530,7 @@ async function load(){
     try{data=JSON.parse(t)}catch(e){why="Cavab JSON deyil: "+t.slice(0,80)}
   }catch(e){why="Sorğu bloklandı: "+e.message}
   if(data){
-    const nc=data.contests||[];
+const nc=activeOnly(data.contests);
     const changed=JSON.stringify(nc)!==JSON.stringify(items);
     ads=data.ads||[];
     if(changed){items=nc;if(items.length){build();sched()}}
@@ -498,6 +540,13 @@ async function load(){
   }else if(!items.length)showMsg("Kubok yüklənmədi<br><small>"+why.replace(/</g,"&lt;")+"</small>");
 }
 load();
+  setInterval(()=>{
+  const a=activeOnly(items);
+  if(a.length!==items.length){
+    items=a;
+    if(items.length){build();sched()}else showMsg("Hələ kubok əlavə olunmayıb");
+  }
+},60000);
 </script>
 </body>
 </html>
