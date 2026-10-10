@@ -109,7 +109,7 @@ function initTheme(){let saved=null;try{saved=localStorage.getItem("piksel-theme
 themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark")));
 initTheme();requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 document.querySelectorAll(".game-card").forEach(card=>card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();card.style.setProperty("--mx",(e.clientX-r.left)+"px");card.style.setProperty("--my",(e.clientY-r.top)+"px")}));
-</script>
+</script> <script src="/footer.js"></script>
 </body>
 </html>
 
