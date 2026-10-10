@@ -73,6 +73,7 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .track{display:flex;transition:transform .6s cubic-bezier(.22,.8,.25,1)}
 .slide{min-width:100%;display:grid;grid-template-columns:38% 1fr;gap:clamp(14px,4cqw,24px);align-items:start}
 .poster{width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--ink);color:var(--deep);display:grid;place-items:center;text-align:center;font-weight:700;font-size:var(--b);padding:0}
+.poster:not(:has(img)){padding:8px}
 .poster img{width:100%;height:100%;object-fit:cover;display:block}
 .info{display:flex;flex-direction:column;min-width:0;justify-content:space-between;gap:10px;align-self:stretch}
 .info>div:first-child{display:flex;flex-direction:column;gap:7px}
@@ -261,6 +262,25 @@ footer a:hover{opacity:.72;transform:translateY(-1px)}
   <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 <script>
+/* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (
+    e.keyCode === 123 || // F12
+    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+    (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+    (e.ctrlKey && e.keyCode === 85) || // Ctrl+U
+    (e.ctrlKey && e.keyCode === 83)    // Ctrl+S
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+/* ---------- Əsas skript ---------- */
 const API="https://script.google.com/macros/s/AKfycbwN4XLEMdN1bTnOfpqVR-Nh-ILpkhAo08Bi6bbm21jwJB75XrNW3geEivf9ASJPusDv9Q/exec";
 let DEV="";try{DEV=localStorage.getItem("piksel-dev")||"";if(!DEV){DEV=(window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem("piksel-dev",DEV)}}catch(e){DEV=DEV||"dev"+Math.random().toString(36).slice(2)+Date.now()}
 const ORG_PHONE="";
@@ -268,7 +288,8 @@ const ORG_INSTA="onurelzh";
 const HOURS=26,AUTOPLAY=3000;
 const $=id=>document.getElementById(id);
 const wide=matchMedia("(min-width:701px)");
-function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+
 const AZ_MONTHS={yanvar:0,fevral:1,mart:2,aprel:3,may:4,iyun:5,iyul:6,avqust:7,sentyabr:8,oktyabr:9,noyabr:10,dekabr:11};
 function contestEnd(c){
   if(!c)return null;
@@ -302,13 +323,6 @@ function activeOnly(list){
   const now=Date.now();
   return (list||[]).filter(c=>{const e=contestEnd(c);return !e||now<e});
 }
-  /* 15 Oktyabr 2026 (il yoxdursa cari il götürülür) */
-  if(!d){
-    const m=s.toLowerCase().replace(/\u0307/g,"").match(/(\d{1,2})\s+([a-zəıöüçşğ]+)\s*(\d{4})?/);
-    if(m&&AZ_MONTHS[m[2]]!=null)d=new Date(m[3]?+m[3]:new Date().getFullYear(),AZ_MONTHS[m[2]],+m[1]);
-  }
-  return d?d.getTime()+86400000:null; /* yarış günün sonu */
-};
 function onlyDate(v){
   const s=String(v==null?"":v).trim();
   if(!s)return s;
@@ -327,8 +341,6 @@ function onlyDate(v){
     .trim();
 }
 function replay(box){[...box.children].forEach(e=>{e.style.animation="none";void e.offsetWidth;e.style.animation=""})}
-
-  
 
 /* Gün / Ay animasiyası */
 const rays=[...document.querySelectorAll(".ray")];
@@ -435,11 +447,14 @@ function renderList(){
   const box=$("list");box.innerHTML="";
   if(!type)return;
   const now=Date.now(),T=TYPES[type];
-const end=contestEnd(items.find(c=>String(c.ad).trim()===g));
-const live=ads.filter(a=>{
-  if(String(a.game).trim()!==g)return false;
-  return end?now<end:now-new Date(a.tarix).getTime()<HOURS*3600000;
-}).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
+  const g=String(items[idx]?items[idx].ad:"").trim();
+  const end=contestEnd(items.find(c=>String(c.ad).trim()===g));
+  const live=ads.filter(a=>{
+    if(String(a.game).trim()!==g)return false;
+    return end?now<end:now-new Date(a.tarix).getTime()<HOURS*3600000;
+  }).sort((a,b)=>new Date(b.tarix)-new Date(a.tarix));
+  const mine=live.filter(a=>a.mine&&a.type===type),oth=live.filter(a=>a.type===T.other);
+  if(mine.length){box.appendChild(el("p","empty","Sənin elanın:"));mine.forEach((a,i)=>box.appendChild(adEl(a,i)))}
   box.appendChild(el("p","empty",T.list+":"));
   if(!oth.length)box.appendChild(el("p","empty","Hələ elan yoxdur."));
   oth.forEach((a,i)=>box.appendChild(adEl(a,i)));
@@ -522,7 +537,7 @@ $("contactBtn").onclick=()=>{
 function showMsg(m){track.innerHTML='<p class="empty">'+m+'</p>'}
 async function load(){
   const c=cacheGet();
-if(c&&c.contests&&activeOnly(c.contests).length){items=activeOnly(c.contests);ads=c.ads||[];build();sched()};
+  if(c&&c.contests&&activeOnly(c.contests).length){items=activeOnly(c.contests);ads=c.ads||[];build();sched()}
   let data=null,why="";
   try{
     const r=await fetch(API+"?dev="+encodeURIComponent(DEV),{cache:"no-store"});
@@ -530,7 +545,7 @@ if(c&&c.contests&&activeOnly(c.contests).length){items=activeOnly(c.contests);ad
     try{data=JSON.parse(t)}catch(e){why="Cavab JSON deyil: "+t.slice(0,80)}
   }catch(e){why="Sorğu bloklandı: "+e.message}
   if(data){
-const nc=activeOnly(data.contests);
+    const nc=activeOnly(data.contests);
     const changed=JSON.stringify(nc)!==JSON.stringify(items);
     ads=data.ads||[];
     if(changed){items=nc;if(items.length){build();sched()}}
@@ -540,7 +555,9 @@ const nc=activeOnly(data.contests);
   }else if(!items.length)showMsg("Kubok yüklənmədi<br><small>"+why.replace(/</g,"&lt;")+"</small>");
 }
 load();
-  setInterval(()=>{
+
+/* Səhifə açıq qalanda tarixi keçən yarışları avtomatik silir */
+setInterval(()=>{
   const a=activeOnly(items);
   if(a.length!==items.length){
     items=a;
