@@ -18,7 +18,7 @@ html{scroll-behavior:smooth}
 body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
 button,a{font:inherit}
 a{color:inherit}
-.page{flex:1 0 auto;width:min(95vw,1100px);margin:0 auto;padding:12px 0 32px}
+.page{flex:1 0 auto;width:min(95vw,820px);margin:0 auto;padding:12px 0 32px}
 
 .frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--i) * .1s)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.5s}
@@ -27,11 +27,11 @@ a{color:inherit}
 
 /* Naviqasiya */
 .top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08)}
-.nav-links{display:flex;align-items:center;gap:40px}
+.nav-links{display:flex;align-items:center;gap:40px;height:100%}
 .nav-link{position:relative;font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap;transition:transform .25s ease}
 .nav-link:hover{transform:translateY(-1px)}
 .nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
-.theme-toggle{position:absolute;right:6px;top:50;transform:translateY(-50);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-icon{width:24px;height:24px}
 .ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
@@ -45,8 +45,8 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
 .section-title{text-align:center;color:var(--accent);font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px;margin-top:24px;transition:color .65s ease}
 
 /* Sənədlər */
-.docs{margin-top:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
-.doc{position:relative;border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 10px 25px rgba(0,20,110,.07);overflow:hidden;transition:transform .35s cubic-bezier(.18,.8,.22,1),box-shadow .35s ease}
+.docs{margin-top:14px;display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
+.doc{position:relative;transform-origin:50% 0;border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 10px 25px rgba(0,20,110,.07);overflow:hidden;transition:transform .35s cubic-bezier(.18,.8,.22,1),box-shadow .35s ease}
 .doc>*{position:relative;z-index:1}
 /* Mausın ətrafında yumşaq rəng dəyişimi */
 .doc::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
@@ -54,16 +54,20 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
     radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){
-  .doc:hover{transform:translateY(-3px) scale(1.003);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+  .doc:not(.open):hover{transform:translateY(-3px) scale(1.002);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+  .doc.open:hover{transform:none;box-shadow:0 14px 30px rgba(0,20,110,.14)}
   .doc:hover::before{opacity:1}
 }
-.doc-head{width:100%;display:flex;align-items:center;gap:14px;padding:22px 26px 0;background:none;border:0;color:inherit;text-align:left;cursor:default;pointer-events:none}
+.doc-head{width:100%;display:flex;align-items:center;gap:14px;height:104px;padding:0 24px;background:none;border:0;color:inherit;text-align:left;cursor:pointer;transition:transform .3s ease}
+.doc-head:active{transform:scale(.98)}
 .doc-icon{width:46px;height:46px;flex:0 0 46px}
 .doc-icon svg{width:100%;height:100%;display:block}
 .doc-title{font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px;flex:1}
-.doc-wrap{display:grid;grid-template-rows:1fr}
+.doc-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.4,0,.2,1)}
+.doc.open .doc-wrap{grid-template-rows:1fr}
 .doc-inner{overflow:hidden;min-height:0}
-.doc-body{padding:14px 26px 26px;font-size:14px;line-height:1.6;font-weight:500}
+.doc-body{padding:0 26px 26px;font-size:14px;line-height:1.6;font-weight:500;opacity:0;transform:translateY(-12px);transition:opacity .45s ease,transform .55s cubic-bezier(.18,.8,.24,1)}
+.doc.open .doc-body{opacity:1;transform:none;transition-delay:.15s}
 .doc-body::before{content:"";display:block;height:2px;border-radius:2px;background:currentColor;opacity:.14;margin-bottom:14px}
 .doc-body h3{font-size:16px;font-weight:700;letter-spacing:-.3px;margin:18px 0 6px}
 .doc-body p{margin-top:8px}
@@ -164,8 +168,8 @@ footer>*{position:relative;z-index:1}
     <div class="docs">
 
       <!-- SOL: Məxfilik Siyasəti -->
-      <section class="doc frame open" style="--i:1" id="privacy">
-        <button class="doc-head" type="button" aria-expanded="true" aria-controls="privacyBody">
+      <section class="doc frame" style="--i:1" id="privacy">
+        <button class="doc-head" type="button" aria-expanded="false" aria-controls="privacyBody">
           <span class="doc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3 5 7v8c0 7 4.6 11.6 11 14 6.4-2.4 11-7 11-14V7z" fill="currentColor"/><path d="m11 16 4 4 6-7" style="stroke:var(--c1)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="doc-title">Məxfilik Siyasəti</span>
         </button>
@@ -375,22 +379,14 @@ function setTheme(dark,animate){
 themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 
-/* Telefonda kartlar: toxunanda mətn animasiya ilə açılır (əvvəlcə hər ikisi bağlı) */
-const mq=matchMedia("(max-width:700px)");
-const docs=[...document.querySelectorAll(".doc")];
-function sync(){
-  docs.forEach(d=>{
-    if(mq.matches){d.classList.remove("open");d.querySelector(".doc-head").setAttribute("aria-expanded","false")}
-    else{d.classList.add("open");d.querySelector(".doc-head").setAttribute("aria-expanded","true")}
+/* Kartlar: üzərinə toxunanda mətn animasiya ilə açılır (əvvəlcə hər ikisi bağlı) */
+document.querySelectorAll(".doc").forEach(d=>{
+  const h=d.querySelector(".doc-head");
+  h.addEventListener("click",()=>{
+    const o=d.classList.toggle("open");
+    h.setAttribute("aria-expanded",o);
   });
-}
-sync();
-mq.addEventListener("change",sync);
-docs.forEach(d=>d.querySelector(".doc-head").addEventListener("click",()=>{
-  if(!mq.matches)return;
-  const o=d.classList.toggle("open");
-  d.querySelector(".doc-head").setAttribute("aria-expanded",o);
-}));
+});
 </script>
 </body>
 </html>
