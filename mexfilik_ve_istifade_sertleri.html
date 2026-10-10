@@ -31,7 +31,7 @@ a{color:inherit}
 .nav-link{position:relative;font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap;transition:transform .25s ease}
 .nav-link:hover{transform:translateY(-1px)}
 .nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
-.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle{position:absolute;right:6px;top:50;transform:translateY(-50);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-icon{width:24px;height:24px}
 .ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
@@ -54,7 +54,7 @@ body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,
     radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),
     radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
 @media (hover:hover){
-  .doc:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
+  .doc:hover{transform:translateY(-3px) scale(1.003);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}
   .doc:hover::before{opacity:1}
 }
 .doc-head{width:100%;display:flex;align-items:center;gap:14px;padding:22px 26px 0;background:none;border:0;color:inherit;text-align:left;cursor:default;pointer-events:none}
