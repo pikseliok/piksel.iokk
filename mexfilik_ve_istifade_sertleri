@@ -1,1 +1,317 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>Məxfilik Siyasəti və İstifadə Şərtləri | πksel</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+body{--page:#9DC3FF;--c1:#001E6F;--c2:#002E92;--fg:#9DC3FF;--accent:#001E6F;--glow:rgba(0,8,45,.30);--grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%)}
+body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF;--glow:rgba(255,255,255,.40)}
+*{box-sizing:border-box;margin:0;padding:0}
+a,button{-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+button,a{font:inherit}
+a{color:inherit}
+.page{width:min(95vw,1100px);margin:0 auto;padding:12px 0 32px}
 
+.frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--i) * .1s)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:.5s}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(22px)}}
+
+/* Naviqasiya */
+.top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.nav-links{display:flex;align-items:center;gap:40px}
+.nav-link{position:relative;font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap;transition:transform .25s ease}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-icon{width:24px;height:24px}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+
+.section-title{text-align:center;color:var(--accent);font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px;margin-top:24px;transition:color .65s ease}
+
+/* Sənədlər */
+.docs{margin-top:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.doc{border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 10px 25px rgba(0,20,110,.07);overflow:hidden}
+.doc-head{width:100%;display:flex;align-items:center;gap:14px;padding:22px 26px 0;background:none;border:0;color:inherit;text-align:left;cursor:default;pointer-events:none}
+.doc-icon{width:46px;height:46px;flex:0 0 46px}
+.doc-icon svg{width:100%;height:100%;display:block}
+.doc-title{font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px;flex:1}
+.chev{display:none;width:22px;height:22px;flex:0 0 22px;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.doc-wrap{display:grid;grid-template-rows:1fr}
+.doc-inner{overflow:hidden;min-height:0}
+.doc-body{padding:14px 26px 26px;font-size:14px;line-height:1.6;font-weight:500}
+.doc-body::before{content:"";display:block;height:2px;border-radius:2px;background:currentColor;opacity:.14;margin-bottom:14px}
+.doc-body h3{font-size:16px;font-weight:700;letter-spacing:-.3px;margin:18px 0 6px}
+.doc-body p{margin-top:8px}
+.doc-body ul{margin:8px 0 0 20px}
+.doc-body li{margin-top:4px}
+.doc-body .upd{font-weight:300;font-style:italic;opacity:.85}
+.doc-body a{text-decoration:underline;text-underline-offset:2px;word-break:break-word}
+
+/* Telefon: kartlar, toxunanda mətn animasiya ilə açılır */
+@media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding:11px 0 26px}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px}
+  .theme-icon{width:21px;height:21px}
+  .section-title{font-size:17px;margin-top:20px}
+  .docs{grid-template-columns:1fr;gap:10px;margin-top:12px}
+  .doc{border-radius:22px}
+  .doc-head{height:94px;padding:0 18px;gap:10px;cursor:pointer;pointer-events:auto;transition:transform .3s ease}
+  .doc-head:active{transform:scale(.97)}
+  .doc-icon{width:32px;height:32px;flex-basis:32px}
+  .doc-title{font-size:17px;letter-spacing:-.5px}
+  .chev{display:block}
+  .doc.open .chev{transform:rotate(180deg)}
+  .doc-wrap{grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.4,0,.2,1)}
+  .doc.open .doc-wrap{grid-template-rows:1fr}
+  .doc-body{padding:0 18px 20px;font-size:12.5px;opacity:0;transform:translateY(-12px);transition:opacity .45s ease,transform .55s cubic-bezier(.18,.8,.24,1)}
+  .doc.open .doc-body{opacity:1;transform:none;transition-delay:.15s}
+  .doc-body h3{font-size:14px}
+}
+@media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .top-nav{height:42px}
+  .nav-link{font-size:11px}
+  .doc-head{height:88px}
+  .doc-title{font-size:15px}
+  .doc-body{font-size:12px}
+}
+
+footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500;text-decoration:none}
+a.footer-line{transition:opacity .25s ease}
+a.footer-line:hover{opacity:.72}
+@media (max-width:700px){footer{min-height:96px}.footer-line{font-size:13px}}
+.doc-head:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+    <div class="nav-links rise">
+      <a class="nav-link" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="elaqe">Bizimlə Əlaqə</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg class="theme-icon" viewBox="0 0 32 32" aria-hidden="true">
+        <defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs>
+        <g>
+          <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        </g>
+        <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+      </svg>
+    </button>
+  </nav>
+
+  <main>
+    <h2 class="section-title rise">Hüquqi Məlumatlar</h2>
+
+    <div class="docs">
+
+      <!-- SOL: Məxfilik Siyasəti -->
+      <section class="doc frame open" style="--i:1" id="privacy">
+        <button class="doc-head" type="button" aria-expanded="true" aria-controls="privacyBody">
+          <span class="doc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3 5 7v8c0 7 4.6 11.6 11 14 6.4-2.4 11-7 11-14V7z" fill="currentColor"/><path d="m11 16 4 4 6-7" style="stroke:var(--c1)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="doc-title">Məxfilik Siyasəti</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="doc-wrap"><div class="doc-inner"><div class="doc-body" id="privacyBody">
+          <p class="upd">Son yenilənmə: 12.10.2026</p>
+          <p>Bu Məxfilik Siyasəti piksel.az saytından istifadə zamanı məlumatların necə toplandığını, istifadə olunduğunu, saxlanıldığını və qorunduğunu izah edir. Saytın təsisçiləri və idarəçiləri olaraq, istifadəçilərin məxfiliyinə hörmətlə yanaşır və şəxsi məlumatları yalnız onların istəyi ilə istifadə etməyə çalışırıq.</p>
+
+          <h3>1. Biz kimik?</h3>
+          <p>Saytın qurucu və idarə heyəti bizik - πiksel İntellektual Oyunlar Klubunun idarə heyəti. Məlumatların işlənməsi ilə bağlı müraciətləri aşağıdakı əlaqə vasitələri ilə qəbul edirik:</p>
+          <p>E-poçt: <a href="mailto:pikseliok@gmail.com">pikseliok@gmail.com</a><br>Əlaqə səhifəsi: <a href="https://piksel.az/elaqe">https://piksel.az/elaqe</a></p>
+
+          <h3>2. Topladığımız və işləyə biləcəyimiz məlumatlar</h3>
+          <p>Saytdan istifadə etdiyiniz funksiyalardan asılı olaraq aşağıdakı məlumatlar işlənə bilər:</p>
+          <p><b>Elan forması:</b> Adınız, telefon nömrəniz, Instagram hesabınız və seçdiyiniz oyun növü. Bu məlumatları elan və ya oyunçu/komanda axtarışı ilə bağlı müraciətinizi qəbul etmək və sizinlə əlaqə saxlamaq üçün tələb edirik. Məqsədimiz intellektual oyunlarda iştirakınızı asanlaşdırmaqdır. Daxil etdiyiniz məlumatlar komanda axtarırsınızsa komandaların, oyunçu axtarırsınızsa oyunçuların sizinlə əlaqə saxlamasi üçündür.</p>
+          <p><b>Göndərdiyiniz /daxil etdiyiniz materiallar/məlumatlar:</b> Sual paketi, elan, təklif və ya başqa məzmun göndərdiyiniz zaman həmin materialda qeyd etdiyiniz məlumatlar.</p>
+          <p><b>Açıq şəkildə göstərilən müəllif məlumatları:</b> Müəlliflərin adları və sual paketləri ilə bağlı müəlliflik məlumatları.</p>
+          <p><b>Texniki məlumatlar:</b> Saytın fəaliyyətini və təhlükəsizliyini təmin etmək üçün hostinq xidməti IP ünvanı, brauzer və cihaz məlumatları, sorğu vaxtı və texniki jurnal qeydlərini toplaya bilər. Bu məlumatların dəqiq tərkibi istifadə etdiyimiz texniki xidmətlərdən asılıdır.</p>
+          <p><b>Brauzer yaddaşı və kukilər:</b> Saytın mövzu seçimi kimi parametrləri brauzerinizdə saxlana bilər. Analitika və reklam kukilərindən istifadə edib-etmədiyimizi, istifadə ediriksə hansı xidmətlərin köməyindən yararlandığımızı dəqiqləşdirib tənzimləyəcəyik.</p>
+          <p><b>Səsli oyun otaqları:</b> Səsli otağa qoşulduğunuz zaman cihazınızın mikrofonundan istifadə etmək üçün brauzeriniz sizdən icazə istəyəcəkdir. Audioyazı sistemimiz tərəfindən saxlanılmır. Otaqdakı danışıqlar otaq kodunu bilən tərəflərdən başqa heç kimin eşitməyəcəyi şəkildə qapalıdır və tərəfimizdən qeydə alınmır. Hər hansı səs yazısının qarşısını almaq üçün platformada tədbirlər görmüşük, lakin bu tədbirlərə baxmayaraq, otaq kodunu bilərək daxil olan və səsinizi eşidən şəxslər tərəfindən danışığınızın qeydə alınması hallarına görə məsuliyyət daşımırıq.</p>
+          <p>Saytda istifadəçi hesabı və birbaşa ödəniş funksiyası hazırda təqdim olunmur. Paket və digər xidmətlərlə bağlı müraciətlər WhatsApp və ya başqa xarici xidmətlərə yönləndirilə bilər. Həmin xidmətlərdə məlumatlarınızın işlənməsi onların öz məxfilik siyasətlərinə tabedir.</p>
+
+          <h3>3. Məlumatlardan hansı məqsədlə istifadə edirik?</h3>
+          <p>Məlumatlarınızdan aşağıdakı məqsədlər üçün istifadə edə bilərik:</p>
+          <ul>
+            <li>Müraciətləri və elanları qəbul etmək, nəzərdən keçirmək və cavablandırmaq;</li>
+            <li>Sual paketlərini və elanları saytda yerləşdirmək və idarə etmək;</li>
+            <li>Göndərdiyiniz məlumatlarla bağlı sizinlə əlaqə saxlamaq;</li>
+            <li>Göndərdiyiniz məlumatlar vasitəsilə oyunçu/komanda axtaranların sizi tapmasına şərait yaratmaq;</li>
+            <li>Saytın fəaliyyətini təmin etmək, texniki nasazlıqları aradan qaldırmaq və təhlükəsizliyi qorumaq;</li>
+            <li>Qanuni öhdəlikləri yerinə yetirmək və sui-istifadə hallarının qarşısını almaq.</li>
+          </ul>
+          <p>Əlaqə məlumatlarınız elanla birlikdə ictimaiyyətə göstəriləcəksə, bu barədə məlumatları göndərməzdən əvvəl sizə aydın şəkildə bildirir və zəruri razılığınızı alırıq.</p>
+          <p>Saytın işləməsində istifadə etdiyimiz hostinq, analitika və səsli otaq xidmətlərinin adlarını və onların hansı məlumatları işlədiyini dəqiqləşdirərək burada qeyd edəcəyik.</p>
+
+          <h3>4. Məlumatları nə qədər saxlayırıq?</h3>
+          <p>Məlumatlarınızı toplandığı məqsəd üçün lazım olan müddət ərzində saxlayırıq. Bu müddət başa çatdıqda məlumatları silir və ya şəxsiyyəti müəyyən etməyə imkan verməyən formaya gətiririk.</p>
+          <p>Saxlanma müddətləri:</p>
+          <ul>
+            <li><b>Elan müraciətləri:</b> Elanın qüvvədə olma müddəti bitdikdən sonra axtarış elanlarınız silinir.</li>
+            <li><b>Sual müəllifləri:</b> Suallar platformada olduğu müddətdə sizin və ya paketdəki digər şəxslərin razılığı ilə saxlanılır.</li>
+          </ul>
+
+          <h3>5. Məlumatların təhlükəsizliyi</h3>
+          <p>Məlumatlarınızı icazəsiz girişdən, itirilmədən və açıqlanmadan qorumaq üçün uyğun texniki tədbirlər görürük. Bununla belə, internet üzərindən məlumat ötürülməsinin tam təhlükəsizliyinə zəmanət vermək mümkün deyildir. Əlaqə məlumatlarınızın elandan götürülməsinə və ya səsli otaqlarda görülən tədbirlərə baxmayaraq danışığın üçüncü şəxslər tərəfindən qeydə alınması hallarına görə məsuliyyət daşımırıq.</p>
+
+          <h3>6. Hüquqlarınız və müraciət qaydası</h3>
+          <p>Qanunvericiliyin verdiyi hüquqlar çərçivəsində barənizdə saxladığımız məlumatlar haqqında bizə müraciət edə, yanlış məlumatların düzəldilməsini, qanuni əsas olduqda məlumatların silinməsini və ya onların işlənməsinin dayandırılmasını tələb edə bilərsiniz.</p>
+          <p>Müraciətinizi əlaqə bölməsindəki e-poçt və ya WhatsApp nömrəsinə göndərə bilərsiniz. Müraciətinizin cavablandırılması üçün kimliyinizi təsdiqləməyiniz tələb oluna bilər. Belə halda, yalnız müraciətə baxılması üçün zəruri olan məlumatlar istəniləcəkdir.</p>
+
+          <h3>7. Yetkinlik yaşına çatmayan istifadəçilər</h3>
+          <p>Platforma intellektual oyunlarla maraqlanan müxtəlif yaş qruplarından olan şəxslər tərəfindən istifadə edilə bilər.</p>
+
+          <h3>8. Xarici keçidlər</h3>
+          <p>Saytda sual mənbələri kimi üçüncü tərəflərə aid saytlara keçidlər ola bilər. Bu saytlarda məlumatlarınızın işlənməsinə həmin xidmətlərin operatorları cavabdehdir. Hər hansı xarici sayta keçməzdən əvvəl onun məxfilik siyasəti ilə tanış olmağınızı tövsiyə edirik.</p>
+
+          <h3>9. Siyasətdə dəyişikliklər</h3>
+          <p>Məxfilik Siyasətini yenilədikdə yeni versiyanı bu səhifədə yerləşdirəcək və yenilənmə tarixini dəyişəcəyik.</p>
+          <p style="margin-top:16px">Məxfiliklə bağlı müraciətlər: <a href="mailto:pikseliok@gmail.com">pikseliok@gmail.com</a><br>Sayt: <a href="https://piksel.az">https://piksel.az</a></p>
+        </div></div></div>
+      </section>
+
+      <!-- SAĞ: İstifadə Şərtləri -->
+      <section class="doc frame" style="--i:2" id="terms">
+        <button class="doc-head" type="button" aria-expanded="false" aria-controls="termsBody">
+          <span class="doc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 3h11l6 6v18a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" fill="currentColor"/><path d="M12 15h8M12 19h8M12 23h5" style="stroke:var(--c1)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span class="doc-title">İstifadə Şərtləri</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="doc-wrap"><div class="doc-inner"><div class="doc-body" id="termsBody">
+          <p class="upd">Son yenilənmə: 12.10.2026</p>
+          <p>Bu İstifadə Şərtləri piksel.az saytından istifadə qaydalarını müəyyən edir. Saytın təsisçiləri və idarəçiləri olaraq, Saytın məzmununu və xidmətlərini bu şərtlərə uyğun təqdim edirik. Saytdan istifadə etməzdən əvvəl şərtlərlə tanış olmağınızı xahiş edirik.</p>
+
+          <h3>1. Saytın xidmətləri</h3>
+          <p>Saytda intellektual oyun sual paketləri, müəlliflər və yarış elanları, taymer, düymə sistemləri, səsli oyun otaqları və minioyunlar (XOXO kimi intellektual oyunlarla inteqrasiya olunmuş minioyunlar) təqdim oluna bilər. Platformanın funksiyalarını yeniləyə, dəyişdirə və ya müvəqqəti dayandıra bilərik.</p>
+          <p>Paket və elanlarla bağlı müraciətlər WhatsApp və ya başqa xarici platformaya yönləndirilə bilər. Hazırda platforma üzərindən birbaşa sifariş və ya ödəniş funksiyası təqdim edilmir!</p>
+
+          <h3>2. İstifadə qaydaları</h3>
+          <p>Platformadan qanuni məqsədlərlə və digər şəxslərin hüquqlarına hörmət etməklə istifadə etməlisiniz. Saytdan istifadə zamanı aşağıdakılar yolverilməzdir:</p>
+          <ul>
+            <li>Saytın fəaliyyətinə mane olmaq və ya təhlükəsizlik sistemlərini pozmağa çalışmaq;</li>
+            <li>icazəsiz giriş əldə etmək və ya başqalarının hesablarına, cihazlarına və məlumatlarına müdaxilə etmək;</li>
+            <li>saxta, aldadıcı, təhqiredici, hədələyici, qanunsuz və ya başqasının hüquqlarını pozan məzmun göndərmək;</li>
+            <li>başqa şəxsin şəxsi məlumatlarını onun icazəsi olmadan paylaşmaq;</li>
+            <li>müəllif hüquqlarını və digər əqli mülkiyyət hüquqlarını pozan materialları yükləmək və ya yaymaq;</li>
+            <li>səsli otaqlarda digər iştirakçıları təqib etmək, təhqir etmək, hədələmək və ya oyunun normal gedişinə mane olmaq.</li>
+          </ul>
+
+          <h3>3. İstifadəçi tərəfindən göndərilən elanlar və materiallar</h3>
+          <p>Elan göndərdikdə, həmin materialı təqdim etmək və Saytda yerləşdirilməsini istəmək üçün zəruri hüquqlara malik olduğunuzu təsdiq edirsiniz.</p>
+          <p>Material göndərməklə bizə həmin materialı Saytda yerləşdirmək, nümayiş etdirmək, texniki formatını uyğunlaşdırmaq və Saytla əlaqəli kanallarda tanıtmaq üçün istifadə icazəsi verirsiniz. Bu icazə yalnız göstərilən məqsədlər üçün zəruri həddə tətbiq edilir və materialın (paketlərin, sualların) mülkiyyət hüququnu bizə keçirmir.</p>
+          <p>Başqa şəxsin adını, telefon nömrəsini, sosial şəbəkə hesabını və ya digər şəxsi məlumatını paylaşmazdan əvvəl həmin şəxsin razılığını almalısınız. Hüquqlarınızın pozulduğunu düşündüyünüz material barədə <a href="mailto:pikseliok@gmail.com">pikseliok@gmail.com</a> ünvanına məlumat verə bilərsiniz. Müraciəti nəzərdən keçirdikdən sonra müvafiq materialı silə və ya ona çıxışı məhdudlaşdıra bilərik.</p>
+
+          <h3>4. Müəllif hüquqları və əqli mülkiyyət</h3>
+          <p>piksel.az saytında yerləşdirilən suallar, mövzular və paketlər müəllif hüquqları ilə qorunur və onların müəlliflərinə məxsusdur. Materialların lisenziya şərtlərinə zidd istifadəsi qadağandır.</p>
+          <p>Saytda müəllif adı və ya mənbə göstərildikdə, həmin məlumatı saxlamalı və silməməlisiniz. Məzmunu kütləvi şəkildə köçürmək, yenidən dərc etmək, yaymaq və ya kommersiya məqsədilə istifadə etmək üçün müvafiq müəllifin və ya hüquq sahibinin icazəsini almalısınız. Bu şərtlər müəllif hüquqlarını və qanunvericiliklə verilən digər hüquqları məhdudlaşdırmır.</p>
+          <p>Saytın adı, loqosu, dizaynı, proqram təminatı və digər materiallar müvafiq hüquq sahiblərinə məxsusdur. Saytın müəyyən materialının sərbəst istifadəyə açıq olduğu ayrıca göstərilməyibsə, həmin materialdan istifadə üçün icazə tələb oluna bilər.</p>
+
+          <h3>5. Sual paketləri və xarici mənbələr</h3>
+          <p>Sual paketlərində suallar, cavablar, izahlar, müəllif məlumatları və xarici mənbələrə keçidlər ola bilər. Materialları intellektual oyun və məlumat məqsədilə təqdim edirik. Xarici keçidlərin məzmununa, dəqiqliyinə və əlçatanlığına həmin saytların operatorları cavabdehdir.</p>
+          <p>Sual paketlərini istifadə edərkən müəlliflik və lisenziya şərtlərinə riayət etməlisiniz. Məzmunu başqa platformada yayımlamaq və ya kommersiya məqsədilə istifadə etmək istəyirsinizsə, əvvəlcə müvafiq müəllifdən və ya hüquq sahibindən icazə alın.</p>
+
+          <h3>6. Səsli otaqlar və oyunlar</h3>
+          <p>Səsli otaqlar unikal şəkildə ilk dəfə πksel İntellektual Oyunlar Klubunun idarə heyəti tərəfindən layihələndirilmişdir. Layihənin bütün müəlliflik hüquqları tamamilə πksel İntellektual Oyunlar Klubunun idarə heyətinə aiddir və yenidən tətbiqi YOLVERİLMƏZDİR © 2026 πksel İntellektual Oyunlar Klubu!</p>
+          <p>Səsli otaqlarda iştirak üçün uyğun cihaz, internet bağlantısı və brauzerdə mikrofon icazəsi tələb oluna bilər. Mikrofon icazəsini cihazınızda və brauzerinizdə özünüz idarə edirsiniz. Otaqda iştirak edərkən digər istifadəçilərin məxfiliyinə və oyun qaydalarına hörmət etməlisiniz.</p>
+          <p>Otaq kodlarını paylaşarkən diqqətli olun və başqalarının şəxsi məlumatlarını onların razılığı olmadan açıqlamayın. Səs yazısının aparılması və audio məlumatların saxlanmaması barədə ətraflı məlumat Məxfilik Siyasəti səhifəsində göstərilmişdir.</p>
+
+          <h3>7. Məsuliyyətdən imtina</h3>
+          <p>Saytdakı məlumatlar yalnız məlumat məqsədi daşıyır. Sayt rəhbərliyi materialların düzgünlüyünə, tamlığına və onlardan istifadənin nəticələrinə görə məsuliyyət daşımır.</p>
+          <p>Saytın fasiləsiz, xətasız və hər zaman əlçatan olacağına zəmanət vermirik. Saytdan istifadə zamanı texniki nasazlıq, internet bağlantısının kəsilməsi və ya üçüncü tərəf xidmətlərinin işləməməsi mümkündür.</p>
+          <p>Bu bölmədəki heç bir müddəa qanunvericiliklə məhdudlaşdırılması mümkün olmayan hüquq və məsuliyyəti aradan qaldırmır və ya məhdudlaşdırmır.</p>
+
+          <h3>8. Məzmunun silinməsi və girişin məhdudlaşdırılması</h3>
+          <p>Bu şərtlərin pozulduğunu, hüquqların tapdalandığını və ya Saytın təhlükəsizliyinə risk yarandığını müəyyən etdikdə, müvafiq məzmunu silə, ona çıxışı məhdudlaşdıra və ya müəyyən istifadəçinin Saytın funksiyalarından istifadəsini dayandıra bilərik. Qərarımızı pozuntunun xarakterini nəzərə alaraq verəcəyik.</p>
+
+          <h3>9. Şərtlərin yenilənməsi</h3>
+          <p>İstifadə Şərtlərini yeniləyə bilərik. Dəyişiklikləri bu səhifədə dərc edəcək və son yenilənmə tarixini göstərəcəyik. Saytdan istifadə etməyə davam etməzdən əvvəl şərtlərin yeni versiyası ilə tanış olmağınızı tövsiyə edirik.</p>
+
+          <h3>10. Tətbiq olunan hüquq və əlaqə</h3>
+          <p>Bu şərtlərə Azərbaycan Respublikasının qanunvericiliyi tətbiq olunur. Mübahisələr qanunvericiliklə müəyyən edilmiş qaydada həll edilir.</p>
+          <p style="margin-top:16px">Əlaqə e-poçtu: <a href="mailto:pikseliok@gmail.com">pikseliok@gmail.com</a><br>Əlaqə bölməsi: <a href="https://piksel.az/elaqe">https://piksel.az/elaqe</a><br>Sayt: <a href="https://piksel.az">https://piksel.az</a></p>
+        </div></div></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması </div>
+  <a class="footer-line" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const themeToggle=document.getElementById("themeToggle");
+const rays=[...document.querySelectorAll(".ray")];
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]
+                 :[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish=()=>a.cancel();
+  });
+}
+function setTheme(dark,animate){
+  document.body.classList.toggle("dark",dark);
+  try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}
+  themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  if(animate)animateRays(dark);
+}
+(function(){
+  let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}
+  setTheme(s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false);
+})();
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+
+/* Telefonda kartlar: toxunanda mətn animasiya ilə açılır (əvvəlcə hər ikisi bağlı) */
+const mq=matchMedia("(max-width:700px)");
+const docs=[...document.querySelectorAll(".doc")];
+function sync(){
+  docs.forEach(d=>{
+    if(mq.matches){d.classList.remove("open");d.querySelector(".doc-head").setAttribute("aria-expanded","false")}
+    else{d.classList.add("open");d.querySelector(".doc-head").setAttribute("aria-expanded","true")}
+  });
+}
+sync();
+mq.addEventListener("change",sync);
+docs.forEach(d=>d.querySelector(".doc-head").addEventListener("click",()=>{
+  if(!mq.matches)return;
+  const o=d.classList.toggle("open");
+  d.querySelector(".doc-head").setAttribute("aria-expanded",o);
+}));
+</script>
+</body>
+</html>
