@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
-<title>πksel- İntellektual XOX</title>
+<title>πksel - XOXO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -1521,7 +1521,7 @@ function R() {
   }
   const A = ri(ani);
   let h = "";
-  if (V == "home") h = `<h2 class="section-title${F(1, ani)}">İntellektual XOX</h2><div class="card glow${F(2, ani)}"><div class="ct${A}">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd${A}">Xananı seç, mövzunu seç, sualı düzgün cavabla və xananı qazan.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="nin(this.value)"><p class="cd" id="hm">${E(msg)}</p><div class="col">${btn("pk", "mkRoom()", "Otaq yarat")}${btn("", "V='join';msg='';R()", "Otağa qoş")}</div></div>`;
+  if (V == "home") h = `<h2 class="section-title${F(1, ani)}">πksel XOXO</h2><div class="card glow${F(2, ani)}"><div class="ct${A}">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd${A}">Xananı seç, mövzunu seç, sualı düzgün cavabla və xananı qazan.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="nin(this.value)"><p class="cd" id="hm">${E(msg)}</p><div class="col">${btn("pk", "mkRoom()", "Otaq yarat")}${btn("", "V='join';msg='';R()", "Otağa qoş")}</div></div>`;
   else if (V == "join") h = `<h2 class="section-title${F(1, ani)}">Otağa qoş</h2><div class="card glow${F(2, ani)}"><div class="ct${A}">Otaq kodunu yaz</div><div class="card-divider"></div><input class="in" id="jc" maxlength="5" placeholder="KOD" style="text-transform:uppercase;letter-spacing:4px;text-align:center" onkeydown="if(event.key=='Enter')joinRoom()"><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="nin(this.value)"><p class="cd" id="hm" style="text-align:center">${E(msg)}</p><div class="col">${btn("pk", "joinRoom()", "Qoşul")}${btn("", "V='home';msg='';R()", "Geri")}</div></div>`;
   else h = game();
   const keep = V == "join" && $("jc") ? $("jc").value : "";
