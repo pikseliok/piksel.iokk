@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>NHN Reytinq Sistemi | πksel</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+body{
+  --page:#9DC3FF; --c1:#001E6F; --c2:#002E92; --fg:#9DC3FF; --accent:#001E6F;
+  --ok:#7dffb0; --no:#ff9aa8;
+  --grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%);
+}
+body.dark{--page:#00072C; --c1:#9DC3FF; --c2:#6FA5FC; --fg:#00072C; --accent:#9DC3FF; --ok:#066b3a; --no:#a3122a}
+*{box-sizing:border-box;margin:0;padding:0}
+a,button{-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+button,a,input,textarea{font:inherit}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.wide{width:min(96vw,1200px);margin:0 auto;padding:0 0 32px}
+
+/* Giriş animasiyası */
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+
+/* Naviqasiya (index ilə eyni) */
+.top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.nav-links{display:flex;align-items:center;gap:40px;height:100%}
+.nav-link{position:relative;font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+
+/* Footer (index ilə eyni) */
+footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Səhifə */
+.section-title{text-align:center;color:var(--accent);font-size:24px;line-height:1;font-weight:700;letter-spacing:-.7px;margin:24px 0 14px}
+.card{border-radius:28px;padding:22px 24px;background:var(--grad);color:var(--fg);display:grid;gap:12px;width:min(95vw,820px);margin:0 auto}
+.card label{font-size:13px;font-weight:500}
+.card input,.card textarea{width:100%;border-radius:16px;border:0;padding:10px 14px;font-size:14px;font-weight:500;background:var(--fg);color:var(--c1);outline:0}
+.card textarea{height:180px;resize:vertical}
+.btn{height:44px;border-radius:40px;padding:0 24px;border:2px solid var(--c1);background:var(--grad);color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.95)}
+.btn.o{background:transparent;color:var(--accent);border-color:var(--accent)}
+.btn.go{background:var(--fg);color:var(--c1);border-color:var(--fg)}
+.btn.ic{width:44px;padding:0;display:grid;place-items:center}
+.btn.ic svg{width:22px;height:22px}
+#game{display:none}
+.tools{display:flex;gap:10px;justify-content:center;margin:0 0 14px}
+
+.grid{display:grid;grid-template-columns:var(--lw) minmax(0,1fr) 150px;align-items:start}
+.hd{display:flex;height:34px;align-items:center;font-size:14px;font-weight:700;color:var(--accent)}
+.col-l .hd{padding-left:14px}.col-l .hd span:first-child{width:40px}
+.col-r .hd span{text-align:center}.col-r .hd span:first-child{width:62px}.col-r .hd span:last-child{width:88px}
+.hc{width:78px;flex:none;text-align:center}
+.rows{position:relative;margin-top:6px}
+.rw{position:absolute;left:0;top:0;height:56px;display:flex;align-items:center;transition:transform 1.5s cubic-bezier(.45,0,.2,1)}
+.rw.l{width:100%;padding-left:14px;border-radius:30px 0 0 30px;background:var(--c1);color:var(--fg)}
+.rw.m{width:var(--mw);background:var(--c2);color:var(--fg)}
+.rw.r{width:100%;border-radius:0 30px 30px 0;background:var(--c1);color:var(--fg);font-weight:700}
+.yer{width:40px;font-weight:700}
+.nm{font-weight:700;font-size:17px;white-space:nowrap}
+.xal{width:62px;text-align:center;font-size:17px}.rt{width:88px;text-align:center;font-size:17px}
+.pulse .xal,.pulse .rt{animation:pulse 1s ease}
+@keyframes pulse{40%{transform:scale(1.25)}}
+.cell{width:78px;height:100%;flex:none;display:flex;gap:6px;justify-content:center;align-items:center;box-shadow:inset -1px 0 0 color-mix(in srgb,var(--fg) 18%,transparent)}
+.opt{width:32px;height:32px;border-radius:50%;border:2px solid var(--fg);background:transparent;color:var(--fg);font-size:17px;font-weight:700;cursor:pointer;line-height:1}
+.opt.on{background:var(--fg);color:var(--c1)}
+.sym{font-size:28px;font-weight:700;cursor:pointer;user-select:none;width:100%;text-align:center}
+.sym.p{color:var(--ok)}.sym.m{color:var(--no)}
+
+/* Qalın, dizayna uyğun sürüşdürmə çubuğu */
+.mid{overflow-x:auto;scrollbar-width:auto;scrollbar-color:var(--accent) color-mix(in srgb,var(--accent) 15%,transparent)}
+.mid::-webkit-scrollbar{height:18px}
+.mid::-webkit-scrollbar-track{background:color-mix(in srgb,var(--accent) 15%,transparent);border-radius:20px}
+.mid::-webkit-scrollbar-thumb{background:var(--accent);border-radius:20px;border:4px solid transparent;background-clip:padding-box}
+.inner{width:var(--mw)}
+.hint{text-align:center;font-size:12px;opacity:.75;margin-top:10px;color:var(--accent)}
+
+@media (max-width:700px){
+  .page{width:calc(100vw - 44px);padding:11px 0 0}
+  .top-nav{height:46px;padding:0 46px}
+  .nav-links{gap:28px}.nav-link{font-size:13px}
+  .theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}
+  .section-title{font-size:17px}
+  footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}
+}
+@media (max-width:420px){
+  .page{width:calc(100vw - 36px)}
+  .top-nav{height:42px;padding:0 42px}
+  .nav-links{gap:22px}.nav-link{font-size:11px}
+  .theme-toggle{width:32px;height:32px;right:5px}.theme-icon{width:20px;height:20px}
+  .section-title{font-size:15px}
+  footer{min-height:88px}.footer-line{font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
+    <div class="nav-links rise">
+      <a class="nav-link active" href="index.html">Əsas Səhifə</a>
+      <a class="nav-link" href="elaqe">Bizimlə Əlaqə</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+            <rect width="32" height="32" fill="#fff"/>
+            <circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g class="rays">
+          <g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+          <g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g>
+        </g>
+        <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g>
+      </svg>
+    </button>
+  </nav>
+</div>
+
+<main class="wide">
+  <h1 class="section-title rise" style="--d:.1s">NHN Reytinq Sistemi</h1>
+
+  <section id="setup" class="card frame" style="--i:1">
+    <div class="rise"><label for="cname">Yarışın adı</label><input id="cname" placeholder="Məs: Payız Kuboku"></div>
+    <div class="rise"><label for="qn">Sualların sayı (məs: 12 və ya 24)</label><input id="qn" type="number" min="1" max="60" value="12"></div>
+    <div class="rise"><label for="tn">Komandalar (hər sətirdə bir komanda)</label><textarea id="tn" placeholder="Komanda 1&#10;Komanda 2&#10;Komanda 3"></textarea></div>
+    <button class="btn go rise" id="go" type="button">Başla</button>
+  </section>
+
+  <section id="game">
+    <div class="tools frame" style="--i:1">
+      <button class="btn ic" id="poster" type="button" aria-label="Posteri endir" title="Posteri endir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M12 15l-4-4M12 15l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+      </button>
+      <button class="btn o" id="back" type="button">Yeni yarış</button>
+    </div>
+    <div class="grid frame" style="--i:2" id="grid">
+      <div class="col-l"><div class="hd"><span>Yer</span><span>Komanda adı</span></div><div class="rows" id="rl"></div></div>
+      <div class="mid"><div class="inner"><div class="hd" id="hm"></div><div class="rows" id="rm"></div></div></div>
+      <div class="col-r"><div class="hd"><span>Xal</span><span>Reytinq</span></div><div class="rows" id="rr"></div></div>
+    </div>
+    <p class="hint">+ və ya − seçin. Dəyişmək üçün seçilmiş işarənin üzərinə 2 dəfə vurun. Sual üzrə bütün komandalara işarə qoyulanda sıralama avtomatik yenilənir.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-line">Unikal İntellektual Oyunlar Platforması </div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const LOGO="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png";
+const H=56,G=10;
+
+/* ---------- Gün / Ay ---------- */
+const themeToggle=$("themeToggle"),rays=[...document.querySelectorAll(".ray")];
+function animateRays(dark){
+  rays.forEach(r=>{
+    r.getAnimations().forEach(a=>a.cancel());
+    const kf=dark?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]
+                 :[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+    const a=r.animate(kf,{duration:dark?520:620,delay:dark?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});
+    a.onfinish=()=>a.cancel();
+  });
+}
+function setTheme(dark,animate){
+  document.body.classList.toggle("dark",dark);
+  try{localStorage.setItem("piksel-theme",dark?"dark":"light")}catch(e){}
+  themeToggle.setAttribute("aria-label",dark?"Gündüz rejiminə keç":"Gecə rejiminə keç");
+  if(animate)animateRays(dark);
+}
+(function(){
+  let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}
+  setTheme(s==="dark"||(s===null&&!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)),false);
+})();
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+
+/* ---------- Reytinq ---------- */
+let T=[],Q=12,marks=[],edit=new Set(),order=[],RL=[],RM=[],RR=[],cname="",timer=null;
+
+/* Sualın xalı = 100 + 900 × (N − T) / (N − 1); yalnız bütün komandalara işarə qoyulmuş suallar sayılır */
+function stats(){
+  const N=T.length,c=T.map(()=>0),r=T.map(()=>0);
+  for(let q=0;q<Q;q++){
+    let done=true,s=0;
+    for(let t=0;t<N;t++){if(marks[t][q]===null)done=false;else if(marks[t][q]===1)s++}
+    const val=100+900*(N-s)/(N-1);
+    for(let t=0;t<N;t++)if(marks[t][q]===1){c[t]++;if(done)r[t]+=val}
+  }
+  return{c,r};
+}
+function rank(){
+  const{c,r}=stats();
+  return T.map((_,i)=>i).sort((a,b)=>c[b]-c[a]||r[b]-r[a]||a-b);
+}
+function textW(s,font){const x=document.createElement("canvas").getContext("2d");x.font=font;return x.measureText(s).width}
+
+function start(){
+  cname=$("cname").value.trim();
+  Q=Math.max(1,Math.min(60,parseInt($("qn").value)||12));
+  T=$("tn").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  if(T.length<2){alert("Ən azı 2 komanda daxil edin.");return}
+  marks=T.map(()=>Array(Q).fill(null));edit.clear();clearTimeout(timer);
+  const nw=Math.ceil(Math.max(120,...T.map(n=>textW(n,"700 17px Poppins")))+16);
+  const g=$("grid");
+  g.style.setProperty("--lw",(nw+68)+"px");g.style.setProperty("--mw",(Q*78)+"px");
+  $("hm").innerHTML=Array.from({length:Q},(_,q)=>`<div class="hc">${q+1}</div>`).join("");
+  const hh=T.length*(H+G)+"px";
+  ["rl","rm","rr"].forEach(id=>{$(id).innerHTML="";$(id).style.height=hh});
+  RL=[];RM=[];RR=[];
+  T.forEach((n,t)=>{
+    const l=document.createElement("div");l.className="rw l";
+    l.innerHTML='<span class="yer"></span><span class="nm"></span>';l.querySelector(".nm").textContent=n;
+    const m=document.createElement("div");m.className="rw m";
+    m.innerHTML=Array.from({length:Q},(_,q)=>`<div class="cell" data-t="${t}" data-q="${q}"></div>`).join("");
+    const r=document.createElement("div");r.className="rw r";
+    r.innerHTML='<span class="xal">0</span><span class="rt">0.0</span>';
+    $("rl").appendChild(l);$("rm").appendChild(m);$("rr").appendChild(r);
+    RL.push(l);RM.push(m);RR.push(r);
+  });
+  order=T.map((_,i)=>i);
+  for(let t=0;t<T.length;t++)for(let q=0;q<Q;q++)drawCell(t,q);
+  place(false);
+  $("setup").style.display="none";$("game").style.display="block";
+}
+function drawCell(t,q){
+  const cell=RM[t].children[q],v=marks[t][q];
+  if(v===null||edit.has(t+"-"+q)){
+    cell.innerHTML=`<button class="opt ${v===1?"on":""}" data-v="1" type="button" aria-label="Düzgün">+</button><button class="opt ${v===0?"on":""}" data-v="0" type="button" aria-label="Səhv">−</button>`;
+  }else{
+    cell.innerHTML=`<span class="sym ${v===1?"p":"m"}" title="Dəyişmək üçün 2 dəfə vurun">${v===1?"+":"−"}</span>`;
+  }
+}
+function numbers(){
+  const{c,r}=stats();
+  RR.forEach((el,t)=>{el.querySelector(".xal").textContent=c[t];el.querySelector(".rt").textContent=r[t].toFixed(1)});
+}
+function place(anim){
+  const all=[RL,RM,RR];
+  if(!anim)all.forEach(a=>a.forEach(e=>e.style.transition="none"));
+  order.forEach((t,pos)=>{
+    const tr=`translateY(${pos*(H+G)}px)`;
+    RL[t].style.transform=RM[t].style.transform=RR[t].style.transform=tr;
+    RL[t].querySelector(".yer").textContent=(pos+1)+".";
+  });
+  if(!anim){void $("rl").offsetHeight;all.forEach(a=>a.forEach(e=>e.style.transition=""))}
+}
+function questionDone(q){return marks.every(m=>m[q]!==null)}
+function changed(t,q){
+  drawCell(t,q);numbers();
+  if(questionDone(q)){
+    /* 1 saniyə xallar yenilənir, sonra yavaş-yavaş yer dəyişmə */
+    clearTimeout(timer);
+    RR.forEach(e=>{e.classList.remove("pulse");void e.offsetWidth;e.classList.add("pulse")});
+    timer=setTimeout(()=>{RR.forEach(e=>e.classList.remove("pulse"));order=rank();place(true)},1000);
+  }
+}
+$("rm").addEventListener("click",e=>{
+  const b=e.target.closest(".opt");if(!b)return;
+  const cell=b.parentElement,t=+cell.dataset.t,q=+cell.dataset.q;
+  marks[t][q]=+b.dataset.v;edit.delete(t+"-"+q);changed(t,q);
+});
+$("rm").addEventListener("dblclick",e=>{
+  const s=e.target.closest(".sym");if(!s)return;
+  const cell=s.parentElement;edit.add(cell.dataset.t+"-"+cell.dataset.q);drawCell(+cell.dataset.t,+cell.dataset.q);
+});
+$("go").onclick=start;
+$("back").onclick=()=>{if(confirm("Bütün məlumatlar silinəcək. Davam edək?")){clearTimeout(timer);$("game").style.display="none";$("setup").style.display="grid"}};
+
+/* ---------- Poster ---------- */
+function fit(ctx,txt,weight,size,maxW,min=14){
+  while(size>min){ctx.font=`${weight} ${size}px Poppins,sans-serif`;if(ctx.measureText(txt).width<=maxW)break;size--}
+  ctx.font=`${weight} ${size}px Poppins,sans-serif`;
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+$("poster").onclick=async()=>{
+  try{await Promise.all([document.fonts.load("700 40px Poppins"),document.fonts.load("500 40px Poppins")])}catch(e){}
+  const{c,r}=stats(),ord=rank(),n=Math.min(10,T.length);
+  const cv=document.createElement("canvas");cv.width=1080;cv.height=1920;
+  const x=cv.getContext("2d");
+  const g=x.createLinearGradient(0,0,1080,1920);
+  g.addColorStop(0,"#002E92");g.addColorStop(.35,"#00123F");g.addColorStop(.7,"#00072C");g.addColorStop(1,"#00226F");
+  x.fillStyle=g;x.fillRect(0,0,1080,1920);
+  await new Promise(res=>{
+    const im=new Image();im.crossOrigin="anonymous";
+    im.onload=()=>{x.drawImage(im,497,78,86,108);res()};
+    im.onerror=res;im.src=LOGO;
+  });
+  x.textBaseline="middle";x.textAlign="center";x.fillStyle="#9DC3FF";
+  const title=`"${cname||"Yarış adı"}" TOP${n}-u`;
+  fit(x,title,700,76,960);x.fillText(title,540,255);
+  x.fillStyle="#6FA5FC";x.textAlign="left";x.font="500 28px Poppins,sans-serif";
+  x.fillText("Yer",70,444);x.fillText("Komanda adı",127,444);
+  x.textAlign="center";x.fillText("Xal",818,444);x.fillText("Reytinq",958,444);
+  for(let i=0;i<n;i++){
+    const t=ord[i],y=466+i*120,a=Math.max(.08,1-.08*i),w=i===0?700:500;
+    x.fillStyle=`rgba(111,165,252,${a})`;rr(x,46,y,988,100,50);x.fill();
+    x.fillStyle=a>=.6?"#00072C":"#DCE9FF";
+    const cy=y+52;
+    x.textAlign="left";x.font=`${w} 42px Poppins,sans-serif`;x.fillText((i+1)+".",70,cy);
+    fit(x,T[t],w,42,590,12);x.fillText(T[t],150,cy);
+    x.textAlign="center";x.font=`${w} 42px Poppins,sans-serif`;
+    x.fillText(String(c[t]),818,cy);
+    const rs=r[t].toFixed(1);fit(x,rs,w,42,140,18);x.fillText(rs,958,cy);
+  }
+  x.fillStyle="#9DC3FF";x.textAlign="center";
+  const bye="Qalibləri təbrik edir, iştirak edənlərə təşəkkür edirik";
+  fit(x,bye,500,36,960);x.fillText(bye,540,1790);
+  cv.toBlob(b=>{
+    const a=document.createElement("a");a.href=URL.createObjectURL(b);
+    a.download=(cname||"reytinq").replace(/[^\w\u0080-\uFFFF-]+/g,"_")+"_top"+n+".png";a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  },"image/png");
+};
+</script>
+<script src="/footer.js"></script>
+</body>
+</html>
