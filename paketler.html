@@ -99,6 +99,15 @@ transition-duration:.3s;
 .pkg-type,.pkg-date{font-size:15px;font-weight:500;line-height:1.3;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 mark.hl{background:var(--mk);color:inherit;font-weight:800;border:2px solid currentColor;border-radius:6px;padding:0 4px;display:inline-block;line-height:1.1}
 
+/* ---------- Səhifələmə ---------- */
+.pager{margin:22px 0 6px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px}
+.pg-btn{width:42px;height:42px;border:0;border-radius:14px;background:var(--grad);color:var(--fg);font-size:16px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:transform .25s ease,box-shadow .3s ease}
+.pg-btn.cur{box-shadow:0 0 0 2px var(--page),0 0 0 4px var(--accent);cursor:default}
+.pg-btn:active{transform:scale(.94)}
+.pg-arrow{background:transparent;color:var(--accent);width:36px;border-radius:50%;transition:transform .25s ease,color .65s ease}
+.pg-arrow svg{width:24px;height:24px}
+@media (hover:hover){.pg-btn:not(.cur):hover{transform:translateY(-2px)}}
+
 /* ---------- Paylaş düyməsi (kartın ən sağı) ---------- */
 .share-btn{flex:0 0 auto;margin-left:auto;width:36px;height:36px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;background:var(--page);color:var(--accent);transition:transform .25s ease,background .3s ease,color .65s ease}
 @media (hover:hover){.share-btn:hover{transform:scale(1.12)}}
@@ -122,7 +131,7 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .footer-link{transition:opacity .25s ease,transform .25s ease}
 .footer-link:hover{opacity:.72;transform:translateY(-1px)}
 
-.pkg-card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.share-btn:focus-visible,.sheet-opt:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.pkg-card:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible,.share-btn:focus-visible,.sheet-opt:focus-visible,.pg-btn:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ---------- TELEFON ≤700px ---------- */
@@ -145,6 +154,9 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .pkg-type,.pkg-date{font-size:9px}
 .share-btn{width:32px;height:32px}
 .share-btn svg{width:16px;height:16px}
+.pager{gap:8px;margin-top:18px}
+.pg-btn{width:36px;height:36px;border-radius:12px;font-size:14px}
+.pg-arrow{width:32px}
 footer{min-height:96px;padding:16px 12px;gap:5px}
 .footer-line{font-size:13px}
 }
@@ -222,6 +234,7 @@ footer{min-height:88px}
   <h2 class="section-title rise" style="--d:.3s">Paketlər</h2>
 
   <div class="cards-list" id="cardsList"></div>
+  <div class="pager" id="pager"></div>
 </div>
 
 <footer>
@@ -322,11 +335,17 @@ const packages=[
   {title:'"Vesper" kuboku - Məktəblilərarası',type:"nhn",date:"2026-09-01",icon:"https://pictureurl.com/api/storage/file?key=u%2Fanon%2F435a026b-b566-4e8e-844b-086936ce2e88-1000463173.jpg",link:"/vesper_kuboku"}
 ].map((p,i)=>({...p,order:i}));
 
+/* Afişanın ən yuxarısında görünən kiçik loqo */
+const POSTER_LOGO="https://i.ibb.co/3mjVHt5R/Yeni-Proje-2.png";
+
 let activeTypes=new Set(TYPES.map(t=>t.key));
 let newestFirst=true;
 let query="";
 let firstRender=true;
 let lastKey="";
+let page=1;
+const PAGE_SIZE=10;
+const pager=document.getElementById("pager");
 
 const filtersEl=document.getElementById("filters");
 TYPES.forEach(t=>{
@@ -337,7 +356,7 @@ TYPES.forEach(t=>{
   btn.addEventListener("click",()=>{
     if(activeTypes.has(t.key)) activeTypes.delete(t.key); else activeTypes.add(t.key);
     btn.classList.toggle("off",!activeTypes.has(t.key));
-    render();
+    page=1; render();
   });
   filtersEl.appendChild(btn);
 });
@@ -346,14 +365,14 @@ const sortBtn=document.getElementById("sortBtn");
 sortBtn.addEventListener("click",()=>{
   newestFirst=!newestFirst;
   sortBtn.classList.toggle("flip",!newestFirst);
-  render();
+  page=1; render();
 });
 
 const searchInput=document.getElementById("searchInput");
 searchInput.addEventListener("input",()=>{
   const v=searchInput.value.trim();
   query=v.length>=3?v.toLowerCase():"";
-  render();
+  page=1; render();
 });
 
 function highlight(title,q){
@@ -374,16 +393,20 @@ cardsList.addEventListener("pointermove",e=>{
   card.style.setProperty("--my",(e.clientY-r.top)+"px");
 });
 
-function render(){
+function render(noAnim){
   let list=packages.filter(p=>activeTypes.has(p.type));
   if(query) list=list.filter(p=>p.title.toLowerCase().includes(query));
   list.sort((a,b)=>newestFirst
     ?(b.date.localeCompare(a.date)||b.order-a.order)
     :(a.date.localeCompare(b.date)||a.order-b.order));
 
-  /* siyahı (tərkib və ya sıra) dəyişibsə kartlar animasiya ilə gəlir */
+  const pages=Math.max(1,Math.ceil(list.length/PAGE_SIZE));
+  if(page>pages) page=pages;
+  list=list.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+
+  /* tərkib dəyişibsə animasiya; səhifə dəyişəndə (noAnim) animasiya yoxdur */
   const key=list.map(p=>p.order).join(",");
-  const changed=key!==lastKey;
+  const changed=!noAnim&&key!==lastKey;
   lastKey=key;
   cardsList.innerHTML="";
   const first=firstRender;   /* ilk yüklənmə: tam giriş animasiyası */
@@ -410,7 +433,52 @@ function render(){
       </button>`;
     cardsList.appendChild(card);
   });
+
+  renderPager(pages,first,changed,list.length);
 }
+
+/* ---------- SƏHİFƏLƏMƏ  < 1 2 3 > ---------- */
+const ARW=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+
+function renderPager(pages,first,changed,count){
+  pager.className="pager"+(first?" frame":(changed?" enter":""));
+  pager.style.setProperty("--i",4+count);
+  pager.style.setProperty("--e",Math.min(count,12));
+  if(pages<2){ pager.innerHTML=""; return; }
+  let h="";
+  if(page>1) h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`;
+  for(let p=1;p<=pages;p++){
+    h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
+  }
+  if(page<pages) h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
+  pager.innerHTML=h;
+}
+
+pager.addEventListener("click",e=>{
+  const b=e.target.closest(".pg-btn");
+  if(!b||+b.dataset.p===page) return;
+  page=+b.dataset.p;
+  cardsList.style.minHeight=cardsList.offsetHeight+"px";   /* hündürlük azalsa səhifə sıçramasın */
+  render(true);                                            /* kartlar animasiyasız */
+  scrollTopSmooth(500,()=>{cardsList.style.minHeight=""}); /* 0,5 san ərzində ən başa sürüşür */
+});
+
+function scrollTopSmooth(ms,done){
+  const root=document.documentElement,from=window.scrollY;
+  if(!from||matchMedia("(prefers-reduced-motion:reduce)").matches){
+    window.scrollTo(0,0); if(done) done(); return;
+  }
+  root.style.scrollBehavior="auto";
+  const t0=performance.now();
+  (function step(t){
+    const k=Math.min(1,(t-t0)/ms);
+    const e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+    window.scrollTo(0,from*(1-e));
+    if(k<1) requestAnimationFrame(step);
+    else{ root.style.scrollBehavior=""; if(done) done(); }
+  })(t0);
+}
+
 render();
 
 /* Basma effekti görünsün deyə keçid 0.3 san gecikir */
@@ -432,9 +500,8 @@ cardsList.addEventListener("click",e=>{
 /* =========================================================
    PAYLAŞ
    - Story/status üçün 1080x1920 afişa canvas ilə hazırlanır.
-   - Telefonda sistem paylaşma menyusu açılır (WhatsApp, Instagram, Telegram və s.),
-     şəkil fayl kimi, başlıq + link isə mesaj mətni kimi göndərilir.
-   - Masaüstündə şəkil yüklənir, link kopyalanır.
+   - Afişanın ən yuxarısında kiçik loqo yerləşir.
+   - Seçim: afişanı yüklə / linki kopyala.
 ========================================================= */
 const overlay=document.getElementById("shareOverlay");
 const toastEl=document.getElementById("toast");
@@ -512,7 +579,7 @@ async function makeStory(p){
       document.fonts.load('800 30px Poppins')
     ]);
   }catch(e){}
-  const icon=await loadImg(p.icon);
+  const [icon,logo]=await Promise.all([loadImg(p.icon),loadImg(POSTER_LOGO)]);
 
   const W=1080,H=1920;
   const c=document.createElement("canvas");
@@ -540,6 +607,14 @@ async function makeStory(p){
   blob(980,1760,560,520,"8,50,160",.55);
   blob(540,1000,700,300,"0,4,24",.55);
   blob(900,300,300,260,"0,140,255",.18);
+
+  /* ---------- Ən yuxarıda kiçik loqo ---------- */
+  if(logo){
+    const maxLW=340,maxLH=110;
+    const ls0=Math.min(maxLW/logo.naturalWidth,maxLH/logo.naturalHeight);
+    const lw=logo.naturalWidth*ls0,lh=logo.naturalHeight*ls0;
+    x.drawImage(logo,(W-lw)/2,64,lw,lh);
+  }
 
   /* ---------- Başlıq mətni ---------- */
   const m=p.title.match(/^(.*?)"([^"]+)"\s*(.*)$/);
