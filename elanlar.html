@@ -159,6 +159,11 @@ html.consent-lock body{overflow:hidden}
   .consent-text{font-size:12px}
   .consent-btn{font-size:12px;padding:10px 6px}
 }
+  /* Razı deyiləm: solda, içi dolu (yuxarıdakı .consent-btn stili). Razıyam: sağda, içi boş, yalnız çərçivəli */
+.consent-btn.yes{background:transparent;color:inherit;box-shadow:none;border:2px solid currentColor;padding:9px 8px}
+.consent-btn.yes:hover{background:rgba(255,255,255,.12)}
+.dark .consent-btn.yes:hover{background:rgba(0,7,44,.1)}
+@media (max-width:700px){.consent-btn.yes{padding:8px 6px}}
 /* KOMP + PLANŞET: ekran ikiyə bölünür */
 @media (min-width:701px){
   .layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
@@ -289,9 +294,9 @@ html.consent-lock body{overflow:hidden}
     əsasən, məlumatlarınızı oyunçu/komanda axtarışı ilə bağlı müraciətinizi qəbul etmək və sizinlə əlaqə saxlamaq üçün tələb edirik. Məqsədimiz intellektual oyunlarda iştirakınızı asanlaşdırmaqdır. Daxil etdiyiniz məlumatların platformamızda paylaşılmağına razısınız?
   </p>
   <div class="consent-actions">
-    <button class="consent-btn" id="consentYes" type="button">Razıyam</button>
-    <button class="consent-btn" id="consentNo" type="button">Razı deyiləm</button>
-  </div>
+  <button class="consent-btn no" id="consentNo" type="button">Razı deyiləm</button>
+  <button class="consent-btn yes" id="consentYes" type="button">Razıyam</button>
+</div>
 </div>
 <script>
 /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
@@ -546,8 +551,6 @@ function closeConsent(ok){
 }
 $("consentYes").onclick=()=>closeConsent(true);
 $("consentNo").onclick=()=>closeConsent(false);
-cOv.onclick=()=>closeConsent(false);
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeConsent(false)});
 form.addEventListener("input",e=>{const f=e.target.closest(".field");if(f)f.classList.remove("bad")});
 form.addEventListener("submit",async e=>{
   e.preventDefault();
