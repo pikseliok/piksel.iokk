@@ -139,6 +139,26 @@ footer a:hover{opacity:.72;transform:translateY(-1px)}
 .nav-link:focus-visible,.theme-toggle:focus-visible,.abtn:focus-visible,.arrow:focus-visible,footer a:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+  /* ---------- Təsdiq paneli ---------- */
+.consent-overlay{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,7,44,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .35s ease}
+.consent-overlay.open{display:block}
+.consent-overlay.show{opacity:1}
+.consent-bar{display:none;position:fixed;left:50%;top:50%;z-index:9999;width:min(92vw,460px);max-height:90vh;overflow:auto;border-radius:28px;padding:22px 22px 18px;box-shadow:0 20px 50px rgba(0,10,50,.35);opacity:0;transform:translate(-50%,-46%) scale(.96);transition:opacity .35s ease,transform .45s cubic-bezier(.22,.8,.25,1)}
+.consent-bar.open{display:block}
+.consent-bar.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.consent-text{font-size:14px;font-weight:500;line-height:1.55;text-align:center}
+.consent-text a{text-decoration:underline;font-weight:700}
+.consent-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.consent-btn{border:0;cursor:pointer;border-radius:40px;font-weight:700;font-size:14px;padding:11px 8px;color:var(--pillt);background:var(--pill);box-shadow:0 4px 12px rgba(0,10,50,.18);transition:transform .3s,background .6s,color .6s}
+.consent-btn:hover{transform:translateY(-2px)}
+.consent-btn:active{transform:scale(.95);transition-duration:.2s}
+.consent-btn:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+html.consent-lock body{overflow:hidden}
+@media (max-width:700px){
+  .consent-bar{padding:18px 16px 14px;border-radius:22px}
+  .consent-text{font-size:12px}
+  .consent-btn{font-size:12px;padding:10px 6px}
+}
 /* KOMP + PLANŞET: ekran ikiyə bölünür */
 @media (min-width:701px){
   .layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
@@ -261,6 +281,18 @@ footer a:hover{opacity:.72;transform:translateY(-1px)}
   <a href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
   <a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
+  <!-- Təsdiq paneli -->
+<div class="consent-overlay" id="consentOverlay" aria-hidden="true"></div>
+<div class="consent-bar grad" id="consentBar" role="dialog" aria-modal="true" aria-label="İstifadə şərtləri">
+  <p class="consent-text">
+    <a href="/mexfilik_ve_istifade_sertleri" target="_blank" rel="noopener noreferrer">İstifadə Şərtlərimizə</a>
+    əsasən, məlumatlarınızı oyunçu/komanda axtarışı ilə bağlı müraciətinizi qəbul etmək və sizinlə əlaqə saxlamaq üçün tələb edirik. Məqsədimiz intellektual oyunlarda iştirakınızı asanlaşdırmaqdır. Daxil etdiyiniz məlumatların platformamızda paylaşılmağına razısınız?
+  </p>
+  <div class="consent-actions">
+    <button class="consent-btn" id="consentYes" type="button">Razıyam</button>
+    <button class="consent-btn" id="consentNo" type="button">Razı deyiləm</button>
+  </div>
+</div>
 <script>
 /* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */
 document.addEventListener('contextmenu', function(e) {
@@ -490,8 +522,34 @@ $("lbtn").onclick=()=>{
   renderList();lwrap.classList.toggle("open");
   if(!wide.matches)setTimeout(()=>lwrap.scrollIntoView({behavior:"smooth",block:"nearest"}),300);
 };
+  /* ---------- Təsdiq paneli (hər "Göndər"də soruşulur, heç nə yadda saxlanmır) ---------- */
+const cOv=$("consentOverlay"),cBar=$("consentBar");
+let consentResolve=null;
+function askConsent(){
+  if(consentResolve)return Promise.resolve(false);
+  return new Promise(res=>{
+    consentResolve=res;
+    cOv.classList.add("open");cBar.classList.add("open");
+    document.documentElement.classList.add("consent-lock");
+    cOv.setAttribute("aria-hidden","false");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{cOv.classList.add("show");cBar.classList.add("show");$("consentYes").focus()}));
+  });
+}
+function closeConsent(ok){
+  if(!consentResolve)return;
+  const r=consentResolve;consentResolve=null;
+  cOv.classList.remove("show");cBar.classList.remove("show");
+  document.documentElement.classList.remove("consent-lock");
+  cOv.setAttribute("aria-hidden","true");
+  setTimeout(()=>{cOv.classList.remove("open");cBar.classList.remove("open")},350);
+  r(ok);
+}
+$("consentYes").onclick=()=>closeConsent(true);
+$("consentNo").onclick=()=>closeConsent(false);
+cOv.onclick=()=>closeConsent(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeConsent(false)});
 form.addEventListener("input",e=>{const f=e.target.closest(".field");if(f)f.classList.remove("bad")});
-form.addEventListener("submit",e=>{
+form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(form.website.value)return;
   const T=TYPES[type],btn=$("send");
@@ -504,6 +562,12 @@ form.addEventListener("submit",e=>{
   };
   Object.entries(errs).forEach(([k,m])=>setErr(k,m));
   if(Object.values(errs).some(Boolean))return;
+    const ok=await askConsent();
+  if(!ok){
+    btn.textContent="Paylaşılmadı";
+    setTimeout(()=>{if(btn.textContent==="Paylaşılmadı")btn.textContent="Göndər"},2000);
+    return;
+  }
   const ad={type,name,team:T.team?team:"",game:$("game").value,phone,insta,id:"t"+Date.now(),mine:true,tarix:new Date().toISOString()};
   ads.unshift(ad);
   ad.p=post({action:"add",type:ad.type,name:ad.name,team:ad.team,game:ad.game,phone:ad.phone,insta:ad.insta})
