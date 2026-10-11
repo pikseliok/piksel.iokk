@@ -59,7 +59,7 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
 <div class="pk-title">Unikal İntellektual Oyunlar Platforması</div>
 
 <div class="pk-social">
-  <a href="https://www.instagram.com/piksel.iok/?action=follow" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+  <a href="https://www.instagram.com/peaksel.az/?action=follow" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
   </a>
   <a href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
