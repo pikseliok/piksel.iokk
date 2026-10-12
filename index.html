@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;800&display=swap" rel="stylesheet">
+<title>πksel İntellektual Oyunlar Platforması</title>
+<style>
+  :root {
+    --dark: #00072C;
+    --mid: #0B1655;
+    --g1: #70A6FF;
+    --g2: #6099FA;
+    --g3: #8AB7FF;
+    --grad: linear-gradient(135deg, #70A6FF 0%, #6099FA 55%, #8AB7FF 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    min-height: 100dvh;
+    overflow: hidden;
+    background-color: var(--mid);
+    /* sağ yuxarı və sol aşağı: #00072C | sol yuxarı və sağ aşağı: #0B1655 */
+    background-image:
+      radial-gradient(circle at 100% 0%, var(--dark) 0%, rgba(0,7,44,0) 65%),
+      radial-gradient(circle at 0% 100%, var(--dark) 0%, rgba(0,7,44,0) 65%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Fon: uçan kiçik loqolar */
+  #sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  #sky svg { position: absolute; left: 0; top: 0; opacity: .15; will-change: transform; }
+
+  /* Mərkəz */
+  main {
+    position: relative; z-index: 1;
+    height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+  }
+  .logo-wrap {
+    width: clamp(170px, 36vmin, 340px);
+    aspect-ratio: 1 / 1;
+    animation: enter 1.6s cubic-bezier(.2,.8,.2,1) both,
+               float 6s ease-in-out 1.6s infinite;
+  }
+  .logo-wrap svg {
+    width: 100%; height: 100%; display: block; overflow: visible;
+  }
+  @keyframes enter {
+    0%   { opacity: 0; transform: scale(.55) rotate(-8deg); filter: blur(14px); }
+    60%  { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-14px) rotate(1.2deg); }
+  }
+
+  /* Loqonun hissələri */
+  .part { transform-box: fill-box; transform-origin: center; }
+  .top  { animation: dropIn 1s cubic-bezier(.2,.8,.2,1) .25s both; }
+  .legL { transform-origin: 50% 0%; animation: growDown 1s cubic-bezier(.2,.8,.2,1) .55s both; }
+  .legR { transform-origin: 50% 0%; animation: growDown 1s cubic-bezier(.2,.8,.2,1) .75s both; }
+  .sqB  { animation: pop .7s cubic-bezier(.3,1.6,.5,1) 1.1s both, pulse 3s ease-in-out 1.8s infinite; }
+  .sqS  { animation: pop .7s cubic-bezier(.3,1.6,.5,1) 1.3s both, pulse 3s ease-in-out 2.1s infinite; }
+  @keyframes dropIn   { from { opacity: 0; transform: translateY(-60px); } to { opacity: 1; transform: none; } }
+  @keyframes growDown { from { opacity: 0; transform: scaleY(.2); } to { opacity: 1; transform: none; } }
+  @keyframes pop      { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+  @keyframes pulse    { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  /* Yuxarı başlıq */
+  header {
+    position: fixed; left: 0; right: 0; top: 0; z-index: 2;
+    padding: calc(env(safe-area-inset-top) + clamp(16px, 5vh, 44px)) 12px 0;
+    text-align: center;
+    pointer-events: none;
+  }
+  header h1 {
+    font-weight: 800;
+    font-size: clamp(26px, 6vmin + 8px, 64px);
+    letter-spacing: .1em;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  header h1 span {
+    display: inline-block;
+    background: var(--grad);
+    background-size: 1100% 100%;
+    background-position: calc(var(--i) * 10%) 0;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: letterIn .9s cubic-bezier(.2,.9,.3,1.2) calc(.3s + var(--i) * .09s) both;
+  }
+  header h1 span.dot {
+    animation: letterIn .9s cubic-bezier(.2,.9,.3,1.2) calc(.3s + var(--i) * .09s) both,
+               blink 1.8s ease-in-out calc(1.8s + var(--i) * .15s) infinite;
+  }
+  @keyframes letterIn {
+    from { opacity: 0; transform: translateY(-40px) scale(.5); filter: blur(10px); }
+    to   { opacity: 1; transform: none; filter: blur(0); }
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }
+
+  /* Footer */
+  footer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 10px 14px calc(12px + env(safe-area-inset-bottom));
+    text-align: center;
+    font-size: clamp(10px, 1.6vmin + 4px, 12px);
+    line-height: 1.6;
+    animation: fadeUp 1.2s ease 1.6s both;
+  }
+  footer p, footer a {
+    background: var(--grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    text-decoration: none;
+  }
+  footer a:hover, footer a:focus-visible { filter: brightness(1.25); text-decoration: underline; text-decoration-color: #70A6FF; }
+  footer a:focus-visible { outline: 2px solid #70A6FF; outline-offset: 3px; border-radius: 3px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-wrap, .logo-wrap svg, .part, footer, header h1 span { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ortaq gradient və simvol (fon loqoları üçün) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="emblemBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#70A6FF"/>
+      <stop offset="55%" stop-color="#6099FA"/>
+      <stop offset="100%" stop-color="#8AB7FF"/>
+    </linearGradient>
+    <symbol id="logo" viewBox="140 200 800 680">
+      <g fill="url(#emblemBlue)">
+        <path d="M 512,325 L 550,325 L 407,841 L 249,839 Z"/>
+        <path d="M 530,340 L 602,340 L 828,843 L 670,844 Z"/>
+        <path d="M 199,469 C 182,438 173,405 175,375 C 176,334 193,300 221,276 C 250,251 286,244 326,246 C 371,247 416,263 465,278 C 524,297 579,310 628,311 C 690,312 747,296 804,275 L 800,347 C 757,363 707,382 659,385 C 612,388 570,375 530,358 L 469,350 C 432,336 391,322 355,322 C 323,322 296,333 278,351 C 260,369 257,390 265,411 L 284,447 Z"/>
+        <rect x="815" y="268" width="68" height="69"/>
+        <rect x="876" y="218" width="40" height="40"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="sky" aria-hidden="true"></div>
+
+<main>
+  <div class="logo-wrap" role="img" aria-label="πksel loqosu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="140 200 800 680">
+      <g fill="url(#emblemBlue)">
+        <path class="part legL" d="M 512,325 L 550,325 L 407,841 L 249,839 Z"/>
+        <path class="part legR" d="M 530,340 L 602,340 L 828,843 L 670,844 Z"/>
+        <path class="part top" d="M 199,469 C 182,438 173,405 175,375 C 176,334 193,300 221,276 C 250,251 286,244 326,246 C 371,247 416,263 465,278 C 524,297 579,310 628,311 C 690,312 747,296 804,275 L 800,347 C 757,363 707,382 659,385 C 612,388 570,375 530,358 L 469,350 C 432,336 391,322 355,322 C 323,322 296,333 278,351 C 260,369 257,390 265,411 L 284,447 Z"/>
+        <rect class="part sqB" x="815" y="268" width="68" height="69"/>
+        <rect class="part sqS" x="876" y="218" width="40" height="40"/>
+      </g>
+    </svg>
+  </div>
+</main>
+
+<header><h1 aria-label="Tezliklə..."><span style="--i:0">T</span><span style="--i:1">E</span><span style="--i:2">Z</span><span style="--i:3">L</span><span style="--i:4">İ</span><span style="--i:5">K</span><span style="--i:6">L</span><span style="--i:7">Ə</span><span class="dot" style="--i:8">.</span><span class="dot" style="--i:9">.</span><span class="dot" style="--i:10">.</span></h1></header>
+
+<footer>
+  <p>πksel İntellektual Oyunlar klubu tərəfindən layihələşdirilmiş πksel İntellektual Oyunlar Platforması</p>
+  <p><a href="https://www.instagram.com/peaksel.az" target="_blank" rel="noopener noreferrer">©2026 πksel İntellektual Oyunlar klubu</a></p>
+  <p><a href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a></p>
+</footer>
+
+<script>
+(function () {
+  var sky = document.getElementById('sky');
+  var wrap = document.querySelector('.logo-wrap');
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var count = window.innerWidth < 700 ? 32 : 55;
+  var flyers = [];
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  /* ---------- Təsadüfi uçan loqolar ---------- */
+  for (var i = 0; i < count; i++) {
+    var svg = document.createElementNS(NS, 'svg');
+    var use = document.createElementNS(NS, 'use');
+    use.setAttribute('href', '#logo');
+    svg.appendChild(use);
+    svg.setAttribute('width', 24);
+    svg.setAttribute('height', 20.4);
+    sky.appendChild(svg);
+    flyers.push(svg);
+
+    if (reduce) { svg.style.transform = 'translate(' + rnd(0, 95) + 'vw,' + rnd(0, 90) + 'vh)'; continue; }
+    var frames = [], steps = 5;
+    for (var k = 0; k <= steps; k++) {
+      frames.push(k === steps ? frames[0] : {
+        transform: 'translate(' + rnd(-5, 100) + 'vw,' + rnd(-5, 100) + 'vh) rotate(' + rnd(-180, 180) + 'deg)'
+      });
+    }
+    svg.animate(frames, {
+      duration: rnd(28000, 60000),
+      iterations: Infinity,
+      easing: 'ease-in-out',
+      delay: -rnd(0, 30000)
+    });
+  }
+  if (reduce) return;
+
+})();
+</script>
+</body>
+</html>
