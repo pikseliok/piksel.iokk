@@ -187,6 +187,9 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .sn{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;max-width:100%;word-break:break-word}
 .ss{font-size:34px;font-weight:800;line-height:1;margin-top:2px}
 .evt{font-size:var(--b);font-weight:500;margin-top:6px;line-height:1.35}
+.evt2{font-size:clamp(13px,3.7vw,17px);font-weight:500;margin-top:10px;line-height:1.4}
+.evt2 b{font-weight:800}
+.tcode{font-size:clamp(15px,4.2vw,20px);line-height:1.2}
 .mr{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:42px;border-radius:999px;padding:8px 16px;color:#F5F7FA;font-size:var(--b);font-weight:500}
 .mr b{font-weight:700}
 .mr.pen{opacity:.5}
@@ -219,16 +222,17 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .mixrow{display:flex;justify-content:center;align-items:center;gap:12px}
 .pbtn.sq{width:52px;height:52px;padding:0;margin:0;display:grid;place-items:center;font-size:24px;line-height:1}
 .pbtn.sq:disabled{opacity:.4}
+.pbtn.tkb{width:100%;height:46px;padding:0 10px;margin:14px 0 0}
 .mic{width:28px;height:28px}
 .volbar{display:flex;align-items:center;gap:12px;width:100%;height:46px;border-radius:999px;padding:0 20px;margin-top:14px;background:var(--grad);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07)}
 .dark .volbar{color:var(--dark-ink)}
 .volbar svg{width:20px;height:20px;flex:0 0 20px}
-#vol{-webkit-appearance:none;appearance:none;flex:1;min-width:0;width:auto;height:26px;margin:0;padding:0;background:transparent;border:0;border-radius:0;color:inherit;cursor:pointer;outline:none}
-#vol::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,currentColor var(--p,50%),var(--track) var(--p,50%))}
-#vol::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
-#vol::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
-#vol::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
-#vol::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
+#vol,#vol2{-webkit-appearance:none;appearance:none;flex:1;min-width:0;width:auto;height:26px;margin:0;padding:0;background:transparent;border:0;border-radius:0;color:inherit;cursor:pointer;outline:none}
+#vol::-webkit-slider-runnable-track,#vol2::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,currentColor var(--p,50%),var(--track) var(--p,50%))}
+#vol::-webkit-slider-thumb,#vol2::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
+#vol::-moz-range-track,#vol2::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
+#vol::-moz-range-progress,#vol2::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
+#vol::-moz-range-thumb,#vol2::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
 @media(min-width:701px){#bars{grid-template-columns:1fr 1fr}.bar:last-child{grid-column:1/-1}}
 </style>
 </head>
@@ -298,10 +302,16 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
       <button class="pbtn sq" type="button" data-rx="🦉">🦉</button>
     </div>
     <div class="volbar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/><path d="M3.5 3.5l17 17" stroke-width="2.6"/></svg>
+      <input type="range" id="vol" min="0" max="100" value="50" step="1" aria-label="Oyunçuların səsi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </div>
+    <div class="volbar">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="range" id="vol" min="0" max="100" value="50" step="1" aria-label="Ümumi otaq səsi">
+      <input type="range" id="vol2" min="0" max="100" value="50" step="1" aria-label="Oyun daxili səslər (düymə, vaxt, falstart)">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
+    <div id="talkbox"></div>
   </div>
   <div class="note" id="net"></div>
 </div>
@@ -586,6 +596,8 @@ const now=()=>Date.now()+off,rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
 const T=()=>R.teams||{},P=()=>R.players||{},opn={},isH=()=>role==='host';
 const isPen=i=>!!(P()[i]&&P()[i].pen);
 const skip={},sk=n=>Date.now()<(skip[n]||0);
+/* Aparıcı ilə danışıq mümkün olan mərhələlər (oyun sualı gedəndə yox) */
+const TK=()=>!!R&&['lobby','wait','expired','finished'].includes(R.status);
 function tl(){
   if(!R)return 20;
   if(R.status==='running')return Math.max(0,Math.ceil((R.timerEnd-now())/1000));
@@ -600,7 +612,7 @@ function members(tid){
 }
 function presserOf(tid){
   const t=T()[tid];
-  return t&&t.presser&&members(tid).some(x=>x.id===t.presser&&!x.cap)?t.presser:null;
+  return t&&t.presser&&members(tid).some(x=>x.id===t.presser)?t.presser:null;
 }
 
 const MICSVG=m=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${m?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':''}</svg>`;
@@ -611,33 +623,42 @@ function render(){
   const h=isH(),me=P()[pid]||{},mt=me.team,cap=role==='captain',st=R.status,v=R.val||1;
   const tids=Object.keys(T()).sort((a,b)=>(T()[a].createdAt||0)-(T()[b].createdAt||0));
   const cl=t=>tids.indexOf(t)===1?'p':'b';
-  const isPresser=!h&&!cap&&!!mt&&presserOf(mt)===pid;
+  const isPresser=!h&&!!mt&&presserOf(mt)===pid;
   $('lobby').hidden=true;$('game').hidden=false;
-
-  $('head').innerHTML=`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button>`+
-    (h?'<div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün kodun üzərinə toxun</div>'
-      :`<div class="sm">Komanda kodu: <button class="copy-code code" data-copy="${esc(room+mt)}" type="button">${esc(room+mt)}</button>${cap?' - komanda yoldaşlarına ver':''}</div>`);
 
   const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
   let ev=R.ev;
   if(st==='lobby')ev=tids.length<2?'Komandaların qoşulması gözlənilir...':h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Hər komandada ən azı 2 nəfər və düyməsixan lazımdır.'):cap?'Komandandan düyməsixan seç.':'Kapitan düyməsixanı seçir.';
   else if(st==='wait'&&!ev)ev=`${v} XALLIQ SUAL SƏSLƏNİR!`+(v>=3?' TAPILMASA DİSKVALİFİKASİYA':'');
   else if(st==='finished')ev='🏆 '+((T()[R.winner]||{}).name||'')+' QALİB OLDU!';
+  let evh=esc(ev||'');
+  if(st==='answered'&&R.speaker&&P()[R.speaker])evh=R.speaker===pid?'<b>Siz</b> cavab verirsiniz':'<b>'+esc(P()[R.speaker].name)+'</b> cavab verir';
+  if(TK()&&R.talk&&P()[R.talk])evh=R.talk===pid?'<b>Siz</b> aparıcı ilə danışırsınız':'Aparıcı <b>'+esc(P()[R.talk].name)+'</b> ilə danışır';
 
+  /* Otaq kodu yalnız aparıcıda; kapitan/oyunçuda yalnız öz komanda kodu. Altında baş verən hadisələr. */
+  $('head').innerHTML=(h
+    ?`<div class="big">Otaq kodu:</div><button class="copy-code host-room-code" data-copy="${esc(room)}" type="button">${esc(room)}</button><div class="sm">Kodu kapitanlara ver - Kopyalamaq üçün kodun üzərinə toxun</div>`
+    :`<div class="sm" style="margin:0">Komanda kodu: <button class="copy-code code tcode" data-copy="${esc(room+mt)}" type="button">${esc(room+mt)}</button>${cap?' - komanda yoldaşlarına ver':''}</div>`)
+    +(st==='lobby'?'':`<div class="sm">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div>`)
+    +`<div class="evt2">${evh}</div>`;
+
+  const capOf=t=>{const c=members(t).find(x=>x.cap);return c?c.name:'KAPİTAN'};
   const sb=i=>{
-    const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t;
-    const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):'KAPİTAN'):''):'Gözləyir...';
+    const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t,tkn=t&&TK()&&R.talk&&(P()[R.talk]||{}).team===t;
+    const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):esc(capOf(t))):tkn?': '+esc(P()[R.talk].name):''):'Gözləyir...';
     return `<div class="sbox ${i?'p':'b'}"><div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div></div>`;
   };
-  $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center">${st==='lobby'?'':`<div class="sm" style="margin:0">Sual <b>${R.q||1}</b> • Dəyər <b>+${v}</b></div><div class="tm" id="tm">${tl()}</div>`}<div class="evt">${esc(ev||'')}</div></section>`;
+  $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm">${tl()}</div></section>`;
 
   const canD=x=>cap&&x.team===mt&&(st==='lobby'||st==='wait')&&!x.pen;
   const canM=x=>cap&&x.team===mt&&st==='answered'&&R.winner===mt&&!R.speaker&&!x.pen;
   const row=(x,tid,o)=>{
     const isP=x.id===presserOf(tid);
-    const ic=o&&o.ic&&!x.cap?`<span class="ic"><button class="ib${R.speaker===x.id?' on':''}" data-spk="${x.id}"${canM(x)?'':' disabled'}>${MICSVG(0)}</button><button class="ib${isP?' on':''}" data-pick="${x.id}"${canD(x)?'':' disabled'}>${BTNSVG}</button></span>`:'';
+    const pk=`<button class="ib${isP?' on':''}" data-pick="${x.id}"${canD(x)?'':' disabled'}>${BTNSVG}</button>`;
+    const sp=x.cap?'':`<button class="ib${R.speaker===x.id?' on':''}" data-spk="${x.id}"${canM(x)?'':' disabled'}>${MICSVG(0)}</button>`;
+    const ic=o&&o.ic?`<span class="ic">${sp}${pk}</span>`:'';
     const rs=h&&x.pen&&o&&o.rest?`<button class="mini" data-rest="${x.id}">Geri qaytar</button>`:'';
-    return `<div class="mr ${cl(tid)}${x.pen?' pen':''}"><span class="nm">${x.cap?`<b>${esc(x.name)} (K)</b>`:esc(x.name)+(isP?' (D)':'')}${x.pen?' (X)':''}</span>${ic}${rs}</div>`;
+    return `<div class="mr ${cl(tid)}${x.pen?' pen':''}"><span class="nm">${x.cap?`<b>${esc(x.name)} (K)${isP?' (D)':''}</b>`:esc(x.name)+(isP?' (D)':'')}${x.pen?' (X)':''}</span>${ic}${rs}</div>`;
   };
 
   const hb=(a,t,o,d,x)=>`<button class="hb${o?' o':''}" data-act="${a}"${d?' disabled':''}${x||''}>${t}</button>`;
@@ -647,12 +668,14 @@ function render(){
     if(st==='lobby')p+=hb('begin','OYUNA BAŞLA',0,!ready);
     if(st==='wait'){
       p+=hb('vaxt','VAXT! - 20 SANİYƏ',0,tids.length<2||tids.every(t=>(R.fs||{})[t]))+hb('rst','DÜYMƏLƏRİ SIFIRLA',1)+hb('resv','DƏYƏRİ SIFIRLA',1);
-      tids.filter(t=>T()[t].req).forEach(t=>{p+=hb('grant','✋ '+esc(T()[t].name)+' danışmaq istəyir',1,0,` data-t="${t}"`)});
-      if(R.talk)p+=hb('endtalk','DANIŞIĞI BİTİR',1);
     }
     if(st==='answered')p+=`<div class="hg">${hb('p1','+1')+hb('p2','+2')+hb('p3','+3')}</div>`+hb('wrong','QALAN VAXT RƏQİBİN',1)+hb('none','DOĞRU CAVAB YOXDUR',1)+hb('endspk','DANIŞIĞI BİTİR',1,!!R.sil);
     if(st==='expired')p+=hb('none','DOĞRU CAVAB YOXDUR',1);
     if(st==='finished')p+=hb('newg','YENİ OYUN',0);
+    if(TK()){
+      tids.filter(t=>T()[t].req).forEach(t=>{p+=hb('grant','✋ '+esc(T()[t].name)+' danışmaq istəyir',1,0,` data-t="${t}"`)});
+      if(R.talk)p+=hb('endtalk','DANIŞIĞI BİTİR',1);
+    }
     right=`<section class="card">${p}</section>`;
   }else if(isPresser){
     const bad=me.pen||(R.fs||{})[mt]||(R.wrong||{})[mt];
@@ -661,10 +684,6 @@ function render(){
     right=`<button class="buzz ${cl(mt)}${bad||wt2?' sm2':''}" data-act="buzz"${ok?'':' disabled'}>${bad?'CAVAB HÜQUQU YOXDUR':wt2?'APARICI VAXTI VERƏNƏ QƏDƏR GÖZLƏ':'BAS!'}</button>`;
   }else{
     right=members(mt).map(x=>row(x,mt,{ic:cap})).join('');
-    if(cap&&st==='wait'){
-      const rq=T()[mt]&&T()[mt].req;
-      right+=hb('req',rq?'İstək göndərildi':'Aparıcı ilə danışmaq istəyirəm',1,rq||R.talk===pid);
-    }
   }
   $('colR').innerHTML=right;
 
@@ -672,13 +691,24 @@ function render(){
   let bars='';
   if(h)tids.forEach(t=>{bars+=bar(t,esc(T()[t].name),cl(t),members(t).map(x=>row(x,t,{rest:1})).join(''))});
   else{
-    if(isPresser)bars+=bar('own',esc(T()[mt].name),cl(mt),members(mt).map(x=>row(x,mt)).join(''));
+    if(isPresser){
+      if(cap&&opn.own===undefined)opn.own=true;
+      bars+=bar('own',esc(T()[mt].name),cl(mt),members(mt).map(x=>row(x,mt,{ic:cap})).join(''));
+    }
     const o=tids.find(t=>t!==mt);
     if(o)bars+=bar('riv',esc(T()[o].name),cl(o),members(o).map(x=>row(x,o)).join(''));
   }
   const pens=Object.entries(P()).filter(([,x])=>x.pen).map(([id,x])=>({id,...x}));
   bars+=bar('ben','Cərimə skamyası'+(pens.length?' ('+pens.length+')':''),'n',pens.map(x=>row(x,x.team,{rest:1})).join(''));
   $('bars').innerHTML=bars;
+
+  /* Kapitanın aparıcı ilə danışıq düyməsi (səs barlarının altında) */
+  if(cap){
+    const tk=R.talk===pid,rq=T()[mt]&&T()[mt].req;
+    $('talkbox').innerHTML=tk
+      ?'<button class="pbtn tkb" type="button" data-act="endtalk">DANIŞIĞI BİTİR</button>'
+      :`<button class="pbtn tkb" type="button" data-act="req"${(rq||R.talk||!TK())?' disabled':''}>${rq?'✋ İstək göndərildi':'Aparıcı ilə danışmaq istəyirəm'}</button>`;
+  }else $('talkbox').innerHTML='';
 
   $('bMute').innerHTML=MICSVG(muted||me.pen);
   $('bMute').disabled=!!me.pen;
@@ -708,7 +738,7 @@ setInterval(()=>{
 /* DÜYMƏ BASMA */
 function buzz(){
   const me=P()[pid];
-  if(!me||me.cap)return;
+  if(!me)return;
   const tid=me.team;
   if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
   else if(R.status==='wait'&&!Object.keys(T()).some(t=>t!==tid&&(R.fs||{})[t])){SND.fail();skip.fail=Date.now()+2500}
@@ -839,7 +869,7 @@ document.addEventListener('click',e=>{
   if(!b)return;
   const d=b.dataset,me=P()[pid]||{};
   if(d.act&&A[d.act]&&d.act!=='buzz'){
-    if(HOSTACT.includes(d.act)&&!isH())return;
+    if(HOSTACT.includes(d.act)&&!isH()&&!(d.act==='endtalk'&&R.talk===pid))return;
     A[d.act](d.t);
   }
   if(d.pick&&role==='captain'&&(R.status==='lobby'||R.status==='wait')&&!isPen(d.pick))rf('teams/'+me.team+'/presser').set(d.pick);
@@ -865,7 +895,7 @@ function ah(i){const x=P()[i];return !!x&&!R.sil&&x.team===R.winner&&((x.cap&&!R
 function allH(i){
   if(i===R.host)return true;
   if(isPen(i))return false;
-  return (R.status==='answered'&&ah(i))||(R.status==='wait'&&i===R.talk);
+  return (R.status==='answered'&&ah(i))||(TK()&&i===R.talk);
 }
 function hear(i){
   if(i===pid)return false;
@@ -974,17 +1004,20 @@ setInterval(()=>{
 </script>
 <script>
 /* ===== SƏSLƏR + REAKSİYALAR + YENİ DÜYMƏSİXAN ===== */
-let ac=null,last={},bk='',rxOn=0,pshown=0,pkey='';
+let ac=null,last={},bk='',rxOn=0,pshown=0,pkey='',sfx=1;
 const unlock=()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume()}catch(e){}};
 document.addEventListener('pointerdown',unlock,{passive:true});
 function tone(f,d,ty,v,at){
   if(!ac)return;
+  v=(v||.25)*sfx;if(!v)return;
   const t=ac.currentTime+(at||0),o=ac.createOscillator(),g=ac.createGain();
   o.type=ty||'sine';o.frequency.value=f;
-  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v||.25,t+.015);
-  g.gain.setValueAtTime(v||.25,t+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(.0001,t+d);
+  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.015);
+  g.gain.setValueAtTime(v,t+Math.max(d-.04,.02));g.gain.linearRampToValueAtTime(.0001,t+d);
   o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d+.03);
 }
+/* Oyun daxili səslərin (düymə, vaxt, falstart) ayrıca səs bar */
+$('vol2').addEventListener('input',e=>{sfx=e.target.value/50;e.target.style.setProperty('--p',e.target.value+'%')});
 const SND={
   beep:()=>tone(880,.7),
   up:()=>tone(700,2),
