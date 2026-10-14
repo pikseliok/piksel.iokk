@@ -2,7 +2,7 @@
 <html lang="az">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#9DC3FF">
 <title>πksel - Breyn Rinq səsli otaq</title>
 <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
@@ -24,6 +24,7 @@
 body.dark{--glow:rgba(255,255,255,.40)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 a,button{-webkit-touch-callout:none}
+html,body,button{touch-action:manipulation}
 html{scroll-behavior:smooth}
 body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body.dark{background:var(--dark-bg);color:var(--dark-ink)}
@@ -236,9 +237,10 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .volbar{display:flex;align-items:center;gap:12px;width:100%;height:46px;border-radius:999px;padding:0 20px;margin-top:14px;background:var(--grad);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07)}
 .dark .volbar{color:var(--dark-ink)}
 .volbar svg{width:20px;height:20px;flex:0 0 20px}
-.kick-btn{position:absolute;top:7px;right:7px;width:22px;height:22px;min-width:22px;border-radius:50%;padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;border:1.5px solid rgba(255,255,255,.7);background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;justify-content:center}
+.kick-btn{position:absolute;top:7px;right:7px;width:22px;height:22px;min-width:22px;border-radius:50%;padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;border:1.5px solid rgba(255,255,255,.85);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center}
 .mr .kick-btn{position:static;flex:none}
 .kick-btn:active{transform:scale(.9)}
+.reqb{margin-top:6px;background:#fff;border-radius:999px;padding:2px 12px;font-size:16px;line-height:1.3}
 .kick-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:300;background:rgba(0,7,44,0);pointer-events:none}
 .kick-modal{opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;box-shadow:0 17px 35px rgba(0,20,110,.3)}
 .dark .kick-modal{background:var(--dark-bg);color:var(--dark-light)}
@@ -454,14 +456,13 @@ async function start(){
       const s=await db.ref('rooms/'+rc).once('value');
       const r=s.val();
       if(!r)return alert('Belə otaq yoxdur');
-      if(r.status!=='lobby')return alert('Oyun artıq başlayıb');
       const teams=r.teams||{};
       if(Object.keys(teams).length>=2)return alert('Otaqda artıq 2 komanda var');
       if(Object.values(teams).some(t=>t.name.trim().toLowerCase()===tn.toLowerCase()))
         return alert('Bu komanda adı artıq var, fərqli ad seç');
       let tid;
       do{tid=rnd(4)}while(teams[tid]);
-      await db.ref('rooms/'+rc+'/teams/'+tid).set({name:tn,captain:pid,presser:null,createdAt:firebase.database.ServerValue.TIMESTAMP});
+      await db.ref('rooms/'+rc+'/teams/'+tid).set({name:tn,captain:pid,founder:pid,presser:null,createdAt:firebase.database.ServerValue.TIMESTAMP});
       const pr=db.ref('rooms/'+rc+'/players/'+pid);
       await pr.set({name:nm,team:tid,cap:true,joinedAt:firebase.database.ServerValue.TIMESTAMP});
       pr.onDisconnect().remove();
@@ -473,7 +474,6 @@ async function start(){
       const s=await db.ref('rooms/'+rc).once('value');
       const r=s.val();
       if(!r||!r.teams||!r.teams[tid])return alert('Komanda kodu yanlışdır');
-      if(r.status!=='lobby')return alert('Oyun artıq başlayıb');
       let full=false;
       const res=await db.ref('rooms/'+rc+'/players').transaction(cur=>{
         cur=cur||{};
@@ -500,7 +500,7 @@ function listen(){
     const r=s.val();
     if(!r){alert(window.idleMsg||'Otaq bağlandı');return location.reload()}
     if(role!=='host'&&!(r.players&&r.players[pid])){
-      alert('Otaqdan çıxdın');return location.reload();
+      return location.replace('/nhn');
     }
     R=r;
     render();
@@ -629,9 +629,20 @@ const isPen=i=>!!(P()[i]&&P()[i].pen);
 const skip={},sk=n=>Date.now()<(skip[n]||0);
 /* Aparıcı ilə danışıq mümkün olan mərhələlər (oyun sualı gedəndə yox) */
 const TK=()=>!!R&&['lobby','wait','expired','finished'].includes(R.status);
+const anc={k:null,end:0};
+function remMs(){
+  if(!R||R.status!=='running'||!R.timerEnd)return 0;
+  const k=R.timerEnd+'|'+R.startedAt;
+  if(anc.k!==k){
+    anc.k=k;
+    const dur=R.timerEnd-(R.startedAt||R.timerEnd),est=R.timerEnd-now();
+    anc.end=performance.now()+((dur>0&&dur-est<5000)?dur:est);
+  }
+  return anc.end-performance.now();
+}
 function tl(){
   if(!R)return 20;
-  if(R.status==='running')return Math.max(0,Math.ceil((R.timerEnd-now())/1000));
+  if(R.status==='running')return Math.max(0,Math.ceil(remMs()/1000));
   if(R.status==='answered')return R.pausedRem||0;
   if(R.status==='expired'||R.status==='finished')return 0;
   return 20;
@@ -656,7 +667,7 @@ function render(){
   const tids=Object.keys(T()).sort((a,b)=>(T()[a].createdAt||0)-(T()[b].createdAt||0));
   const cl=t=>tids.indexOf(t)===1?'p':'b';
   const isPresser=!h&&!!mt&&presserOf(mt)===pid;
-  const kickOk=h&&(st==='lobby'||st==='wait');
+  const kickOk=h;
   $('lobby').hidden=true;$('game').hidden=false;
 
   const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
@@ -677,7 +688,7 @@ function render(){
   const sb=i=>{
     const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t&&!R.sil,tkn=t&&TK()&&R.talk&&(P()[R.talk]||{}).team===t;
     const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):esc(capOf(t))):tkn?': '+esc(P()[R.talk].name):''):'Gözləyir...';
-    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div></div>`;
+    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div>${tm&&tm.req?'<div class="reqb">✋</div>':''}</div>`;
   };
   $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm">${tl()}</div></section>`;
 
@@ -759,7 +770,7 @@ $('vol').addEventListener('input',e=>{vol=e.target.value/100;e.target.style.setP
 /* ÇIXARMA (KICK) — aparıcı komandanı və ya oyunçunu çıxarır */
 let kickT=null,kickOpen=false,kickBusy=false;
 function openKick(type,id){
-  if(!R||!(R.status==='lobby'||R.status==='wait'))return;
+  if(!R||!isH())return;
   const nm=type==='team'?(T()[id]||{}).name:(P()[id]||{}).name;
   if(!nm)return;
   kickT={type,id};kickOpen=true;
@@ -804,18 +815,18 @@ async function kickYes(yes){
         }
       }
     }
+    if(['running','answered','expired'].includes(R.status))Object.assign(u,{status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null});
     if(Object.keys(u).length)await rf().update(u);
   }catch(e){}finally{kickBusy=false}
 }
 
 /* 5 dəqiqə ərzində aparıcı heç bir düyməyə basmasa otaq bağlanır */
 let lastAct=Date.now(),idleClosing=false;
-document.addEventListener('click',e=>{if(role==='host'&&e.target.closest('button'))lastAct=Date.now()},true);
+['pointerdown','click','keydown','input','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{if(role==='host')lastAct=Date.now()},true));
 setInterval(()=>{
   if(role!=='host'||!room){lastAct=Date.now();return}
-  if(idleClosing||Date.now()-lastAct<300000)return;
+  if(idleClosing||Date.now()-lastAct<360000)return;
   idleClosing=true;
-  window.idleMsg='Otaq 5 dəqiqə aktivsizlik səbəbindən bağlandı';
   Promise.all([db.ref('rooms/'+room).remove(),db.ref('sig/'+room).remove(),db.ref('rx/'+room).remove()])
     .catch(()=>{}).then(()=>setTimeout(()=>location.reload(),1500));
 },5000);
@@ -839,6 +850,8 @@ function buzz(){
   const me=P()[pid];
   if(!me)return;
   const tid=me.team;
+  if(R.status==='running'&&tl()<=0)return;
+  const lrem=tl(),lfirst=R.status==='running'&&R.timerEnd?((R.timerEnd-(R.startedAt||0))-remMs())<=1000:false;
   if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
   else if(R.status==='wait'&&!Object.keys(T()).some(t=>t!==tid&&(R.fs||{})[t])){SND.fail();skip.fail=Date.now()+2500}
   rf().transaction(r=>{
@@ -856,9 +869,8 @@ function buzz(){
       const o=Object.keys(r.teams).find(x=>x!==tid);
       if(o&&(fs[o]||(r.wrong||{})[o])){r.status='expired';r.ev='Hər iki komanda cavab hüququnu itirdi'}
     }else if(r.status==='running'){
-      const rem=Math.ceil((r.timerEnd-t)/1000);
-      if(rem<=0)return;
-      r.first=(t-r.startedAt)<=1000;
+      const rem=Math.max(1,lrem);
+      r.first=lfirst;
       r.status='answered';r.winner=tid;r.buzzAt=t;r.pausedRem=rem;r.timerEnd=null;r.speaker=null;
       r.ev=(r.first?'İLK SANİYƏ! ':'')+r.teams[tid].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
     }else return;
@@ -880,7 +892,6 @@ function pickSpeaker(id){
 /* APARICI HƏRƏKƏTLƏRİ */
 function nextQ(x){
   const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null,talk:null,q:(R.q||1)+1};
-  Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
   Object.keys(T()).forEach(t=>{u['teams/'+t+'/req']=null});
   return Object.assign(u,x);
 }
@@ -953,6 +964,8 @@ const A={
     if(R.status!=='finished')return;
     const u=nextQ({val:1,q:1,winner:null});
     Object.keys(T()).forEach(t=>{u['teams/'+t+'/score']=0});
+    Object.keys(P()).forEach(i=>{u['players/'+i+'/pen']=null});
+    Object.keys(T()).forEach(t=>{const f=T()[t].founder;if(f&&P()[f]&&T()[t].captain!==f){Object.entries(P()).forEach(([i,x])=>{if(x.team===t)u['players/'+i+'/cap']=(i===f)});u['teams/'+t+'/captain']=f}});
     rf().update(u);
   },
   resv(){if(R.status==='wait')rf().update({q:1,val:1})},
@@ -1013,6 +1026,7 @@ function allH(i){
 }
 function hear(i){
   if(i===pid)return false;
+  if(role!=='host'&&isPen(pid))return false;
   if(allH(i))return true;
   const a=P()[pid],b=P()[i];
   if(role==='host'||!a||!b||b.pen)return false;
@@ -1143,7 +1157,7 @@ const SND={
 /* Taymer səsləri: 10 və 4 saniyə qalanda */
 setInterval(()=>{
   if(!R||R.status!=='running')return;
-  const l=Math.ceil((R.timerEnd-now())/1000),k=R.timerEnd+'|'+l;
+  const l=tl(),k=R.timerEnd+'|'+l;
   if((l===10||l===4)&&bk!==k){bk=k;SND.beep()}
 },200);
 
