@@ -688,7 +688,7 @@ function render(){
   const sb=i=>{
     const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t&&!R.sil,tkn=t&&TK()&&R.talk&&(P()[R.talk]||{}).team===t;
     const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):esc(capOf(t))):tkn?': '+esc(P()[R.talk].name):''):'Gözləyir...';
-    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div>${tm&&tm.req?'<div class="reqb">✋</div>':''}</div>`;
+    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div>;
   };
   $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm">${tl()}</div></section>`;
 
@@ -728,7 +728,8 @@ function render(){
   }else{
     right=members(mt).map(x=>row(x,mt,{ic:cap})).join('');
   }
-  $('colR').innerHTML=right;
+const cr=$('colR');
+if(cr._h!==right){cr.innerHTML=right;cr._h=right};
 
   const bar=(k,label,c,rows,sub)=>`<div class="bar${opn[k]?' open':''}" data-k="${k}"><button class="bh ${c}" type="button"><span>${label}${sub?` <small class="tc">${sub}</small>`:''}</span></button><div class="bb"><div class="bi"><div class="bg2">${rows||'<div class="sm">Boşdur</div>'}</div></div></div></div>`;
   const pens=Object.entries(P()).filter(([,x])=>x.pen).map(([id,x])=>({id,...x}));
@@ -836,10 +837,10 @@ setInterval(()=>{
   if(!R)return;
   const el=$('tm');
   if(el)el.textContent=tl();
-  if(isH()&&R.status==='running'&&R.timerEnd<=now()&&!xp){
+  if(isH()&&R.status==='running'&&R.timerEnd+500<=now()&&!xp){
     xp=1;
     rf().transaction(r=>{
-      if(r&&r.status==='running'&&r.timerEnd<=Date.now()+off){r.status='expired';r.timerEnd=null;r.ev='VAXT ÇIXDI - DOĞRU CAVAB YOXDUR'}
+      if(r&&r.status==='running'&&r.timerEnd+500<=Date.now()+off){r.status='expired';r.timerEnd=null;r.ev='VAXT ÇIXDI - DOĞRU CAVAB YOXDUR'}
       return r;
     }).finally(()=>setTimeout(()=>{xp=0},500));
   }
@@ -854,7 +855,7 @@ function buzz(){
   const lrem=tl(),lfirst=R.status==='running'&&R.timerEnd?((R.timerEnd-(R.startedAt||0))-remMs())<=1000:false;
   if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
   else if(R.status==='wait'&&!Object.keys(T()).some(t=>t!==tid&&(R.fs||{})[t])){SND.fail();skip.fail=Date.now()+2500}
-  rf().transaction(r=>{
+  const fn=r=>{
     if(!r)return;
     const p=(r.players||{})[pid];
     if(!p||p.pen||!r.teams[tid]||r.teams[tid].presser!==pid)return;
@@ -873,11 +874,16 @@ function buzz(){
       r.first=lfirst;
       r.status='answered';r.winner=tid;r.buzzAt=t;r.pausedRem=rem;r.timerEnd=null;r.speaker=null;
       r.ev=(r.first?'İLK SANİYƏ! ':'')+r.teams[tid].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
-    }else return;
+        }else return;
     return r;
-  });
+  };
+  let tries=0;
+  const go=()=>rf().transaction(fn,(err,ok)=>{
+    if(ok||++tries>=3)return;
+    if(err||R.status==='running'||R.status==='wait')setTimeout(go,60);
+  },true);
+  go();
 }
-
 /* KAPİTAN MİKROFON SEÇİMİ (bir sualda yalnız bir dəfə) */
 function pickSpeaker(id){
   rf().transaction(r=>{
