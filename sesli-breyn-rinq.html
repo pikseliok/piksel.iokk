@@ -688,7 +688,7 @@ function render(){
   const sb=i=>{
     const t=tids[i],tm=T()[t],ans=t&&st==='answered'&&R.winner===t&&!R.sil,tkn=t&&TK()&&R.talk&&(P()[R.talk]||{}).team===t;
     const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):esc(capOf(t))):tkn?': '+esc(P()[R.talk].name):''):'Gözləyir...';
-    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div>;
+    return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div></div>`;
   };
   $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm">${tl()}</div></section>`;
 
