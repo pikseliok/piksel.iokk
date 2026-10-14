@@ -160,6 +160,32 @@ html.need-consent .consent-bar{display:block;animation:consentIn 1s cubic-bezier
 .consent-btn:active{transform:scale(.985)}
 .consent-btn:focus-visible,.consent-text a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 
+/* ---------- Sabit məlumat və bildiriş düymələri ---------- */
+.quick-actions{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:9000;display:flex;flex-direction:column;gap:10px}
+.quick-action{width:48px;height:48px;border:0;border-radius:15px;background:var(--grad);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 22px rgba(0,20,110,.22);transition:transform .25s ease,filter .25s ease}
+.quick-action:hover{transform:translateY(-2px) scale(1.04);filter:brightness(1.08)}
+.quick-action:active{transform:scale(.94)}
+.quick-action svg{width:25px;height:25px;display:block}
+.quick-action.feedback-mark{font-size:25px;font-weight:700;line-height:1}
+.quick-action:focus-visible,.quick-close:focus-visible,.quick-submit:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.quick-overlay{position:fixed;inset:0;z-index:8998;display:grid;place-items:center;padding:20px;background:rgba(0,7,44,.18);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease,backdrop-filter .35s ease}
+.quick-overlay.open{opacity:1;visibility:visible;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.quick-panel{position:relative;width:min(440px,calc(100vw - 36px));max-height:min(78vh,560px);overflow:hidden;padding:30px 26px;border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 20px 60px rgba(0,12,70,.32);text-align:center;opacity:0;transform:translateY(18px) scale(.94);transition:transform .4s cubic-bezier(.18,.8,.24,1),opacity .3s ease}
+.quick-overlay.open .quick-panel{opacity:1;transform:translateY(0) scale(1)}
+.quick-panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 180px 130px at 50% 45%,var(--glow),transparent 75%)}
+.quick-panel>*{position:relative}
+.quick-close{position:absolute;z-index:2;top:10px;right:12px;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:inherit;font-size:26px;line-height:1;cursor:pointer}
+.quick-feedback-copy{font-size:clamp(15px,3.7vw,18px);line-height:1.55;font-weight:500;margin:8px 4px 22px}
+.quick-submit{display:inline-flex;min-width:150px;height:46px;align-items:center;justify-content:center;padding:0 25px;border:0;border-radius:30px;background:var(--fg);color:var(--c1);font-size:15px;font-weight:700;cursor:pointer;transition:transform .25s ease}
+.quick-submit:hover{transform:scale(1.04)}
+.quick-news-title{font-size:22px;font-weight:700;letter-spacing:.2px;margin:2px 0 18px}
+.quick-news-window{height:clamp(190px,36vh,270px);overflow:hidden;position:relative;mask-image:linear-gradient(transparent,black 13%,black 87%,transparent);-webkit-mask-image:linear-gradient(transparent,black 13%,black 87%,transparent)}
+.quick-news-roll{display:flex;flex-direction:column;align-items:center;animation:quickCredits 28s linear infinite}
+.quick-news-roll span{min-height:58px;display:grid;place-items:center;padding:10px 4px;font-size:clamp(15px,4vw,18px);line-height:1.35;font-weight:500}
+@keyframes quickCredits{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@media(max-width:700px){.quick-actions{right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));gap:8px}.quick-action{width:44px;height:44px;border-radius:14px}.quick-panel{padding:28px 20px 24px}}
+@media(prefers-reduced-motion:reduce){.quick-news-roll{animation-duration:.01ms!important}}
+
 /* ---------- TELEFON ≤700px: bütün kartlar eyni ölçüdə, simmetrik ---------- */
 @media (max-width:700px){
   .page{width:calc(100vw - 44px);padding:11px 0 26px}
@@ -423,6 +449,30 @@ html.need-consent .consent-bar{display:block;animation:consentIn 1s cubic-bezier
   <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
 
+<div class="quick-actions" aria-label="Sürətli keçidlər">
+  <button class="quick-action" id="quickNewsButton" type="button" aria-label="Tezliklə gələn yeniliklər" aria-controls="quickNewsOverlay" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2.2 2.2 0 0 0 2.18-2h-4.36A2.2 2.2 0 0 0 12 22Zm6-6v-5a6 6 0 0 0-5-5.91V4a1 1 0 0 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2Z"/></svg>
+  </button>
+  <button class="quick-action feedback-mark" id="quickFeedbackButton" type="button" aria-label="Xəta və ya çatışmazlıq bildir" aria-controls="quickFeedbackOverlay" aria-expanded="false">!</button>
+</div>
+<div class="quick-overlay" id="quickFeedbackOverlay" aria-hidden="true">
+  <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Xəta və ya çatışmazlıq bildir">
+    <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
+    <p class="quick-feedback-copy">Platformada qarşılaşdığınız hər hansısa xətanı və ya funksiyalardakı əksiyi bildir</p>
+    <a class="quick-submit" href="https://wa.me/994508377942?text=peaksel.az-da%20..." target="_blank" rel="noopener noreferrer">BİLDİR</a>
+  </section>
+</div>
+<div class="quick-overlay" id="quickNewsOverlay" aria-hidden="true">
+  <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Tezliklə gələn yeniliklər">
+    <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
+    <h2 class="quick-news-title">TEZLİKLƏ...</h2>
+    <div class="quick-news-window"><div class="quick-news-roll" aria-label="Gələcək yeniliklər">
+      <span>πksel Ruleti</span><span>ksel Duel</span><span>πksel 3X3</span><span>Turnir xal/reytinq cədvəli</span><span>Xəmsə Səsli otaq sistemi</span><span>Sizdən gələn suallar</span><span>Şəxsi πksel akkontları</span><span>Sferada yeniliklər</span>
+      <span aria-hidden="true">πksel Ruleti</span><span aria-hidden="true">πksel Duel</span><span aria-hidden="true">πksel 3X3</span><span aria-hidden="true">Turnir xal/reytinq cədvəli</span><span aria-hidden="true">Xəmsə Səsli otaq sistemi</span><span aria-hidden="true">Sizdən gələn suallar</span><span aria-hidden="true">Şəxsi πksel akkontları</span><span aria-hidden="true">Sferada yeniliklər</span>
+    </div></div>
+  </section>
+</div>
+
 <!-- Təsdiq paneli -->
 <div class="consent-overlay" id="consentOverlay" aria-hidden="true"></div>
 <div class="consent-bar" id="consentBar" role="dialog" aria-modal="true" aria-label="Məxfilik və istifadə şərtləri">
@@ -457,6 +507,23 @@ document.addEventListener('keydown', function(e) {
 });
 
 /* ---------- Əsas Skriptlər ---------- */
+/* ---------- Sabit sürətli pəncərələr ---------- */
+(()=>{
+  const pairs=[
+    [document.getElementById("quickFeedbackButton"),document.getElementById("quickFeedbackOverlay")],
+    [document.getElementById("quickNewsButton"),document.getElementById("quickNewsOverlay")]
+  ];
+  const closeAll=()=>pairs.forEach(([button,overlay])=>{overlay.classList.remove("open");overlay.setAttribute("aria-hidden","true");button.setAttribute("aria-expanded","false")});
+  pairs.forEach(([button,overlay])=>{
+    button.addEventListener("click",()=>{
+      const opening=!overlay.classList.contains("open");closeAll();
+      if(opening){overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");button.setAttribute("aria-expanded","true")}
+    });
+    overlay.addEventListener("click",e=>{if(e.target===overlay)closeAll()});
+    overlay.querySelector(".quick-close").addEventListener("click",closeAll);
+  });
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+})();
 const DAY_QR="https://i.ibb.co/3mjVHt5R/Yeni-Proje-2.png" ;
 const NIGHT_QR="https://i.ibb.co/whfPKN7n/Yeni-Proje-1.png" ;
 const words=["Sual Paketləri","Taymer","Düymə sistemləri","Səsli oyun otaqları","Turnir elanları","Komanda elanları","Oyunçu elanları"];
