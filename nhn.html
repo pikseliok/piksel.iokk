@@ -69,7 +69,7 @@ body.dark .bite{transform:translate(0,0)}
 body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
 /* BAŞLIQLAR */
-h1{text-align:center;color:var(--deep);font-size:var(--t);font-weight:700;line-height:1.3;letter-spacing:-.7px;margin:24px 0 14px}
+h1{text-align:center;color:var(--deep);font-size:min(var(--t),4.3vw);white-space:nowrap;font-weight:700;line-height:1.3;letter-spacing:-.7px;margin:24px 0 14px}
 .dark h1,.dark .note{color:var(--dark-light)}
 .note{color:var(--deep);text-align:center;font-size:var(--b);font-weight:500;margin-top:8px;line-height:1.4}
 
@@ -83,7 +83,7 @@ h1{text-align:center;color:var(--deep);font-size:var(--t);font-weight:700;line-h
 
 /* GİRİŞ */
 #lobby{margin-top:20px}
-#lobby .big{margin-bottom:20px}
+#lobby .big{margin-bottom:20px;white-space:nowrap;font-size:min(var(--t),3.9vw,22px)}
 .pill{display:block;width:100%;height:46px;border:0;border-radius:999px;padding:0 10px;margin-top:12px;background:var(--ink);color:var(--deep);font-weight:800;font-size:var(--c);cursor:pointer;transition:transform .25s ease,outline .1s}
 .dark .pill{background:var(--dark-ink);color:var(--dark-light)}
 .pill:hover{transform:translateY(-2px)}
@@ -128,6 +128,12 @@ textarea{resize:vertical;min-height:70px}
 #vol::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
 #vol::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
 #vol::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
+#vol2{-webkit-appearance:none;appearance:none;flex:1;min-width:0;width:auto;height:26px;margin:0;padding:0;background:transparent;border:0;border-radius:0;color:inherit;cursor:pointer;outline:none;touch-action:pan-y}
+#vol2::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,currentColor var(--p,50%),var(--track) var(--p,50%))}
+#vol2::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
+#vol2::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
+#vol2::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
+#vol2::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0;box-shadow:0 2px 6px rgba(0,0,0,.28)}
 
 /* TIMER */
 .tgrid{display:grid;grid-template-columns:36% 1fr;gap:14px;align-items:center}
@@ -150,15 +156,13 @@ textarea{resize:vertical;min-height:70px}
 .dial-number{font-weight:500;font-size:clamp(44px,14vw,84px);line-height:1}
 
 /* KOMANDA KARTLARI */
-.tcard{margin-top:12px;border-radius:22px;padding:12px 18px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition)}
+.tcard{margin-top:12px;border-radius:22px;padding:12px 18px;background:linear-gradient(135deg,var(--deep),var(--bright) 49%,var(--deep));color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background var(--transition);cursor:pointer}
 .dark .tcard{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 49%,var(--dark-light));color:var(--dark-ink)}
-.thead{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .tt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:clamp(15px,4.2vw,19px);line-height:1.3;word-break:break-word}
 .sc{font-weight:500;font-size:13px;opacity:.85}
 .hand{border:0;border-radius:50%;width:32px;height:32px;flex:none;font-size:17px;cursor:pointer;background:var(--ink);color:var(--deep)}
 .dark .hand{background:var(--dark-ink);color:var(--dark-light)}
-.chev{flex:none;transition:transform .35s ease}
-.tcard.open .chev{transform:rotate(180deg)}
 .trow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-weight:600;font-size:var(--b)}
 .ans{word-break:break-word}
 .tbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
@@ -166,9 +170,23 @@ textarea{resize:vertical;min-height:70px}
 .tin{overflow:hidden;min-height:0}
 .tpad{margin-top:12px;border-top:2px solid rgba(157,195,255,.3);padding-top:10px;font-size:var(--b);font-weight:500}
 .dark .tpad{border-color:rgba(0,7,44,.25)}
-.mem{margin-top:6px}
+.mem{margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .mini{border:0;border-radius:999px;padding:5px 14px;font-weight:700;font-size:var(--c);cursor:pointer;background:var(--ink);color:var(--deep)}
 .dark .mini{background:var(--dark-ink);color:var(--dark-light)}
+
+/* ÇIXARMA (KICK) */
+.kick-btn{flex:none;width:22px;height:22px;min-width:22px;border-radius:50%;padding:0;margin:0;font-size:11px;font-weight:800;line-height:20px;cursor:pointer;border:1.5px solid currentColor;background:transparent;color:inherit;display:flex;align-items:center;justify-content:center}
+.kick-btn:active{transform:scale(.9)}
+.kick-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:300;background:rgba(0,7,44,0);pointer-events:none}
+.kick-modal{opacity:0;transform:scale(.85);background:var(--dark-light);color:var(--deep);border-radius:24px;padding:22px 20px;width:82%;max-width:320px;text-align:center;box-shadow:0 17px 35px rgba(0,20,110,.3)}
+.dark .kick-modal{background:var(--dark-bg);color:var(--dark-light)}
+.kick-modal-text{font-size:var(--c);font-weight:700;line-height:1.35;margin-bottom:14px;word-break:break-word;letter-spacing:-.2px}
+.kick-modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kick-modal-buttons button{border:0;border-radius:999px;padding:10px;font-size:var(--c);font-weight:700;cursor:pointer}
+.kick-modal-buttons button:active{transform:scale(.96);transition:transform .2s}
+.kk-yes{background:var(--deep);color:var(--dark-light)}
+.dark .kk-yes{background:var(--dark-light);color:var(--dark-bg)}
+.kk-no{background:var(--red);color:#fff}
 
 /* FOOTER */
 footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition);flex-shrink:0;position:relative;z-index:2}
@@ -189,33 +207,11 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 :focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* KOMP + PLANŞET */
+/* KOMP + PLANŞET (səsli Breyn ilə eyni ölçü: iş sahəsi naviqasiyadan dar) */
+#game{width:100%;max-width:540px;margin:16px auto 32px}
+#lobby{margin-left:auto;margin-right:auto;max-width:540px}
 @media(min-width:701px){
-  .page{width:min(92vw,1100px);padding-top:16px;padding-bottom:24px}
-  #game{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;row-gap:12px;align-items:start}
-  #game>h1{grid-column:1 / -1;margin:20px 0 2px}
-  #head{grid-column:1 / -1;width:100%;margin-top:0}
-  #teams{grid-column:1;grid-row:3 / span 4;width:100%;align-self:center}
-  #teams .tcard{margin-top:10px}
-  #timerCard{grid-column:2;grid-row:3 / span 3;width:100%;align-self:center;margin-top:0}
-  #timerCard .tgrid{display:flex;flex-direction:column;gap:14px;align-items:center}
-  #timerCard .modes{width:100%;flex-direction:row;justify-content:center;align-items:center;gap:8px;order:0}
-  #timerCard .mode-btn{flex:1;max-width:145px}
-  #timerCard .dial-outer{order:1;width:min(100%,300px);max-width:300px}
-  #timerCard .dial-number{font-size:clamp(48px,6vw,72px)}
-  #bStart,#bEnd{grid-column:2;width:max-content;min-width:170px;justify-self:center;margin-top:0}
-  #bStart{grid-row:6}
-  #bEnd{grid-row:7}
-  #phase{grid-column:1 / -1;grid-row:8;margin-top:2px}
-  #spk{grid-column:1 / -1;grid-row:9}
-  #ansbox{grid-column:1;grid-row:7;margin-top:0}
-  #dock{grid-column:1 / -1;grid-row:10;margin-top:4px}
-  #net{grid-column:1 / -1;grid-row:11}
-  #lobby{width:100%;max-width:760px;margin:30px auto 0;padding:24px 30px 26px}
-}
-@media(min-width:1200px){
-  .page{width:min(90vw,1100px)}
-  #timerCard .dial-outer{width:290px}
+  #lobby{width:100%;max-width:540px;margin:30px auto 32px;padding:24px 30px 26px}
 }
 
 /* TELEFON */
@@ -267,8 +263,8 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 
 <nav class="top-nav frame" style="--i:0" aria-label="Əsas naviqasiya">
   <div class="nav-links rise">
-    <a class="nav-link" href="index.html">Əsas Səhifə</a>
-    <a class="nav-link" href="elaqe">Bizimlə Əlaqə</a>
+    <a class="nav-link" href="https://piksel.az">Əsas Səhifə</a>
+    <a class="nav-link" href="/elaqe">Bizimlə Əlaqə</a>
   </div>
   <button class="theme-toggle" id="themeToggle" type="button" aria-label="Rejimi dəyiş">
     <svg id="themeIcon" class="theme-icon rise" viewBox="0 0 32 32" aria-hidden="true">
@@ -295,7 +291,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 
 <!-- GİRİŞ -->
 <section class="card frame" id="lobby" style="--i:1">
-  <div class="big center rise">"Nə? Harada? Nə Zaman?"<br>Səsli otaq</div>
+  <div class="big center rise">"Nə? Harada? Nə Zaman?" Səsli otaq</div>
   <button class="pill rise" data-m="host">APARICI</button>
   <button class="pill rise" data-m="cap">KAPİTAN</button>
   <button class="pill rise" data-m="pl">OYUNÇU</button>
@@ -315,7 +311,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 <!-- OYUN -->
 <div id="game" hidden>
 
-  <h1>"Nə? Harada? Nə Zaman?"<br>Səsli otaq</h1>
+  <h1>"Nə? Harada? Nə Zaman?" Səsli otaq</h1>
 
   <section class="card center" id="head"></section>
 
@@ -363,15 +359,15 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
     </div>
 
     <div class="volbar" id="volbar">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/>
-        <path d="M15.5 9.5a4 4 0 0 1 0 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <input type="range" id="vol" min="0" max="100" value="50" step="1" aria-label="Ümumi otaq səsi">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/>
-        <path d="M15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/><path d="M3.5 3.5l17 17" stroke-width="2.6"/></svg>
+      <input type="range" id="vol" min="0" max="100" value="50" step="1" aria-label="Oyunçuların səsi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </div>
+
+    <div class="volbar">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="range" id="vol2" min="0" max="100" value="50" step="1" aria-label="Sistem səsləri (taymer, bip)">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5v5h4l5 4v-13l-5 4H3z" fill="currentColor"/><path d="M15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
 
     <div class="ctrl">
@@ -384,6 +380,16 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 
 </div>
 
+</div>
+
+<div id="kickOverlay" class="kick-overlay">
+  <div class="kick-modal" id="kickModal">
+    <div class="kick-modal-text" id="kickModalText"></div>
+    <div class="kick-modal-buttons">
+      <button type="button" class="kk-yes" onclick="kickYes(true)">BƏLİ</button>
+      <button type="button" class="kk-no" onclick="kickYes(false)">XEYR</button>
+    </div>
+  </div>
 </div>
 
 <div id="rxlayer" aria-hidden="true"></div>
@@ -546,6 +552,12 @@ async function start(){
     }else if(m.t==='signal'){
 
       sig(m.from,m.data);
+
+    }else if(m.t==='kicked'){
+
+      ws.onclose=null;
+      alert('Aparıcı səni otaqdan çıxardı');
+      location.reload();
 
     }else if(m.t==='closed'){
 
@@ -912,6 +924,10 @@ function fireReaction(emoji){
 
 let curVol=.5;
 
+/* Sistem səsləri (taymer, bip) üçün ayrıca səs: 50% = normal */
+let sfx=1;
+$('vol2').addEventListener('input',e=>{sfx=e.target.value/50;e.target.style.setProperty('--p',e.target.value+'%')});
+
 function setVol(p){
 
   curVol=Math.max(0,Math.min(1,p));
@@ -961,7 +977,7 @@ function beep(ms,freq){
   const g=audioCtx.createGain();
   const n=audioCtx.currentTime;
   const d=ms/1000;
-  const pk=.22*Math.min(1,curVol*2);   /* otaq səsi ilə eyni miqyas (mərkəzdə dəyişməz) */
+  const pk=.22*sfx;   /* sistem səsi barı ilə idarə olunur (50% = əvvəlki səviyyə) */
 
   o.type='sine';
   o.frequency.value=freq;
@@ -1280,6 +1296,11 @@ function render(){
     $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
 
     $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, gözləyin':'Aparıcı ilə danışmaq istəyirəm';
+
+    /* Danışan kapitan danışığı özü bitirə bilsin */
+    $('bEnd').hidden=S.speaker!==me;
+
+    $('bEnd').textContent='Danışığı bitir';
   }
 
   $('spk').textContent=
@@ -1298,14 +1319,6 @@ function render(){
       ended:seg<NEED[rm]?'Aparıcı növbəti sualı oxuyur.':'Vaxt bitdi. Aparıcı cavabları yoxlayır.'
     }[ph]||'';
 
-  const chev=`
-<svg class="chev" width="22" height="11" viewBox="0 0 8 4" fill="currentColor" shape-rendering="crispEdges">
-  <path d="M0 0h2v1H0zM6 0h2v1H6z"/>
-  <path d="M1 1h2v1H1zM5 1h2v1H5z"/>
-  <path d="M2 2h4v1H2z"/>
-  <path d="M3 3h2v1H3z"/>
-</svg>`;
-
 
   /* KOMANDALAR */
 
@@ -1320,9 +1333,9 @@ function render(){
 
           return `
 
-          <div class="tcard${open[t.code]?' open':''}">
+          <div class="tcard${open[t.code]?' open':''}" data-tg="${t.code}">
 
-            <div class="thead" data-tg="${t.code}">
+            <div class="thead">
 
               <div class="tt">
 
@@ -1338,7 +1351,11 @@ function render(){
 
               </div>
 
-              ${chev}
+              ${
+                h
+                  ?`<button class="kick-btn" type="button" data-kick="team" data-id="${t.code}" aria-label="Çıxar">✕</button>`
+                  :''
+              }
 
             </div>
 
@@ -1382,8 +1399,12 @@ function render(){
                   ${
                     t.members.map(m=>`
                         <div class="mem">
-                          ${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}
-                          ${m.id===S.speaker?' 🎙':''}
+                          <span>${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}${m.id===S.speaker?' 🎙':''}</span>
+                          ${
+                            h
+                              ?`<button class="kick-btn" type="button" data-kick="player" data-id="${m.id}" aria-label="Çıxar">✕</button>`
+                              :''
+                          }
                         </div>
                         `).join('')
                   }
@@ -1418,6 +1439,15 @@ function render(){
 
 $('teams').onclick=e=>{
 
+  const k=e.target.closest('[data-kick]');
+
+  if(k){
+
+    if(S&&S.role==='host')openKick(k.dataset.kick,k.dataset.id);
+
+    return;
+  }
+
   const b=e.target.closest('[data-a]');
 
   if(b){
@@ -1433,17 +1463,87 @@ $('teams').onclick=e=>{
     return;
   }
 
-  const t=e.target.closest('[data-tg]');
+  /* kartın istənilən yerinə toxunanda açılır / bağlanır */
+  const t=e.target.closest('.tcard');
 
   if(t){
 
-    const c=t.parentElement;
+    t.classList.toggle('open');
 
-    c.classList.toggle('open');
-
-    open[t.dataset.tg]=c.classList.contains('open');
+    open[t.dataset.tg]=t.classList.contains('open');
   }
 };
+
+
+/* =========================
+   ÇIXARMA (KICK) — aparıcı komandanı və ya oyunçunu çıxarır
+========================= */
+
+let kickT=null;
+
+function openKick(type,id){
+
+  if(!S||S.role!=='host')return;
+
+  let nm='';
+
+  if(type==='team'){
+    const t=S.teams.find(x=>x.code===id);
+    nm=t?t.name:'';
+  }else{
+    S.teams.forEach(t=>t.members.forEach(m=>{if(m.id===id)nm=m.name}));
+  }
+
+  if(!nm)return;
+
+  kickT={type,id};
+
+  const ov=$('kickOverlay'),md=$('kickModal');
+
+  $('kickModalText').textContent=nm+' ÇIXARMAQ İSTƏYİRSİZ?';
+
+  ov.style.display='flex';
+  ov.style.pointerEvents='auto';
+  ov.style.transition='background .2s ease, backdrop-filter .2s ease, -webkit-backdrop-filter .2s ease';
+  md.style.transition='opacity .5s ease, transform .5s ease';
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    ov.style.background='rgba(0,7,44,.3)';
+    ov.style.backdropFilter='blur(8px)';
+    ov.style.webkitBackdropFilter='blur(8px)';
+    md.style.opacity='1';
+    md.style.transform='scale(1)';
+  }));
+}
+
+function closeKick(){
+
+  const ov=$('kickOverlay'),md=$('kickModal');
+
+  md.style.transition='opacity .3s ease';
+  md.style.opacity='0';
+  ov.style.background='rgba(0,7,44,0)';
+  ov.style.backdropFilter='none';
+  ov.style.webkitBackdropFilter='none';
+
+  setTimeout(()=>{
+    ov.style.display='none';
+    ov.style.pointerEvents='none';
+  },300);
+}
+
+function kickYes(yes){
+
+  const k=kickT;
+
+  kickT=null;
+
+  closeKick();
+
+  if(!yes||!k)return;
+
+  send({t:'kick',kind:k.type,id:k.id});
+}
 
 
 /* =========================
