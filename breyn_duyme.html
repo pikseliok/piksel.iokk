@@ -488,7 +488,19 @@ footer{
   <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" target="_blank" rel="noopener noreferrer">©πksel intellektual oyunlar klubu</a>
   <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 </footer>
+<script>
 
+/* Sağ klik və Ctrl+U bloklaması */
+(function(){
+  document.addEventListener("contextmenu",function(e){e.preventDefault();e.stopPropagation();return false;},true);
+  window.addEventListener("keydown",function(e){
+    const key=(e.key||"").toLowerCase();
+    if((e.ctrlKey&&!e.altKey&&key==="u") || (e.ctrlKey&&!e.altKey&&e.keyCode===85)){
+      e.preventDefault();e.stopImmediatePropagation();return false;
+    }
+  },true);
+})();
+</script>
 <script>
 
 /* TEMA — gün / ay animasiyası */
