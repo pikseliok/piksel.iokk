@@ -799,6 +799,20 @@ function sig(from,d){
     return;
   }
 
+  /* Worker dəyişmədən işləyən yol: kapitan danışığı bitirmək istəyi aparıcıya gedir */
+  if(d&&d.endTalk&&S&&S.role==='host'){
+    if(spkIds().includes(from))send({t:'talkend',id:from});
+    return;
+  }
+
+  /* Aparıcıdan çıxarılma əmri */
+  if(d&&d.kick&&S&&from===S.hostId){
+    if(ws)ws.onclose=null;
+    alert('Aparıcı səni otaqdan çıxardı');
+    location.reload();
+    return;
+  }
+
   if(d&&d.mode&&TOT[d.mode]){
 
     if(S&&S.role!=='host'){
@@ -1567,6 +1581,13 @@ function kickYes(yes){
 
   if(!yes||!k)return;
 
+  /* Hədəf client-ə birbaşa çıxarma siqnalı (Worker kick-i tanımasa belə işləsin) */
+  const ids=k.type==='team'
+    ?((S.teams.find(x=>x.code===k.id)||{members:[]}).members.map(m=>m.id))
+    :[k.id];
+
+  ids.forEach(id=>send({t:'signal',to:id,data:{kick:true}}));
+
   send({t:'kick',kind:k.type,id:k.id});
 }
 
@@ -1637,7 +1658,10 @@ $('bStart').onclick=()=>{
   send({t:'ask',seconds:TOT[hostMode]});
 };
 
-$('bEnd').onclick=()=>send({t:'talkend'});
+$('bEnd').onclick=()=>{
+  if(S&&S.role==='captain'&&S.hostId)send({t:'signal',to:S.hostId,data:{endTalk:true}});
+  send({t:'talkend'});
+};
 
 $('bTalk').onclick=()=>send({t:'talkreq'});
 
