@@ -474,6 +474,7 @@ document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{
 ========================= */
 
 let ws,me,S,room,stream,off=0,muted=false;
+let offS=[];   /* server vaxt fərqi nümunələri (ən az gecikmə = ən böyük dəyər) */
 
 const pcs={};
 const auds={};
@@ -543,7 +544,12 @@ async function start(){
     }else if(m.t==='state'){
 
       S=m;
-      off=m.now-Date.now();
+
+      /* Taymer: fərqli şəbəkələrdə gecikməni azaltmaq üçün son nümunələrdən ən böyüyünü götür */
+      offS.push(m.now-Date.now());
+      if(offS.length>10)offS.shift();
+      off=Math.max(...offS);
+
       render();
 
       if(stream)reconcile();
@@ -579,6 +585,9 @@ async function start(){
    WEBRTC
 ========================= */
 
+/* Eyni anda bir neçə danışan ola bilər (server S.speakers göndərir; köhnə S.speaker da dəstəklənir) */
+const spkIds=()=>S.speakers||(S.speaker?[S.speaker]:[]);
+
 function peers(){
 
   const list=S.teams.flatMap((t,i)=>t.members.map(m=>({id:m.id,tk:i})));
@@ -598,16 +607,20 @@ function want(p){
   if(p.host||S.role==='host')return true;
   if(p.tk===myTk())return true;
 
-  return p.id===S.speaker||me===S.speaker;
+  const sp=spkIds();
+
+  return sp.includes(p.id)||sp.includes(me);
 }
 
 function hear(id){
 
-  if(S.role==='host')return id===S.speaker;
+  const sp=spkIds();
+
+  if(S.role==='host')return sp.includes(id);
 
   const p=peers().find(x=>x.id===id);
 
-  return id===S.hostId||id===S.speaker||(p&&p.tk===myTk());
+  return id===S.hostId||sp.includes(id)||(p&&p.tk===myTk());
 }
 
 function applyMute(){
@@ -1268,7 +1281,10 @@ function render(){
 
   $('bTalk').hidden=!cap;
 
-  const sp=S.teams.flatMap(t=>t.members).find(m=>m.id===S.speaker);
+  const allM=S.teams.flatMap(t=>t.members);
+  const sps=allM.filter(m=>spkIds().includes(m.id));
+  const sp=sps[0];
+  const imSpk=spkIds().includes(me);
 
   if(h){
 
@@ -1280,9 +1296,9 @@ function render(){
 
     b.disabled=ph==='lobby'&&S.teams.length<2;
 
-    $('bEnd').hidden=!S.speaker;
+    $('bEnd').hidden=!sps.length;
 
-    $('bEnd').textContent=(sp?sp.name:'…')+' ilə danışığı bitir';
+    $('bEnd').textContent=sps.length>1?'Bütün danışıqları bitir':(sp?sp.name:'…')+' ilə danışığı bitir';
   }
 
   if(cap){
@@ -1293,22 +1309,22 @@ function render(){
 
     const mm=myT&&myT.members.find(m=>m.id===me);
 
-    $('bTalk').disabled=!!(mm&&mm.wants)||S.speaker===me;
+    $('bTalk').disabled=!!(mm&&mm.wants)||imSpk;
 
     $('bTalk').textContent=mm&&mm.wants?'İstək göndərildi, gözləyin':'Aparıcı ilə danışmaq istəyirəm';
 
     /* Danışan kapitan danışığı özü bitirə bilsin */
-    $('bEnd').hidden=S.speaker!==me;
+    $('bEnd').hidden=!imSpk;
 
     $('bEnd').textContent='Danışığı bitir';
   }
 
   $('spk').textContent=
 
-    S.speaker===me
+    imSpk
       ?'Aparıcı səni dinləyir. Səsini hamı eşidir.'
-      :sp
-        ?`${sp.name} aparıcı ilə danışır, hamı eşidir.`
+      :sps.length
+        ?`${sps.map(m=>m.name).join(', ')} aparıcı ilə danışır, hamı eşidir.`
         :'';
 
   $('phase').textContent=
@@ -1399,7 +1415,12 @@ function render(){
                   ${
                     t.members.map(m=>`
                         <div class="mem">
-                          <span>${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}${m.id===S.speaker?' 🎙':''}</span>
+                          <span>${m.captain?'<b>'+esc(m.name)+'</b>':esc(m.name)}${spkIds().includes(m.id)?' 🎙':''}</span>
+                          ${
+                            h&&spkIds().includes(m.id)
+                              ?`<button class="mini" type="button" data-a="endone" data-id="${m.id}">Bitir</button>`
+                              :''
+                          }
                           ${
                             h
                               ?`<button class="kick-btn" type="button" data-kick="player" data-id="${m.id}" aria-label="Çıxar">✕</button>`
@@ -1454,6 +1475,10 @@ $('teams').onclick=e=>{
 
     if(b.dataset.a==='grant'){
       send({t:'talkgrant',id:b.dataset.id});
+    }
+
+    if(b.dataset.a==='endone'){
+      send({t:'talkend',id:b.dataset.id});
     }
 
     if(b.dataset.a==='pt'){
