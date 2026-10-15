@@ -370,6 +370,18 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0%,var(--bright)
 </footer>
 
 <script>
+   <script>
+/* Sağ klik və Ctrl+U bloklaması */
+(function(){
+  document.addEventListener("contextmenu",function(e){e.preventDefault();e.stopPropagation();return false;},true);
+  window.addEventListener("keydown",function(e){
+    const key=(e.key||"").toLowerCase();
+    if((e.ctrlKey&&!e.altKey&&key==="u") || (e.ctrlKey&&!e.altKey&&e.keyCode===85)){
+      e.preventDefault();e.stopImmediatePropagation();return false;
+    }
+  },true);
+})();
+</script>
 /* TEMA — gün / ay animasiyası */
 const themeToggle=document.getElementById("themeToggle");
 const rays=[...document.querySelectorAll(".ray")];
@@ -748,6 +760,6 @@ window.addEventListener("beforeunload",()=>{
   const r=roomCode,t=team,ro=role;stopListening();
   if(ro==="player"&&r&&t){db.ref(ROOMS+r+"/"+t).remove()}
 });
-</script> <script>/* ---------- Sağ düymə və Ctrl+U / F12 Bloklama ---------- */document.addEventListener('contextmenu', function(e) { e.preventDefault();});document.addEventListener('keydown', function(e) { if ( e.keyCode === 123 || // F12 (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J (e.ctrlKey && e.keyCode === 85) || // Ctrl+U (e.ctrlKey && e.keyCode === 83) // Ctrl+S ) { e.preventDefault(); return false; }});</script> <script src="/footer.js"></script>
+</script><script src="/footer.js"></script>
 </body>
 </html>
