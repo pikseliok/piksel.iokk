@@ -565,12 +565,12 @@ function render(){
     msg='Oyun başladı. (Oyun ekranı növbəti addımda əlavə olunacaq.)';
   }else if(h){
     msg=ready?'Hər şey hazırdır. Oyunu başlada bilərsən.'
-      :'Ən azı 2 komanda lazımdır. Hər komandada ən azı 2 nəfər və seçilmiş düyməsixan olmalıdır.';
+      :'Ən azı 2 komanda lazımdır. Hər komandada ən azı 2 nəfər və seçilmiş düyməsıxan olmalıdır.';
   }else if(cap){
-    msg=presserOf(myTid)?'Düyməsixan seçilib. Dəyişmək üçün başqa oyunçunun yanındakı D düyməsinə bas.'
-      :'Komandandan bir nəfəri düyməsixan seç (adının yanındakı D düyməsi).';
+    msg=presserOf(myTid)?'Düyməsıxan seçilib. Dəyişmək üçün başqa oyunçunun yanındakı D düyməsinə bas.'
+      :'Komandandan bir nəfəri düyməsıxan seç (adının yanındakı D düyməsi).';
   }else{
-    msg='Kapitan düyməsixanı seçir. Aparıcı oyunu başladacaq.';
+    msg='Kapitan düyməsıxanı seçir. Aparıcı oyunu başladacaq.';
   }
   $('phase').textContent=msg;
 
@@ -691,7 +691,7 @@ function render(){
 
   const ready=tids.length===2&&tids.every(t=>members(t).length>=MIN_TEAM&&presserOf(t));
   let ev=R.ev;
-  if(st==='lobby')ev=tids.length<2?'Komandaların qoşulması gözlənilir...':h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Hər komandada düyməsixan lazımdır.'):cap?'Komandandan düyməsixan seç.':'Kapitan düyməsixanı seçir.';
+  if(st==='lobby')ev=tids.length<2?'Komandaların qoşulması gözlənilir...':h?(ready?'Hazırdır. Oyunu başlada bilərsən.':'Hər komandada düyməsıxan lazımdır.'):cap?'Komandandan düyməsıxan seç.':'Kapitan düyməsıxanı seçir.';
   else if(st==='wait'&&!ev)ev=`${v} XALLIQ SUAL SƏSLƏNİR!`+(v>=3?' TAPILMASA DİSKVALİFİKASİYA':'');
   else if(st==='finished')ev='🏆 '+((T()[R.winner]||{}).name||'')+' QALİB OLDU!';
   let evh=esc(ev||'');
