@@ -41,6 +41,7 @@ button,input{font:inherit}
 .dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.search-btn{right:auto;left:6px}
 .theme-icon{width:24px;height:24px;display:block}
 .ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
 body.dark .ray{opacity:0}
@@ -63,11 +64,9 @@ body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
 #searchInput::placeholder{color:inherit;opacity:.6}
 .pill-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .sep{height:1px;background:currentColor;opacity:.22;margin:12px 0}
-.pill{height:38px;padding:0 18px;border-radius:50px;border:2px solid currentColor;background:transparent;color:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .35s ease,color .35s ease,border-color .35s ease,transform .25s ease}
-.pill .tick{width:14px;height:14px;flex:0 0 14px}
-.pill:not(.sel) .tick{display:none}
-.pill.sel{background:var(--mode-bg-light);color:var(--deep);border-color:transparent}
-.dark .pill.sel{background:var(--mode-bg-dark);color:var(--dark-light)}
+.pill{height:38px;padding:0 18px;border-radius:50px;border:2px solid currentColor;background-color:transparent;color:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .25s ease}
+.pill.sel{background-color:var(--ink);color:var(--deep);border-color:var(--ink)}
+.dark .pill.sel{background-color:var(--dark-bg);color:var(--dark-light);border-color:var(--dark-bg)}
 .pill:active,.go-btn:active{transform:scale(.96);transition-duration:.3s}
 .go-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:12px 16px;border-radius:20px;font-size:var(--pr);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px rgba(0,20,110,.1);transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease}
 .dark .go-btn{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
@@ -133,6 +132,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 
 .nav-links{gap:22px}
 .nav-link{font-size:13px}
 .theme-toggle{width:34px;height:34px;right:6px}
+.search-btn{right:auto;left:6px}
 .theme-icon{width:21px;height:21px}
 .blur-content,.main-container,.questions-container{gap:10px}
 .main-container{margin-top:12px}
@@ -152,6 +152,7 @@ footer{min-height:96px;padding:16px 12px;gap:5px}
 .nav-link{font-size:11px}
 .top-nav{height:42px;padding:0 42px}
 .theme-toggle{width:32px;height:32px;right:5px}
+.search-btn{right:auto;left:5px}
 .theme-icon{width:20px;height:20px}
 .search-card,.q-card,.msg{padding:14px}
 .pill{height:32px;padding:0 12px;font-size:12px;gap:5px}
@@ -162,10 +163,12 @@ footer{min-height:88px}
 <body>
 <div class="page">
 <nav aria-label="Əsas naviqasiya" class="frame top-nav" style="--i:0">
+<a class="theme-toggle search-btn" id="searchBtn" href="sual_axtarisi" aria-label="Sual axtarışı">
+<svg aria-hidden="true" class="rise theme-icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+</a>
 <div class="rise nav-links">
 <a class="nav-link" href="/">Əsas Səhifə</a>
 <a class="nav-link" href="paketler">Sual Paketləri</a>
-<a class="active nav-link" href="sual_axtarisi">Sual Axtarışı</a>
 </div>
 <button class="theme-toggle" id="themeToggle" aria-label="Gecə rejiminə keç" type="button">
 <svg aria-hidden="true" class="rise theme-icon" viewBox="0 0 32 32"><defs><mask height="32" id="biteMask" maskUnits="userSpaceOnUse" width="32" x="0" y="0"><rect fill="#fff" height="32" width="32"/><circle class="bite" cx="21" cy="11" fill="#000" r="7.5"/></mask></defs>
@@ -184,6 +187,8 @@ footer{min-height:88px}
 <div class="rise pill-row" id="typeRow"></div>
 <div class="rise sep"></div>
 <div class="rise pill-row" id="fieldRow"></div>
+<div class="rise sep"></div>
+<div class="rise pill-row" id="optRow"></div>
 </div>
 <button class="frame glow go-btn" id="goBtn" style="--i:2" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Axtar</button>
 <h2 class="section-title" id="rTitle"></h2>
@@ -209,6 +214,9 @@ const TYPES=[{key:"nhn",label:"Nə? Harada? Nə zaman?"},{key:"xemse",label:"Xə
 const FIELDS=[{key:"q",label:"Sualın mətni"},{key:"a",label:"Sualın cavabı"},{key:"c",label:"Sualın şərhi"}];
 const PAGE_SIZE=12;
 const types=new Set(TYPES.map(t=>t.key)),fields=new Set(FIELDS.map(f=>f.key));
+let optAns=false,optEng=false;
+/* Axtarış düyməsi basılan anda götürülən seçimlər (sonradan dəyişiklik növbəti axtarışa qədər tətbiq olunmur) */
+let S={types:new Set(types),fields:new Set(fields),eng:false,ans:false};
 let results=null,terms=[],page=1,activeZoomedImg=null,activeClone=null;
 
 /* ---------- Tema ---------- */
@@ -220,28 +228,51 @@ themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.conta
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 document.addEventListener("pointermove",e=>{const g=e.target.closest(".glow");if(g){const r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px")}});
 
+/* ---------- Axtarış düyməsi (navbar) ---------- */
+$("searchBtn").addEventListener("click",e=>{
+  e.preventDefault();
+  const b=e.currentTarget,ic=b.querySelector("svg");
+  ic.getAnimations().forEach(a=>a.cancel());
+  const a=ic.animate([{transform:"scale(1) rotate(0deg)"},{transform:"scale(.8) rotate(-18deg)",offset:.35},{transform:"scale(1.15) rotate(8deg)",offset:.7},{transform:"scale(1) rotate(0deg)"}],{duration:450,easing:"cubic-bezier(.4,0,.2,1)"});
+  a.onfinish=()=>{
+    if(/sual_axtarisi/.test(location.pathname)||!b.getAttribute("href")){window.scrollTo({top:0,behavior:"smooth"});setTimeout(()=>$("searchInput").focus(),300)}
+    else location.href=b.getAttribute("href");
+  };
+});
+
 /* ---------- Məlumat ---------- */
-const MAP={"ə":"e","ı":"i","ö":"o","ü":"u","ç":"c","ş":"s","ğ":"g","İ":"i","I":"i","Ə":"e","Ö":"o","Ü":"u","Ç":"c","Ş":"s","Ğ":"g"};
-function fold(s){let r="";for(let i=0;i<s.length;i++){const c=s[i],m=MAP[c];if(m){r+=m;continue}const l=c.toLowerCase();r+=l.length===1?l:c}return r}
+/* Adi rejim: yalnız böyük/kiçik hərf fərqi yoxdur (İ→i, I→ı Azərbaycan qaydası) */
+const NMAP={"İ":"i","I":"ı"};
+function foldN(s){let r="";for(let i=0;i<s.length;i++){const c=s[i],m=NMAP[c];if(m){r+=m;continue}const l=c.toLowerCase();r+=l.length===1?l:c}return r}
+/* İngilis klaviatura rejimi: ə→e, ı→i, ö→o, ü→u, ç→c, ş→s, ğ→g + böyük/kiçik hərf fərqi yoxdur */
+const EMAP={"ə":"e","ı":"i","ö":"o","ü":"u","ç":"c","ş":"s","ğ":"g","İ":"i","I":"i","Ə":"e","Ö":"o","Ü":"u","Ç":"c","Ş":"s","Ğ":"g"};
+function foldE(s){let r="";for(let i=0;i<s.length;i++){const c=s[i],m=EMAP[c];if(m){r+=m;continue}const l=c.toLowerCase();r+=l.length===1?l:c}return r}
 function plain(h){const d=document.createElement("div");d.innerHTML=String(h||"").replace(/<br\s*\/?>/gi," ");return d.textContent.replace(/\s+/g," ")}
 const ALL=[];
 (window.SUAL_DATA||[]).map((p,o)=>({...p,order:o})).sort((a,b)=>b.date.localeCompare(a.date)||b.order-a.order).forEach(p=>{
-  Object.keys(p.tours).sort((a,b)=>a-b).forEach(t=>p.tours[t].forEach(q=>ALL.push({p,q,fq:fold(plain(q.question)),fa:fold(plain((q.answer||"")+" "+(q.criteria||""))),fc:fold(plain(q.comment))})));
+  Object.keys(p.tours).sort((a,b)=>a-b).forEach(t=>p.tours[t].forEach(q=>{
+    const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment);
+    ALL.push({p,q,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc)}});
+  }));
 });
 
 /* ---------- Seçimlər ---------- */
-const TICK='<svg class="tick" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>';
-function pills(host,items,set){items.forEach(it=>{const b=document.createElement("button");b.type="button";b.className="pill sel";b.innerHTML=TICK+"<span>"+it.label+"</span>";b.onclick=()=>{if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);b.classList.toggle("sel",set.has(it.key))};host.appendChild(b)})}
+function pills(host,items,set){items.forEach(it=>{const b=document.createElement("button");b.type="button";b.className="pill sel";b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
+function toggles(host,items){items.forEach(it=>{const b=document.createElement("button");b.type="button";b.className="pill";b.setAttribute("aria-pressed","false");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{const on=b.classList.toggle("sel");b.setAttribute("aria-pressed",on);it.set(on)};host.appendChild(b)})}
 pills($("typeRow"),TYPES,types);pills($("fieldRow"),FIELDS,fields);
+toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",set:v=>{optEng=v}}]);
 
 /* ---------- Axtarış ---------- */
 function doSearch(){
-  const inp=$("searchInput"),v=fold(inp.value.trim());
+  const inp=$("searchInput");
+  S={types:new Set(types),fields:new Set(fields),eng:optEng,ans:optAns};
+  const fold=S.eng?foldE:foldN,k=S.eng?"e":"n";
+  const v=fold(inp.value.trim());
   inp.blur();
   terms=v.split(/\s+/).filter(Boolean);
   page=1;
   if(v.length<2){results=null;render(true,"Ən azı 2 simvol yazın");return}
-  results=ALL.filter(x=>types.has(x.p.type)&&terms.every(t=>(fields.has("q")&&x.fq.includes(t))||(fields.has("a")&&x.fa.includes(t))||(fields.has("c")&&x.fc.includes(t))));
+  results=ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
   render(true);
   setTimeout(()=>$("rTitle").scrollIntoView({behavior:"smooth",block:"start"}),60);
 }
@@ -250,6 +281,7 @@ $("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch()});
 
 function hl(html,on){
   if(!on||!terms.length)return html;
+  const fold=S.eng?foldE:foldN;
   const box=document.createElement("div");box.innerHTML=html;
   const w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT),nodes=[];
   while(w.nextNode())nodes.push(w.currentNode);
@@ -281,19 +313,19 @@ function render(anim,msg){
   const start=(page-1)*PAGE_SIZE,pages=Math.ceil(results.length/PAGE_SIZE),slice=results.slice(start,start+PAGE_SIZE);
   slice.forEach((x,i)=>{
     const g=start+i,q=x.q,card=document.createElement("div");
-    card.className="q-card glow"+fr;card.id="q-card-"+i;
+    card.className="q-card glow"+fr+(S.ans?" active":"");card.id="q-card-"+i;
     if(anim)card.style.setProperty("--i",Math.min(i,8)+1);
     const req=q.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`:"";
-    const qh=hl(q.question,fields.has("q"));
+    const qh=hl(q.question,S.fields.has("q"));
     const body=`<b>${g+1}.</b> `+(req||hand?`${req}${hand}<div class="mat-after">${qh}</div>`:qh);
-    const crit=q.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${hl(q.criteria,fields.has("a"))}</div>`:"";
-    const com=q.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${hl(q.comment,fields.has("c"))}</div>`:"";
+    const crit=q.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${hl(q.criteria,S.fields.has("a"))}</div>`:"";
+    const com=q.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${hl(q.comment,S.fields.has("c"))}</div>`:"";
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
     card.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>
-<div class="q-text${rs}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
-<div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,fields.has("a"))}</div>${crit}${com}${ximg}${src}
+<div class="q-text${rs}" role="button" tabindex="0" aria-expanded="${S.ans}" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
+<div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
 <div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${q.author||""}</span>
 <button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
     qc.appendChild(card);
