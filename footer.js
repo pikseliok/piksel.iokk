@@ -1,12 +1,4 @@
-/* =====================================================================
-   πksel FOOTER — bütün səhifələrdə eyni footer, tək faylda.
-   İstifadə: hər HTML-də </body> teqindən əvvəl bu sətri yazın:
-       <script src="/footer.js"></script>
-   Köhnə <footer> avtomatik silinir və yenisi səhifənin ən sonuna qoyulur.
-   Footer-i dəyişmək üçün yalnız bu faylı redaktə edin.
-   Footer-in rəngi gündüz/gecə rejiminə uyğun avtomatik dəyişir
-   (index-dəki çərçivələr kimi), səhifənin öz dəyişənlərindən asılı deyil.
-   ===================================================================== */
+
 (function () {
   "use strict";
 
