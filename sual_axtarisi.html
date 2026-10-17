@@ -320,8 +320,10 @@ function hl(html,on){
 const ICON='<span aria-hidden="true" class="card-icon"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9.5C4 8.119 5.119 7 6.5 7H12L14.5 10H25.5C26.881 10 28 11.119 28 12.5V23.5C28 24.881 26.881 26 25.5 26H6.5C5.119 26 4 24.881 4 23.5V9.5Z" fill="currentColor"/></svg></span>';
 const ARW=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
 
+let renderId=0;
 function render(anim,msg){
   removeZoom();
+  const rid=++renderId;
   const T=$("rTitle"),qc=$("qc"),pg=$("pager");
   qc.innerHTML="";pg.innerHTML="";pg.className="pager";
   const fr=anim?" frame":"",rs=anim?" rise":"";
@@ -332,7 +334,7 @@ function render(anim,msg){
   const start=(page-1)*PAGE_SIZE,pages=Math.ceil(results.length/PAGE_SIZE),slice=results.slice(start,start+PAGE_SIZE);
   slice.forEach((x,i)=>{
     const g=start+i,q=x.q,card=document.createElement("div");
-    card.className="q-card glow"+fr+(S.ans?" active":"");card.id="q-card-"+i;
+    card.className="q-card glow"+fr;card.id="q-card-"+i;
     if(anim)card.style.setProperty("--i",Math.min(i,8)+1);
     const req=q.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`:"";
@@ -343,7 +345,7 @@ function render(anim,msg){
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
     card.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>
-<div class="q-text${rs}" role="button" tabindex="0" aria-expanded="${S.ans}" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
+<div class="q-text${rs}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
 <div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
 <div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${q.author||""}</span>
 <button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
@@ -356,6 +358,14 @@ function render(anim,msg){
     for(let p=1;p<=pages;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
     if(page<pages)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
     pg.innerHTML=h;
+  }
+  /* "Cavablar" seçilibsə: əvvəlcə çərçivələr, sonra suallar animasiya ilə gəlir, bundan sonra çərçivələr özləri açılır */
+  if(S.ans){
+    const wait=anim?(Math.min(slice.length-1,8)+1)*100+1250:60;
+    setTimeout(()=>{
+      if(rid!==renderId)return;
+      qc.querySelectorAll(".q-card").forEach(c=>{c.classList.add("active");c.querySelector(".q-text").setAttribute("aria-expanded","true")});
+    },wait);
   }
 }
 
