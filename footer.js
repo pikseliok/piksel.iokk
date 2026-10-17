@@ -1,4 +1,12 @@
-
+/* =====================================================================
+   πksel FOOTER — bütün səhifələrdə eyni footer, tək faylda.
+   İstifadə: hər HTML-də </body> teqindən əvvəl bu sətri yazın:
+       <script src="/footer.js"></script>
+   Köhnə <footer> avtomatik silinir və yenisi səhifənin ən sonuna qoyulur.
+   Footer-i dəyişmək üçün yalnız bu faylı redaktə edin.
+   Footer-in rəngi gündüz/gecə rejiminə uyğun avtomatik dəyişir
+   (index-dəki çərçivələr kimi), səhifənin öz dəyişənlərindən asılı deyil.
+   ===================================================================== */
 (function () {
   "use strict";
 
@@ -54,8 +62,8 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
   <a href="https://www.instagram.com/peaksel.az/?action=follow" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
   </a>
-  <a href="https://www.facebook.com/profile.php?id=61595695732155" target="_blank" rel="noopener noreferrer" aria-label="Facebook-da Peaksel.az səhifəsini izlə">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.015 10.125 11.927v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.885v2.269h3.328l-.532 3.49h-2.796V24C19.612 23.088 24 18.092 24 12.073z"/></svg>
+  <a href="https://www.facebook.com/peaksel.az/" target="_blank" rel="noopener noreferrer" aria-label="Facebook-da Peaksel.az səhifəsini izlə">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5h-2A3.5 3.5 0 0 0 10 8v2H8v3h2v7h3v-7h2.5l.5-3h-3V8.5c0-.8.4-1 1-1h1.5z"/></svg>
   </a>
   <a href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 20.8l1.5-4.6A8.7 8.7 0 1 1 8 19.5z"/><path d="M9.2 8.2c-.4.5-.5 1.3 0 2.3.9 1.9 2.4 3.4 4.3 4.3 1 .5 1.8.4 2.3 0l.5-.8c.1-.2.1-.4-.1-.5l-1.4-.8c-.2-.1-.4-.1-.5.1l-.5.6c-.9-.4-1.7-1.1-2.1-2l.6-.5c.2-.1.2-.3.1-.5l-.8-1.4c-.1-.2-.3-.2-.5-.1z" fill="currentColor" stroke="none"/></svg>
