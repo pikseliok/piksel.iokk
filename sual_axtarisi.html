@@ -163,10 +163,10 @@ footer{min-height:96px;padding:16px 12px;gap:5px}
 footer{min-height:88px}
 .footer-line{font-size:11px}}
 @media (max-width:700px){
-.pill-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pill-row>.pill{width:100%;height:auto;min-height:36px;padding:6px 10px;justify-content:center;text-align:center;line-height:1.2}
+.pill-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.pill-row>.pill{width:100%;min-width:0;padding:0 10px;justify-content:center;text-align:center;white-space:nowrap}
 .pill-row>.pill:last-child:nth-child(odd){grid-column:1/-1}
-#optRow{grid-template-columns:1fr}
+#optRow{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 </head>
@@ -286,6 +286,20 @@ document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closes
 window.addEventListener("scroll",hideTip,{passive:true});
 pills($("typeRow"),TYPES,types);pills($("fieldRow"),FIELDS,fields);
 toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",info:true,set:v=>{optEng=v}}]);
+
+/* Düymə yazısı 1 sətirdə qalır: sığmırsa şrift düymənin sərhədinə qədər kiçilir, sığırsa dəyişmir */
+function fitPills(){
+  document.querySelectorAll(".pill-row .pill").forEach(b=>{
+    b.style.fontSize="";
+    let fs=parseFloat(getComputedStyle(b).fontSize);
+    while(b.scrollWidth>b.clientWidth+0.5&&fs>8){fs-=0.5;b.style.fontSize=fs+"px"}
+  });
+}
+fitPills();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitPills);
+let fitT=null;
+window.addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitPills,120)});
+window.addEventListener("orientationchange",()=>setTimeout(fitPills,200));
 
 /* ---------- Axtarış ---------- */
 function doSearch(){
