@@ -1,17 +1,26 @@
 /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
-   Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
+   Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş.
+
+   VACİB QAYDALAR (istifadəçilərin seriyası və səsləri qorunsun deyə):
+   1) Yeni sualları həmişə siyahının SONUNA əlavə et. Köhnə sualları silmə, yerini dəyişmə.
+   2) Hər suala unikal "id" ver və onu heç vaxt dəyişmə (like/dislike bu id ilə saxlanır).
+   3) Bu gün çıxmış sualı dəyişmə.
+   Seriya, ad və səslər Google Sheets-dədir, dq.js-i dəyişmək onlara təsir etmir. */
 (function () {
   // ===================== AYARLAR =====================
-  var API = "https://script.google.com/macros/s/AKfycby5nsdjFkg-ivK83T7V32eMShpkufRGvN0MNKqx6nf3mgbklH1zwZd0Fa4MpIqgyK4mQg/exec"; // Apps Script "Web app" ünvanı
+  var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { author: "Əlizadə Onur", authorGen: "ın", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
-    // { author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
+    { id: "s1", author: "Əlizadə Onur", authorGen: "ın", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
+    // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // authorGen boş qalsa "Əli Məmmədovun" avtomatik düzəlir; səhv çıxsa özün yaz.
+  var SHARE_PHONE = "994508377942";   // WhatsApp nömrəsi (050 837 7942)
+  var SHARE_TEXT = "Günlük sual bölməsi üçün öz sualımı sizinlə bölüşmək istəyirəm";
   // ================== AYARLAR BİTDİ ==================
   var host = document.currentScript;
+  var DBG = /dqdebug/.test(location.search);
 
   var css = `
 .dq{--bar:50px;--side:96px;--divh:28px;--flame-off:#aab3c9;margin-top:14px;height:var(--bar);border-radius:40px;overflow:hidden;position:relative;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:height .65s cubic-bezier(.4,0,.2,1),border-radius .65s ease}
@@ -59,16 +68,44 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-line+.dq-line{margin-top:8px}
 .dq-line b{font-weight:700}
 .dq-line a{text-decoration:underline;text-underline-offset:3px}
-.dq-copy{margin-top:16px;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:30px;border:2px solid rgba(128,128,128,.45);border:2px solid color-mix(in srgb,var(--fg) 35%,transparent);background:transparent;color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease}
-.dq-copy:active{transform:scale(.95)}
-.dq-copy svg{width:16px;height:16px}
-.dq-cta:focus-visible,.dq-send:focus-visible,.dq-copy:focus-visible{outline:3px solid currentColor;outline-offset:3px}
-@media (max-width:700px){.dq{--bar:46px;--side:84px;--divh:26px}.dq-cta{font-size:13px;gap:6px}.dq-cta svg{width:18px;height:18px;flex-basis:18px}.fl{width:20px;height:20px}.dq-side{gap:7px}.dq-timer b{font-size:13px}.dq-timer small{font-size:7px}.dq-field.n{flex-basis:32%}}
-@media (max-width:420px){.dq{--bar:42px;--side:78px}.dq-cta{font-size:12px}}
+.dq-act{position:relative;display:flex;justify-content:center;align-items:flex-start;gap:26px;margin-top:18px}
+.dq-ab{display:flex;flex-direction:column;align-items:center;gap:5px}
+.dq-ic{width:40px;height:40px;padding:0;border-radius:50%;border:2px solid rgba(128,128,128,.45);border:2px solid color-mix(in srgb,var(--fg) 35%,transparent);background:transparent;color:var(--fg);display:grid;place-items:center;cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .25s ease,border-color .25s ease}
+.dq-ic:active{transform:scale(.92)}
+.dq-ic svg{width:19px;height:19px;display:block;transition:fill .25s ease}
+.dq-ic.on{border-color:currentColor}
+.dq-ic.on svg{fill:currentColor}
+.dq-ic .ck{display:none}
+.dq-ic.ok .cp{display:none}
+.dq-ic.ok .ck{display:block}
+.dq-cnt{font-size:12px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;opacity:.85}
+.dq-wa{position:absolute;right:0;top:0}
+.dq-cta:focus-visible,.dq-send:focus-visible,.dq-ic:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+@media (max-width:700px){
+.dq{--bar:46px;--side:48px;--divh:26px}
+.dq-grid{padding:0 4px}
+.dq-mid{padding:0 4px}
+.dq-cta{font-size:13px;gap:6px}
+.dq-cta svg{width:18px;height:18px;flex-basis:18px}
+.fl{width:20px;height:20px}
+.dq-side{gap:0}
+.dq-timer b{font-size:12px}
+.dq-timer small{font-size:7px}
+.dq-field.n{flex-basis:32%}
+.dq-author{font-size:13px}
+.dq-text,.dq-line{font-size:12px}
+.dq-act{gap:18px}
+.dq-ic{width:36px;height:36px}
+.dq-ic svg{width:17px;height:17px}
+.dq-cnt{font-size:11px}
+}
+@media (max-width:420px){.dq{--bar:42px;--side:46px}.dq-cta{font-size:12px}}
 `;
 
   var FL_OUT = "M12 2C12.8 6.2 18 8.6 18 15a6 6 0 0 1-12 0c0-2.6 1.1-4.4 2.5-5.8.2 1.8.9 2.9 2 3.4C10.2 9 10.4 5 12 2Z";
   var FL_IN = "M12 20.6a2.8 2.8 0 0 1-2.8-2.8c0-1.6 1.2-2.5 2.8-4.4 1.6 1.9 2.8 2.8 2.8 4.4A2.8 2.8 0 0 1 12 20.6Z";
+  var WA_URL = "https://wa.me/" + SHARE_PHONE + "?text=" + encodeURIComponent(SHARE_TEXT);
+  var SV = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
   var html = `
 <div class="rise dq-grid">
  <div class="dq-side">
@@ -80,8 +117,8 @@ body.dark .dq{--flame-off:#4b546e}
  <i class="dq-div"></i>
  <div class="dq-mid">
   <div class="dq-cta" id="dqCta" role="button" tabindex="0">
-   <svg id="dqIq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.4a2.9 2.9 0 0 1 5.6.9c0 1.9-2.8 2.4-2.8 4"/><circle cx="12" cy="17.3" r=".5" fill="currentColor"/></svg>
-   <svg id="dqIo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.4l2.7 2.7 5.3-5.6"/></svg>
+   <svg id="dqIq" ${SV}><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.4a2.9 2.9 0 0 1 5.6.9c0 1.9-2.8 2.4-2.8 4"/><circle cx="12" cy="17.3" r=".5" fill="currentColor"/></svg>
+   <svg id="dqIo" ${SV} style="display:none"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.4l2.7 2.7 5.3-5.6"/></svg>
    <span id="dqCtaT">Günün sualını oyna</span>
   </div>
   <div class="dq-body" id="dqBody">
@@ -93,7 +130,12 @@ body.dark .dq{--flame-off:#4b546e}
     <button class="dq-send" id="dqSend" type="button" aria-label="Göndər"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 3.5 3.5 10.8l6.2 2.4 2.4 6.3z"/><path d="M9.7 13.2 20.5 3.5"/></svg></button>
    </div>
    <div class="dq-res" id="dqRes"><div id="dqResIn"></div>
-    <button class="dq-copy" id="dqCopy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg><span>Kopyala</span></button>
+    <div class="dq-act">
+     <div class="dq-ab"><button class="dq-ic" id="dqLike" type="button" aria-label="Bəyən" aria-pressed="false"><svg ${SV}><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button><span class="dq-cnt" id="dqLikeN">0</span></div>
+     <div class="dq-ab"><button class="dq-ic" id="dqCopy" type="button" aria-label="Kopyala"><svg class="cp" ${SV}><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg><svg class="ck" ${SV}><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="dq-cnt" style="visibility:hidden">0</span></div>
+     <div class="dq-ab"><button class="dq-ic" id="dqDis" type="button" aria-label="Bəyənmə" aria-pressed="false"><svg ${SV}><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg></button><span class="dq-cnt" id="dqDisN">0</span></div>
+     <a class="dq-ic dq-wa" href="${WA_URL}" target="_blank" rel="noopener noreferrer" aria-label="Sual göndər"><svg ${SV}><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></a>
+    </div>
    </div>
   </div>
  </div>
@@ -116,8 +158,9 @@ body.dark .dq{--flame-off:#4b546e}
   var $ = function (id) { return document.getElementById(id); };
   var fl = $("dqFl"), numEl = $("dqNum"), timeEl = $("dqTime"), cta = $("dqCta"), ctaT = $("dqCtaT"),
     body = $("dqBody"), form = $("dqForm"), res = $("dqRes"), resIn = $("dqResIn"),
-    nameIn = $("dqName"), ansIn = $("dqAns"), nameF = $("dqNF"), ansF = $("dqAF"), mid = root.querySelector(".dq-mid");
-  var S = null, skew = 0, open = false, review = false, busy = false, locked = false, refreshing = false;
+    nameIn = $("dqName"), ansIn = $("dqAns"), nameF = $("dqNF"), ansF = $("dqAF"), mid = root.querySelector(".dq-mid"),
+    likeB = $("dqLike"), disB = $("dqDis"), likeN = $("dqLikeN"), disN = $("dqDisN");
+  var S = null, open = false, review = false, busy = false, locked = false, held = false, ver = 0, lastTry = 0, vtimer = 0;
 
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
   var A = function (el, kf, ms, o) {
@@ -125,19 +168,92 @@ body.dark .dq{--flame-off:#4b546e}
     return a.finished.then(function () { Object.assign(el.style, kf[kf.length - 1]); a.cancel(); });
   };
 
-  // ---- istifadəçi kimliyi: localStorage + cookie (biri silinsə digəri qalır)
-  var UID_RE = /^[\w-]{8,64}$/;
-  var uid = "";
-  try { uid = localStorage.getItem("piksel-uid") || ""; } catch (e) {}
-  if (!UID_RE.test(uid)) {
-    var cm = document.cookie.match(/(?:^|; )piksel-uid=([\w-]+)/);
-    uid = cm ? cm[1] : "";
-  }
+  // ---- yaddaş: localStorage + cookie (biri bloklansa digəri işləyir)
+  var store = {
+    get: function (k) {
+      try { var v = localStorage.getItem(k); if (v) return v; } catch (e) {}
+      var m = document.cookie.match(new RegExp("(?:^|; )" + k + "=([^;]*)"));
+      if (m) { try { return decodeURIComponent(m[1]); } catch (e) {} }
+      return "";
+    },
+    set: function (k, v) {
+      try { localStorage.setItem(k, v); } catch (e) {}
+      try { document.cookie = k + "=" + encodeURIComponent(v) + ";max-age=31536000;path=/;SameSite=Lax"; } catch (e) {}
+    },
+    del: function (k) {
+      try { localStorage.removeItem(k); } catch (e) {}
+      try { document.cookie = k + "=;max-age=0;path=/"; } catch (e) {}
+    }
+  };
+  // DİQQƏT: bu açar adlarını heç vaxt dəyişmə, yoxsa istifadəçilər tanınmaz.
+  var UID_RE = /^[\w-]{8,64}$/, CK = "piksel-dq", PK = "piksel-dq-pend", VK = "piksel-dq-v", VPK = "piksel-dq-vp";
+
+  // ---- istifadəçi kimliyi
+  var uid = store.get("piksel-uid");
   if (!UID_RE.test(uid)) {
     uid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36);
   }
-  try { localStorage.setItem("piksel-uid", uid); } catch (e) {}
-  try { document.cookie = "piksel-uid=" + uid + ";max-age=31536000;path=/;SameSite=Lax"; } catch (e) {}
+  store.set("piksel-uid", uid);
+
+  // ---- yerli vəziyyət (server cavabını gözləmədən dərhal göstərmək üçün)
+  var D = { name: "", streak: 0, last: 0 }, skew = 0;
+  try {
+    var c = JSON.parse(store.get(CK));
+    if (c && typeof c.last === "number") { D = { name: String(c.name || ""), streak: Number(c.streak) || 0, last: c.last }; skew = Number(c.skew) || 0; }
+  } catch (e) {}
+  function saveD() { store.set(CK, JSON.stringify({ name: D.name, streak: D.streak, last: D.last, skew: skew })); }
+  function readPend() { try { var p = JSON.parse(store.get(PK)); return p && p.ans ? p : null; } catch (e) { return null; } }
+  function hasPend() { return !!readPend(); }
+
+  // ---- like / dislike yaddaşı: V = {sualId: {m: mənim səsim (1/-1/0), l: like sayı, d: dislike sayı}}, VP = serverə hələ getməyənlər
+  function loadJ(k) { try { var o = JSON.parse(store.get(k)); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+  var V = loadJ(VK), VP = loadJ(VPK);
+  function saveV() { var ks = Object.keys(V); while (ks.length > 20) delete V[ks.shift()]; store.set(VK, JSON.stringify(V)); }
+  function saveVP() { if (Object.keys(VP).length) store.set(VPK, JSON.stringify(VP)); else store.del(VPK); }
+  function fmt(n) { n = Number(n) || 0; return n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(".0", "") + "K" : String(n); }
+  function renderVotes() {
+    if (!S) return;
+    var v = V[S.id] || { m: 0, l: 0, d: 0 };
+    likeN.textContent = fmt(v.l); disN.textContent = fmt(v.d);
+    likeB.classList.toggle("on", v.m === 1); disB.classList.toggle("on", v.m === -1);
+    likeB.setAttribute("aria-pressed", v.m === 1); disB.setAttribute("aria-pressed", v.m === -1);
+  }
+  function mergeVotes(d) {
+    var vt = d && d.votes;
+    if (!vt || !vt.q || VP[vt.q] !== undefined) return;       // göndərilməmiş öz səsim varsa, serverin köhnə rəqəmi üstünə yazmasın
+    V[vt.q] = { m: Number(vt.mine) || 0, l: Number(vt.likes) || 0, d: Number(vt.dislikes) || 0 };
+    saveV();
+    if (S && S.id === vt.q) renderVotes();
+  }
+  function sendVote(q, v, tries) {
+    fetch(API + "?action=vote&uid=" + encodeURIComponent(uid) + "&q=" + encodeURIComponent(q) + "&v=" + v + "&t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || d.error || Number(d.mine) !== v) throw new Error("yazılmadı");
+        if (VP[q] !== v) return;                                 // arada yeni qərar verilib, onu ayrıca göndərəcək
+        delete VP[q]; saveVP();
+        var o = V[q] || (V[q] = { m: v, l: 0, d: 0 });
+        o.m = v; o.l = Number(d.likes) || 0; o.d = Number(d.dislikes) || 0; saveV();
+        if (S && S.id === q) renderVotes();
+      })
+      .catch(function () {
+        if (tries < 8) setTimeout(function () { if (VP[q] === v) sendVote(q, v, tries + 1); }, Math.min(30000, 3000 * (tries + 1)));
+      });
+  }
+  function flushVotes() { Object.keys(VP).forEach(function (q) { sendVote(q, VP[q], 0); }); }
+  function castVote(x) {
+    if (!S || !S.answered) return;
+    var q = S.id, v = V[q] || (V[q] = { m: 0, l: 0, d: 0 }), nv = v.m === x ? 0 : x;   // eyni düyməyə yenidən basmaq səsi geri götürür
+    if (v.m === 1) v.l = Math.max(0, v.l - 1);
+    if (v.m === -1) v.d = Math.max(0, v.d - 1);
+    if (nv === 1) v.l++;
+    if (nv === -1) v.d++;
+    v.m = nv; saveV(); renderVotes();
+    VP[q] = nv; saveVP();
+    clearTimeout(vtimer); vtimer = setTimeout(flushVotes, 500);
+  }
+  likeB.addEventListener("click", function () { castVote(1); });
+  disB.addEventListener("click", function () { castVote(-1); });
 
   // ---- Azərbaycan dilində yiyəlik hal: Əli → Əlinin, Məmmədov → Məmmədovun
   function gen(n) {
@@ -147,26 +263,43 @@ body.dark .dq{--flame-off:#4b546e}
     var s = { a: "ı", "ı": "ı", e: "i", "ə": "i", i: "i", o: "u", u: "u", "ö": "ü", "ü": "ü" }[last] || "ı";
     return n + (ends ? "n" + s + "n" : s + "n");
   }
+  function hid(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return "h" + (h >>> 0).toString(36); }
 
-  // ---- vəziyyət: sual yerli siyahıdan, ad/seriya/cavablama Google Sheets-dən
+  // ---- vəziyyət: sual yerli siyahıdan, ad/seriya/cavablama yerli yaddaşdan (server ilə arxa planda sinxron)
   var OFF = 4 * 36e5, DAY = 864e5, dnum = function (t) { return Math.floor((t + OFF) / DAY); };
   function build(d) {
     var today = dnum(d.now), n = QUESTIONS.length,
       idx = Math.max(0, today - Date.parse(START + "T00:00:00Z") / DAY) % n, q = QUESTIONS[idx],
       lit = d.streak > 0 && (d.last === today || d.last === today - 1), done = d.last === today;
-    return { now: d.now, next: (today + 1) * DAY - OFF, qn: idx + 1, author: q.author, authorGen: q.authorGen || "",
+    return { now: d.now, next: (today + 1) * DAY - OFF, qn: idx + 1, id: String(q.id || hid(q.question || "")), author: q.author, authorGen: q.authorGen || "",
       question: q.question, name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
   }
-  function load() {
-    return fetch(API + "?action=state&uid=" + encodeURIComponent(uid) + "&t=" + Date.now(), { cache: "no-store" })
+  function cur() { return build({ now: Date.now() + skew, name: D.name, streak: D.streak, last: D.last }); }
+
+  function fetchState() {
+    return fetch(API + "?action=state&uid=" + encodeURIComponent(uid) + "&q=" + encodeURIComponent(S.id) + "&t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (d.error) throw new Error("server: " + d.error);
-        if (!QUESTIONS.length) throw new Error("sual siyahısı boşdur");
-        S = build(d);
-        skew = d.now - Date.now();
+        if (!d || d.error || typeof d.now !== "number") throw new Error("server: " + ((d && d.error) || "naməlum cavab"));
+        return d;
       });
   }
+  function apply(d) {
+    mergeVotes(d);
+    var nd = { name: String(d.name || ""), streak: Number(d.streak) || 0, last: Number(d.last) || 0 };
+    if (hasPend() && nd.last < D.last) return;          // göndərilməmiş cavab var: köhnə server vəziyyəti üstünə yazmasın
+    D = nd; skew = d.now - Date.now(); saveD();
+    if (open || busy) { held = true; return; }
+    S = cur(); render();
+  }
+  function refresh(n) {
+    var v = ver;
+    return fetchState().then(function (d) { if (v === ver) apply(d); }).catch(function (e) {
+      if (n > 0) setTimeout(function () { refresh(n - 1); }, 3000);
+      else if (DBG) { console.error(e); ctaT.textContent = "Xəta: " + (e && e.message); }
+    });
+  }
+
   function render() {
     numEl.textContent = S.streak;
     fl.classList.toggle("lit", !!S.lit);
@@ -179,13 +312,38 @@ body.dark .dq{--flame-off:#4b546e}
     if (!S) return;
     var rem = S.next - (Date.now() + skew);
     if (rem <= 0) {
-      if (!open && !busy && !refreshing) { refreshing = true; load().then(render).catch(function () {}).then(function () { refreshing = false; }); }
+      if (!open && !busy) {
+        S = cur(); render();                              // yeni gün: dərhal yerli hesabla
+        if (Date.now() - lastTry > 15000 && !hasPend()) { lastTry = Date.now(); refresh(1); }
+      }
       return;
     }
     var h = Math.floor(rem / 36e5), m = Math.floor((rem % 36e5) / 6e4);
     timeEl.textContent = (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
   }
   setInterval(tick, 1000);
+
+  // ---- cavabı serverə göndər (uğursuz olsa təkrar cəhd edir, səhifə bağlansa belə növbəti açılışda davam edir)
+  function send(p, tries) {
+    fetch(API + "?action=answer&uid=" + encodeURIComponent(uid) + "&name=" + encodeURIComponent(p.name) + "&answer=" + encodeURIComponent(p.ans) + "&qn=" + p.qn + "&t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.error === "invalid") { store.del(PK); return; }
+        if (!d || d.error || !build(d).answered) throw new Error("yazılmadı");
+        store.del(PK);
+        D = { name: String(d.name || ""), streak: Number(d.streak) || 0, last: Number(d.last) || 0 };
+        skew = d.now - Date.now(); saveD();
+        var nd = build(d);
+        if (S && S.answered) {
+          S.streak = nd.streak; S.lit = nd.lit; S.name = nd.name;
+          if (!busy && !open) render();
+          else if (!busy && numEl.textContent !== String(nd.streak)) numEl.textContent = nd.streak;
+        }
+      })
+      .catch(function () {
+        if (tries < 8) setTimeout(function () { send(p, tries + 1); }, Math.min(30000, 3000 * (tries + 1)));
+      });
+  }
 
   // ---- nəticə bloku
   function buildRes() {
@@ -206,6 +364,7 @@ body.dark .dq{--flame-off:#4b546e}
       } else d.appendChild(document.createTextNode(v));
       resIn.appendChild(d);
     });
+    renderVotes();
   }
   function title() { return S.author ? (S.authorGen || gen(S.author)) + " sualı" : "Günün sualı"; }
   function copyText() {
@@ -217,8 +376,8 @@ body.dark .dq{--flame-off:#4b546e}
     return t + "\n\nπksel — peaksel.az";
   }
   $("dqCopy").addEventListener("click", function () {
-    var t = copyText(), lab = this.querySelector("span");
-    var done = function () { lab.textContent = "Kopyalandı"; setTimeout(function () { lab.textContent = "Kopyala"; }, 1600); };
+    var t = copyText(), btn = this;
+    var done = function () { btn.classList.add("ok"); setTimeout(function () { btn.classList.remove("ok"); }, 1600); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fb);
     else fb();
     function fb() {
@@ -298,6 +457,7 @@ body.dark .dq{--flame-off:#4b546e}
     await sleep(700);
     root.classList.remove("rv");
     open = false;
+    if (held) { held = false; S = cur(); }
     render();
     cta.classList.remove("gone");
     await A(cta, [{ opacity: 0 }, { opacity: 1 }], 350);
@@ -342,31 +502,24 @@ body.dark .dq{--flame-off:#4b546e}
   ["pointerup", "pointerleave", "pointercancel"].forEach(function (e) { nameF.addEventListener(e, function () { clearTimeout(lp); }); });
   nameF.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 
-  // ---- göndər
+  // ---- göndər (gözləmədən: nəticə dərhal göstərilir, server arxa planda yazılır)
   function bad(el) { el.classList.remove("bad"); void el.offsetWidth; el.classList.add("bad"); setTimeout(function () { el.classList.remove("bad"); }, 700); }
   async function submit() {
     if (busy || !open || review) return;
     var name = nameIn.value.trim().replace(/\s+/g, " "), ans = ansIn.value.trim();
     var okN = name.replace(/[^A-Za-z\u00C0-\u024F\u0400-\u04FF]/g, "").length >= 3, okA = ans.length > 0;
     if (!okN || !okA) { if (!okN) bad(nameF); if (!okA) bad(ansF); return; }
-    busy = true;
+    busy = true; ver++;
     ansIn.blur(); nameIn.blur();
     form.style.pointerEvents = "none";
-    var req = fetch(API + "?action=answer&uid=" + encodeURIComponent(uid) + "&name=" + encodeURIComponent(name) + "&answer=" + encodeURIComponent(ans) + "&qn=" + S.qn + "&t=" + Date.now(), { cache: "no-store" })
-      .then(function (r) { return r.json(); });
-    var fade = A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 350);
-    var d;
-    try {
-      d = (await Promise.all([req, fade]))[0];
-      if (!d || d.error || !build(d).answered) throw new Error("server cavabı yazmadı");
-    } catch (e) {
-      form.style.pointerEvents = "";
-      await A(form, [{ opacity: 0, transform: "scale(.96)" }, { opacity: 1, transform: "scale(1)" }], 250);
-      bad(nameF); bad(ansF);
-      busy = false;
-      return;
-    }
-    S = build(d); skew = d.now - Date.now();
+
+    var today = dnum(Date.now() + skew), newStreak = S.lit ? S.streak + 1 : 1, p = { name: name, ans: ans, qn: S.qn };
+    D = { name: name, streak: newStreak, last: today }; saveD();
+    store.set(PK, JSON.stringify(p));
+    send(p, 0);
+
+    await A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 350);
+    S = cur();
     form.style.display = "none";
     buildRes();
     res.style.display = "block"; res.style.transform = "translateY(130%)";
@@ -385,18 +538,15 @@ body.dark .dq{--flame-off:#4b546e}
   cta.addEventListener("click", openDQ);
   cta.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDQ(); } });
 
-  // ---- start
-  var DBG = /dqdebug/.test(location.search);
+  // ---- start: dərhal göstər, serverlə arxa planda sinxronlaş
   if (DBG) console.log("dq.js yükləndi");
-  var fail = function (e) {
-    if (DBG) { ctaT.textContent = "Xəta: " + ((e && e.message) || "server cavab vermir"); console.error(e); }
-    else root.remove();
-  };
-  if (/XXXX/.test(API)) fail(new Error("API ünvanı yazılmayıb"));
-  else (function go(n) {
-    load().then(render).catch(function (e) {
-      if (n > 0) setTimeout(function () { go(n - 1); }, 2500);
-      else fail(e);
-    });
-  })(3);
+  if (/XXXX/.test(API) || !QUESTIONS.length) {
+    if (DBG) ctaT.textContent = "Xəta: API və ya suallar boşdur"; else root.remove();
+  } else {
+    S = cur();
+    render();
+    var pend = readPend();
+    if (pend) send(pend, 0); else refresh(3);
+    flushVotes();
+  }
 })();
