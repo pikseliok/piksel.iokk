@@ -3,7 +3,7 @@
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
 (function () {
   // ===================== AYARLAR =====================
-  var API = "https://script.google.com/macros/s/AKfycbxaA-jSZV5pMPSgAJoujyXU4dWPGYRKejQP1kC6cLNdURDAL2uOVfCAnbnoUf6HI2wqyQ/exec"; // Apps Script "Web app" ünvanı
+  var API = "https://script.google.com/macros/s/AKfycby5nsdjFkg-ivK83T7V32eMShpkufRGvN0MNKqx6nf3mgbklH1zwZd0Fa4MpIqgyK4mQg/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
     { author: "Əlizadə Onur", authorGen: "ın", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
@@ -42,11 +42,11 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-author{font-size:16px;font-weight:700;letter-spacing:-.3px}
 .dq-text{margin-top:8px;font-size:15px;line-height:1.5;font-weight:500;white-space:pre-line;overflow-wrap:anywhere}
 .dq-form{display:flex;align-items:center;gap:8px;margin-top:18px}
-.dq-field{height:42px;min-width:0;display:flex;border-radius:40px;border:2px solid color-mix(in srgb,var(--fg) 30%,transparent);background:color-mix(in srgb,var(--fg) 10%,transparent);transition:border-color .3s ease}
+.dq-field{height:42px;min-width:0;display:flex;border-radius:40px;border:2px solid rgba(128,128,128,.4);background:rgba(128,128,128,.12);border:2px solid color-mix(in srgb,var(--fg) 30%,transparent);background:color-mix(in srgb,var(--fg) 10%,transparent);transition:border-color .3s ease}
 .dq-field.n{flex:0 1 34%}
 .dq-field.a{flex:1 1 0}
 .dq-field input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:0 14px;font:500 16px Poppins,sans-serif;color:var(--fg);border-radius:40px;transition:opacity .3s ease}
-.dq-field input::placeholder{color:color-mix(in srgb,var(--fg) 55%,transparent)}
+.dq-field input::placeholder{color:rgba(128,128,128,.85);color:color-mix(in srgb,var(--fg) 55%,transparent)}
 .dq-field.locked input{opacity:.55;cursor:default;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .dq-field.bad{border-color:#ff5a4f;animation:dqShake .45s}
 @keyframes dqShake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
@@ -59,12 +59,12 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-line+.dq-line{margin-top:8px}
 .dq-line b{font-weight:700}
 .dq-line a{text-decoration:underline;text-underline-offset:3px}
-.dq-copy{margin-top:16px;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:30px;border:2px solid color-mix(in srgb,var(--fg) 35%,transparent);background:transparent;color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease}
+.dq-copy{margin-top:16px;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:30px;border:2px solid rgba(128,128,128,.45);border:2px solid color-mix(in srgb,var(--fg) 35%,transparent);background:transparent;color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease}
 .dq-copy:active{transform:scale(.95)}
 .dq-copy svg{width:16px;height:16px}
 .dq-cta:focus-visible,.dq-send:focus-visible,.dq-copy:focus-visible{outline:3px solid currentColor;outline-offset:3px}
-@media (max-width:700px){.dq{--bar:46px;--side:80px;--divh:26px}.dq-cta{font-size:13px;gap:6px}.dq-cta svg{width:18px;height:18px;flex-basis:18px}.fl{width:20px;height:20px}.dq-side{gap:7px}.dq-timer b{font-size:13px}.dq-timer small{font-size:7px}.dq-field.n{flex-basis:32%}}
-@media (max-width:420px){.dq{--bar:42px;--side:74px}.dq-cta{font-size:12px}}
+@media (max-width:700px){.dq{--bar:46px;--side:84px;--divh:26px}.dq-cta{font-size:13px;gap:6px}.dq-cta svg{width:18px;height:18px;flex-basis:18px}.fl{width:20px;height:20px}.dq-side{gap:7px}.dq-timer b{font-size:13px}.dq-timer small{font-size:7px}.dq-field.n{flex-basis:32%}}
+@media (max-width:420px){.dq{--bar:42px;--side:78px}.dq-cta{font-size:12px}}
 `;
 
   var FL_OUT = "M12 2C12.8 6.2 18 8.6 18 15a6 6 0 0 1-12 0c0-2.6 1.1-4.4 2.5-5.8.2 1.8.9 2.9 2 3.4C10.2 9 10.4 5 12 2Z";
@@ -76,7 +76,6 @@ body.dark .dq{--flame-off:#4b546e}
    <svg class="off" viewBox="0 0 24 24" aria-hidden="true"><path d="${FL_OUT}"/></svg>
    <svg class="on" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="dqg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff3b1f"/><stop offset="1" stop-color="#ff8a1f"/></linearGradient></defs><path d="${FL_OUT}" fill="url(#dqg)"/><path d="${FL_IN}" fill="#ffd23f"/></svg>
   </div><div class="dq-num"><b id="dqNum">0</b></div></div>
-  <div class="dq-timer"><small>Qalan vaxt</small><b id="dqTime">--:--</b></div>
  </div>
  <i class="dq-div"></i>
  <div class="dq-mid">
@@ -99,7 +98,9 @@ body.dark .dq{--flame-off:#4b546e}
   </div>
  </div>
  <i class="dq-div"></i>
- <div class="dq-side"></div>
+ <div class="dq-side">
+  <div class="dq-timer"><small>Qalan vaxt</small><b id="dqTime">--:--</b></div>
+ </div>
 </div>`;
 
   var st = document.createElement("style");
@@ -124,13 +125,19 @@ body.dark .dq{--flame-off:#4b546e}
     return a.finished.then(function () { Object.assign(el.style, kf[kf.length - 1]); a.cancel(); });
   };
 
-  // ---- istifadəçi kimliyi (cihazda)
+  // ---- istifadəçi kimliyi: localStorage + cookie (biri silinsə digəri qalır)
+  var UID_RE = /^[\w-]{8,64}$/;
   var uid = "";
   try { uid = localStorage.getItem("piksel-uid") || ""; } catch (e) {}
-  if (!/^[\w-]{8,64}$/.test(uid)) {
-    uid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36);
-    try { localStorage.setItem("piksel-uid", uid); } catch (e) {}
+  if (!UID_RE.test(uid)) {
+    var cm = document.cookie.match(/(?:^|; )piksel-uid=([\w-]+)/);
+    uid = cm ? cm[1] : "";
   }
+  if (!UID_RE.test(uid)) {
+    uid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+  try { localStorage.setItem("piksel-uid", uid); } catch (e) {}
+  try { document.cookie = "piksel-uid=" + uid + ";max-age=31536000;path=/;SameSite=Lax"; } catch (e) {}
 
   // ---- Azərbaycan dilində yiyəlik hal: Əli → Əlinin, Məmmədov → Məmmədovun
   function gen(n) {
@@ -151,7 +158,7 @@ body.dark .dq{--flame-off:#4b546e}
       question: q.question, name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
   }
   function load() {
-    return fetch(API + "?action=state&uid=" + encodeURIComponent(uid))
+    return fetch(API + "?action=state&uid=" + encodeURIComponent(uid) + "&t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d.error) throw new Error("server: " + d.error);
@@ -340,12 +347,12 @@ body.dark .dq{--flame-off:#4b546e}
   async function submit() {
     if (busy || !open || review) return;
     var name = nameIn.value.trim().replace(/\s+/g, " "), ans = ansIn.value.trim();
-    var okN = (name.match(/\p{L}/gu) || []).length >= 3, okA = ans.length > 0;
+    var okN = name.replace(/[^A-Za-z\u00C0-\u024F\u0400-\u04FF]/g, "").length >= 3, okA = ans.length > 0;
     if (!okN || !okA) { if (!okN) bad(nameF); if (!okA) bad(ansF); return; }
     busy = true;
     ansIn.blur(); nameIn.blur();
     form.style.pointerEvents = "none";
-    var req = fetch(API + "?action=answer&uid=" + encodeURIComponent(uid) + "&name=" + encodeURIComponent(name) + "&answer=" + encodeURIComponent(ans) + "&qn=" + S.qn)
+    var req = fetch(API + "?action=answer&uid=" + encodeURIComponent(uid) + "&name=" + encodeURIComponent(name) + "&answer=" + encodeURIComponent(ans) + "&qn=" + S.qn + "&t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.json(); });
     var fade = A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 350);
     var d;
@@ -386,5 +393,10 @@ body.dark .dq{--flame-off:#4b546e}
     else root.remove();
   };
   if (/XXXX/.test(API)) fail(new Error("API ünvanı yazılmayıb"));
-  else load().then(render).catch(fail);
+  else (function go(n) {
+    load().then(render).catch(function (e) {
+      if (n > 0) setTimeout(function () { go(n - 1); }, 2500);
+      else fail(e);
+    });
+  })(3);
 })();
