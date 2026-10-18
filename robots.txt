@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
-
+Allow: /paketler
+Allow: /sual_axtarisi
+Allow: /taymer
+Allow: /breyn_duyme
+Allow: /xemse_duyme
+Allow: /sesli-breyn-rinq
+Allow: /nhn
+Allow: /minioyunlar
+Disallow: /amazon_kuboku
+Disallow: /elaqe
+Disallow: /
 Sitemap: https://peaksel.az/sitemap.xml
