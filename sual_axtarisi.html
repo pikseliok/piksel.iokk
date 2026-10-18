@@ -28,8 +28,8 @@ html.dark,html.dark body{background:var(--dark-bg);color:var(--dark-ink)}
 a{color:inherit;text-decoration:none}
 button,input{font:inherit}
 .page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
-.frame{--d:calc(var(--i) * .1s);animation:frameIn .3s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
-.rise{animation:riseIn .3s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .3s)}
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .6s + var(--n,0) * .05s)}
 .pre .frame,.pre .rise{animation:none;opacity:0}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
@@ -134,8 +134,8 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
 .stats{display:flex;flex-direction:column;gap:10px}
 .stats:empty{display:none}
 .stat-card{--sf:14px;padding:13px 12px;border-radius:22px;text-align:center;font-size:var(--sf);line-height:1.35;transition:transform .3s ease,background var(--transition),color var(--transition)}
-.stat-name{font-weight:600}
-.stat-val{margin-top:3px;font-weight:500}
+.stat-name{font-weight:600;white-space:nowrap}
+.stat-val{margin-top:3px;font-weight:500;white-space:nowrap}
 .stat-val b,.stat-wide b{font-size:calc(var(--sf) + 2px);font-weight:700}
 .stat-wide{white-space:nowrap;padding:12px}
 .stat-wide .stat-name{display:inline}
@@ -211,18 +211,18 @@ footer{min-height:88px}
 
 <div class="main-container"><div class="blur-content">
 <div class="frame glow search-card" style="--i:1">
-<div class="rise search-box">
+<div class="rise search-box" style="--n:0">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
 <input id="searchInput" type="text" placeholder="Sual axtar" autocomplete="off" enterkeyhint="search">
 </div>
-<div class="rise sep"></div>
-<div class="rise pill-row" id="typeRow"></div>
-<div class="rise sep"></div>
-<div class="rise pill-row" id="fieldRow"></div>
-<div class="rise sep"></div>
-<div class="rise pill-row" id="optRow"></div>
+<div class="rise sep" style="--n:1"></div>
+<div class="pill-row" id="typeRow"></div>
+<div class="rise sep" style="--n:6"></div>
+<div class="pill-row" id="fieldRow"></div>
+<div class="rise sep" style="--n:10"></div>
+<div class="pill-row" id="optRow"></div>
 </div>
-<button class="frame glow go-btn" id="goBtn" style="--i:2" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Axtar</button>
+<button class="frame glow go-btn" id="goBtn" style="--i:13" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Axtar</button>
 <h2 class="section-title" id="rTitle"></h2>
 <div class="questions-container" id="qc"></div>
 <div class="pager" id="pager"></div>
@@ -291,9 +291,9 @@ const ALL=[];
   }));
 });
 
-/* ---------- Seçimlər ---------- */
-function pills(host,items,set){items.forEach(it=>{const b=document.createElement("button");b.type="button";b.className="pill sel";b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
-function toggles(host,items){items.forEach(it=>{const b=document.createElement("button");b.type="button";b.className="pill";b.setAttribute("aria-pressed","false");b.innerHTML="<span>"+it.label+"</span>"+(it.info?'<span class="info-dot" aria-label="Məlumat">i</span>':"");b.onclick=e=>{const d=e.target.closest(".info-dot");if(d){showTip(d);return}const on=b.classList.toggle("sel");b.setAttribute("aria-pressed",on);it.set(on)};host.appendChild(b)})}
+/* ---------- Seçimlər (hər düymə öz sırası ilə --n gəlir) ---------- */
+function pills(host,items,set,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.className="pill sel rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
+function toggles(host,items,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.className="pill rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","false");b.innerHTML="<span>"+it.label+"</span>"+(it.info?'<span class="info-dot" aria-label="Məlumat">i</span>':"");b.onclick=e=>{const d=e.target.closest(".info-dot");if(d){showTip(d);return}const on=b.classList.toggle("sel");b.setAttribute("aria-pressed",on);it.set(on)};host.appendChild(b)})}
 /* ---------- Məlumat qeydi ---------- */
 let tipTimer=null;
 function hideTip(){clearTimeout(tipTimer);$("tip").classList.remove("show")}
@@ -307,8 +307,8 @@ function showTip(dot){
 }
 document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest(".info-dot"))return;hideTip()},true);
 window.addEventListener("scroll",hideTip,{passive:true});
-pills($("typeRow"),TYPES,types);pills($("fieldRow"),FIELDS,fields);
-toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",info:true,set:v=>{optEng=v}}]);
+pills($("typeRow"),TYPES,types,2);pills($("fieldRow"),FIELDS,fields,7);
+toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",info:true,set:v=>{optEng=v}}],11);
 
 /* Düymə yazısı 1 sətirdə qalır: sığmırsa şrift düymənin sərhədinə qədər kiçilir, sığırsa dəyişmir */
 function fitPills(){
@@ -318,9 +318,22 @@ function fitPills(){
     while(b.scrollWidth>b.clientWidth+0.5&&fs>8){fs-=0.5;b.style.fontSize=fs+"px"}
   });
 }
+/* Statistika çərçivələrində yazılar 1 sətirdə qalır: sığmırsa sığana qədər kiçilir.
+   4-lük çərçivələrin hamısı eyni ölçüdə olur, "Paket sayı" çərçivəsi ayrıca kiçilir */
+function fitStats(){
+  const cards=[...document.querySelectorAll(".stat-card")];
+  if(!cards.length)return;
+  const over=c=>{const r=document.createRange();r.selectNodeContents(c);const cs=getComputedStyle(c);return r.getBoundingClientRect().width>c.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)+.5};
+  cards.forEach(c=>c.style.removeProperty("--sf"));
+  const grid=cards.filter(c=>!c.classList.contains("stat-wide")),wide=cards.filter(c=>c.classList.contains("stat-wide"));
+  let min=Infinity;
+  grid.forEach(c=>{let fs=parseFloat(getComputedStyle(c).fontSize);while(over(c)&&fs>8){fs-=.5;c.style.setProperty("--sf",fs+"px")}min=Math.min(min,fs)});
+  grid.forEach(c=>c.style.setProperty("--sf",min+"px"));
+  wide.forEach(c=>{let fs=parseFloat(getComputedStyle(c).fontSize);while(over(c)&&fs>8){fs-=.5;c.style.setProperty("--sf",fs+"px")}});
+}
 let fitT=null;
-window.addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitPills,120)});
-window.addEventListener("orientationchange",()=>setTimeout(fitPills,200));
+window.addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(()=>{fitPills();fitStats()},120)});
+window.addEventListener("orientationchange",()=>setTimeout(()=>{fitPills();fitStats()},200));
 
 /* ---------- Axtarış ---------- */
 function doSearch(){
@@ -409,7 +422,7 @@ function renderInner(anim,msg){
   }
   /* "Cavablar" seçilibsə: əvvəlcə çərçivələr, sonra suallar animasiya ilə gəlir, bundan sonra çərçivələr özləri açılır */
   if(S.ans){
-    const wait=anim?(Math.min(slice.length-1,8)+1)*100+750:60;
+    const wait=anim?(Math.min(slice.length-1,8)+1)*100+1300:60;
     setTimeout(()=>{
       if(rid!==renderId)return;
       qc.querySelectorAll(".q-card").forEach(c=>{c.classList.add("active");c.querySelector(".q-text").setAttribute("aria-expanded","true")});
@@ -418,18 +431,18 @@ function renderInner(anim,msg){
 }
 
 /* ---------- Statistika (yalnız ekranda sual olmayanda görünür) ---------- */
-let statsShown=false;
-function statsHTML(anim){
+let statsShown=false,firstStats=true;
+function statsHTML(anim,base){
   const cnt={};
   ALL.forEach(x=>{cnt[x.p.type]=(cnt[x.p.type]||0)+1});
   const pk=(window.SUAL_DATA||[]).length;
   const items=[["nhn","Nə? Harada? Nə zaman?","sual"],["xemse","Xəmsə","mövzu"],["breyn","Breyn Rinq","sual"],["ferdi","Fərdi Oyun","mövzu"]];
   const f=(i)=>anim?` frame" style="--i:${i}`:"";
-  let h=`<h2 class="section-title${anim?' frame':''}" style="--i:3">Statistika</h2>`;
-  h+=`<div class="stat-card stat-wide glow${f(4)}"><span class="stat-name">Paket sayı:</span> <b>${pk}</b> paket</div>`;
+  let h=`<h2 class="section-title${anim?' frame':''}" style="--i:${base}">Statistika</h2>`;
+  h+=`<div class="stat-card stat-wide glow${f(base+1)}"><span class="stat-name">Paket sayı:</span> <b>${pk}</b> paket</div>`;
   h+=`<div class="stat-grid">`;
   items.forEach((it,k)=>{
-    h+=`<div class="stat-card glow${f(5+k)}"><div class="stat-name">${it[1]}</div><div class="stat-val"><b>${cnt[it[0]]||0}</b> ${it[2]}</div></div>`;
+    h+=`<div class="stat-card glow${f(base+2+k)}"><div class="stat-name">${it[1]}</div><div class="stat-val"><b>${cnt[it[0]]||0}</b> ${it[2]}</div></div>`;
   });
   return h+`</div>`;
 }
@@ -437,7 +450,7 @@ function updateStats(anim){
   const box=$("stats");
   const show=!(results&&results.length);
   if(show){
-    if(!statsShown){box.innerHTML=statsHTML(anim);statsShown=true}
+    if(!statsShown){box.innerHTML=statsHTML(anim,firstStats?14:3);statsShown=true;firstStats=false;fitStats()}
   }else if(statsShown){box.innerHTML="";statsShown=false}
 }
 updateStats(true);
@@ -502,7 +515,7 @@ document.addEventListener("click",e=>{if(activeZoomedImg&&e.target!==activeClone
 
 /* ---------- Giriş animasiyası: şrift yüklənib düymələr yerini alandan sonra hər şey sıra ilə gəlir ---------- */
 (function(){
-  const reveal=()=>{fitPills();requestAnimationFrame(()=>document.documentElement.classList.remove("pre"))};
+  const reveal=()=>{fitPills();fitStats();requestAnimationFrame(()=>document.documentElement.classList.remove("pre"))};
   if(!document.fonts||!document.fonts.load){reveal();return}
   Promise.race([
     Promise.all(["400","500","600","700"].map(w=>document.fonts.load(w+" 16px Poppins"))),
