@@ -102,6 +102,7 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-field.n{flex-basis:32%}
 .dq-author{font-size:13px}
 .dq-text,.dq-line{font-size:12px}
+.dq-field input{font-size:13px}
 .dq-act{gap:18px}
 .dq-ic{width:36px;height:36px}
 .dq-ic svg{width:17px;height:17px}
