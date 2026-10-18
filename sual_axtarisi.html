@@ -5,6 +5,12 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport">
 <meta content="#9DC3FF" name="theme-color">
 <title>πksel - Sual Axtarışı</title>
+<script>
+/* Tema və giriş animasiyası vəziyyəti ilk çəkilişdən ƏVVƏL təyin olunur (yanıb-sönmənin qarşısı) */
+(function(){var d=document.documentElement;d.classList.add("pre");try{var s=localStorage.getItem("piksel-theme");var dk=s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);if(dk)d.classList.add("dark")}catch(e){}
+setTimeout(function(){d.classList.remove("pre")},3500)})();
+</script>
+<noscript><style>.pre .frame,.pre .rise{opacity:1!important}</style></noscript>
 <link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="icon" type="image/png">
 <link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="apple-touch-icon">
 <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -12,18 +18,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--mode-bg-light:linear-gradient(135deg,#9DC3FF 0%,#8DB8F5 50%,#9DC3FF 100%);--mode-bg-dark:linear-gradient(135deg,#00072C 0%,#001044 50%,#00072C 100%);--transition:650ms cubic-bezier(.22,.8,.25,1);--glow:rgba(0,8,45,.30);--accent:#001E6F;--page:#9DC3FF;--pr:17px;--pq:18px}
-body.dark{--glow:rgba(255,255,255,.40);--accent:#9DC3FF;--page:#00072C}
+.dark{--glow:rgba(255,255,255,.40);--accent:#9DC3FF;--page:#00072C}
 *{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif;-webkit-tap-highlight-color:transparent}
 a,button{-webkit-touch-callout:none}
 html{scroll-behavior:smooth}
-body,html{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
-body{overflow-x:hidden}
-body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+body,html{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+body{overflow-x:hidden;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+html.dark,html.dark body{background:var(--dark-bg);color:var(--dark-ink)}
 a{color:inherit;text-decoration:none}
 button,input{font:inherit}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
-.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
-.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0;flex:1 0 auto}
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .3s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .3s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .3s)}
+.pre .frame,.pre .rise{animation:none;opacity:0}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 .glow{position:relative;overflow:hidden}
@@ -44,17 +51,17 @@ button,input{font:inherit}
 .search-btn{right:auto;left:6px}
 .theme-icon{width:24px;height:24px;display:block}
 .ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
-body.dark .ray{opacity:0}
+.dark .ray{opacity:0}
 .core{transform:scale(.68);transform-origin:16px 16px}
 .bite{transform:translate(14px,-14px)}
-body.dark .core{transform:scale(1)}
-body.dark .bite{transform:translate(0,0)}
+.dark .core{transform:scale(1)}
+.dark .bite{transform:translate(0,0)}
 body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 .main-container{width:100%;display:flex;flex-direction:column;gap:14px;position:relative;margin-top:14px;padding-bottom:44px}
 .blur-content{display:flex;flex-direction:column;gap:14px;transition:filter .5s cubic-bezier(.25,1,.5,1);will-change:filter}
 body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
-.search-card,.q-card,.msg{width:100%;border-radius:28px;padding:20px 22px;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition)}
-.dark .search-card,.dark .q-card,.dark .msg{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.search-card,.q-card,.msg,.stat-card{width:100%;border-radius:28px;padding:20px 22px;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition)}
+.dark .search-card,.dark .q-card,.dark .msg,.dark .stat-card{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
 .search-box{display:flex;align-items:center;gap:10px;height:52px;border-radius:40px;border:2px solid currentColor;background:rgba(255,255,255,.14);padding:0 18px;transition:box-shadow .3s ease}
 .dark .search-box{background:rgba(0,7,44,.1)}
 .search-box:focus-within{box-shadow:0 0 0 3px rgba(255,255,255,.2)}
@@ -123,7 +130,18 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
 .pg-arrow{background:transparent!important;color:var(--accent)!important;width:36px;border-radius:50%}
 .pg-arrow svg{width:24px;height:24px}
 @media (hover:hover){.pg-btn:not(.cur):hover{transform:translateY(-2px)}}
-footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
+/* ---------- Statistika ---------- */
+.stats{display:flex;flex-direction:column;gap:10px}
+.stats:empty{display:none}
+.stat-card{--sf:14px;padding:13px 12px;border-radius:22px;text-align:center;font-size:var(--sf);line-height:1.35;transition:transform .3s ease,background var(--transition),color var(--transition)}
+.stat-name{font-weight:600}
+.stat-val{margin-top:3px;font-weight:500}
+.stat-val b,.stat-wide b{font-size:calc(var(--sf) + 2px);font-weight:700}
+.stat-wide{white-space:nowrap;padding:12px}
+.stat-wide .stat-name{display:inline}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (hover:hover){.stat-card:hover{transform:scale(1.025)}}
+footer{width:100%;flex:0 0 auto;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
@@ -148,6 +166,9 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 
 .pg-btn{width:36px;height:36px;border-radius:12px;font-size:14px}
 .pg-arrow{width:32px}
 .pager{gap:8px}
+.stat-card{--sf:13px;border-radius:18px;padding:12px 10px}
+.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stats{gap:8px}
 footer{min-height:96px;padding:16px 12px;gap:5px}
 .footer-line{font-size:13px}}
 @media (max-width:420px){:root{--pr:13px;--pq:13px}
@@ -159,6 +180,7 @@ footer{min-height:96px;padding:16px 12px;gap:5px}
 .search-btn{right:auto;left:5px}
 .theme-icon{width:20px;height:20px}
 .search-card,.q-card,.msg{padding:14px}
+.stat-card{--sf:12px;padding:11px 8px}
 .pill{height:32px;padding:0 12px;font-size:12px;gap:5px}
 footer{min-height:88px}
 .footer-line{font-size:11px}}
@@ -204,6 +226,7 @@ footer{min-height:88px}
 <h2 class="section-title" id="rTitle"></h2>
 <div class="questions-container" id="qc"></div>
 <div class="pager" id="pager"></div>
+<div class="stats" id="stats"></div>
 </div></div>
 </div>
 
@@ -234,9 +257,9 @@ let results=null,terms=[],page=1,activeZoomedImg=null,activeClone=null;
 /* ---------- Tema ---------- */
 const themeToggle=$("themeToggle"),rays=[...document.querySelectorAll(".ray")];
 function animateRays(d){rays.forEach(r=>{r.getAnimations().forEach(a=>a.cancel());const a=r.animate(d?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]:[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}],{duration:d?520:620,delay:d?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});a.onfinish=()=>a.cancel()})}
-function setTheme(d,an){document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç");if(an)animateRays(d)}
+function setTheme(d,an){document.documentElement.classList.toggle("dark",d);document.body.classList.toggle("dark",d);try{localStorage.setItem("piksel-theme",d?"dark":"light")}catch(e){}themeToggle.setAttribute("aria-label",d?"Gündüz rejiminə keç":"Gecə rejiminə keç");if(an)animateRays(d)}
 (function(){let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}setTheme(s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false)})();
-themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
+themeToggle.addEventListener("click",()=>setTheme(!document.documentElement.classList.contains("dark"),true));
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
 document.addEventListener("pointermove",e=>{const g=e.target.closest(".glow");if(g){const r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px")}});
 
@@ -295,8 +318,6 @@ function fitPills(){
     while(b.scrollWidth>b.clientWidth+0.5&&fs>8){fs-=0.5;b.style.fontSize=fs+"px"}
   });
 }
-fitPills();
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitPills);
 let fitT=null;
 window.addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitPills,120)});
 window.addEventListener("orientationchange",()=>setTimeout(fitPills,200));
@@ -342,6 +363,10 @@ const ARW=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 
 let renderId=0;
 function render(anim,msg){
+  renderInner(anim,msg);
+  updateStats(anim);
+}
+function renderInner(anim,msg){
   removeZoom();
   const rid=++renderId;
   const T=$("rTitle"),qc=$("qc"),pg=$("pager");
@@ -371,23 +396,51 @@ function render(anim,msg){
 <button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
     qc.appendChild(card);
   });
+  /* Səhifələmə: yanyana 3 düymə (1 2 3 > , < 4 5 6 > , ... , < 8 9 10). Birinci qrupda yalnız sağ, sonuncuda yalnız sol ox */
   if(pages>1){
     if(anim){pg.className="pager frame";pg.style.setProperty("--i",Math.min(slice.length,8)+1)}
+    const W=3;
+    const s=pages<=W?1:Math.min(Math.floor((page-1)/W)*W+1,pages-W+1),e=Math.min(s+W-1,pages);
     let h="";
-    if(page>1)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`;
-    for(let p=1;p<=pages;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
-    if(page<pages)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
+    if(s>1)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${s-1}" aria-label="Əvvəlki səhifələr">${ARW("M15 5l-7 7 7 7")}</button>`;
+    for(let p=s;p<=e;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
+    if(e<pages)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${e+1}" aria-label="Növbəti səhifələr">${ARW("M9 5l7 7-7 7")}</button>`;
     pg.innerHTML=h;
   }
   /* "Cavablar" seçilibsə: əvvəlcə çərçivələr, sonra suallar animasiya ilə gəlir, bundan sonra çərçivələr özləri açılır */
   if(S.ans){
-    const wait=anim?(Math.min(slice.length-1,8)+1)*100+1250:60;
+    const wait=anim?(Math.min(slice.length-1,8)+1)*100+750:60;
     setTimeout(()=>{
       if(rid!==renderId)return;
       qc.querySelectorAll(".q-card").forEach(c=>{c.classList.add("active");c.querySelector(".q-text").setAttribute("aria-expanded","true")});
     },wait);
   }
 }
+
+/* ---------- Statistika (yalnız ekranda sual olmayanda görünür) ---------- */
+let statsShown=false;
+function statsHTML(anim){
+  const cnt={};
+  ALL.forEach(x=>{cnt[x.p.type]=(cnt[x.p.type]||0)+1});
+  const pk=(window.SUAL_DATA||[]).length;
+  const items=[["nhn","Nə? Harada? Nə zaman?","sual"],["xemse","Xəmsə","mövzu"],["breyn","Breyn Rinq","sual"],["ferdi","Fərdi Oyun","mövzu"]];
+  const f=(i)=>anim?` frame" style="--i:${i}`:"";
+  let h=`<h2 class="section-title${anim?' frame':''}" style="--i:3">Statistika</h2>`;
+  h+=`<div class="stat-card stat-wide glow${f(4)}"><span class="stat-name">Paket sayı:</span> <b>${pk}</b> paket</div>`;
+  h+=`<div class="stat-grid">`;
+  items.forEach((it,k)=>{
+    h+=`<div class="stat-card glow${f(5+k)}"><div class="stat-name">${it[1]}</div><div class="stat-val"><b>${cnt[it[0]]||0}</b> ${it[2]}</div></div>`;
+  });
+  return h+`</div>`;
+}
+function updateStats(anim){
+  const box=$("stats");
+  const show=!(results&&results.length);
+  if(show){
+    if(!statsShown){box.innerHTML=statsHTML(anim);statsShown=true}
+  }else if(statsShown){box.innerHTML="";statsShown=false}
+}
+updateStats(true);
 
 $("pager").addEventListener("click",e=>{
   const b=e.target.closest(".pg-btn");
@@ -446,6 +499,16 @@ function removeZoom(){
   activeZoomedImg=null;document.body.classList.remove("img-zoomed");
 }
 document.addEventListener("click",e=>{if(activeZoomedImg&&e.target!==activeClone)removeZoom()});
+
+/* ---------- Giriş animasiyası: şrift yüklənib düymələr yerini alandan sonra hər şey sıra ilə gəlir ---------- */
+(function(){
+  const reveal=()=>{fitPills();requestAnimationFrame(()=>document.documentElement.classList.remove("pre"))};
+  if(!document.fonts||!document.fonts.load){reveal();return}
+  Promise.race([
+    Promise.all(["400","500","600","700"].map(w=>document.fonts.load(w+" 16px Poppins"))),
+    new Promise(r=>setTimeout(r,1500))
+  ]).then(reveal,reveal);
+})();
 </script>
 <script src="/footer.js"></script>
 </body>
