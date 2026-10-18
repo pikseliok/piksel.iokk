@@ -3,7 +3,7 @@
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
 (function () {
   // ===================== AYARLAR =====================
-  var API = "https://script.google.com/macros/s/AKfycby8oXNNOtViAZDTbhA82HhD3VZBab8Psvnye2rlGBwlE3L6WP1N_WZmSbdBL5CjnFya9Q/exec"; // Apps Script "Web app" ünvanı
+  var API = "https://script.google.com/macros/s/AKfycbwSKLXaTgehKRwqbID2ik3FPSxCCSPmTHje00xtn6FR4i-Fakx4ku8Jk98B3EFkDc8H_w/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
     { author: "Əlizadə Onur", authorGen: "un", question: "Sual mətni burada olacaq", answer: "Düzgün cavab burada olacaq", criteria: "Sayılma meyarı burada olacaq", comment: "Şərh burada olacaq", source: "Mənbə varsa burda olacaq" },
