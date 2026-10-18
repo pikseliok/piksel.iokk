@@ -12,10 +12,11 @@
   var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { id: "s1", author: "Əlizadə Onur", authorGen: "ın", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
+    { id: "s1", author: "Əlizadə Onur", authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
     // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
-  // authorGen boş qalsa "Əli Məmmədovun" avtomatik düzəlir; səhv çıxsa özün yaz.
+  // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
+  // authorGen adətən BOŞ qalmalıdır (şəkilçi avtomatik qoyulur). Səhv çıxsa: ya qısa şəkilçi yaz ("un" → ad+un), ya da tam forma ("Əli Məmmədovun").
   var SHARE_PHONE = "994508377942";   // WhatsApp nömrəsi (050 837 7942)
   var SHARE_TEXT = "Günlük sual bölməsi üçün öz sualımı sizinlə bölüşmək istəyirəm";
   // ================== AYARLAR BİTDİ ==================
@@ -23,7 +24,11 @@
   var DBG = /dqdebug/.test(location.search);
 
   var css = `
-.dq{--bar:50px;--side:96px;--divh:28px;--flame-off:#aab3c9;margin-top:14px;height:var(--bar);border-radius:40px;overflow:hidden;position:relative;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:height .65s cubic-bezier(.4,0,.2,1),border-radius .65s ease}
+.dq{--bar:50px;--side:96px;--divh:28px;--flame-off:#aab3c9;margin-top:14px;height:var(--bar);border-radius:40px;overflow:hidden;position:relative;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:height .65s cubic-bezier(.4,0,.2,1),border-radius .65s ease;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.dq *{-webkit-tap-highlight-color:transparent}
+.dq input{-webkit-user-select:text;user-select:text}
+.dq.closing{transition:height .3s cubic-bezier(.4,0,.2,1),border-radius .3s ease}
+.dq.closing .dq-div{transition:height .3s ease,opacity .3s ease}
 body.dark .dq{--flame-off:#4b546e}
 .dq.open{--divh:64px;border-radius:30px}
 .dq.rv{--side:0px}
@@ -80,6 +85,10 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-ic.ok .ck{display:block}
 .dq-cnt{font-size:12px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;opacity:.85}
 .dq-wa{position:absolute;right:0;top:0}
+.dq-ic.like.on{color:#ff3b5c;border-color:#ff3b5c}
+.dq-ic.pop svg{animation:dqPop .35s}
+@keyframes dqPop{0%{transform:scale(.7)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.dq-cta:focus,.dq-send:focus,.dq-ic:focus{outline:none}
 .dq-cta:focus-visible,.dq-send:focus-visible,.dq-ic:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 @media (max-width:700px){
 .dq{--bar:46px;--side:48px;--divh:26px}
@@ -131,7 +140,7 @@ body.dark .dq{--flame-off:#4b546e}
    </div>
    <div class="dq-res" id="dqRes"><div id="dqResIn"></div>
     <div class="dq-act">
-     <div class="dq-ab"><button class="dq-ic" id="dqLike" type="button" aria-label="Bəyən" aria-pressed="false"><svg ${SV}><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button><span class="dq-cnt" id="dqLikeN">0</span></div>
+     <div class="dq-ab"><button class="dq-ic like" id="dqLike" type="button" aria-label="Bəyən" aria-pressed="false"><svg ${SV}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><span class="dq-cnt" id="dqLikeN">0</span></div>
      <div class="dq-ab"><button class="dq-ic" id="dqCopy" type="button" aria-label="Kopyala"><svg class="cp" ${SV}><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg><svg class="ck" ${SV}><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="dq-cnt" style="visibility:hidden">0</span></div>
      <div class="dq-ab"><button class="dq-ic" id="dqDis" type="button" aria-label="Bəyənmə" aria-pressed="false"><svg ${SV}><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg></button><span class="dq-cnt" id="dqDisN">0</span></div>
      <a class="dq-ic dq-wa" href="${WA_URL}" target="_blank" rel="noopener noreferrer" aria-label="Sual göndər"><svg ${SV}><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></a>
@@ -249,6 +258,7 @@ body.dark .dq{--flame-off:#4b546e}
     if (nv === 1) v.l++;
     if (nv === -1) v.d++;
     v.m = nv; saveV(); renderVotes();
+    if (nv) { var pb = x === 1 ? likeB : disB; pb.classList.remove("pop"); void pb.offsetWidth; pb.classList.add("pop"); setTimeout(function () { pb.classList.remove("pop"); }, 400); }
     VP[q] = nv; saveVP();
     clearTimeout(vtimer); vtimer = setTimeout(flushVotes, 500);
   }
@@ -366,7 +376,12 @@ body.dark .dq{--flame-off:#4b546e}
     });
     renderVotes();
   }
-  function title() { return S.author ? (S.authorGen || gen(S.author)) + " sualı" : "Günün sualı"; }
+  function title() {
+    var a = (S.author || "").trim();
+    if (!a) return "Günün sualı";
+    var g = (S.authorGen || "").trim();
+    return (!g ? gen(a) : g.length <= 4 ? a + g : g) + " sualı";   // boş → avtomatik; qısa → şəkilçi; uzun → tam forma
+  }
   function copyText() {
     var r = S.reveal || {}, t = title() + "\n" + S.question + "\n";
     if (r.answer) t += "\nCavab: " + r.answer;
@@ -391,7 +406,7 @@ body.dark .dq{--flame-off:#4b546e}
   // ---- yüksəklik
   function barPx() { return parseFloat(getComputedStyle(root).getPropertyValue("--bar")) || 50; }
   function fit() { root.style.height = Math.max(barPx(), mid.offsetHeight) + "px"; }
-  window.addEventListener("resize", function () { if (open) fit(); });
+  window.addEventListener("resize", function () { if (open && !busy) fit(); });
 
   // ---- alov
   async function setNum(n) {
@@ -431,9 +446,9 @@ body.dark .dq{--flame-off:#4b546e}
       res.style.display = "block"; res.style.transform = "none";
     } else {
       locked = !!S.name;
-      nameIn.value = S.name || ""; nameIn.readOnly = locked;
+      if (S.name || !nameIn.value) nameIn.value = S.name || "";
+      nameIn.readOnly = locked;
       nameF.classList.toggle("locked", locked);
-      ansIn.value = "";
       form.style.cssText = "display:flex;opacity:1;transform:none";
       res.style.display = "none";
     }
@@ -447,22 +462,34 @@ body.dark .dq{--flame-off:#4b546e}
     if (review) arm();
   }
 
-  async function closeDQ() {
+  async function closeDQ() {                      // bağlanma həmişə 0,3 saniyə (toxunma, sürüşdürmə, Esc)
     if (!open || busy) return;
     busy = true; disarm();
-    await A(body, [{ opacity: 1 }, { opacity: 0 }], 300);
-    body.style.display = "none";
+    root.classList.add("closing");
     root.classList.remove("open");
-    root.style.height = "";
-    await sleep(700);
+    root.style.height = barPx() + "px";
+    A(body, [{ opacity: 1 }, { opacity: 0 }], 140);
+    await sleep(150);
+    body.style.display = "none";
     root.classList.remove("rv");
     open = false;
     if (held) { held = false; S = cur(); }
     render();
+    cta.style.opacity = 0;
     cta.classList.remove("gone");
-    await A(cta, [{ opacity: 0 }, { opacity: 1 }], 350);
+    A(cta, [{ opacity: 0 }, { opacity: 1 }], 150);
+    await sleep(150);
+    root.style.height = "";
+    root.classList.remove("closing");
     busy = false;
   }
+
+  // ---- açıq çərçivənin yuxarı hissəsinə (müəllif + sual) toxunanda da bağlansın
+  root.addEventListener("click", function (e) {
+    if (!open || busy) return;
+    if (e.target.closest && e.target.closest("a,button,input")) return;
+    if (e.clientY <= $("dqText").getBoundingClientRect().bottom + 8) closeDQ();
+  });
 
   // ---- ekranı hərəkət etdirəndə gizlət
   var armed = false, y0 = 0, armT = 0;
@@ -518,15 +545,15 @@ body.dark .dq{--flame-off:#4b546e}
     store.set(PK, JSON.stringify(p));
     send(p, 0);
 
-    await A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 350);
+    await A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 220);
     S = cur();
+    ansIn.value = "";
     form.style.display = "none";
     buildRes();
     res.style.display = "block"; res.style.transform = "translateY(130%)";
     ignite(S.streak);
-    fit();                        // çərçivə genişlənir
-    await sleep(700);
-    await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 650);   // aşağıdan yuxarı gəlir
+    fit();                        // çərçivə genişlənir, nəticə dərhal aşağıdan yuxarı gəlir (gözləmə yoxdur)
+    await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
     busy = false;
     review = true;
     arm();
