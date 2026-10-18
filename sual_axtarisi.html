@@ -177,8 +177,8 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
   to{transform:scale(1.06)}
 }
 .dark .pg-btn{
-  border-color:var(--dark-bg);
-  color:var(--dark-bg);
+  border-color:var(--accent);
+  color:var(--accent);
 }
 .dark .pg-btn::before{
   background:linear-gradient(135deg,var(--dark-light),var(--dark-bright),var(--dark-light));
@@ -208,6 +208,7 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
   font-weight:700;
   line-height:1;
 }
+.pg-ph{visibility:hidden}
 
 @media (hover:hover){
   .pg-btn:not(.cur):hover{transform:translateY(-2px)}
@@ -492,58 +493,28 @@ function renderInner(anim,msg){
     qc.appendChild(card);
   });
 /* Səhifələmə: cari səhifə ortada, oxlar bir səhifə irəli/geri keçir */
-if (pages > 1) {
-  if (anim) {
-    pg.className = "pager frame";
-    pg.style.setProperty("--i", Math.min(slice.length, 8) + 1);
+if(pages>1){
+  if(anim){
+    pg.className="pager frame";
+    pg.style.setProperty("--i",Math.min(slice.length,8)+1);
   }
-
-  let s, e;
-
-  if (page === 1) {
-    s = 1;
-    e = Math.min(3, pages);
-  } else if (page === pages) {
-    s = Math.max(1, pages - 2);
-    e = pages;
-  } else {
-    s = page - 1;
-    e = page + 1;
-  }
-
-  let h = "";
-
-  // Solda ən azı 2 gizli səhifə varsa üç nöqtə göstər
-  if (s >= 3) h += `<span class="pg-ellipsis" aria-hidden="true">…</span>`;
-
-  // Bir səhifə geri
-  if (page > 1) {
-    h += `<button class="pg-btn pg-arrow" type="button"
-      data-p="${page - 1}" aria-label="Əvvəlki səhifə">
-      ${ARW("M15 5l-7 7 7 7")}
-    </button>`;
-  }
-
-  for (let p = s; p <= e; p++) {
-    h += `<button class="pg-btn${p === page ? " cur" : ""}"
-      type="button" data-p="${p}"
-      ${p === page ? 'aria-current="page"' : ""}>${p}</button>`;
-  }
-
-  // Bir səhifə irəli
-  if (page < pages) {
-    h += `<button class="pg-btn pg-arrow" type="button"
-      data-p="${page + 1}" aria-label="Növbəti səhifə">
-      ${ARW("M9 5l7 7-7 7")}
-    </button>`;
-  }
-
-  // Sağda ən azı 2 gizli səhifə varsa üç nöqtə göstər
-  if (pages - e >= 2) {
-    h += `<span class="pg-ellipsis" aria-hidden="true">…</span>`;
-  }
-
-  pg.innerHTML = h;
+  const first=page===1,last=page===pages;
+  let s,e;
+  if(first){s=1;e=Math.min(3,pages)}
+  else if(last){s=Math.max(1,pages-2);e=pages}
+  else{s=page-1;e=page+1}
+  /* "..." yalnız gizlənmiş səhifələr olanda; ortadakı səhifə həmişə düz mərkəzdə qalsın deyə boş tərəfə görünməz yer tutucu qoyulur */
+  const leftDots=last?s>1:(!first&&page>=3);
+  const rightDots=first?e<pages:(!last&&pages-page>=2);
+  const dots='<span class="pg-ellipsis" aria-hidden="true">…</span>';
+  const ph='<span class="pg-ellipsis pg-ph" aria-hidden="true">…</span>';
+  let h="";
+  if(leftDots)h+=dots;else if(!first&&!last)h+=ph;
+  if(!first)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`;
+  for(let p=s;p<=e;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
+  if(!last)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
+  if(rightDots)h+=dots;else if(!first&&!last)h+=ph;
+  pg.innerHTML=h;
 }  /* "Cavablar" seçilibsə: əvvəlcə çərçivələr, sonra suallar animasiya ilə gəlir, bundan sonra çərçivələr özləri açılır */
   if(S.ans){
     const wait=anim?(Math.min(slice.length-1,8)+1)*100+1300:60;
