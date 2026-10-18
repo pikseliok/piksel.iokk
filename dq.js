@@ -12,7 +12,7 @@
   var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { id: "s1", author: "Sual Müəllifi, authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
+    { id: "s1", author: "Sual Müəllifi", authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
     // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
