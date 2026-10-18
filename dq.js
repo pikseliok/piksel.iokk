@@ -1,18 +1,21 @@
+
+Dq · JS
 /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
 (function () {
   // ===================== AYARLAR =====================
-  var API = "https://script.google.com/macros/s/AKfycbwSKLXaTgehKRwqbID2ik3FPSxCCSPmTHje00xtn6FR4i-Fakx4ku8Jk98B3EFkDc8H_w/exec"; // Apps Script "Web app" ünvanı
+  var API = "https://script.google.com/macros/s/AKfycbxaA-jSZV5pMPSgAJoujyXU4dWPGYRKejQP1kC6cLNdURDAL2uOVfCAnbnoUf6HI2wqyQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { author: "Əlizadə Onur", authorGen: "un", question: "Sual mətni burada olacaq", answer: "Düzgün cavab burada olacaq", criteria: "Sayılma meyarı burada olacaq", comment: "Şərh burada olacaq", source: "Mənbə varsa burda olacaq" },
+     { author: "Əlizadə Onur", authorGen: "un", question: "Sual mətni burada olacaq", answer: "Düzgün cavab burada olacaq", criteria: "Sayılma meyarı burada olacaq", comment: "Şərh burada olacaq", source: "Mənbə varsa burda olacaq" },
     // { author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
+
   ];
   // authorGen boş qalsa "Əli Məmmədovun" avtomatik düzəlir; səhv çıxsa özün yaz.
   // ================== AYARLAR BİTDİ ==================
   var host = document.currentScript;
-
+ 
   var css = `
 .dq{--bar:50px;--side:96px;--divh:28px;--flame-off:#aab3c9;margin-top:14px;height:var(--bar);border-radius:40px;overflow:hidden;position:relative;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:height .65s cubic-bezier(.4,0,.2,1),border-radius .65s ease}
 body.dark .dq{--flame-off:#4b546e}
@@ -66,7 +69,7 @@ body.dark .dq{--flame-off:#4b546e}
 @media (max-width:700px){.dq{--bar:46px;--side:80px;--divh:26px}.dq-cta{font-size:13px;gap:6px}.dq-cta svg{width:18px;height:18px;flex-basis:18px}.fl{width:20px;height:20px}.dq-side{gap:7px}.dq-timer b{font-size:13px}.dq-timer small{font-size:7px}.dq-field.n{flex-basis:32%}}
 @media (max-width:420px){.dq{--bar:42px;--side:74px}.dq-cta{font-size:12px}}
 `;
-
+ 
   var FL_OUT = "M12 2C12.8 6.2 18 8.6 18 15a6 6 0 0 1-12 0c0-2.6 1.1-4.4 2.5-5.8.2 1.8.9 2.9 2 3.4C10.2 9 10.4 5 12 2Z";
   var FL_IN = "M12 20.6a2.8 2.8 0 0 1-2.8-2.8c0-1.6 1.2-2.5 2.8-4.4 1.6 1.9 2.8 2.8 2.8 4.4A2.8 2.8 0 0 1 12 20.6Z";
   var html = `
@@ -101,7 +104,7 @@ body.dark .dq{--flame-off:#4b546e}
  <i class="dq-div"></i>
  <div class="dq-side"></div>
 </div>`;
-
+ 
   var st = document.createElement("style");
   st.textContent = css;
   document.head.appendChild(st);
@@ -111,19 +114,19 @@ body.dark .dq{--flame-off:#4b546e}
   root.setAttribute("aria-label", "Günün sualı");
   root.innerHTML = html;
   host.parentNode.insertBefore(root, host);
-
+ 
   var $ = function (id) { return document.getElementById(id); };
   var fl = $("dqFl"), numEl = $("dqNum"), timeEl = $("dqTime"), cta = $("dqCta"), ctaT = $("dqCtaT"),
     body = $("dqBody"), form = $("dqForm"), res = $("dqRes"), resIn = $("dqResIn"),
     nameIn = $("dqName"), ansIn = $("dqAns"), nameF = $("dqNF"), ansF = $("dqAF"), mid = root.querySelector(".dq-mid");
   var S = null, skew = 0, open = false, review = false, busy = false, locked = false, refreshing = false;
-
+ 
   var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
   var A = function (el, kf, ms, o) {
     var a = el.animate(kf, Object.assign({ duration: ms, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" }, o || {}));
     return a.finished.then(function () { Object.assign(el.style, kf[kf.length - 1]); a.cancel(); });
   };
-
+ 
   // ---- istifadəçi kimliyi (cihazda)
   var uid = "";
   try { uid = localStorage.getItem("piksel-uid") || ""; } catch (e) {}
@@ -131,7 +134,7 @@ body.dark .dq{--flame-off:#4b546e}
     uid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36);
     try { localStorage.setItem("piksel-uid", uid); } catch (e) {}
   }
-
+ 
   // ---- Azərbaycan dilində yiyəlik hal: Əli → Əlinin, Məmmədov → Məmmədovun
   function gen(n) {
     n = n.trim();
@@ -140,7 +143,7 @@ body.dark .dq{--flame-off:#4b546e}
     var s = { a: "ı", "ı": "ı", e: "i", "ə": "i", i: "i", o: "u", u: "u", "ö": "ü", "ü": "ü" }[last] || "ı";
     return n + (ends ? "n" + s + "n" : s + "n");
   }
-
+ 
   // ---- vəziyyət: sual yerli siyahıdan, ad/seriya/cavablama Google Sheets-dən
   var OFF = 4 * 36e5, DAY = 864e5, dnum = function (t) { return Math.floor((t + OFF) / DAY); };
   function build(d) {
@@ -179,7 +182,7 @@ body.dark .dq{--flame-off:#4b546e}
     timeEl.textContent = (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
   }
   setInterval(tick, 1000);
-
+ 
   // ---- nəticə bloku
   function buildRes() {
     resIn.textContent = "";
@@ -221,12 +224,12 @@ body.dark .dq{--flame-off:#4b546e}
       ta.remove();
     }
   });
-
+ 
   // ---- yüksəklik
   function barPx() { return parseFloat(getComputedStyle(root).getPropertyValue("--bar")) || 50; }
   function fit() { root.style.height = Math.max(barPx(), mid.offsetHeight) + "px"; }
   window.addEventListener("resize", function () { if (open) fit(); });
-
+ 
   // ---- alov
   async function setNum(n) {
     if (numEl.textContent === String(n)) return;
@@ -247,7 +250,7 @@ body.dark .dq{--flame-off:#4b546e}
     }
     await p;
   }
-
+ 
   // ---- aç / bağla
   async function openDQ() {
     if (busy || open || !S) return;
@@ -280,7 +283,7 @@ body.dark .dq{--flame-off:#4b546e}
     busy = false;
     if (review) arm();
   }
-
+ 
   async function closeDQ() {
     if (!open || busy) return;
     busy = true; disarm();
@@ -296,7 +299,7 @@ body.dark .dq{--flame-off:#4b546e}
     await A(cta, [{ opacity: 0 }, { opacity: 1 }], 350);
     busy = false;
   }
-
+ 
   // ---- ekranı hərəkət etdirəndə gizlət
   var armed = false, y0 = 0, armT = 0;
   var onMove = function () { closeDQ(); };
@@ -322,7 +325,7 @@ body.dark .dq{--flame-off:#4b546e}
     removeEventListener("scroll", onScroll);
     removeEventListener("keydown", onKey);
   }
-
+ 
   // ---- ad: 2 saniyə basılı saxlayanda dəyişir (heç bir işarə yoxdur)
   var lp = 0;
   nameF.addEventListener("pointerdown", function () {
@@ -334,7 +337,7 @@ body.dark .dq{--flame-off:#4b546e}
   });
   ["pointerup", "pointerleave", "pointercancel"].forEach(function (e) { nameF.addEventListener(e, function () { clearTimeout(lp); }); });
   nameF.addEventListener("contextmenu", function (e) { e.preventDefault(); });
-
+ 
   // ---- göndər
   function bad(el) { el.classList.remove("bad"); void el.offsetWidth; el.classList.add("bad"); setTimeout(function () { el.classList.remove("bad"); }, 700); }
   async function submit() {
@@ -351,7 +354,7 @@ body.dark .dq{--flame-off:#4b546e}
     var d;
     try {
       d = (await Promise.all([req, fade]))[0];
-      if (!d || d.error) throw 0;
+      if (!d || d.error || !build(d).answered) throw new Error("server cavabı yazmadı");
     } catch (e) {
       form.style.pointerEvents = "";
       await A(form, [{ opacity: 0, transform: "scale(.96)" }, { opacity: 1, transform: "scale(1)" }], 250);
@@ -374,10 +377,10 @@ body.dark .dq{--flame-off:#4b546e}
   $("dqSend").addEventListener("click", submit);
   ansIn.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
   nameIn.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ansIn.focus(); } });
-
+ 
   cta.addEventListener("click", openDQ);
   cta.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDQ(); } });
-
+ 
   // ---- start
   var DBG = /dqdebug/.test(location.search);
   if (DBG) console.log("dq.js yükləndi");
@@ -388,3 +391,5 @@ body.dark .dq{--flame-off:#4b546e}
   if (/XXXX/.test(API)) fail(new Error("API ünvanı yazılmayıb"));
   else load().then(render).catch(fail);
 })();
+ 
+Claude yanıtı tamamladı
