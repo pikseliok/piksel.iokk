@@ -3,10 +3,10 @@
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
 (function () {
   // ===================== AYARLAR =====================
-  var API = "https://script.google.com/macros/s/AKfycbwSKLXaTgehKRwqbID2ik3FPSxCCSPmTHje00xtn6FR4i-Fakx4ku8Jk98B3EFkDc8H_w/exec; // Apps Script "Web app" ünvanı
+  var API = "https://script.google.com/macros/s/AKfycby8oXNNOtViAZDTbhA82HhD3VZBab8Psvnye2rlGBwlE3L6WP1N_WZmSbdBL5CjnFya9Q/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { author: "Əlizadə Onur", authorGen: "in", question: "Sual mətni buraya", answer: "Düzgün cavab", criteria: "Meyarlar", comment: "Şərh", source: "Mənbə" },
+    { author: "Əlizadə Onur", authorGen: "un", question: "Sual mətni burada olacaq", answer: "Düzgün cavab burada olacaq", criteria: "Sayılma meyarı burada olacaq", comment: "Şərh burada olacaq", source: "Mənbə varsa burda olacaq" },
     // { author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // authorGen boş qalsa "Əli Məmmədovun" avtomatik düzəlir; səhv çıxsa özün yaz.
@@ -154,7 +154,8 @@ body.dark .dq{--flame-off:#4b546e}
     return fetch(API + "?action=state&uid=" + encodeURIComponent(uid))
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (d.error || !QUESTIONS.length) throw 0;
+        if (d.error) throw new Error("server: " + d.error);
+        if (!QUESTIONS.length) throw new Error("sual siyahısı boşdur");
         S = build(d);
         skew = d.now - Date.now();
       });
@@ -344,7 +345,7 @@ body.dark .dq{--flame-off:#4b546e}
     busy = true;
     ansIn.blur(); nameIn.blur();
     form.style.pointerEvents = "none";
-    var req = fetch(API, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify({ action: "answer", uid: uid, name: name, answer: ans, qn: S.qn }) })
+    var req = fetch(API + "?action=answer&uid=" + encodeURIComponent(uid) + "&name=" + encodeURIComponent(name) + "&answer=" + encodeURIComponent(ans) + "&qn=" + S.qn)
       .then(function (r) { return r.json(); });
     var fade = A(form, [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(.96)" }], 350);
     var d;
@@ -378,5 +379,12 @@ body.dark .dq{--flame-off:#4b546e}
   cta.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDQ(); } });
 
   // ---- start
-  load().then(render).catch(function () { root.remove(); });
+  var DBG = /dqdebug/.test(location.search);
+  if (DBG) console.log("dq.js yükləndi");
+  var fail = function (e) {
+    if (DBG) { ctaT.textContent = "Xəta: " + ((e && e.message) || "server cavab vermir"); console.error(e); }
+    else root.remove();
+  };
+  if (/XXXX/.test(API)) fail(new Error("API ünvanı yazılmayıb"));
+  else load().then(render).catch(fail);
 })();
