@@ -9,7 +9,6 @@
   var QUESTIONS = [
      { author: "Əlizadə Onur", authorGen: "un", question: "Sual mətni burada olacaq", answer: "Düzgün cavab burada olacaq", criteria: "Sayılma meyarı burada olacaq", comment: "Şərh burada olacaq", source: "Mənbə varsa burda olacaq" },
     // { author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
-
   ];
   // authorGen boş qalsa "Əli Məmmədovun" avtomatik düzəlir; səhv çıxsa özün yaz.
   // ================== AYARLAR BİTDİ ==================
