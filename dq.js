@@ -12,7 +12,7 @@
   var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
   var QUESTIONS = [
-    { id: "s1", author: "Əlizadə Onur", authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
+    { id: "s1", author: "Sual Müəllifi, authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" },
     // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
@@ -85,7 +85,6 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-ic.ok .ck{display:block}
 .dq-cnt{font-size:12px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;opacity:.85}
 .dq-wa{position:absolute;right:0;top:0}
-.dq-ic.like.on{color:#ff3b5c;border-color:#ff3b5c}
 .dq-ic.pop svg{animation:dqPop .35s}
 @keyframes dqPop{0%{transform:scale(.7)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 .dq-cta:focus,.dq-send:focus,.dq-ic:focus{outline:none}
