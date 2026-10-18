@@ -1,5 +1,4 @@
 
-Dq · JS
 /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş. */
