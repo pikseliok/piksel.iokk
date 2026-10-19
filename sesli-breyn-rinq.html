@@ -257,6 +257,11 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 #vol::-moz-range-track,#vol2::-moz-range-track{height:4px;border-radius:4px;background:var(--track)}
 #vol::-moz-range-progress,#vol2::-moz-range-progress{height:4px;border-radius:4px;background:currentColor}
 #vol::-moz-range-thumb,#vol2::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
+
+/* TAYMER: saniyə + millisaniyə */
+.tm{display:flex;justify-content:center;align-items:flex-start;font-variant-numeric:tabular-nums}
+.t-sec{min-width:2ch;text-align:right}
+.t-ms{font-size:.34em;font-weight:600;margin-left:.15em;margin-top:.1em;min-width:3ch;text-align:left;opacity:.9}
 </style>
 </head>
 
@@ -382,7 +387,12 @@ let pid=null;
 try{pid=sessionStorage.getItem('piksel-br-pid')}catch(e){}
 if(!pid){pid='p'+rnd(8);try{sessionStorage.setItem('piksel-br-pid',pid)}catch(e){}}
 
-let mode='host',room=null,role=null,R=null,entered=false;
+let mode='host',room=null,role=null,R=null,entered=false,noPrompt=0;
+
+/* Səhifə yenilənəndə brauzerin öz təsdiq pəncərəsi (otaqdadırsa) */
+window.addEventListener('beforeunload',e=>{
+  if(room&&!noPrompt){e.preventDefault();e.returnValue=''}
+});
 
 /* =========================
    TEMA — gün / ay animasiyası
@@ -498,13 +508,13 @@ async function start(){
 function listen(){
   db.ref('rooms/'+room).on('value',s=>{
     const r=s.val();
-    if(!r){alert(window.idleMsg||'Otaq bağlandı');return location.reload()}
+    if(!r){alert(window.idleMsg||'Otaq bağlandı');noPrompt=1;return location.reload()}
     if(role!=='host'&&!(r.players&&r.players[pid])){
-      return location.replace('/sesli-breyn-rinq');
+      noPrompt=1;return location.replace('/sesli-breyn-rinq');
     }
     R=r;
     render();
-  },()=>{alert('Əlaqə kəsildi');location.reload()});
+  },()=>{alert('Əlaqə kəsildi');noPrompt=1;location.reload()});
 }
 
 /* =========================
@@ -641,31 +651,66 @@ document.addEventListener('keydown', function(e) {
 <script>
 /* ===== OYUN + SƏS ===== */
 let vol=.5,off=0,muted=false,stream=null,micAsk=0,sigOn=0,xp=0;
-db.ref('.info/serverTimeOffset').on('value',s=>{off=s.val()||0});
-const now=()=>Date.now()+off,rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
+
+/* ===== Dəqiq saat: sıçramayan localNow + server fərqi ===== */
+const _pA=performance.now(),_wA=Date.now(),FAIR_WINDOW=400,EXPIRE_GRACE=1500;
+const localNow=()=>_wA+(performance.now()-_pA);
+let calib=false,syncing=false,lastSync=0;
+db.ref('.info/serverTimeOffset').on('value',s=>{const v=s.val();if(typeof v==='number'&&!calib)off=v});
+const now=()=>Math.round(localNow()+off),rf=p=>db.ref('rooms/'+room+(p?'/'+p:''));
+/* Toxunuşun real anını server vaxtına çevirir */
+function evTime(ev){
+  const ts=ev&&ev.timeStamp,n=localNow();
+  if(typeof ts==='number'&&isFinite(ts)&&ts>0){const loc=ts>1e12?ts:_wA+(ts-_pA);if(loc<=n+5&&n-loc<=1500)return loc+off}
+  return n+off;
+}
+async function syncClock(n){
+  if(syncing||!room)return;syncing=true;
+  const r=db.ref('sync/'+room+'/'+pid);
+  try{
+    const S=[];
+    for(let i=0;i<n&&room;i++){
+      const t0=localNow();await r.set(firebase.database.ServerValue.TIMESTAMP);const t1=localNow();
+      const v=(await r.once('value')).val();
+      if(typeof v==='number'&&isFinite(v))S.push({rtt:t1-t0,off:v-(t0+t1)/2});
+      await new Promise(x=>setTimeout(x,60));
+    }
+    if(S.length){
+      S.sort((a,b)=>a.rtt-b.rtt);
+      const g=S.filter(s=>s.rtt<=S[0].rtt+25).sort((a,b)=>a.off-b.off),m=g[Math.floor(g.length/2)].off;
+      if(isFinite(m)){off=Math.round(m);calib=true}
+    }
+  }catch(e){}finally{try{await r.remove()}catch(e){}syncing=false}
+}
+setInterval(()=>{if(room&&!syncing&&Date.now()-lastSync>(calib?15000:3000)){lastSync=Date.now();syncClock(calib?4:8)}},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&room)lastSync=0});
+
 const T=()=>R.teams||{},P=()=>R.players||{},opn={},isH=()=>role==='host';
 const isPen=i=>!!(P()[i]&&P()[i].pen);
 const skip={},sk=n=>Date.now()<(skip[n]||0);
 /* Aparıcı ilə danışıq mümkün olan mərhələlər (oyun sualı gedəndə yox) */
 const TK=()=>!!R&&['lobby','wait','expired','finished'].includes(R.status);
-const anc={k:null,end:0};
-function remMs(){
-  if(!R||R.status!=='running'||!R.timerEnd)return 0;
-  const k=R.timerEnd+'|'+R.startedAt;
-  if(anc.k!==k){
-    anc.k=k;
-    const dur=R.timerEnd-(R.startedAt||R.timerEnd),est=R.timerEnd-now();
-    anc.end=performance.now()+((dur>0&&dur-est<5000)?dur:est);
-  }
-  return anc.end-performance.now();
-}
-function tl(){
-  if(!R)return 20;
-  if(R.status==='running')return Math.max(0,Math.ceil(remMs()/1000));
-  if(R.status==='answered')return R.pausedRem||0;
+
+/* Qalan vaxt (ms): işləyəndə geri sayım, cavab zamanı basılan an donur */
+function remMs(){return(R&&R.status==='running'&&R.timerEnd)?Math.max(0,R.timerEnd-now()):0}
+function tms(){
+  if(!R)return 20000;
+  if(R.status==='running')return remMs();
+  if(R.status==='answered')return Math.max(0,Number(R.pausedMs)||0);
   if(R.status==='expired'||R.status==='finished')return 0;
-  return 20;
+  return 20000;
 }
+function tl(){return Math.ceil(tms()/1000)}
+function paintTm(){
+  const b=$('tm');if(!b||!R)return;
+  const ms=Math.max(0,Math.round(tms())),s=String(Math.floor(ms/1000)),m=String(ms%1000).padStart(3,'0');
+  const a=b._s||(b._s=b.querySelector('.t-sec')),c=b._m||(b._m=b.querySelector('.t-ms'));
+  if(a.textContent!==s)a.textContent=s;
+  if(c.textContent!==m)c.textContent=m;
+}
+/* Taymer yenilənməsi: requestAnimationFrame + 25ms ehtiyat interval */
+(function loop(){paintTm();requestAnimationFrame(loop)})();
+setInterval(paintTm,25);
 
 function members(tid){
   return Object.entries(P()).filter(([,v])=>v.team===tid).map(([id,v])=>({id,...v}))
@@ -709,7 +754,8 @@ function render(){
     const nm=tm?esc(tm.name)+(ans?': '+(R.speaker&&P()[R.speaker]?esc(P()[R.speaker].name):esc(capOf(t))):tkn?': '+esc(P()[R.talk].name):''):'Gözləyir...';
     return `<div class="sbox ${i?'p':'b'}">${kickOk&&tm?`<button class="kick-btn" type="button" data-kick="team" data-id="${t}" aria-label="Çıxar">✕</button>`:''}<div class="sn">${nm}</div><div class="ss">${tm?(tm.score||0):0}</div></div>`;
   };
-  $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm">${tl()}</div></section>`;
+  $('colL').innerHTML=sb(0)+sb(1)+`<section class="card center"><div class="tm" id="tm"><span class="t-sec">20</span><span class="t-ms">000</span></div></section>`;
+  paintTm();
 
   const canD=x=>cap&&x.team===mt&&(st==='lobby'||st==='wait')&&!x.pen;
   const canM=x=>cap&&x.team===mt&&st==='answered'&&R.winner===mt&&!R.speaker&&!x.pen;
@@ -742,7 +788,7 @@ function render(){
   }else if(isPresser){
     const bad=me.pen||(R.fs||{})[mt]||(R.wrong||{})[mt];
     const wt2=st==='wait'&&tids.some(t=>t!==mt&&(R.fs||{})[t]);
-    const ok=!bad&&!wt2&&(st==='wait'||st==='running');
+    const ok=!bad&&!wt2&&(st==='wait'||(st==='running'&&remMs()>0));
     right=`<button class="buzz ${cl(mt)}${bad||wt2?' sm2':''}" data-act="buzz"${ok?'':' disabled'}>${bad?'CAVAB HÜQUQU YOXDUR':wt2?'APARICI VAXTI VERƏNƏ QƏDƏR GÖZLƏ':'BAS!'}</button>`;
   }else{
     right=members(mt).map(x=>row(x,mt,{ic:cap})).join('');
@@ -835,7 +881,7 @@ async function kickYes(yes){
         }
       }
     }
-    if(['running','answered','expired'].includes(R.status))Object.assign(u,{status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null});
+    if(['running','answered','expired'].includes(R.status))Object.assign(u,{status:'wait',winner:null,speaker:null,timerEnd:null,pausedMs:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null});
     if(Object.keys(u).length)await rf().update(u);
   }catch(e){}finally{kickBusy=false}
 }
@@ -848,39 +894,48 @@ setInterval(()=>{
   if(idleClosing||Date.now()-lastAct<360000)return;
   idleClosing=true;
   Promise.all([db.ref('rooms/'+room).remove(),db.ref('sig/'+room).remove(),db.ref('rx/'+room).remove()])
-    .catch(()=>{}).then(()=>setTimeout(()=>location.reload(),1500));
+    .catch(()=>{}).then(()=>setTimeout(()=>{noPrompt=1;location.reload()},1500));
 },5000);
 
-/* TAYMER */
+/* TAYMER (bitmə yoxlaması) */
 setInterval(()=>{
   if(!R)return;
-  const el=$('tm');
-  if(el)el.textContent=tl();
-  if(isH()&&R.status==='running'&&R.timerEnd+500<=now()&&!xp){
+  const bz=document.querySelector('[data-act="buzz"]');
+  if(bz&&!bz.disabled&&R.status==='running'&&remMs()<=0){bz.disabled=true;$('colR')._h=null}
+  if(isH()&&R.status==='running'&&R.timerEnd+EXPIRE_GRACE<=now()&&!xp){
     xp=1;
     rf().transaction(r=>{
-      if(r&&r.status==='running'&&r.timerEnd+500<=Date.now()+off){r.status='expired';r.timerEnd=null;r.ev='VAXT ÇIXDI - DOĞRU CAVAB YOXDUR'}
+      if(r&&r.status==='running'&&r.timerEnd+EXPIRE_GRACE<=now()){r.status='expired';r.timerEnd=null;r.ev='VAXT ÇIXDI - DOĞRU CAVAB YOXDUR'}
       return r;
     }).finally(()=>setTimeout(()=>{xp=0},500));
   }
 },200);
 
-/* DÜYMƏ BASMA */
-function buzz(){
+/* DÜYMƏ BASMA: toxunma anı ms dəqiqliyi ilə qeyd olunur */
+function buzz(ev){
   const me=P()[pid];
-  if(!me)return;
-  const tid=me.team;
-  if(R.status==='running'&&tl()<=0)return;
-  const lrem=tl(),lfirst=R.status==='running'&&R.timerEnd?((R.timerEnd-(R.startedAt||0))-remMs())<=1000:false;
-  if(R.status==='running'){SND.buzz();skip.buzz=Date.now()+2500}
-  else if(R.status==='wait'&&!Object.keys(T()).some(t=>t!==tid&&(R.fs||{})[t])){SND.fail();skip.fail=Date.now()+2500}
+  if(!me||!R)return;
+  const tid=me.team,at=Math.round(evTime(ev));
+  const oth=Object.keys(T()).find(x=>x!==tid);
+  if(R.status==='running'){
+    if(!R.timerEnd||R.timerEnd-at<0)return;
+    SND.buzz();skip.buzz=Date.now()+2500;
+  }else if(R.status==='wait'){
+    if(oth&&(R.fs||{})[oth])return;
+    SND.fail();skip.fail=Date.now()+2500;
+  }else if(R.status==='answered'){
+    if(R.winner===tid||R.buzzAt==null||R.speaker)return;
+    const d=R.buzzAt-at;
+    if(!(0<d&&d<=FAIR_WINDOW))return;
+    SND.buzz();skip.buzz=Date.now()+2500;
+  }else return;
   const fn=r=>{
     if(!r)return;
     const p=(r.players||{})[pid];
     if(!p||p.pen||!r.teams[tid]||r.teams[tid].presser!==pid)return;
     const fs=r.fs||{},wr=r.wrong||{};
     if(fs[tid]||wr[tid])return;
-    const t=Date.now()+off;
+    const t=at;
     if(r.status==='wait'){
       const o0=Object.keys(r.teams).find(x=>x!==tid);
       if(o0&&fs[o0])return;
@@ -889,11 +944,19 @@ function buzz(){
       const o=Object.keys(r.teams).find(x=>x!==tid);
       if(o&&(fs[o]||(r.wrong||{})[o])){r.status='expired';r.ev='Hər iki komanda cavab hüququnu itirdi'}
     }else if(r.status==='running'){
-      const rem=Math.max(1,lrem);
-      r.first=lfirst;
-      r.status='answered';r.winner=tid;r.buzzAt=t;r.pausedRem=rem;r.timerEnd=null;r.speaker=null;
+      if(!r.timerEnd||t<Number(r.startedAt||0))return;
+      const rem=r.timerEnd-t;if(rem<0)return;
+      r.first=(t-Number(r.startedAt||t))<=1000;
+      r.status='answered';r.winner=tid;r.buzzAt=t;r.pausedMs=Math.max(1,Math.round(rem));r.timerEnd=null;r.speaker=null;
       r.ev=(r.first?'İLK SANİYƏ! ':'')+r.teams[tid].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
-        }else return;
+    }else if(r.status==='answered'){
+      /* ədalət pəncərəsi: gec çatan, amma ≤400ms əvvəl basılmış düymə qalib olur */
+      if(r.winner===tid||r.buzzAt==null||r.speaker)return;
+      const d=Number(r.buzzAt)-t;if(!(0<d&&d<=FAIR_WINDOW))return;
+      r.first=(t-Number(r.startedAt||t))<=1000;
+      r.winner=tid;r.buzzAt=t;r.pausedMs=Math.round(Number(r.pausedMs||0)+d);r.speaker=null;
+      r.ev=(r.first?'İLK SANİYƏ! ':'')+r.teams[tid].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
+    }else return;
     return r;
   };
   let tries=0;
@@ -916,7 +979,7 @@ function pickSpeaker(id){
 
 /* APARICI HƏRƏKƏTLƏRİ */
 function nextQ(x){
-  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedRem:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null,talk:null,q:(R.q||1)+1};
+  const u={status:'wait',winner:null,speaker:null,timerEnd:null,pausedMs:null,startedAt:null,buzzAt:null,first:null,wrong:null,fs:null,fst:null,sil:null,ev:null,talk:null,q:(R.q||1)+1};
   Object.keys(T()).forEach(t=>{u['teams/'+t+'/req']=null});
   return Object.assign(u,x);
 }
@@ -936,7 +999,7 @@ const A={
         delete fs[w];r.fs=Object.keys(fs).length?fs:null;
         r.startedAt=tc;r.first=(fst[w]-tc)<=1000;
         r.status='answered';r.winner=w;r.buzzAt=fst[w];
-        r.pausedRem=Math.max(1,Math.ceil((tc+20000-fst[w])/1000));r.timerEnd=null;
+        r.pausedMs=Math.max(1,Math.round(tc+20000-fst[w]));r.timerEnd=null;
         r.ev=(r.first?'İLK SANİYƏ! ':'')+tm[w].name.toUpperCase()+' KOMANDASI DÜYMƏNİ SIXDI';
       }else{
         r.status='running';r.startedAt=tc;r.timerEnd=tc+20000;r.ev='VAXT!';r.first=null;
@@ -975,7 +1038,7 @@ const A={
         pn+='! ';
       }
     }
-    Object.assign(u,{sil:null,status:'running',startedAt:now(),timerEnd:now()+(R.pausedRem||20)*1000,winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ',['wrong/'+w]:true});
+    Object.assign(u,{sil:null,status:'running',startedAt:now(),timerEnd:now()+(R.pausedMs||20000),winner:null,speaker:null,first:null,ev:pn+'QALAN VAXT '+T()[o].name.toUpperCase()+' KOMANDASININ',['wrong/'+w]:true});
     rf().update(u);
   },
   none(){
@@ -1035,7 +1098,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('pointerdown',e=>{
   const b=e.target.closest('[data-act="buzz"]');
-  if(b&&!b.disabled&&R)buzz();
+  if(b&&!b.disabled&&R)buzz(e);
 });
 
 /* SƏS (WebRTC, siqnal Firebase ilə) */
@@ -1184,7 +1247,7 @@ setInterval(()=>{
   if(!R||R.status!=='running')return;
   const l=tl(),k=R.timerEnd+'|'+l;
   if((l===10||l===4)&&bk!==k){bk=k;SND.beep()}
-},200);
+},50);
 
 /* Reaksiyalar */
 const RX=['👍','👏','❤️','🦉'];
