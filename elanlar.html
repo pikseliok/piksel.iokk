@@ -40,13 +40,13 @@ async function makeStory(e){
   blocks.forEach(b=>{c.font=F(b.w,b.r.size);c.fillStyle=b.col;b.r.lines.forEach((t,i)=>c.fillText(t,540,my+b.lh*(i+.5)));my+=b.lh*b.r.lines.length+b.gap});
 
   /* ---- telefon (əyilmiş, qara) ---- */
-  const px=150,pcy=phoneTop+ph/2;
+  const px=150,pcy=phoneTop+ph/2,phoneBodyH=ph+260;
   c.save();c.translate(540,pcy);c.rotate(-0.09);c.translate(-540,-pcy);
-  c.save();c.shadowColor="rgba(0,110,255,.45)";c.shadowBlur=90;c.shadowOffsetY=24;R(px,phoneTop,780,ph,120);c.fillStyle="#050506";c.fill();c.restore();
-  const fr=c.createLinearGradient(px,phoneTop,px+780,phoneTop+ph);
+  c.save();c.shadowColor="rgba(0,110,255,.45)";c.shadowBlur=90;c.shadowOffsetY=24;R(px,phoneTop,780,phoneBodyH,120);c.fillStyle="#050506";c.fill();c.restore();
+  const fr=c.createLinearGradient(px,phoneTop,px+780,phoneTop+phoneBodyH);;
   fr.addColorStop(0,"#6b707c");fr.addColorStop(.25,"#15171c");fr.addColorStop(.5,"#2e313a");fr.addColorStop(.75,"#0f1115");fr.addColorStop(1,"#555a67");
-  R(px,phoneTop,780,ph,120);c.fillStyle="#08090b";c.fill();c.lineWidth=6;c.strokeStyle=fr;c.stroke();
-  R(px+9,phoneTop+9,762,ph-18,111);c.fillStyle="#000";c.fill();
+  R(px,phoneTop,780,phoneBodyH,120);c.fillStyle="#08090b";c.fill();c.lineWidth=6;c.strokeStyle=fr;c.stroke();
+  R(px+9,phoneTop+9,762,phoneBodyH-18,111);c.fillStyle="#000";c.fill();
   c.fillStyle="#2a2d35";
   [[190,70],[310,120],[460,120]].forEach(a=>{R(px-8,phoneTop+a[0],10,a[1],4);c.fill()});
   R(px+778,phoneTop+330,10,170,4);c.fill();
@@ -57,7 +57,7 @@ async function makeStory(e){
   c.save();R(sx+2,sy+2,744,sH-4,102);c.clip();c.translate(sx,sy);
   c.fillStyle="#9DC3FF";c.fillRect(0,0,748,sH);
   // status bar + island
-  c.textAlign="left";c.font=F("600",22);c.fillStyle="#001E6F";c.fillText("9:41",58,40);
+  c.textAlign="left";c.font=F("600",22);c.fillStyle="#001E6F";c.fillText("3:14",58,40);
   c.strokeStyle="#001E6F";c.lineWidth=2;R(640,30,38,20,6);c.stroke();R(643,33,28,14,4);c.fill();R(680,36,3,8,1.5);c.fill();
   R(299,18,150,44,22);c.fillStyle="#000";c.fill();
   c.beginPath();c.arc(420,40,9,0,7);c.fillStyle="#12141b";c.fill();c.beginPath();c.arc(420,40,4,0,7);c.fillStyle="#1d2a52";c.fill();
