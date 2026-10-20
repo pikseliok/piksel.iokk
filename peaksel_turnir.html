@@ -93,7 +93,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const HAND='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23 5.5V20c0 2.2-1.8 4-4 4h-7.3c-1.08 0-2.1-.43-2.85-1.19L1 14.83s1.26-1.23 1.3-1.25c.22-.19.49-.29.79-.29.22 0 .42.06.6.16.04.01 4.31 2.46 4.31 2.46V4c0-.83.67-1.5 1.5-1.5S11 3.17 11 4v7h1V1.5c0-.83.67-1.5 1.5-1.5S15 .67 15 1.5V11h1V2.5c0-.83.67-1.5 1.5-1.5S19 1.67 19 2.5V11h1V5.5c0-.83.67-1.5 1.5-1.5S23 4.67 23 5.5z"/></svg>';
 const TRASH='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6"/></svg>';
 const TR=(f,id)=>`<button class="del" onclick="${f}('${id}')" aria-label="Sil">${TRASH}</button>`;
-let db,pid,pack,ed,rid,mode,D={answers:[],players:[],appeals:[]},unsubs=[],htab=0,ptab=0,hdur=null,vals={},sent=new Set(),pkey='',hkey='',beeped='',adv=0,endF='',saveT,ac,off=0,closing=0,apOpen=0,ui={},chk=new Set(),myName='';
+let db,pid,pack,ed,rid,mode,D={answers:[],players:[],appeals:[]},unsubs=[],htab=0,ptab=0,hdur=null,vals={},sent=new Set(),sending=new Set(),retryAt=new Map(),answerWriteError=0,pkey='',hkey='',beeped='',adv=0,endF='',saveT,ac,off=0,closing=0,apOpen=0,ui={},chk=new Set(),myName='';
 const col=n=>db.collection(n),rnd=()=>Math.random().toString(36).slice(2,8);
 const sn=()=>Date.now()+off;
 const upd=x=>col('rooms').doc(rid).update({last:sn(),...x});
@@ -208,9 +208,9 @@ function hostCheck(){const r=D.room;if(!r||mode!=='h'||!pack)return;let ch=0;
  if(r.phase==='review'&&!adv&&!D.answers.some(a=>a.q===r.cur&&(a.status==='new'||a.status==='pending'))){adv=1;setTimeout(()=>{const c=D.room;adv=0;if(c.phase!=='review')return;nextQ()},900)}}
 function idle(r,now){if(closing||!r.last||r.phase==='done'||r.phase==='closed'||now-r.last<6e5)return;closing=1;col('rooms').doc(rid).update({phase:'closed'}).catch(()=>{})}
 /* ---------- shared: table (xal + reytinq) ---------- */
-function rows(){const N=D.players.length,s={},c={},rt={};
- D.answers.forEach(a=>{if(a.status==='ok'){const k=a.q+'.'+a.part;s[k]=(s[k]||0)+1}});
- D.answers.forEach(a=>{if(a.status!=='ok')return;const v=100+900*(N-s[a.q+'.'+a.part])/Math.max(1,N-1);c[a.pid]=(c[a.pid]||0)+1;rt[a.pid]=(rt[a.pid]||0)+v});
+function rows(){const N=D.players.length,s={},c={},rt={},seen={},scored={};
+ D.answers.forEach(a=>{if(a.status!=='ok')return;const k=a.q+'.'+a.part,pk=a.pid+'|'+k;if(seen[pk])return;seen[pk]=1;s[k]=(s[k]||0)+1});
+ D.answers.forEach(a=>{if(a.status!=='ok')return;const k=a.q+'.'+a.part,pk=a.pid+'|'+k;if(scored[pk])return;scored[pk]=1;const v=100+900*(N-s[k])/Math.max(1,N-1);c[a.pid]=(c[a.pid]||0)+1;rt[a.pid]=(rt[a.pid]||0)+v});
  const l=D.players.map(p=>({name:p.name,s:c[p.pid]||0,rt:rt[p.pid]||0})).sort((a,b)=>b.s-a.s||b.rt-a.rt||a.name.localeCompare(b.name));
  l.forEach((x,i)=>x.rk=i&&l[i-1].s===x.s&&l[i-1].rt===x.rt?l[i-1].rk:i+1);return l}
 function tableHtml(){return`<div class="card"><table><tr><th>Yer</th><th>Ad</th><th>Xal</th><th>Reytinq</th></tr>${rows().map(x=>`<tr><td>${x.rk}</td><td>${esc(x.name)}</td><td><b>${x.s}</b></td><td><b>${x.rt.toFixed(1)}</b></td></tr>`).join('')}</table></div>`}
@@ -260,8 +260,11 @@ function pGame(r,t){const el=$('#pp');
  el.innerHTML=`<div class="card"><div class="mu">Tur ${r.q.round} · Sual ${r.cur+1}/${r.n}</div><div class="tm" id="tm"></div>${qHtml(r.q.parts[j])}</div>
  <div class="card">${r.q.parts.map((x,k)=>{const en=vals[r.t0+'|'+k];return`<div class="ac${k>j?' off':''}">${n>1?`<b>${k+1}.</b>`:''}<input ${k>j?'disabled':'data-act="1"'} placeholder="Cavabınız" value="${esc(en?en.v:'')}" oninput="setV(${k},this.value)"></div>`}).join('')}</div>`;
  try{const a=el.querySelectorAll('[data-act]');if(n>1&&a.length)a[a.length-1].focus()}catch(e){}}
-function submitEn(en){const k=en.t0+'|'+en.j;if(sent.has(k))return;sent.add(k);const v=en.v.trim();if(!v)return;const id=`${rid}_${en.c}_${en.j}_${pid}`;if(D.answers.some(a=>a.id===id))return;
- col('answers').doc(id).set({room:rid,q:en.c,part:en.j,np:en.np,pid,name:myName||'?',text:v,qtext:en.qt,status:'new',at:sn()})}
+async function submitEn(en){const k=en.t0+'|'+en.j;if(sent.has(k)||sending.has(k)||Date.now()<(retryAt.get(k)||0))return;const v=en.v.trim();if(!v){sent.add(k);return}const id=`${rid}_${en.c}_${en.j}_${pid}`;if(D.answers.some(a=>a.id===id)){sent.add(k);return}
+ sending.add(k);
+ try{await col('answers').doc(id).set({room:rid,q:en.c,part:en.j,np:en.np,pid,name:myName||'?',text:v,qtext:en.qt,status:'new',at:sn()});sent.add(k);retryAt.delete(k);answerWriteError=0}
+ catch(e){retryAt.set(k,Date.now()+2000);console.error('Cavab Firestore-a göndərilmədi:',e);if(!answerWriteError){answerWriteError=1;toast('Cavab göndərilmədi, yenidən yoxlanılır…')}}
+ finally{sending.delete(k)}}
 function flush(r,now){Object.values(vals).forEach(en=>{if(sent.has(en.t0+'|'+en.j))return;if(r.t0!==en.t0||r.phase!=='live'||tl(r,now).end)submitEn(en)})}
 function pMine(){const g=groupBy(D.answers.filter(a=>a.pid===pid)).sort((a,b)=>b.q-a.q);
  $('#pp').innerHTML=g.map(x=>`<div class="card al"><div class="mu">Sual ${x.q+1}</div>${x.l.map(a=>{const ap=D.appeals.find(y=>y.id===a.id),cl=a.status==='ok'?'g':a.status==='no'?'r':'';
