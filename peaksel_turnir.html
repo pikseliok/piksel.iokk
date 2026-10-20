@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="az"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>  πksel - Onlayn Tunir Paneli </title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dl:#9DC3FF;--db:#6FA5FC;--fg:#9DC3FF;--fgi:#001E6F;--title:#001E6F;--bd:rgba(157,195,255,.3);--ok:#86efac;--no:#fca5a5;--grad:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep))}
+body.dark{--bg:#00072C;--fg:#00072C;--fgi:#9DC3FF;--title:#9DC3FF;--bd:rgba(0,7,44,.25);--ok:#15803d;--no:#b91c1c;--grad:linear-gradient(135deg,var(--dl),var(--db) 50%,var(--dl))}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--title);font:500 15px/1.45 Poppins,system-ui,sans-serif;overflow-x:hidden;transition:background .65s,color .65s;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}[hidden]{display:none!important}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 30px;flex:1 0 auto}
+.fr{animation:fi .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--i)*.1s)}@keyframes fi{from{opacity:0;transform:translateY(28px)}}
+.top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--grad);box-shadow:0 10px 28px rgba(0,20,100,.08);transition:background .65s}
+.nav-links{display:flex;gap:40px}.nav-link{color:var(--fg);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s}.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;padding:0;cursor:pointer;display:grid;place-items:center;background:#9DC3FF;color:#001E6F;transition:transform .3s,background .65s,color .65s}
+body.dark .theme-toggle{background:#00072C;color:#9DC3FF}.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-icon{width:24px;height:24px}.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round;transition:opacity .4s}body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}.bite{transform:translate(14px,-14px)}body.dark .core{transform:scale(1)}body.dark .bite{transform:translate(0,0)}
+body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+h1{text-align:center;color:var(--title);font-size:min(24px,4.3vw);white-space:nowrap;font-weight:700;letter-spacing:-.7px;margin:24px 0 10px}
+h2,h3{letter-spacing:-.5px;margin:16px 0 4px}.card h2,.card h3{margin-top:0;color:inherit}
+#app{padding:0}
+.card{border-radius:28px;padding:20px 22px;margin:14px 0;background:var(--grad);color:var(--fg);box-shadow:0 10px 25px rgba(0,20,110,.07);transition:background .65s,color .65s}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+input,textarea,select{width:100%;font:inherit;font-weight:500;color:var(--fgi);background:var(--fg);border:0;border-radius:20px;padding:10px 16px;margin:10px 0 0;outline:0}
+::placeholder{color:var(--fgi);opacity:.55}input.sm{width:78px}textarea{min-height:70px;resize:vertical}select{width:auto}
+button{font:inherit;font-weight:600;border:0;border-radius:999px;padding:10px 20px;cursor:pointer;background:var(--grad);color:var(--fg);transition:transform .25s}
+button:hover{transform:translateY(-2px)}button:active{transform:scale(.96)}
+.card button{background:var(--fg);color:var(--fgi)}.card button.pri{font-weight:800;outline:3px solid var(--fg);outline-offset:3px}
+button.pri{font-weight:800}
+.tabs{display:flex;gap:10px;margin:14px 0}.tabs button{flex:1;font-size:1.3rem;padding:8px;background:transparent;color:var(--title);border:2px solid var(--title)}
+.tabs button.on{background:var(--title);color:var(--bg)}.tabs .alert{animation:bl 1s infinite;border-color:#ff3b30}@keyframes bl{50%{background:#ff3b30;color:#fff}}
+.ho{font-size:1.7rem;font-weight:800;margin:8px 0;white-space:pre-wrap;line-height:1.25}.q{white-space:pre-wrap}
+.tm{font-size:3rem;font-weight:800;text-align:center;line-height:1.1}
+img.qi{max-width:100%;border-radius:16px;margin:6px 0}.mu{opacity:.75;font-size:.9rem}
+.ans{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:2px solid var(--bd);padding:8px 0}
+.pm button{font-weight:800;padding:6px 14px}.pm button.g{background:#15803d;color:#fff}.pm button.r{background:#b91c1c;color:#fff}
+.g{color:var(--ok)}.r{color:var(--no)}.card button.ap{width:46px;height:46px;padding:0;font-size:1.3rem}
+table{width:100%;border-collapse:collapse}td,th{padding:7px;border-bottom:2px solid var(--bd);text-align:left}
+#toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--title);color:var(--bg);padding:9px 16px;border-radius:999px;display:none;z-index:50}
+details summary{cursor:pointer;font-weight:600;padding:4px 0}
+footer{background:linear-gradient(100deg,var(--deep),var(--bright) 50%,var(--deep));color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;flex-shrink:0;transition:background .65s,color .65s}
+body.dark footer{background:linear-gradient(164deg,var(--dl),var(--db) 50%,var(--dl))}
+.fl{font-size:15px;font-weight:500;line-height:1.4;transition:opacity .25s,transform .25s}a.fl:hover{opacity:.72;transform:translateY(-1px)}
+:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media(max-width:700px){.page{width:calc(100vw - 36px)}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px}.card{border-radius:22px;padding:16px 14px}footer{min-height:96px}.fl{font-size:13px}h1{font-size:17px}}
+</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head><body>
+<div class="page">
+<nav class="fr top-nav" style="--i:0"><div class="nav-links"><a class="nav-link" href="https://peaksel.az/">Əsas Səhifə</a><a class="nav-link" href="https://peaksel.az/elaqe">Bizimlə Əlaqə</a></div>
+<button class="theme-toggle" type="button" id="themeToggle" aria-label="Rejimi dəyiş"><svg viewBox="0 0 32 32" aria-hidden="true" class="theme-icon"><defs><mask id="bm" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#bm)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg></button></nav>
+<h1 class="fr" style="--i:1">πksel Onlayn Tunir Paneli</h1>
+<div id="app" class="fr" style="--i:2">Yüklənir…</div>
+</div>
+<div id="toast"></div>
+<footer><div class="fl">Unikal İntellektual Oyunlar Platforması</div><a class="fl" href="https://www.instagram.com/piksel.iok" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a><a class="fl" href="https://www.instagram.com/onurelzh" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a></footer>
+<script>
+function setTheme(d){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}}
+let sv=null;try{sv=localStorage.getItem('piksel-theme')}catch(e){}
+setTheme(sv?sv==='dark':!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches));
+document.getElementById('themeToggle').onclick=()=>setTheme(!document.body.classList.contains('dark'));
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('ready')));
+/* ===== AYARLAR: Firebase konsolundan (Project settings > Your apps > Web) götürdüyün config-i bura yapışdır ===== */
+const FIREBASE_CONFIG={
+ apiKey:"AIzaSyCqcyIZFC-39yAZ-2tQrbaUK7O4oi0CnW4",
+ authDomain:"peaksel-quiz.firebaseapp.com",
+ projectId:"peaksel-quiz",
+ storageBucket:"peaksel-quiz.firebasestorage.app",
+ messagingSenderId:"426308663897",
+ appId:"1:426308663897:web:9092d8f9b140a3eccccf48",
+ measurementId:"G-BZ8F9H4SDE"
+};
+const HOST_PASS="PEAKSEL%314";/* aparıcı giriş şifrəsi */
+const app=document.getElementById('app'),$=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let db,user,assets,dl,pid,rid,mode,pack,ed,D={answers:[],players:[],appeals:[]},unsubs=[],htab=0,ptab=0,hdur=null,vals={},sent=new Set(),pkey='',hkey='',beeped='',adv=0,endF='',saveT,ac;
+const col=n=>db.collection(n),rnd=()=>Math.random().toString(36).slice(2,8);
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2200)}
+function beep(){try{ac=ac||new AudioContext();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=880;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.25,ac.currentTime);g.gain.setValueAtTime(0,ac.currentTime+1.6);o.start();o.stop(ac.currentTime+1.7)}catch(e){}}
+addEventListener('pointerdown',()=>{try{ac=ac||new AudioContext();ac.resume()}catch(e){}});
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ə/g,'e').replace(/ı/g,'i').replace(/[^a-z0-9]/g,'');
+function lev(a,b){const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];}for(let j=1;j<=b.length;j++)m[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return m[a.length][b.length]}
+function match(t,p){const a=norm(t);if(!a)return false;return[p.answer,...String(p.acc||'').split(/[;\n]/)].some(x=>{const n=norm(x);if(!n)return false;const tol=n.length<=4?0:n.length<=8?1:2;return lev(a,n)<=tol})}
+const defDurs=(t,n)=>t==='duplet'?[3,30]:t==='blitz'?Array(n).fill(20):[60];
+const segsOf=r=>{const t=r.q.type,d=r.durs;return t==='duplet'?[{v:[0],d:d[0],s:[]},{v:[0,1],d:d[1],s:[0,1]}]:t==='blitz'?r.q.parts.map((_,i)=>({v:[i],d:d[i],s:[i]})):[{v:[0],d:d[0],s:[0]}]};
+function tl(r,now){const e=(now-r.t0)/1000,S=segsOf(r);let a=0;for(let i=0;i<S.length;i++){if(e<a+S[i].d)return{i,rem:a+S[i].d-e,S,end:0};a+=S[i].d}return{i:S.length-1,rem:0,S,end:1,total:a}}
+async function init(){
+ try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore()}catch(e){app.innerHTML='<div class="card">Firebase config səhvdir.</div>';return}
+ try{pid=localStorage.getItem('pk_pid')}catch(e){}
+ if(!pid){pid=rnd()+rnd();}try{localStorage.setItem('pk_pid',pid)}catch(e){}
+ const m=location.hash.match(/r=(\w+)/);
+ if(m)return playerStart(m[1]);
+ let isH=false;try{isH=localStorage.getItem('pk_host')==='1'}catch(e){}
+ if(isH){let l=null;try{l=localStorage.getItem('pk_room')}catch(e){}return l?openHost(l):home()}
+ app.innerHTML='<div class="card"><h2>Yarışa qoşul</h2><input id="code" placeholder="Otaq kodu"><button class="pri" style="margin-top:12px" onclick="playerStart($(\'#code\').value.trim().toUpperCase())">Daxil ol</button></div><div class="card"><h3>Aparıcı girişi</h3><input id="hp1" type="password" placeholder="Şifrə"><button style="margin-top:12px" onclick="hostLogin()">Aparıcı kimi daxil ol</button></div>';
+}
+function hostLogin(){if($('#hp1').value===HOST_PASS){try{localStorage.setItem('pk_host','1')}catch(e){}home()}else toast('Şifrə səhvdir')}
+/* ---------- HOST: dashboard ---------- */
+function home(){unsubs.forEach(f=>f());unsubs=[];mode='d';try{localStorage.removeItem('pk_room')}catch(e){}
+  app.innerHTML=`<div class="row"><h2 class="sp">Aparıcı paneli</h2><button onclick="try{localStorage.removeItem('pk_host')}catch(e){}location.hash='';location.reload()">Çıxış</button></div><button class="pri" onclick="newPack()">+ Yeni paket</button><h3>Paketlər</h3><div id="pl"></div><h3>Otaqlar</h3><div id="rl"></div>`;
+ unsubs.push(col('packs').onSnapshot(s=>{const d=s.docs.map(x=>x.data()).sort((a,b)=>(b.updated||0)-(a.updated||0));$('#pl').innerHTML=d.map(p=>`<div class="card"><b>${esc(p.title||'Adsız')}</b> <span class="mu">${p.questions.length} sual</span><div class="row" style="margin-top:10px"><button onclick="editPack('${p.id}')">Redaktə et</button><button class="pri" onclick="playPack('${p.id}')">Oynat</button></div></div>`).join('')||'<div class="mu">Hələ paket yoxdur.</div>'}));
+ unsubs.push(col('rooms').onSnapshot(s=>{const d=s.docs.map(x=>({id:x.id,...x.data()})).sort((a,b)=>(b.created||0)-(a.created||0));$('#rl').innerHTML=d.map(r=>`<div class="card row"><span class="sp">${esc(r.title)} <span class="mu">${r.phase==='done'?'bitib':'sual '+(r.cur+1)+'/'+r.n}</span></span><button onclick="openHost('${r.id}')">Aç</button></div>`).join('')||'<div class="mu">Aktiv otaq yoxdur.</div>'}))}
+/* ---------- HOST: editor ---------- */
+const blank=()=>({text:'',handout:'',img:'',answer:'',acc:'',comment:'',source:''});
+const mkQ=t=>({type:t||'classic',round:1,parts:Array.from({length:t==='duplet'?2:t==='blitz'?3:1},blank)});
+function newPack(){ed={id:rnd()+rnd(),title:'',questions:[mkQ()]};edRender()}
+async function editPack(id){const s=await col('packs').doc(id).get();ed=s.data();edRender()}
+function partHtml(i,j,p,t){const k=`${i}.${j}.`,lb=t==='duplet'?`Sual ${j+1}/2`:t==='blitz'?`Alt sual ${j+1}`:'Sual';
+ return`<div style="border-top:2px dashed var(--bd);margin-top:12px;padding-top:8px"><b>${lb}</b>
+ <textarea data-p="${k}text" placeholder="Sualın mətni">${esc(p.text)}</textarea>
+ <textarea data-p="${k}handout" placeholder="Paylama materialı (böyük və qalın göstəriləcək)">${esc(p.handout)}</textarea>
+ <div class="row" style="margin-top:10px"><label class="mu">📷 Rekvizit foto <input type="file" accept="image/*" style="display:none" onchange="upImg(${i},${j},this)"></label>${p.img?`<img class="qi" style="max-height:80px" src="${esc(p.img)}"><button onclick="ed.questions[${i}].parts[${j}].img='';edRender();autosave()">✕</button>`:''}</div>
+ <input data-p="${k}answer" placeholder="Doğru cavab" value="${esc(p.answer)}">
+ <input data-p="${k}acc" placeholder="Sayılma meyarı (digər qəbul olunan cavablar, ; ilə ayır)" value="${esc(p.acc)}">
+ <textarea data-p="${k}comment" placeholder="Şərh">${esc(p.comment)}</textarea>
+ <input data-p="${k}source" placeholder="Mənbə" value="${esc(p.source)}"></div>`}
+function edRender(){mode='e';unsubs.forEach(f=>f());unsubs=[];
+ app.innerHTML=`<div class="row"><button onclick="home()">←</button><b class="sp">Paket redaktoru</b><button class="pri" onclick="savePack()">💾 Yaddaşa vur</button></div>
+ <div class="card"><input style="margin-top:0" data-p="title" placeholder="Paketin adı" value="${esc(ed.title)}"></div>
+ ${ed.questions.map((q,i)=>`<div class="card"><div class="row"><b>№${i+1}</b>
+ <select onchange="setType(${i},this.value)">${[['classic','Klassik'],['duplet','Duplet'],['blitz','Blitz']].map(([v,l])=>`<option value="${v}" ${q.type===v?'selected':''}>${l}</option>`).join('')}</select>
+ <span class="mu">Tur</span><input class="sm" style="margin:0" type="number" min="1" data-p="${i}.round" value="${q.round||1}"><span class="sp"></span><button onclick="delQ(${i})">🗑</button></div>
+ ${q.parts.map((p,j)=>partHtml(i,j,p,q.type)).join('')}</div>`).join('')}
+ <div class="row"><button onclick="addQ()">+ Sual əlavə et</button><button class="pri" onclick="savePack()">💾 Yaddaşa vur</button></div>`}
+document.addEventListener('input',e=>{const p=e.target.dataset&&e.target.dataset.p;if(!p||mode!=='e')return;const s=p.split('.');
+ if(s.length===1)ed[s[0]]=e.target.value;else if(s.length===2)ed.questions[s[0]][s[1]]=+e.target.value||1;else ed.questions[s[0]].parts[s[1]][s[2]]=e.target.value;autosave()});
+function setType(i,t){const q=ed.questions[i],n=t==='duplet'?2:t==='blitz'?3:1;q.type=t;while(q.parts.length<n)q.parts.push(blank());q.parts.length=n;edRender();autosave()}
+function addQ(){ed.questions.push(mkQ());edRender();autosave()}
+function delQ(i){if(confirm('Bu sual silinsin?')){ed.questions.splice(i,1);edRender();autosave()}}
+async function upImg(i,j,el){const f=el.files[0];if(!f)return;try{const im=await createImageBitmap(f),k=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);ed.questions[i].parts[j].img=c.toDataURL('image/jpeg',.7);edRender();autosave()}catch(e){toast('Foto yüklənmədi')}}
+function autosave(){clearTimeout(saveT);saveT=setTimeout(()=>savePack(1),1200)}
+async function savePack(q){ed.updated=Date.now();try{await col('packs').doc(ed.id).set(ed);toast('Yaddaşa vuruldu ✓')}catch(e){toast('Yaddaşa yazmaq alınmadı!')}}
+/* ---------- HOST: room ---------- */
+async function playPack(id){const s=await col('packs').doc(id).get(),p=s.data();rid=rnd().toUpperCase();
+ await col('rooms').doc(rid).set({title:p.title,packId:id,cur:0,phase:'idle',n:p.questions.length,created:Date.now(),t0:0});openHost(rid)}
+async function openHost(id){rid=id;const rs=await col('rooms').doc(id).get();if(!rs.exists){return home()}
+ pack=(await col('packs').doc(rs.data().packId).get()).data();mode='h';hkey='';htab=0;try{localStorage.setItem('pk_room',id)}catch(e){}
+ app.innerHTML=`<div class="row"><button onclick="home()">←</button><b class="sp">${esc(rs.data().title)}</b><button onclick="copyLink()">🔗 Linki kopyala</button><button onclick="copyCode()">Kodu</button></div>
+ <div class="tabs" id="ht"></div><div id="hp"></div>`;sub()}
+function copyLink(){const u=location.href.split('#')[0]+'#r='+rid;navigator.clipboard.writeText(u).then(()=>toast('Link kopyalandı'),()=>prompt('Linki kopyalayın',u))}
+function copyCode(){navigator.clipboard.writeText(rid).then(()=>toast('Kod kopyalandı'),()=>prompt('Kod',rid))}
+function sub(){unsubs.forEach(f=>f());unsubs=[];
+ unsubs.push(col('rooms').doc(rid).onSnapshot(s=>{D.room=s.data();mode==='h'?hostRender():pRender()}));
+ ['answers','players','appeals'].forEach(n=>unsubs.push(col(n).where('room','==',rid).onSnapshot(s=>{D[n]=s.docs.map(d=>({id:d.id,...d.data()}));mode==='h'?hostData():pData()})))}
+const openAp=()=>D.appeals.filter(a=>a.status==='open');
+function hostTabs(){const n=openAp().length;$('#ht').innerHTML=['📝','🏆','✋'].map((t,i)=>`<button class="${htab===i?'on':''} ${i==2&&n?'alert':''}" onclick="htab=${i};hkey='';hostRender()">${t}${i==2&&n?' '+n:''}</button>`).join('')}
+function hostRender(){if(!D.room)return;hostTabs();hostCheck();const r=D.room,k=htab+'|'+r.cur+'|'+r.phase+'|'+r.t0;
+ if(htab===0){if(k!==hkey){hkey=k;hostGame()}hostPend()}else if(htab===1){$('#hp').innerHTML=tableHtml()+`<button onclick="savePng()">📷 Nəticəni şəkil kimi yüklə</button>`}else hostAppeals()}
+function hostData(){hostRender()}
+function hostGame(){const r=D.room,q=pack.questions[r.cur];if(r.phase==='done'){$('#hp').innerHTML='<div class="card"><h2>Oyun bitdi 🎉</h2></div><div id="hpe"></div>';return}
+ if(!hdur||hdur.k!==r.cur)hdur={k:r.cur,d:defDurs(q.type,q.parts.length)};
+ const live=r.phase==='live';
+ $('#hp').innerHTML=`<div class="card"><div class="mu">Tur ${q.round||1} · Sual ${r.cur+1}/${r.n} · ${q.type}</div>
+ ${q.parts.map((p,j)=>`<details><summary class="q">${esc(p.text||'(mətn yoxdur)')}</summary>${p.handout?`<div class="ho">${esc(p.handout)}</div>`:''}${p.img?`<img class="qi" src="${esc(p.img)}">`:''}
+ <div><b class="g">Cavab:</b> ${esc(p.answer)}</div>${p.acc?`<div class="mu">Sayılma: ${esc(p.acc)}</div>`:''}${p.comment?`<div>Şərh: ${esc(p.comment)}</div>`:''}${p.source?`<div class="mu">Mənbə: ${esc(p.source)}</div>`:''}</details>`).join('')}
+ ${r.phase==='idle'?`<div class="row" style="margin-top:8px">${hdur.d.map((d,i)=>`<label class="mu">Vaxt (san)<input class="sm" type="number" min="1" value="${d}" oninput="hdur.d[${i}]=+this.value||1"></label>`).join('')}</div><button class="pri" style="margin-top:14px" onclick="play()">▶ Oynat</button>`:''}
+ ${live?`<div class="tm" id="tm"></div><button style="margin-top:10px" onclick="col('rooms').doc(rid).update({phase:'review'})">Vaxtı bitir</button>`:''}
+ ${r.phase==='review'?'<div class="mu">Cavablar yoxlanılır…</div>':''}</div><div id="hpe"></div>
+ <div class="card"><b>Suallar</b>${pack.questions.map((x,i)=>`<div class="ans"><span>${i+1}. ${esc((x.parts[0].text||'').slice(0,40))} <span class="mu">tur ${x.round||1}</span></span>${i<r.cur?'<span class="g">✓</span>':i===r.cur?'<b>●</b>':live?'':`<button onclick="jump(${i})">Seç</button>`}</div>`).join('')}</div>`}
+function jump(i){col('rooms').doc(rid).update({cur:i,phase:'idle'})}
+function play(){const r=D.room,q=pack.questions[r.cur];col('rooms').doc(rid).update({phase:'live',t0:Date.now(),durs:hdur.d,q:{type:q.type,round:q.round||1,parts:q.parts.map(p=>({text:p.text,handout:p.handout,img:p.img}))}});hostAudioKick()}
+function hostAudioKick(){try{ac=ac||new AudioContext();ac.resume()}catch(e){}}
+function hostPend(){const el=$('#hpe');if(!el||!D.room)return;const r=D.room,q=pack.questions[r.cur];if(!q)return;
+ const as=D.answers.filter(a=>a.q===r.cur),pd=as.filter(a=>a.status==='pending'),ok=as.filter(a=>a.status==='ok').length;
+ el.innerHTML=r.phase==='idle'?'':`<div class="card"><div class="mu">Avtomatik/qəbul olunan düz: ${ok} · gözləyən: ${pd.length}</div>${q.parts.map((p,j)=>{const l=pd.filter(a=>a.part===j);return l.length?`<div><b>${q.parts.length>1?'Alt sual '+(j+1)+' · ':''}Doğru: ${esc(p.answer)}</b></div>`+l.map(a=>`<div class="ans"><div><b>${esc(a.name)}</b><br>${esc(a.text)}</div><div class="pm"><button class="g" onclick="judge('${a.id}',1)">＋</button> <button class="r" onclick="judge('${a.id}',0)">✕</button></div></div>`).join(''):''}).join('')}</div>`}
+function judge(id,ok){col('answers').doc(id).update({status:ok?'ok':'no'})}
+function hostCheck(){const r=D.room;if(!r||mode!=='h'||!pack)return;
+ D.answers.filter(a=>a.status==='new').forEach(a=>{const p=pack.questions[a.q]&&pack.questions[a.q].parts[a.part];if(p)col('answers').doc(a.id).update({status:match(a.text,p)?'ok':'pending'})});
+ if(r.phase==='review'&&!adv&&!D.answers.some(a=>a.q===r.cur&&(a.status==='new'||a.status==='pending'))){adv=1;setTimeout(()=>{const c=D.room;adv=0;if(c.phase!=='review')return;const n=c.cur+1;col('rooms').doc(rid).update(n>=c.n?{phase:'done'}:{cur:n,phase:'idle'})},900)}}
+function hostAppeals(){const l=openAp();$('#hp').innerHTML=l.map(a=>{const p=pack.questions[a.q].parts[a.part];return`<div class="card"><div class="mu">Sual ${a.q+1} · ${esc(a.name)}</div><div>Cavab: <b>${esc(a.text)}</b></div><div class="g">Doğru: ${esc(p.answer)}</div><div class="row" style="margin-top:10px"><button class="pri" onclick="apJ('${a.id}',1)">Qəbul et</button><button onclick="apJ('${a.id}',0)">Rədd et</button></div></div>`}).join('')||'<div class="mu">Apellyasiya yoxdur.</div>'}
+function apJ(id,ok){const a=D.appeals.find(x=>x.id===id);if(ok)col('answers').doc(a.aid).update({status:'ok'});col('appeals').doc(id).update({status:ok?'done':'rejected'})}
+/* ---------- shared: table ---------- */
+function rows(){const sc={};D.answers.forEach(a=>{if(a.status==='ok')sc[a.pid]=(sc[a.pid]||0)+1});
+ const l=D.players.map(p=>({name:p.name,s:sc[p.pid]||0})).sort((a,b)=>b.s-a.s||a.name.localeCompare(b.name));l.forEach((x,i)=>x.rk=i&&l[i-1].s===x.s?l[i-1].rk:i+1);return l}
+function tableHtml(){return`<div class="card"><table><tr><th>Yer</th><th>Ad</th><th>Düz</th></tr>${rows().map(x=>`<tr><td>${x.rk}</td><td>${esc(x.name)}</td><td><b>${x.s}</b></td></tr>`).join('')}</table></div>`}
+async function savePng(){const l=rows(),c=document.createElement('canvas');c.width=720;c.height=110+l.length*46;const x=c.getContext('2d');
+ x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.fillStyle='#111';x.font='bold 30px sans-serif';x.fillText(D.room.title,28,54);x.font='bold 18px sans-serif';x.fillText('Yer',28,92);x.fillText('Ad',110,92);x.fillText('Düz',620,92);
+ x.font='20px sans-serif';l.forEach((r,i)=>{const y=136+i*46;x.fillText(String(r.rk),28,y);x.fillText(r.name,110,y);x.fillText(String(r.s),620,y)});
+ const b=await new Promise(r=>c.toBlob(r));const u=URL.createObjectURL(b),l2=document.createElement('a');l2.href=u;l2.download='netice.png';l2.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+/* ---------- PLAYER ---------- */
+async function playerStart(r){rid=r;mode='p';const rs=await col('rooms').doc(r).get();if(!rs.exists){app.innerHTML='<div class="card">Otaq tapılmadı.</div>';return}
+ const ps=await col('players').doc(r+'_'+pid).get();if(ps.exists)return enterP();
+ app.innerHTML=`<div class="card"><h2>${esc(rs.data().title)} yarışında iştirak etmək üçün qeydiyyatdan keçin</h2><input id="nm" placeholder="Adınız"><button class="pri" style="margin-top:14px" onclick="reg()">Daxil ol</button></div>`}
+async function reg(){const n=$('#nm').value.trim();if(!n)return;await col('players').doc(rid+'_'+pid).set({room:rid,pid,name:n,at:Date.now()});enterP()}
+function enterP(){mode='p';pkey='';app.innerHTML='<div class="tabs" id="pt"></div><div id="pp"></div>';sub()}
+function pRender(){if(!D.room)return;$('#pt').innerHTML=['📝','🏆','✋'].map((t,i)=>`<button class="${ptab===i?'on':''}" onclick="ptab=${i};pkey='';pRender()">${t}</button>`).join('');
+ if(ptab===0){const r=D.room,t=r.phase==='live'?tl(r,Date.now()):null,k=r.phase+r.cur+r.t0+(t?t.i+'_'+t.end:'');if(k!==pkey){pkey=k;pGame(r,t)}}else if(ptab===1)$('#pp').innerHTML=tableHtml();else pMine()}
+function pData(){if(ptab!==0)pRender()}
+function pGame(r,t){const el=$('#pp');
+ if(r.phase==='done'){el.innerHTML='<div class="card"><h2>Oyun bitdi 🎉</h2><div class="mu">Nəticələr 🏆 bölməsindədir.</div></div>';return}
+ if(r.phase==='idle'){el.innerHTML='<div class="card"><h3>Sual '+(r.cur+1)+' gözlənilir…</h3></div>';return}
+ if(r.phase==='review'||t.end){el.innerHTML='<div class="card"><h3>Vaxt bitdi. Cavablar yoxlanılır…</h3></div>';return}
+ const sg=t.S[t.i];
+ el.innerHTML=`<div class="card"><div class="mu">Tur ${r.q.round} · Sual ${r.cur+1}/${r.n}</div><div class="tm" id="tm"></div>
+ ${sg.v.map(j=>{const p=r.q.parts[j],k=r.t0+'_'+j;return`<div class="q">${esc(p.text)}</div>${p.handout?`<div class="ho">${esc(p.handout)}</div>`:''}${p.img?`<img class="qi" src="${esc(p.img)}">`:''}<textarea placeholder="Cavabınız" oninput="vals['${k}']=this.value">${esc(vals[k]||'')}</textarea>`}).join('')}
+ <div class="mu" style="margin-top:8px">Cavab vaxt bitəndə avtomatik göndərilir.</div></div>`}
+function submitP(r,p){const k=r.t0+'_'+p;if(sent.has(k))return;sent.add(k);const v=(vals[k]||'').trim();if(!v)return;
+ const me=D.players.find(x=>x.pid===pid);col('answers').doc(`${rid}_${r.cur}_${p}_${pid}`).set({room:rid,q:r.cur,part:p,pid,name:me?me.name:'?',text:v,qtext:r.q.parts[p].text,status:'new',at:Date.now()})}
+function pMine(){const my=D.answers.filter(a=>a.pid===pid).sort((a,b)=>b.q-a.q||b.part-a.part);
+ $('#pp').innerHTML=my.map(a=>{const ap=D.appeals.find(x=>x.aid===a.id),st=a.status==='ok'?'<b class="g">✓ Düz</b>':a.status==='no'?'<b class="r">✕ Səhv</b>':'<span class="mu">⏳ Gözləyir</span>';
+ return`<div class="card row"><div class="sp"><div class="mu">Sual ${a.q+1}</div><div>${esc(a.text)}</div>${st}${ap?`<div class="mu">Apellyasiya: ${ap.status==='open'?'göndərildi':ap.status==='done'?'qəbul edildi':'rədd edildi'}</div>`:''}</div>${a.status==='no'&&!ap?`<button class="ap" onclick="appeal('${a.id}')">✋</button>`:''}</div>`}).join('')||'<div class="mu">Hələ cavab göndərməmisiniz.</div>'}
+function appeal(id){const a=D.answers.find(x=>x.id===id);col('appeals').doc(id).set({room:rid,aid:id,q:a.q,part:a.part,pid,name:a.name,text:a.text,status:'open'}).then(()=>toast('Apellyasiya göndərildi'))}
+/* ---------- ticker ---------- */
+setInterval(()=>{const r=D.room;if(!r||r.phase!=='live')return;const now=Date.now(),t=tl(r,now),el=$('#tm');if(el&&!t.end)el.textContent=Math.ceil(t.rem)+' san';
+ const k=r.t0+'_'+t.i;if(!t.end&&t.rem<=10&&t.S[t.i].d>10&&beeped!==k){beeped=k;beep()}
+ if(mode==='p'){let a=0;const e=(now-r.t0)/1000;t.S.forEach(s=>{a+=s.d;if(e>=a-.05)s.s.forEach(p=>submitP(r,p))});if(ptab===0)pRender()}
+ else if(mode==='h'&&t.end&&(now-r.t0)/1000>=t.total+2&&endF!==r.t0){endF=r.t0;col('rooms').doc(rid).update({phase:'review'})}},250);
+init();
+</script></body></html>
