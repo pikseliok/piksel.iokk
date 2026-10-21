@@ -15,6 +15,7 @@
     { id: "s1", author: "Sual Müəllifi", authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" }, 
     { id: "s2", author: "Sizdən gələn suallar / Adayeva Nübar", authorGen: "ın", question: "XVI əsrdə İtaliyada fəaliyyət göstərən kapusin adlı rahiblər geyindikləri uzun bej rəngli cübbələr və başlarına örtdükləri ağ başlıqlar İKS-ə bənzədiyi üçün , İKS-ə rahiblərin ümumi adı verilir. İKS-i xarici mənşəli bir sözlə yazın ", answer: "Kapuçino", criteria: "Cappuccino", comment: "Kapusinlərin geyimləri  qəhvəyə süd tökülərkən yaranan rəngə bənzəyirdi. Buna görə də həmin kofe növünə \"Kiçik kapusin\" yəni kapuçino adı verilir", source: "" },
     { id: "s3", author: "Hüseynli Muhamməd", authorGen: "", question: "Bədənlərindən nəfəs aldıqları üçün tarakanlar bir həftəyə qədər BUNU EDƏ bilərlər. Mayk adlı xoruz isə 18 ay boyunca BUNU EDİB rekordlar kitabına düşmüşdü. BUNU ETMƏKLƏ əvəz etdiyimizi bir neçə sözlə yazın.", answer: "Başsız yaşamaq", criteria: "Mənaya uyğun digər cavablar", comment: "Bədənlərindən nəfəs aldıqları üçün tarakanlar başları olmadan bir neçə müddət yaşaya bilir, lakin susuzluğa görə ölürlər.", source: " 1. https://en.wikipedia.org/wiki/Mike_the_Headless_Chicken 2. https://share.google/CKKvnCZkpsH35b3ln" },
+    { id: "s4", author: "Sizdən gələn suallar / Məmmədov Aydın", authorGen: "", handout: "₺", question: "Paylama materialında verilmiş simvolun yaradıcısı Tülay Lalə bu simvolu yaradarkən kiçik \"L\" hərfinin üstündəki 2 paralel xəttin hər birinə məna yükləmişdi. Birincisi Türk Lirəsi ifadəsinin baş hərfləri. Bəs ikincisi?", answer: "Tülay Lalənin adı və soyadının baş hərfləri", criteria: "", comment: "Dizayner Tülay Lalə simvolu elə hazırlamışdı ki, oradakı T və L hərfləri həm \"Türk Lirəsi\" ifadəsini, həm də öz adının və soyadının baş hərflərini (Tülay Lale) təcəssüm etdirirdi.", source: "" },
     // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
@@ -56,6 +57,8 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-cta svg{width:20px;height:20px;flex:0 0 20px;display:block}
 .dq-body{display:none;padding:20px 4px 22px}
 .dq-author{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.dq-hl{display:none;margin-top:8px;font-size:15px;line-height:1.5;font-weight:700}
+.dq-hm{display:none;margin-top:2px;font-size:17px;line-height:1.5;font-weight:500;white-space:pre-line;overflow-wrap:anywhere}
 .dq-text{margin-top:8px;font-size:15px;line-height:1.5;font-weight:500;white-space:pre-line;overflow-wrap:anywhere}
 .dq-form{display:flex;align-items:center;gap:8px;margin-top:18px}
 .dq-field{height:42px;min-width:0;display:flex;border-radius:40px;border:2px solid rgba(128,128,128,.4);background:rgba(128,128,128,.12);border:2px solid color-mix(in srgb,var(--fg) 30%,transparent);background:color-mix(in srgb,var(--fg) 10%,transparent);transition:border-color .3s ease}
@@ -104,6 +107,8 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-field.n{flex-basis:32%}
 .dq-author{font-size:13px}
 .dq-text,.dq-line{font-size:12px}
+.dq-hl{font-size:12px}
+.dq-hm{font-size:14px}
 .dq-field input{font-size:13px}
 .dq-act{gap:18px}
 .dq-ic{width:36px;height:36px}
@@ -134,6 +139,8 @@ body.dark .dq{--flame-off:#4b546e}
   </div>
   <div class="dq-body" id="dqBody">
    <div class="dq-author" id="dqAuthor"></div>
+   <div class="dq-hl" id="dqHL">Paylama materialı</div>
+   <div class="dq-hm" id="dqHM"></div>
    <div class="dq-text" id="dqText"></div>
    <div class="dq-form" id="dqForm">
     <div class="dq-field n" id="dqNF"><input id="dqName" maxlength="40" placeholder="Adınız" autocomplete="off" autocapitalize="words" enterkeyhint="next"></div>
@@ -284,7 +291,7 @@ body.dark .dq{--flame-off:#4b546e}
       idx = Math.max(0, today - Date.parse(START + "T00:00:00Z") / DAY) % n, q = QUESTIONS[idx],
       lit = d.streak > 0 && (d.last === today || d.last === today - 1), done = d.last === today;
     return { now: d.now, next: (today + 1) * DAY - OFF, qn: idx + 1, id: String(q.id || hid(q.question || "")), author: q.author, authorGen: q.authorGen || "",
-      question: q.question, name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
+      question: q.question, handout: q.handout || "",
   }
   function cur() { return build({ now: Date.now() + skew, name: D.name, streak: D.streak, last: D.last }); }
 
@@ -385,7 +392,7 @@ body.dark .dq{--flame-off:#4b546e}
     return (!g ? gen(a) : g.length <= 4 ? a + g : g) + " sualı";   // boş → avtomatik; qısa → şəkilçi; uzun → tam forma
   }
   function copyText() {
-    var r = S.reveal || {}, t = title() + "\n" + S.question + "\n";
+   var r = S.reveal || {}, t = title() + "\n" + (S.handout ? "Paylama materialı: " + S.handout + "\n" : "") + S.question + "\n";
     if (r.answer) t += "\nCavab: " + r.answer;
     if (r.criteria) t += "\nSayılma Meyarı: " + r.criteria;
     if (r.comment) t += "\nŞərh: " + r.comment;
@@ -437,7 +444,9 @@ body.dark .dq{--flame-off:#4b546e}
     busy = true;
     review = !!S.answered;
     $("dqAuthor").textContent = title();
-    $("dqText").textContent = S.question;
+        $("dqHL").style.display = S.handout ? "block" : "none";
+    $("dqHM").style.display = S.handout ? "block" : "none";
+    $("dqHM").textContent = S.handout || "";
     await A(cta, [{ opacity: 1 }, { opacity: 0 }], 220);
     cta.classList.add("gone");
     root.classList.add("open");
