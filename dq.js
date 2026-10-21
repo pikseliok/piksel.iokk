@@ -20,6 +20,7 @@
   ];
   // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
   // authorGen adətən BOŞ qalmalıdır (şəkilçi avtomatik qoyulur). Səhv çıxsa: ya qısa şəkilçi yaz ("un" → ad+un), ya da tam forma ("Əli Məmmədovun").
+  // handout (ixtiyari): paylama materialı. Doldurulsa, müəllifin altında qalın "Paylama materialı" başlığı və onun altında materialın özü göstərilir.
   var SHARE_PHONE = "994508377942";   // WhatsApp nömrəsi (050 837 7942)
   var SHARE_TEXT = "Günlük sual bölməsi üçün öz sualımı sizinlə bölüşmək istəyirəm";
   // ================== AYARLAR BİTDİ ==================
@@ -291,7 +292,7 @@ body.dark .dq{--flame-off:#4b546e}
       idx = Math.max(0, today - Date.parse(START + "T00:00:00Z") / DAY) % n, q = QUESTIONS[idx],
       lit = d.streak > 0 && (d.last === today || d.last === today - 1), done = d.last === today;
     return { now: d.now, next: (today + 1) * DAY - OFF, qn: idx + 1, id: String(q.id || hid(q.question || "")), author: q.author, authorGen: q.authorGen || "",
-      question: q.question, handout: q.handout || "",
+      question: q.question, handout: q.handout || "", name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
   }
   function cur() { return build({ now: Date.now() + skew, name: D.name, streak: D.streak, last: D.last }); }
 
@@ -392,7 +393,7 @@ body.dark .dq{--flame-off:#4b546e}
     return (!g ? gen(a) : g.length <= 4 ? a + g : g) + " sualı";   // boş → avtomatik; qısa → şəkilçi; uzun → tam forma
   }
   function copyText() {
-   var r = S.reveal || {}, t = title() + "\n" + (S.handout ? "Paylama materialı: " + S.handout + "\n" : "") + S.question + "\n";
+    var r = S.reveal || {}, t = title() + "\n" + (S.handout ? "Paylama materialı: " + S.handout + "\n" : "") + S.question + "\n";
     if (r.answer) t += "\nCavab: " + r.answer;
     if (r.criteria) t += "\nSayılma Meyarı: " + r.criteria;
     if (r.comment) t += "\nŞərh: " + r.comment;
@@ -444,7 +445,8 @@ body.dark .dq{--flame-off:#4b546e}
     busy = true;
     review = !!S.answered;
     $("dqAuthor").textContent = title();
-        $("dqHL").style.display = S.handout ? "block" : "none";
+    $("dqText").textContent = S.question;
+    $("dqHL").style.display = S.handout ? "block" : "none";
     $("dqHM").style.display = S.handout ? "block" : "none";
     $("dqHM").textContent = S.handout || "";
     await A(cta, [{ opacity: 1 }, { opacity: 0 }], 220);
