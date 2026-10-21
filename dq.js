@@ -315,7 +315,7 @@ body.dark .dq{--flame-off:#4b546e}
   function render() {
     numEl.textContent = S.streak;
     fl.classList.toggle("lit", !!S.lit);
-    ctaT.textContent = S.answered ? "Günün sualını oynadız." : "Günün sualını oyna";
+    ctaT.textContent = S.answered ? "Günün sualını oynadınız." : "Günün sualını oyna";
     $("dqIq").style.display = S.answered ? "none" : "";
     $("dqIo").style.display = S.answered ? "" : "none";
     tick();
