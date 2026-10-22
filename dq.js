@@ -622,11 +622,13 @@ body.dark .dq{--flame-off:#4b546e}
     res.style.display = "block"; res.style.transform = "translateY(130%)";
     ignite(S.streak);
     fit();                        // çərçivə genişlənir, nəticə dərhal aşağıdan yuxarı gəlir (gözləmə yoxdur)
-        await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
+     await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
     review = true;
     if (isMil(S.streak)) { await sleep(900); await celebrate(S.streak); }   // busy=true qalır, heç nə müdaxilə etmir
     busy = false;
     arm();
+  }
+  $("dqSend").addEventListener("click", submit);
   ansIn.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
   nameIn.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ansIn.focus(); } });
 
