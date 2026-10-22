@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>Kart çəkmə | πksel</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+body{--page:#9DC3FF;--c1:#001E6F;--c2:#002E92;--fg:#9DC3FF;--accent:#001E6F;--glow:rgba(0,8,45,.30);--grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%)}
+body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF;--glow:rgba(255,255,255,.40)}
+*{box-sizing:border-box;margin:0;padding:0}
+a,button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:Poppins,sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+a,button,input{font:inherit}
+a{color:inherit;text-decoration:none}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 32px;flex:1 0 auto}
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+
+/* NAVBAR */
+.top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.nav-links{display:flex;align-items:center;gap:40px;height:100%}
+.nav-link{position:relative;font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.search-btn{right:auto;left:6px}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+
+/* ÇƏRÇİVƏ / KART */
+.box{background:var(--grad);color:var(--fg);border-radius:28px;padding:22px 24px;margin-top:14px;box-shadow:0 10px 25px rgba(0,20,110,.07)}
+.glow{position:relative;overflow:hidden}
+.glow>*{position:relative;z-index:1}
+.glow::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;background:radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){.glow:hover::before{opacity:1}}
+.title-card{display:flex;align-items:center;justify-content:center;gap:14px;min-height:84px;padding:18px 24px}
+.card-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center}
+.card-icon svg{width:100%;height:100%;display:block}
+.card-title{font-size:24px;line-height:1.1;font-weight:700;letter-spacing:-.7px}
+.screen{display:none}
+.screen.active{display:block}
+h2{font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-align:center;margin-bottom:16px}
+.center{text-align:center}
+.in{font-weight:500;font-size:17px;color:var(--c1);background:var(--fg);border:2px solid var(--fg);border-radius:40px;padding:0 18px;height:46px;outline:0;width:100%;max-width:260px;text-align:center;transition:box-shadow .25s ease}
+.in::placeholder{color:var(--c1);opacity:.5}
+.in.bad{box-shadow:0 0 0 3px #ff5d6c}
+.actions{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.btn{height:46px;min-width:130px;padding:0 26px;border-radius:40px;cursor:pointer;font-size:15px;font-weight:500;background:var(--fg);color:var(--c1);border:2px solid var(--fg);transition:transform .25s ease,opacity .25s ease}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn:hover{transform:scale(1.03)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.pbtn{height:46px;min-width:46px;padding:0 24px;border:0;border-radius:40px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;background:var(--grad);color:var(--fg);box-shadow:0 10px 25px rgba(0,20,110,.12);transition:transform .25s ease,opacity .25s ease}
+.pbtn:hover{transform:scale(1.04)}
+.pbtn:active{transform:scale(.96)}
+.pbtn:disabled{opacity:.45;cursor:default;transform:none}
+.pbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.btn:focus-visible,.pbtn:focus-visible,.in:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.slot{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--fg) 14%,transparent);border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);border-radius:40px;padding:6px 8px}
+.slot b{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--c1);font-size:14px}
+.slot .in{max-width:none;text-align:left;height:36px;font-size:15px;padding:0 14px}
+
+/* KART ÇƏKMƏ */
+:root{--img:url(https://i.ibb.co/mrvZ2cQT/Whats-App-mage-2026-10-06-at-11-31-38.jpg)}
+#deck{position:relative}
+.pcard{position:absolute;left:0;top:0;width:var(--cw);height:var(--ch);border-radius:calc(var(--cw)*.13);background:#2a2f55 var(--img) center/cover;box-shadow:0 5px 12px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.12);transform:translate(var(--x),calc(var(--y) + var(--dy))) rotate(calc(var(--j)*1deg));cursor:pointer}
+.ready .pcard{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.pcard.up{transform:translate(var(--x),calc(var(--y) - 30px)) scale(1.08);z-index:500!important;box-shadow:0 18px 30px rgba(0,0,0,.55)}
+.ov{position:fixed;inset:0;z-index:9999;display:flex;align-items:flex-end;justify-content:center;background:transparent;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);transition:.6s;cursor:pointer}
+.ov.on{background:color-mix(in srgb,var(--page) 55%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.ov p{margin:0 0 28px;opacity:0;transition:.4s;color:var(--accent);font-weight:500}
+.fly{position:absolute;perspective:1000px}
+.fin{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.fb,.ff{position:absolute;inset:0;border-radius:7%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fb{background:#2a2f55 var(--img) center/cover;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.ff{transform:rotateY(180deg);background:var(--grad);color:var(--fg);display:flex;align-items:center;justify-content:center;border:3px solid var(--fg);box-shadow:0 24px 60px rgba(0,0,0,.6);font-weight:700}
+.ff span{display:inline-block;white-space:nowrap}
+.ff i{position:absolute;font-style:normal;font-size:22px;color:var(--fg)}
+.ff i:first-child{top:10px;left:14px}.ff i:last-child{bottom:10px;right:14px;transform:rotate(180deg)}
+#resList{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+#resList li{display:flex;gap:10px;align-items:center;background:color-mix(in srgb,var(--fg) 14%,transparent);border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);border-radius:20px;padding:10px 16px;font-weight:700}
+#resList li b{color:var(--fg)}
+.empty{text-align:center;margin:0;opacity:.75;font-weight:500;font-size:15px}
+.back{display:none;justify-content:center;margin-top:18px}
+
+/* FOOTER */
+footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+
+/* SAĞ KLİK BLOKU */
+.quick-actions{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:9000;display:flex;flex-direction:column;gap:10px}
+.quick-action{width:48px;height:48px;border:0;border-radius:15px;background:var(--grad);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 12px 26px rgba(0,20,110,.38),0 4px 8px rgba(0,20,110,.26);transition:transform .25s ease,filter .25s ease,box-shadow .25s ease}
+body.dark .quick-action{box-shadow:0 12px 26px rgba(0,0,0,.6),0 4px 8px rgba(0,0,0,.45)}
+.quick-action:hover{transform:translateY(-2px) scale(1.04);filter:brightness(1.08)}
+.quick-action:active{transform:scale(.94)}
+.quick-action svg{width:25px;height:25px;display:block}
+.quick-action.feedback-mark{font-size:25px;font-weight:700;line-height:1}
+.quick-action:focus-visible,.quick-close:focus-visible,.quick-submit:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.quick-overlay{position:fixed;inset:0;z-index:8998;display:grid;place-items:center;padding:20px;background:rgba(0,7,44,.18);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease,backdrop-filter .35s ease}
+.quick-overlay.open{opacity:1;visibility:visible;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.quick-panel{position:relative;width:min(440px,calc(100vw - 36px));max-height:min(78vh,560px);overflow:hidden;padding:30px 26px;border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 20px 60px rgba(0,12,70,.32);text-align:center;opacity:0;transform:translateY(18px) scale(.94);transition:transform .4s cubic-bezier(.18,.8,.24,1),opacity .3s ease}
+.quick-overlay.open .quick-panel{opacity:1;transform:translateY(0) scale(1)}
+.quick-panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 180px 130px at 50% 45%,var(--glow),transparent 75%)}
+.quick-panel>*{position:relative}
+.quick-close{position:absolute;z-index:2;top:10px;right:12px;width:34px;height:34px;border:0;border-radius:50%;background:0 0;color:inherit;font-size:26px;line-height:1;cursor:pointer}
+.quick-feedback-copy{font-size:clamp(15px,3.7vw,18px);line-height:1.55;font-weight:500;margin:8px 4px 22px}
+.quick-submit{display:inline-flex;min-width:150px;height:46px;align-items:center;justify-content:center;padding:0 25px;border:0;border-radius:30px;background:var(--fg);color:var(--c1);font-size:15px;font-weight:700;cursor:pointer;transition:transform .25s ease}
+.quick-submit:hover{transform:scale(1.04)}
+.quick-news-title{font-size:22px;font-weight:700;letter-spacing:.2px;margin:2px 0 12px}
+.quick-news-window{height:clamp(120px,24vh,172px);overflow:hidden;position:relative;mask-image:linear-gradient(transparent,black 13%,black 87%,transparent);-webkit-mask-image:linear-gradient(transparent,black 13%,black 87%,transparent)}
+.quick-news-roll{display:flex;flex-direction:column;align-items:center;animation:quickCredits 16s linear infinite}
+.quick-news-roll span{min-height:34px;display:grid;place-items:center;padding:4px;font-size:clamp(15px,4vw,18px);line-height:1.35;font-weight:500}
+@keyframes quickCredits{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+
+@media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}}
+@media (max-width:700px){
+.page{width:calc(100vw - 44px);padding:11px 0 26px}
+.top-nav{height:46px;padding:0 46px}
+.nav-links{gap:28px}
+.nav-link{font-size:13px}
+.theme-toggle{width:34px;height:34px;right:6px}
+.search-btn{right:auto;left:6px}
+.theme-icon{width:21px;height:21px}
+.box{padding:18px 16px;border-radius:22px;margin-top:12px}
+.title-card{min-height:70px;gap:10px;padding:12px 16px}
+.card-icon{width:32px;height:32px;flex-basis:32px}
+.card-title{font-size:17px;letter-spacing:-.5px}
+h2{font-size:17px}
+.team{font-size:16px;height:52px;padding:0 8px;border-radius:20px}
+.vs{width:22px;font-size:18px}
+.row{gap:8px}
+footer{min-height:96px;padding:16px 12px;gap:5px}
+.footer-line{font-size:13px}
+.quick-actions{right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));gap:8px}
+.quick-action{width:44px;height:44px;border-radius:14px}
+.quick-panel{padding:28px 20px 24px}
+}
+@media (max-width:420px){
+.page{width:calc(100vw - 36px)}
+.top-nav{height:42px;padding:0 42px}
+.nav-links{gap:22px}
+.nav-link{font-size:11px}
+.theme-toggle{width:32px;height:32px;right:5px}
+.search-btn{right:auto;left:5px}
+.theme-icon{width:20px;height:20px}
+.card-title{font-size:15px}
+.footer-line{font-size:11px}
+footer{min-height:88px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+ <nav class="frame top-nav" style="--i:0" aria-label="Əsas naviqasiya">
+  <a class="theme-toggle search-btn" id="searchBtn" href="sual_axtarisi" aria-label="Sual axtarışı"><svg class="rise theme-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></a>
+  <div class="rise nav-links"><a href="/" class="nav-link">Əsas Səhifə</a><a href="elaqe" class="nav-link">Bizimlə Əlaqə</a></div>
+  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Gecə rejiminə keç"><svg class="rise theme-icon" id="themeIcon" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg></button>
+ </nav>
+
+ <main>
+  <section class="frame box glow title-card" style="--i:1">
+   <div class="rise" style="display:flex;align-items:center;gap:14px">
+    <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="15" height="21" rx="3.5" transform="rotate(-12 10 16)" fill="currentColor" opacity=".55"/><rect x="12" y="4.5" width="15" height="21" rx="3.5" transform="rotate(8 19 15)" fill="currentColor"/><path d="M19.6 10.5c-2 2.4-3.4 3.6-3.4 5.2a1.9 1.9 0 0 0 3.1 1.4l-.5 3h1.6l-.5-3a1.9 1.9 0 0 0 3.1-1.4c0-1.6-1.4-2.8-3.4-5.2Z" style="fill:var(--c1)" transform="translate(0 .2)"/></svg></span>
+    <h1 class="card-title">Kart çəkmə</h1>
+   </div>
+  </section>
+
+  <section id="s-count" class="screen active">
+   <div class="frame box glow center" style="--i:2"><h2>Komanda sayı:</h2>
+    <input class="in" id="cnt" type="number" inputmode="numeric" min="2" max="40" placeholder="məs. 8">
+    <div class="actions"><button class="btn" id="cNext" type="button">Davam</button></div>
+   </div>
+  </section>
+
+  <section id="s-names" class="screen">
+   <div class="box glow"><h2>Komanda adları</h2>
+    <div class="grid" id="nameGrid"></div>
+    <div class="actions"><button class="btn ghost" id="nBack" type="button">Geri</button><button class="btn" id="nNext" type="button">Davam</button></div>
+   </div>
+  </section>
+
+  <section id="s-blind" class="screen">
+   <div class="box glow"><div id="deck"></div></div>
+   <div class="box glow"><h2>Çıxanlar</h2><p class="empty" id="resEmpty">Hələ kart seçilməyib</p><ol id="resList"></ol></div>
+   <div class="back" id="backB"><button class="pbtn" id="restart" type="button">Yenidən başla</button></div>
+  </section>
+ </main>
+</div>
+
+<footer>
+ <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
+ <a href="https://www.instagram.com/piksel.iok" class="footer-line footer-link" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a>
+ <a href="https://www.instagram.com/onurelzh" class="footer-line footer-link" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a>
+</footer>
+
+<div class="quick-actions" aria-label="Sürətli keçidlər">
+ <button class="quick-action" type="button" id="quickNewsButton" aria-label="Tezliklə gələn yeniliklər" aria-controls="quickNewsOverlay" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.2 2.2 0 0 0 2.18-2h-4.36A2.2 2.2 0 0 0 12 22Zm6-6v-5a6 6 0 0 0-5-5.91V4a1 1 0 0 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2Z" fill="currentColor"/></svg></button>
+ <button class="quick-action feedback-mark" type="button" id="quickFeedbackButton" aria-label="Xəta və ya çatışmazlıq bildir" aria-controls="quickFeedbackOverlay" aria-expanded="false">!</button>
+</div>
+<div class="quick-overlay" id="quickFeedbackOverlay" aria-hidden="true">
+ <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Xəta və ya çatışmazlıq bildir">
+  <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
+  <p class="quick-feedback-copy">Platformada qarşılaşdığınız hər hansısa xətanı və ya funksiyalardakı əksiyi bildir</p>
+  <a class="quick-submit" href="https://wa.me/994508377942?text=peaksel.az-da%20..." rel="noopener noreferrer" target="_blank">BİLDİR</a>
+ </section>
+</div>
+<div class="quick-overlay" id="quickNewsOverlay" aria-hidden="true">
+ <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Tezliklə gələn yeniliklər">
+  <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
+  <h2 class="quick-news-title">TEZLİKLƏ...</h2>
+  <div class="quick-news-window"><div class="quick-news-roll" aria-label="Gələcək yeniliklər">
+   <span>πksel Ruleti</span><span>πksel Duel</span><span>πksel 3X3</span><span>Turnir xal/reytinq cədvəli</span><span>Xəmsə Səsli otaq sistemi</span><span>Sizdən gələn suallar</span><span>Şəxsi πksel akkontları</span><span>Sferada yeniliklər</span>
+   <span aria-hidden="true">πksel Ruleti</span><span aria-hidden="true">πksel Duel</span><span aria-hidden="true">πksel 3X3</span><span aria-hidden="true">Turnir xal/reytinq cədvəli</span><span aria-hidden="true">Xəmsə Səsli otaq sistemi</span><span aria-hidden="true">Sizdən gələn suallar</span><span aria-hidden="true">Şəxsi πksel akkontları</span><span aria-hidden="true">Sferada yeniliklər</span>
+  </div></div>
+ </section>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const shake=el=>el.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],300);
+function fit(el,pad,start){el.style.fontSize=start?start+'px':'';let s=parseFloat(getComputedStyle(el).fontSize),b=el.parentNode;while(el.offsetWidth>b.clientWidth-pad&&s>7){s-=.5;el.style.fontSize=s+'px'}}
+const fitRow=r=>r.querySelectorAll('.team span').forEach(s=>fit(s,28));
+
+/* ===== TEMA ===== */
+const themeToggle=$('#themeToggle'),rays=[...document.querySelectorAll('.ray')];
+function animateRays(n){rays.forEach(e=>{e.getAnimations().forEach(a=>a.cancel());const t=e.animate(n?[{transform:'translateY(0)',opacity:1},{transform:'translateY(-14px)',opacity:0}]:[{transform:'translateY(11px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:n?520:620,delay:n?0:180,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});t.onfinish=()=>t.cancel()})}
+function setTheme(d,anim){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}themeToggle.setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');if(anim)animateRays(d)}
+(function(){let v=null;try{v=localStorage.getItem('piksel-theme')}catch(e){}
+ if(v==='dark')setTheme(true,false);else if(v==='light')setTheme(false,false);else setTheme(!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),false)})();
+themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark'),true));
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('ready')));
+
+/* ===== SİÇAN İŞIĞI ===== */
+document.addEventListener('pointermove',e=>{const n=e.target.closest&&e.target.closest('.glow');if(!n)return;const t=n.getBoundingClientRect();n.style.setProperty('--mx',e.clientX-t.left+'px');n.style.setProperty('--my',e.clientY-t.top+'px')});
+
+/* ===== AXTARIŞ DÜYMƏSİ ===== */
+$('#searchBtn').addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey)return;e.preventDefault();const b=e.currentTarget,ic=b.querySelector('svg');ic.getAnimations().forEach(a=>a.cancel());const an=ic.animate([{transform:'scale(1) rotate(0deg)'},{transform:'scale(.8) rotate(-18deg)',offset:.35},{transform:'scale(1.15) rotate(8deg)',offset:.7},{transform:'scale(1) rotate(0deg)'}],{duration:450,easing:'cubic-bezier(.4,0,.2,1)'});an.onfinish=()=>{location.href=b.getAttribute('href')}});
+
+/* ===== SAĞ KLİK BLOKU ===== */
+(()=>{const e=[[$('#quickFeedbackButton'),$('#quickFeedbackOverlay')],[$('#quickNewsButton'),$('#quickNewsOverlay')]],r=()=>e.forEach(([b,o])=>{o.classList.remove('open');o.setAttribute('aria-hidden','true');b.setAttribute('aria-expanded','false')});
+ e.forEach(([b,o])=>{b.addEventListener('click',()=>{const w=!o.classList.contains('open');r();if(w){o.classList.add('open');o.setAttribute('aria-hidden','false');b.setAttribute('aria-expanded','true')}});o.addEventListener('click',x=>{x.target===o&&r()});o.querySelector('.quick-close').addEventListener('click',r)});
+ document.addEventListener('keydown',x=>{'Escape'===x.key&&r()})})();
+
+/* ===== EKRANLAR ===== */
+let names=[],st={};
+async function go(id){
+ const cur=document.querySelector('.screen.active');
+ if(cur){await cur.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-20px)'}],{duration:350,easing:'ease',fill:'forwards'}).finished;cur.classList.remove('active')}
+ const nx=$('#'+id);nx.classList.add('active');
+ nx.animate([{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{duration:450,easing:'ease-out'});
+ scrollTo({top:0,behavior:'smooth'});
+}
+$('#nBack').onclick=()=>go('s-count');
+$('#restart').onclick=()=>go('s-count');
+$('#cnt').onkeydown=e=>e.key==='Enter'&&$('#cNext').click();
+$('#cNext').onclick=async()=>{
+ const n=parseInt($('#cnt').value);
+ if(!(n>=2&&n<=40)){shake($('#cnt'));$('#cnt').classList.add('bad');return}
+ $('#cnt').classList.remove('bad');
+ $('#nameGrid').innerHTML=Array.from({length:n},(_,i)=>`<div class="slot"><b>${i+1}</b><input class="in" maxlength="40" placeholder="Komanda adı"></div>`).join('');
+ const ins=[...document.querySelectorAll('#nameGrid input')];
+ ins.forEach((x,i)=>x.onkeydown=e=>{if(e.key==='Enter')(ins[i+1]||$('#nNext')).focus()});
+ await go('s-names');ins[0].focus();
+};
+$('#nNext').onclick=async()=>{
+ const ins=[...document.querySelectorAll('#nameGrid input')];let bad=null;
+ ins.forEach(x=>{const e=!x.value.trim();x.classList.toggle('bad',e);if(e){shake(x);bad=bad||x}});
+ if(bad)return bad.focus();
+ names=ins.map(x=>x.value.trim());
+ await go('s-blind');initBlind();
+};
+
+/* ===== KART ÇƏKMƏ ===== */
+let cards=[],busy=false;
+new Image().src='https://i.ibb.co/mrvZ2cQT/Whats-App-mage-2026-10-06-at-11-31-38.jpg';
+const deckEl=$('#deck');
+function initBlind(){
+ deckEl.innerHTML='';deckEl.classList.remove('ready');$('#resList').innerHTML='';$('#resEmpty').style.display='';$('#backB').style.display='none';
+ cards=shuffle(names).map(n=>{const c=document.createElement('div'),j=Math.random()*5-2.5,dy=Math.random()*6-3;
+  c.className='pcard';c.dataset.n=n;c._d=[j,dy];c.style.setProperty('--j',j.toFixed(2));c.style.setProperty('--dy',dy.toFixed(1)+'px');deckEl.appendChild(c);return c});
+ shuffleAnim();
+}
+function layout(){
+ const W=deckEl.clientWidth,N=cards.length,cw=W<520?60:84,ch=cw*1.4;
+ deckEl.style.setProperty('--cw',cw+'px');deckEl.style.setProperty('--ch',ch+'px');
+ let per=N>1?Math.min(N,Math.floor((W-cw)/(cw*.3))+1):1;const rows=Math.ceil(N/per);per=Math.ceil(N/rows);
+ const step=per>1?Math.min(cw*.5,(W-cw)/(per-1)):0;
+ cards.forEach((c,i)=>{const r=i/per|0,k=i%per,cnt=Math.min(per,N-r*per),x=(W-(cw+(cnt-1)*step))/2+k*step,y=36+r*ch*.7;
+  c.style.setProperty('--x',x+'px');c.style.setProperty('--y',y+'px');c.style.zIndex=i;c._p=[x,y]});
+ const H=36+(rows-1)*ch*.7+ch+20;deckEl.style.height=H+'px';return{W,H,cw,ch};
+}
+async function shuffleAnim(){
+ busy=true;const{W,H,cw,ch}=layout(),N=cards.length,cx=(W-cw)/2,cy=(H-ch)/2,t=(x,y,r)=>`translate(${x}px,${y}px) rotate(${r}deg)`;
+ const as=cards.map((c,i)=>{const s=i%2?1:-1,z=(i*7)%N,j=Math.random()*3-1.5,st0=t(cx+j,cy+i*.2,0);
+  return c.animate([
+   {transform:st0,zIndex:i,offset:0},{transform:st0,zIndex:i,offset:.1},
+   {transform:t(cx+s*cw*.9,cy+s*8,s*9),zIndex:i,offset:.3},
+   {transform:t(cx,cy+z*.2,0),zIndex:z,offset:.5},
+   {transform:t(cx-s*cw*.9,cy-s*8,-s*9),zIndex:z,offset:.7},
+   {transform:t(cx,cy+i*.2,0),zIndex:i,offset:.85},
+   {transform:t(c._p[0],c._p[1]+c._d[1],c._d[0]),zIndex:i,offset:1}
+  ],{duration:2400,delay:i*Math.min(20,300/N),easing:'ease-in-out',fill:'both'})});
+ await Promise.all(as.map(a=>a.finished));as.forEach(a=>a.cancel());
+ deckEl.classList.add('ready');busy=false;
+}
+deckEl.onclick=e=>{
+ const c=e.target.closest('.pcard');if(!c||busy)return;
+ if(c.classList.contains('up'))return reveal(c);
+ cards.forEach(x=>x.classList.remove('up'));c.classList.add('up');
+};
+async function reveal(c){
+ busy=true;const n=c.dataset.n,r=c.getBoundingClientRect(),vw=innerWidth,vh=innerHeight;
+ let tw=Math.min(vw*.72,300),th=tw*1.4;if(th>vh*.78){th=vh*.78;tw=th/1.4}
+ const ov=document.createElement('div');ov.className='ov';
+ ov.innerHTML='<div class="fly"><div class="fin"><div class="fb"></div><div class="ff"><i>♠</i><span></span><i>♠</i></div></div></div><p>Davam etmək üçün toxunun</p>';
+ const fly=ov.firstChild,fin=fly.firstChild,sp=ov.querySelector('span');sp.textContent=n;
+ fly.style.cssText=`width:${tw}px;height:${th}px;left:${(vw-tw)/2}px;top:${(vh-th)/2}px`;
+ document.body.appendChild(ov);fit(sp,tw*.2,tw*.2);
+ requestAnimationFrame(()=>ov.classList.add('on'));c.style.visibility='hidden';
+ fly.animate([{transform:`translate(${r.left+r.width/2-vw/2}px,${r.top+r.height/2-vh/2}px) scale(${r.width/tw})`},{transform:'none'}],{duration:900,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'});
+ await fin.animate([{transform:'rotateY(0)'},{transform:'rotateY(180deg)'}],{duration:900,easing:'ease-in-out',fill:'both'}).finished;
+ ov.querySelector('p').style.opacity=1;
+ await new Promise(res=>ov.onclick=res);
+ ov.classList.remove('on');
+ await fly.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.9)'}],{duration:350,fill:'both'}).finished;
+ ov.remove();c.remove();cards=cards.filter(x=>x!==c);layout();
+ $('#resEmpty').style.display='none';
+ const li=document.createElement('li'),b=document.createElement('b');b.textContent=($('#resList').children.length+1)+'.';
+ li.append(b,document.createTextNode(n));$('#resList').appendChild(li);
+ li.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:400});
+ busy=false;
+ if(!cards.length){const bk=$('#backB');bk.style.display='flex';bk.animate([{opacity:0},{opacity:1}],500)}
+}
+addEventListener('resize',()=>{if(!busy&&cards.length&&$('#s-blind').classList.contains('active'))layout()});
+</script>
+</body>
+</html>
