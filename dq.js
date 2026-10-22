@@ -1,4 +1,4 @@
-  /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
+/* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş.
 
@@ -16,8 +16,8 @@
     { id: "s2", author: "Sizdən gələn suallar / Adayeva Nübar", authorGen: "ın", question: "XVI əsrdə İtaliyada fəaliyyət göstərən kapusin adlı rahiblər geyindikləri uzun bej rəngli cübbələr və başlarına örtdükləri ağ başlıqlar İKS-ə bənzədiyi üçün , İKS-ə rahiblərin ümumi adı verilir. İKS-i xarici mənşəli bir sözlə yazın ", answer: "Kapuçino", criteria: "Cappuccino", comment: "Kapusinlərin geyimləri  qəhvəyə süd tökülərkən yaranan rəngə bənzəyirdi. Buna görə də həmin kofe növünə \"Kiçik kapusin\" yəni kapuçino adı verilir", source: "" },
     { id: "s3", author: "Hüseynli Muhamməd", authorGen: "", question: "Bədənlərindən nəfəs aldıqları üçün tarakanlar bir həftəyə qədər BUNU EDƏ bilərlər. Mayk adlı xoruz isə 18 ay boyunca BUNU EDİB rekordlar kitabına düşmüşdü. BUNU ETMƏKLƏ əvəz etdiyimizi bir neçə sözlə yazın.", answer: "Başsız yaşamaq", criteria: "Mənaya uyğun digər cavablar", comment: "Bədənlərindən nəfəs aldıqları üçün tarakanlar başları olmadan bir neçə müddət yaşaya bilir, lakin susuzluğa görə ölürlər.", source: " 1. https://en.wikipedia.org/wiki/Mike_the_Headless_Chicken 2. https://share.google/CKKvnCZkpsH35b3ln" },
     { id: "s4", author: "Sizdən gələn suallar / Məmmədov Aydın", authorGen: "", handout: "₺", question: "Paylama materialında verilmiş simvolun yaradıcısı Tülay Lalə bu simvolu yaradarkən kiçik \"L\" hərfinin üstündəki 2 paralel xəttin hər birinə məna yükləmişdi. Birincisi Türk Lirəsi ifadəsinin baş hərfləri. Bəs ikincisi?", answer: "Tülay Lalənin adı və soyadının baş hərfləri", criteria: "", comment: "Dizayner Tülay Lalə simvolu elə hazırlamışdı ki, oradakı T və L hərfləri həm \"Türk Lirəsi\" ifadəsini, həm də öz adının və soyadının baş hərflərini (Tülay Lale) təcəssüm etdirirdi.", source: "" },
-    { id: "s3", author: "Yuniszadə Ema", authorGen: "", question: "Su samurları həyatlarının böyük hissəsini suda keçirir və suyun üzərində üzərək yatırlar. Maraqlıdır ki, onlar yatarkən axının təsiri ilə ayrılmamaq üçün BUNU EDİRLƏR. Alimlərin fikrincə, insanlar BUNU EDƏRKƏN tərəflərin beyin dalğaları müəyyən dərəcədə sinxronlaşır. BUNU ETMƏK ifadəsi ilə əvəz olunmuş anlayışı iki sözlə yazın.", answer: "Əl-ələ tutmaq", criteria: "Mənaya uyğun digər cavablar", comment: " Su samurları suda yatarkən axıntının onları fərqli istiqamətlərə aparmasının və bir-birlərini itirmələrinin qarşısını almaq üçün çox sevimli bir instinktə sahibdirlər. Onlar əl-ələ tutuşaraq yatırlar. Digər tərəfdən, nevroloji araşdırmalar göstərir ki, insanlar bir-birlərinin əlindən tutdușduqda tərəfdaşların beyin fəaliyyətləri və dalğaları arasında sinxronizasiya yaranır, bu da empatiyanı artırır və ağrını azaldır.", source: "https://www.facebook.com/YolveMacera/videos/1910814592410728/?mibextid=rS40aB7S9Ucbxw6v" },
-    // { id: "s2", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
+    { id: "s5", author: "Yuniszadə Ema", authorGen: "", question: "Su samurları həyatlarının böyük hissəsini suda keçirir və suyun üzərində üzərək yatırlar. Maraqlıdır ki, onlar yatarkən axının təsiri ilə ayrılmamaq üçün BUNU EDİRLƏR. Alimlərin fikrincə, insanlar BUNU EDƏRKƏN tərəflərin beyin dalğaları müəyyən dərəcədə sinxronlaşır. BUNU ETMƏK ifadəsi ilə əvəz olunmuş anlayışı iki sözlə yazın.", answer: "Əl-ələ tutmaq", criteria: "Mənaya uyğun digər cavablar", comment: " Su samurları suda yatarkən axıntının onları fərqli istiqamətlərə aparmasının və bir-birlərini itirmələrinin qarşısını almaq üçün çox sevimli bir instinktə sahibdirlər. Onlar əl-ələ tutuşaraq yatırlar. Digər tərəfdən, nevroloji araşdırmalar göstərir ki, insanlar bir-birlərinin əlindən tutdușduqda tərəfdaşların beyin fəaliyyətləri və dalğaları arasında sinxronizasiya yaranır, bu da empatiyanı artırır və ağrını azaldır.", source: "https://www.facebook.com/YolveMacera/videos/1910814592410728/?mibextid=rS40aB7S9Ucbxw6v" },
+    // { id: "s6", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
   ];
   // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
   // authorGen adətən BOŞ qalmalıdır (şəkilçi avtomatik qoyulur). Səhv çıxsa: ya qısa şəkilçi yaz ("un" → ad+un), ya da tam forma ("Əli Məmmədovun").
@@ -371,6 +371,7 @@ body.dark .dq{--flame-off:#4b546e}
         if (tries < 8) setTimeout(function () { send(p, tries + 1); }, Math.min(30000, 3000 * (tries + 1)));
       });
   }
+
   // ---- mərhələ təbriki (5, 10, 20, 30 ... 100)
   function isMil(n) { return n === 5 || (n >= 10 && n <= 100 && n % 10 === 0); }
   function celebrate(n) {
@@ -383,8 +384,8 @@ body.dark .dq{--flame-off:#4b546e}
         '<div class="dq-ov-t">SİZ ARTIQ <b>' + n + '</b> GÜNDÜR Kİ, πksel-DƏ GÜNÜN SUALINI OYNAYIRSINIZ.<div class="dq-ov-c">TƏBRİKLƏR!</div></div>';
       document.body.appendChild(ov);
       var flame = ov.querySelector(".dq-ov-fl"), txt = ov.querySelector(".dq-ov-t"), cong = ov.querySelector(".dq-ov-c");
-      var html = document.documentElement, prevOv = html.style.overflow;
-      html.style.overflow = "hidden";
+      var htmlEl = document.documentElement, prevOv = htmlEl.style.overflow;
+      htmlEl.style.overflow = "hidden";
       var stop = function (e) { e.preventDefault(); };
       ov.addEventListener("touchmove", stop, { passive: false });
       ov.addEventListener("wheel", stop, { passive: false });
@@ -416,11 +417,12 @@ body.dark .dq{--flame-off:#4b546e}
         await A(ov, [{ opacity: 1 }, { opacity: 0 }], 500);
         if (flick) flick.cancel();
         ov.remove();
-        html.style.overflow = prevOv;
+        htmlEl.style.overflow = prevOv;
         resolve();
       });
     });
   }
+
   // ---- nəticə bloku
   function buildRes() {
     resIn.textContent = "";
@@ -622,11 +624,11 @@ body.dark .dq{--flame-off:#4b546e}
     res.style.display = "block"; res.style.transform = "translateY(130%)";
     ignite(S.streak);
     fit();                        // çərçivə genişlənir, nəticə dərhal aşağıdan yuxarı gəlir (gözləmə yoxdur)
-     await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
+    await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
     review = true;
     if (isMil(S.streak)) { await sleep(900); await celebrate(S.streak); }   // busy=true qalır, heç nə müdaxilə etmir
     busy = false;
-    arm();  }
+    arm();
   }
   $("dqSend").addEventListener("click", submit);
   ansIn.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
