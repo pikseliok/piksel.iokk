@@ -1,4 +1,4 @@
-/* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
+  /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
    Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş.
 
@@ -626,7 +626,7 @@ body.dark .dq{--flame-off:#4b546e}
     review = true;
     if (isMil(S.streak)) { await sleep(900); await celebrate(S.streak); }   // busy=true qalır, heç nə müdaxilə etmir
     busy = false;
-    arm();
+    arm();  }
   }
   $("dqSend").addEventListener("click", submit);
   ansIn.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
