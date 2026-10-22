@@ -118,6 +118,12 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-cnt{font-size:11px}
 }
 @media (max-width:420px){.dq{--bar:42px;--side:46px}.dq-cta{font-size:12px}}
+.dq-ov{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;text-align:center;color:#fff;background:rgba(8,12,28,.55);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);touch-action:none;overscroll-behavior:contain;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;font-family:Poppins,sans-serif;opacity:0}
+.dq-ov-fl{width:150px;height:150px;filter:drop-shadow(0 0 28px rgba(255,120,30,.65));opacity:0;transform-origin:50% 90%}
+.dq-ov-fl svg{width:100%;height:100%;display:block}
+.dq-ov-t{max-width:420px;font-size:clamp(15px,4.4vw,20px);line-height:1.5;font-weight:700;opacity:0}
+.dq-ov-t b{font-size:1.25em}
+.dq-ov-c{font-size:clamp(22px,6.5vw,32px);font-weight:800;letter-spacing:1px;margin-top:10px;opacity:0}
 `;
 
   var FL_OUT = "M12 2C12.8 6.2 18 8.6 18 15a6 6 0 0 1-12 0c0-2.6 1.1-4.4 2.5-5.8.2 1.8.9 2.9 2 3.4C10.2 9 10.4 5 12 2Z";
@@ -365,7 +371,56 @@ body.dark .dq{--flame-off:#4b546e}
         if (tries < 8) setTimeout(function () { send(p, tries + 1); }, Math.min(30000, 3000 * (tries + 1)));
       });
   }
+  // ---- mərhələ təbriki (5, 10, 20, 30 ... 100)
+  function isMil(n) { return n === 5 || (n >= 10 && n <= 100 && n % 10 === 0); }
+  function celebrate(n) {
+    return new Promise(function (resolve) {
+      var ov = document.createElement("div");
+      ov.className = "dq-ov";
+      ov.innerHTML =
+        '<div class="dq-ov-fl"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="dqg2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff3b1f"/><stop offset="1" stop-color="#ff8a1f"/></linearGradient></defs>' +
+        '<path d="' + FL_OUT + '" fill="url(#dqg2)"/><path d="' + FL_IN + '" fill="#ffd23f"/></svg></div>' +
+        '<div class="dq-ov-t">SİZ ARTIQ <b>' + n + '</b> GÜNDÜR Kİ, πksel-DƏ GÜNÜN SUALINI OYNAYIRSINIZ.<div class="dq-ov-c">TƏBRİKLƏR!</div></div>';
+      document.body.appendChild(ov);
+      var flame = ov.querySelector(".dq-ov-fl"), txt = ov.querySelector(".dq-ov-t"), cong = ov.querySelector(".dq-ov-c");
+      var html = document.documentElement, prevOv = html.style.overflow;
+      html.style.overflow = "hidden";
+      var stop = function (e) { e.preventDefault(); };
+      ov.addEventListener("touchmove", stop, { passive: false });
+      ov.addEventListener("wheel", stop, { passive: false });
+      var ready = false, flick = null, E = "cubic-bezier(.22,.8,.3,1)";
 
+      (async function () {
+        await A(ov, [{ opacity: 0 }, { opacity: 1 }], 500);
+        // alov aşağıdan, kiçikdən böyüyə
+        await A(flame, [
+          { opacity: 0, transform: "translateY(55vh) scale(.1)" },
+          { opacity: 1, transform: "translateY(0) scale(1)" }
+        ], 1300, { easing: E });
+        flick = flame.animate([
+          { transform: "scale(1,1)" }, { transform: "scale(1.04,.97)", offset: .3 },
+          { transform: "scale(.97,1.05)", offset: .65 }, { transform: "scale(1,1)" }
+        ], { duration: 900, iterations: Infinity, easing: "ease-in-out" });
+        await sleep(250);
+        // yazı aşağıdan
+        txt.style.opacity = 1;
+        await A(txt, [{ opacity: 0, transform: "translateY(70px)" }, { opacity: 1, transform: "translateY(0)" }], 800, { easing: E });
+        cong.style.opacity = 1;
+        await A(cong, [{ opacity: 0, transform: "translateY(50px)" }, { opacity: 1, transform: "translateY(0)" }], 700, { easing: E });
+        ready = true;                                   // yalnız indi toxunuşa icazə var
+      })();
+
+      ov.addEventListener("click", async function () {
+        if (!ready) return;
+        ready = false;
+        await A(ov, [{ opacity: 1 }, { opacity: 0 }], 500);
+        if (flick) flick.cancel();
+        ov.remove();
+        html.style.overflow = prevOv;
+        resolve();
+      });
+    });
+  }
   // ---- nəticə bloku
   function buildRes() {
     resIn.textContent = "";
@@ -567,12 +622,11 @@ body.dark .dq{--flame-off:#4b546e}
     res.style.display = "block"; res.style.transform = "translateY(130%)";
     ignite(S.streak);
     fit();                        // çərçivə genişlənir, nəticə dərhal aşağıdan yuxarı gəlir (gözləmə yoxdur)
-    await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
-    busy = false;
+        await A(res, [{ transform: "translateY(130%)" }, { transform: "translateY(0)" }], 550);
     review = true;
+    if (isMil(S.streak)) { await sleep(900); await celebrate(S.streak); }   // busy=true qalır, heç nə müdaxilə etmir
+    busy = false;
     arm();
-  }
-  $("dqSend").addEventListener("click", submit);
   ansIn.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
   nameIn.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ansIn.focus(); } });
 
