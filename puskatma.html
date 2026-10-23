@@ -13,9 +13,12 @@
 <style>
 body{--page:#9DC3FF;--c1:#001E6F;--c2:#002E92;--fg:#9DC3FF;--accent:#001E6F;--glow:rgba(0,8,45,.30);--grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%)}
 body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF;--glow:rgba(255,255,255,.40)}
-*{box-sizing:border-box;margin:0;padding:0}
-a,button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
-body{min-height:100vh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:Poppins,sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
+a,button,input,div,span{outline:none}
+a:focus,a:focus-visible,button:focus,button:focus-visible,input:focus,input:focus-visible{outline:none!important}
+html{min-height:100%}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:Poppins,sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
 a,button,input{font:inherit}
 a{color:inherit;text-decoration:none}
 .page{width:min(95vw,820px);margin:0 auto;padding:12px 0 32px;flex:1 0 auto}
@@ -32,7 +35,6 @@ a{color:inherit;text-decoration:none}
 .theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--accent);background:var(--page);transition:transform .3s ease,background .65s ease,color .65s ease}
 .theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
 .theme-toggle:active{transform:translateY(-50%) scale(.95)}
-.search-btn{right:auto;left:6px}
 .theme-icon{width:24px;height:24px;display:block}
 .ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
 body.dark .ray{opacity:0}
@@ -56,7 +58,7 @@ body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,
 .screen.active{display:block}
 h2{font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-align:center;margin-bottom:16px}
 .center{text-align:center}
-.in{font-weight:500;font-size:17px;color:var(--c1);background:var(--fg);border:2px solid var(--fg);border-radius:40px;padding:0 18px;height:46px;outline:0;width:100%;max-width:260px;text-align:center;transition:box-shadow .25s ease}
+.in{font-weight:500;font-size:17px;color:var(--c1);background:var(--fg);border:2px solid var(--fg);border-radius:40px;padding:0 18px;height:46px;outline:0;width:100%;max-width:260px;text-align:center;transition:box-shadow .25s ease;-webkit-user-select:text;user-select:text}
 .in::placeholder{color:var(--c1);opacity:.5}
 .in.bad{box-shadow:0 0 0 3px #ff5d6c}
 .actions{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
@@ -70,7 +72,6 @@ h2{font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-alig
 .pbtn:active{transform:scale(.96)}
 .pbtn:disabled{opacity:.45;cursor:default;transform:none}
 .pbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
-.btn:focus-visible,.pbtn:focus-visible,.in:focus-visible,.nav-link:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
 .slot{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--fg) 14%,transparent);border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);border-radius:40px;padding:6px 8px}
 .slot b{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--c1);font-size:14px}
@@ -88,38 +89,6 @@ h2{font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-alig
 .vs{font-weight:700;font-size:24px;color:var(--accent);width:34px;text-align:center}
 .back{display:none;justify-content:center;margin-top:18px}
 
-/* FOOTER */
-footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
-.footer-line{font-size:15px;line-height:1.4;font-weight:500}
-.footer-link{transition:opacity .25s ease,transform .25s ease}
-.footer-link:hover{opacity:.72;transform:translateY(-1px)}
-.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
-
-/* SAĞ KLİK BLOKU */
-.quick-actions{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:9000;display:flex;flex-direction:column;gap:10px}
-.quick-action{width:48px;height:48px;border:0;border-radius:15px;background:var(--grad);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 12px 26px rgba(0,20,110,.38),0 4px 8px rgba(0,20,110,.26);transition:transform .25s ease,filter .25s ease,box-shadow .25s ease}
-body.dark .quick-action{box-shadow:0 12px 26px rgba(0,0,0,.6),0 4px 8px rgba(0,0,0,.45)}
-.quick-action:hover{transform:translateY(-2px) scale(1.04);filter:brightness(1.08)}
-.quick-action:active{transform:scale(.94)}
-.quick-action svg{width:25px;height:25px;display:block}
-.quick-action.feedback-mark{font-size:25px;font-weight:700;line-height:1}
-.quick-action:focus-visible,.quick-close:focus-visible,.quick-submit:focus-visible{outline:3px solid currentColor;outline-offset:4px}
-.quick-overlay{position:fixed;inset:0;z-index:8998;display:grid;place-items:center;padding:20px;background:rgba(0,7,44,.18);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease,backdrop-filter .35s ease}
-.quick-overlay.open{opacity:1;visibility:visible;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.quick-panel{position:relative;width:min(440px,calc(100vw - 36px));max-height:min(78vh,560px);overflow:hidden;padding:30px 26px;border-radius:28px;background:var(--grad);color:var(--fg);box-shadow:0 20px 60px rgba(0,12,70,.32);text-align:center;opacity:0;transform:translateY(18px) scale(.94);transition:transform .4s cubic-bezier(.18,.8,.24,1),opacity .3s ease}
-.quick-overlay.open .quick-panel{opacity:1;transform:translateY(0) scale(1)}
-.quick-panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 180px 130px at 50% 45%,var(--glow),transparent 75%)}
-.quick-panel>*{position:relative}
-.quick-close{position:absolute;z-index:2;top:10px;right:12px;width:34px;height:34px;border:0;border-radius:50%;background:0 0;color:inherit;font-size:26px;line-height:1;cursor:pointer}
-.quick-feedback-copy{font-size:clamp(15px,3.7vw,18px);line-height:1.55;font-weight:500;margin:8px 4px 22px}
-.quick-submit{display:inline-flex;min-width:150px;height:46px;align-items:center;justify-content:center;padding:0 25px;border:0;border-radius:30px;background:var(--fg);color:var(--c1);font-size:15px;font-weight:700;cursor:pointer;transition:transform .25s ease}
-.quick-submit:hover{transform:scale(1.04)}
-.quick-news-title{font-size:22px;font-weight:700;letter-spacing:.2px;margin:2px 0 12px}
-.quick-news-window{height:clamp(120px,24vh,172px);overflow:hidden;position:relative;mask-image:linear-gradient(transparent,black 13%,black 87%,transparent);-webkit-mask-image:linear-gradient(transparent,black 13%,black 87%,transparent)}
-.quick-news-roll{display:flex;flex-direction:column;align-items:center;animation:quickCredits 16s linear infinite}
-.quick-news-roll span{min-height:34px;display:grid;place-items:center;padding:4px;font-size:clamp(15px,4vw,18px);line-height:1.35;font-weight:500}
-@keyframes quickCredits{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-
 @media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}}
 @media (max-width:700px){
 .page{width:calc(100vw - 44px);padding:11px 0 26px}
@@ -127,7 +96,6 @@ body.dark .quick-action{box-shadow:0 12px 26px rgba(0,0,0,.6),0 4px 8px rgba(0,0
 .nav-links{gap:28px}
 .nav-link{font-size:13px}
 .theme-toggle{width:34px;height:34px;right:6px}
-.search-btn{right:auto;left:6px}
 .theme-icon{width:21px;height:21px}
 .box{padding:18px 16px;border-radius:22px;margin-top:12px}
 .title-card{min-height:70px;gap:10px;padding:12px 16px}
@@ -137,11 +105,6 @@ h2{font-size:17px}
 .team{font-size:16px;height:52px;padding:0 8px;border-radius:20px}
 .vs{width:22px;font-size:18px}
 .row{gap:8px}
-footer{min-height:96px;padding:16px 12px;gap:5px}
-.footer-line{font-size:13px}
-.quick-actions{right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));gap:8px}
-.quick-action{width:44px;height:44px;border-radius:14px}
-.quick-panel{padding:28px 20px 24px}
 }
 @media (max-width:420px){
 .page{width:calc(100vw - 36px)}
@@ -149,19 +112,26 @@ footer{min-height:96px;padding:16px 12px;gap:5px}
 .nav-links{gap:22px}
 .nav-link{font-size:11px}
 .theme-toggle{width:32px;height:32px;right:5px}
-.search-btn{right:auto;left:5px}
 .theme-icon{width:20px;height:20px}
 .card-title{font-size:15px}
-.footer-line{font-size:11px}
-footer{min-height:88px}
 }
 </style>
 </head>
 <body>
 
+<!-- πksel loqosu (endirilən şəkil üçün) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+ <defs>
+  <symbol id="pkLogo" viewBox="170 210 750 640">
+    <path d="M 815,268 815,335 882,335 882,268 Z"/>
+    <path d="M 201,314 200,317 195,322 195,323 192,326 192,328 189,331 189,332 188,333 188,334 187,335 187,336 184,341 184,343 182,345 182,347 181,348 181,350 179,352 179,356 178,357 178,361 176,364 176,374 175,375 175,395 176,396 176,404 177,405 177,409 178,410 178,416 179,417 179,420 180,421 180,424 181,425 181,428 182,429 182,432 183,433 183,438 184,439 185,442 187,444 187,445 188,446 188,447 189,448 189,449 190,450 190,451 191,452 191,453 192,454 192,455 193,456 193,457 194,458 195,461 197,463 198,466 200,468 201,467 204,467 205,466 207,466 208,465 211,465 212,464 215,464 216,463 218,463 219,462 222,462 223,461 227,461 228,460 230,460 231,459 234,459 235,458 238,458 241,456 244,456 245,455 248,455 249,454 251,454 252,453 255,453 256,452 259,452 260,451 262,451 263,450 266,450 267,449 270,449 271,448 273,448 274,447 276,447 277,446 280,446 283,444 283,443 279,438 278,435 274,430 274,429 273,428 273,426 272,425 272,424 270,422 270,420 269,419 269,418 267,416 267,414 266,413 266,411 264,408 264,406 263,405 263,402 261,399 261,392 260,391 260,386 261,385 261,378 263,376 263,373 266,368 266,366 267,365 267,364 269,362 269,361 272,358 272,357 286,343 287,343 290,340 293,339 298,335 300,335 302,333 303,333 306,331 308,331 310,329 312,329 313,328 316,328 319,326 322,326 323,325 327,325 330,323 338,323 339,322 362,322 363,323 374,323 377,325 384,325 385,326 391,326 394,328 399,328 400,329 405,329 407,331 412,331 413,332 417,332 420,334 421,333 423,333 424,334 426,334 427,335 429,335 430,336 432,336 435,338 438,338 439,339 441,339 444,341 447,341 452,344 454,344 455,345 457,345 460,347 462,347 463,348 465,348 468,350 468,353 467,354 467,355 466,356 466,357 463,362 463,364 462,365 462,366 459,371 459,373 458,374 458,375 457,376 457,377 454,382 454,384 453,385 453,386 450,391 450,393 449,394 449,395 448,396 448,397 445,402 445,404 444,405 444,406 441,411 441,413 440,414 440,415 439,416 439,417 436,422 436,424 435,425 435,426 432,431 432,433 431,434 431,435 428,440 428,442 427,443 427,444 426,445 426,446 423,451 423,453 422,454 422,455 419,460 419,462 417,464 417,466 416,467 416,468 414,471 414,473 413,474 413,475 410,480 410,482 409,483 409,484 408,485 408,486 407,487 407,488 404,493 404,495 403,496 403,497 400,502 400,504 399,505 399,506 398,507 398,508 395,513 395,515 394,516 394,517 391,522 391,524 390,525 390,526 389,527 389,528 386,533 386,535 385,536 385,537 382,542 382,544 381,545 381,546 380,547 380,548 377,553 377,555 376,556 376,557 373,562 373,564 372,565 372,566 369,571 369,573 368,574 368,575 367,576 367,577 364,582 364,584 363,585 363,586 360,591 360,593 359,594 359,595 358,596 358,597 355,602 355,604 354,605 354,606 351,611 351,613 350,614 350,615 349,616 349,617 346,622 346,624 345,625 345,626 342,631 342,633 341,634 341,635 340,636 340,637 337,642 337,644 336,645 336,646 333,651 333,653 332,654 332,655 329,660 329,662 328,663 328,664 327,665 327,666 324,671 324,673 323,674 323,675 320,680 320,682 319,683 319,684 318,685 318,686 315,691 315,693 314,694 314,695 311,700 311,702 310,703 310,704 309,705 309,706 306,711 306,713 305,714 305,715 302,720 302,722 301,723 301,724 300,725 300,726 297,731 297,733 296,734 296,735 293,740 293,742 292,743 292,744 289,749 289,751 287,753 287,755 286,756 286,757 283,762 283,764 280,769 280,771 278,773 278,775 277,776 277,777 275,780 275,782 274,783 274,784 271,789 271,791 270,792 270,793 269,794 269,795 268,796 268,797 265,802 265,804 262,809 262,811 261,812 261,813 260,814 260,815 259,816 259,817 256,822 256,824 255,825 255,826 252,831 252,833 250,836 250,838 259,838 260,839 343,839 344,840 406,840 407,839 407,837 408,836 408,834 409,833 409,830 410,829 410,826 411,825 411,823 412,822 412,819 413,818 413,815 414,814 414,812 415,811 415,808 416,807 416,805 417,804 417,802 418,801 418,798 419,797 419,794 420,793 420,791 421,790 421,787 422,786 422,783 423,782 423,780 424,779 424,776 425,775 425,772 426,771 426,769 427,768 427,765 428,764 428,761 429,760 429,758 430,757 430,755 431,754 431,751 432,750 432,747 433,746 433,744 434,743 434,740 435,739 435,737 436,736 436,733 437,732 437,729 438,728 438,726 439,725 439,722 440,721 440,718 441,717 441,715 442,714 442,711 443,710 443,708 444,707 444,704 445,703 445,701 446,700 446,697 447,696 447,693 448,692 448,690 449,689 449,686 450,685 450,682 451,681 451,679 452,678 452,675 453,674 453,671 454,670 454,668 455,667 455,664 456,663 456,661 457,660 457,658 458,657 458,654 459,653 459,650 460,649 460,647 461,646 461,643 462,642 462,639 463,638 463,636 464,635 464,632 465,631 465,628 466,627 466,625 467,624 467,621 468,620 468,618 469,617 469,614 470,613 470,611 471,610 471,607 472,606 472,603 473,602 473,600 474,599 474,596 475,595 475,593 476,592 476,589 477,588 477,585 478,584 478,582 479,581 479,578 480,577 480,574 481,573 481,571 482,570 482,567 483,566 483,564 484,563 484,560 485,559 485,557 486,556 486,553 487,552 487,549 488,548 488,546 489,545 489,542 490,541 490,538 491,537 491,535 492,534 492,531 493,530 493,527 494,526 494,524 495,523 495,520 496,519 496,517 497,516 497,514 498,513 498,510 499,509 499,506 500,505 500,503 501,502 501,499 502,498 502,495 503,494 503,492 504,491 504,488 505,487 505,484 506,483 506,481 507,480 507,477 508,476 508,473 509,472 509,470 510,469 510,467 511,466 511,463 512,462 512,459 513,458 513,456 514,455 514,452 515,451 515,448 516,447 516,445 517,444 517,441 518,440 518,437 519,436 519,434 520,433 520,430 521,429 521,427 522,426 522,423 523,422 523,419 524,418 524,416 525,415 525,413 526,412 526,409 527,408 527,405 528,404 528,402 529,401 529,398 530,397 530,394 531,393 531,391 532,390 532,387 533,386 533,383 534,382 534,380 535,379 535,376 536,375 536,374 537,373 538,373 539,374 539,375 540,376 540,378 541,379 541,382 542,383 542,386 543,387 543,389 544,390 544,393 545,394 545,396 546,397 546,400 547,401 547,403 548,404 548,407 549,408 549,411 550,412 550,414 551,415 551,418 552,419 552,421 553,422 553,425 554,426 554,429 555,430 555,432 556,433 556,436 557,437 557,439 558,440 558,443 559,444 559,447 560,448 560,450 561,451 561,454 562,455 562,457 563,458 563,461 564,462 564,465 565,466 565,468 566,469 566,472 567,473 567,475 568,476 568,479 569,480 569,483 570,484 570,486 571,487 571,490 572,491 572,493 573,494 573,497 574,498 574,501 575,502 575,504 576,505 576,508 577,509 577,511 578,512 578,515 579,516 579,518 580,519 580,522 581,523 581,526 582,527 582,529 583,530 583,533 584,534 584,537 585,538 585,540 586,541 586,544 587,545 587,548 588,549 588,551 589,552 589,555 590,556 590,558 591,559 591,562 592,563 592,565 593,566 593,569 594,570 594,572 595,573 595,576 596,577 596,580 597,581 597,583 598,584 598,587 599,588 599,591 600,592 600,594 601,595 601,598 602,599 602,602 603,603 603,605 604,606 604,608 605,609 605,612 606,613 606,616 607,617 607,619 608,620 608,623 609,624 609,627 610,628 610,630 611,631 611,634 612,635 612,638 613,639 613,641 614,642 614,645 615,646 615,649 616,650 616,652 617,653 617,656 618,657 618,659 619,660 619,663 620,664 620,666 621,667 621,670 622,671 622,673 623,674 623,677 624,678 624,681 625,682 625,684 626,685 626,688 627,689 627,692 628,693 628,695 629,696 629,699 630,700 630,703 631,704 631,706 632,707 632,710 633,711 633,714 634,715 634,717 635,718 635,721 636,722 636,724 637,725 637,728 638,729 638,731 639,732 639,735 640,736 640,739 641,740 641,742 642,743 642,746 643,747 643,749 644,750 644,753 645,754 645,757 646,758 646,760 647,761 647,764 648,765 648,768 649,769 649,771 650,772 650,775 651,776 651,779 652,780 652,782 653,783 653,786 654,787 654,790 655,791 655,793 656,794 656,796 657,797 657,800 658,801 658,804 659,805 659,807 660,808 660,811 661,812 661,815 662,816 662,818 663,819 663,822 664,823 664,826 665,827 665,829 666,830 666,833 667,834 667,836 668,837 668,840 669,841 669,842 670,843 725,843 726,842 728,842 729,843 730,843 731,842 814,842 815,841 816,842 818,842 819,841 822,841 823,842 824,841 827,841 827,840 825,837 825,835 824,834 824,833 823,832 823,831 820,826 820,824 819,823 819,822 816,817 816,815 815,814 815,813 814,812 814,811 811,806 811,804 808,799 808,797 807,796 807,795 804,790 804,788 802,786 802,784 801,783 801,782 800,781 800,780 797,775 797,773 796,772 796,771 795,770 795,769 792,764 792,762 791,761 791,760 789,757 789,755 788,754 788,753 787,752 787,751 784,746 784,744 783,743 783,742 780,737 780,735 779,734 779,733 776,728 776,726 775,725 775,724 774,723 774,722 773,721 773,720 770,715 770,713 769,712 769,711 768,710 768,709 765,704 765,702 764,701 764,700 761,695 761,693 760,692 760,691 759,690 759,689 756,684 756,682 755,681 755,680 752,675 752,673 751,672 751,671 750,670 750,669 747,664 747,662 746,661 746,660 745,659 745,658 742,653 742,651 741,650 741,649 740,648 740,647 737,642 737,640 736,639 736,638 733,633 733,631 732,630 732,629 731,628 731,627 728,622 728,620 725,615 725,613 724,612 724,611 723,610 723,609 722,608 722,607 719,602 719,600 718,599 718,598 717,597 717,596 714,591 714,589 713,588 713,587 710,582 710,580 709,579 709,578 706,573 706,571 705,570 705,569 702,564 702,562 701,561 701,560 700,559 700,558 697,553 697,551 696,550 696,549 695,548 695,547 692,542 692,540 691,539 691,538 690,537 690,536 687,531 687,529 686,528 686,527 683,522 683,520 682,519 682,518 681,517 681,516 678,511 678,509 677,508 677,507 674,502 674,500 673,499 673,498 672,497 672,496 669,491 669,489 668,488 668,487 667,486 667,485 664,480 664,478 663,477 663,476 662,475 662,474 659,469 659,467 658,466 658,465 655,460 655,458 654,457 654,456 653,455 653,454 650,449 650,447 647,442 647,440 646,439 646,438 645,437 645,436 642,431 642,429 641,428 641,427 638,422 638,420 637,419 637,418 636,417 636,416 635,415 635,414 632,409 632,407 631,406 631,405 628,400 628,398 627,397 627,396 626,395 626,394 623,389 623,387 621,384 623,382 626,382 627,383 636,383 637,384 658,384 659,383 663,383 664,382 681,382 682,381 692,381 695,379 700,379 701,378 706,378 707,377 709,377 710,376 714,376 715,375 718,375 719,374 721,374 722,373 724,373 725,372 727,372 728,371 730,371 735,368 737,368 740,366 742,366 743,365 745,365 748,363 750,363 751,362 754,362 755,361 756,361 757,360 759,360 760,359 763,359 768,356 772,356 774,354 776,354 777,353 780,353 783,351 785,351 786,350 789,350 790,349 791,349 792,348 794,348 795,347 798,347 798,340 799,339 799,324 800,323 800,303 801,302 801,285 802,284 802,276 801,275 800,275 797,277 795,277 794,278 793,278 792,279 791,279 790,280 789,280 788,281 787,281 786,282 785,282 784,283 783,283 778,286 776,286 775,287 774,287 772,289 770,289 765,292 763,292 762,293 761,293 756,296 753,296 750,298 748,298 747,299 745,299 744,300 741,300 739,302 735,302 734,303 730,303 728,305 724,305 723,306 718,306 715,308 707,308 706,309 693,309 692,310 690,310 689,311 668,311 667,310 664,310 663,309 647,309 646,308 636,308 633,306 626,306 625,305 619,305 616,303 611,303 610,302 604,302 602,300 597,300 596,299 592,299 589,297 586,297 585,296 581,296 578,294 574,294 573,293 569,293 568,292 566,292 565,291 563,291 562,290 558,290 557,289 555,289 552,287 549,287 548,286 545,286 542,284 539,284 538,283 534,283 532,281 528,281 527,280 525,280 523,278 520,278 519,277 516,277 513,275 510,275 509,274 505,274 503,272 500,272 499,271 495,271 493,269 490,269 489,268 486,268 484,266 480,266 479,265 476,265 473,263 470,263 469,262 465,262 463,260 459,260 458,259 454,259 451,257 447,257 446,256 441,256 440,255 436,255 435,254 433,254 432,253 427,253 426,252 421,252 418,250 411,250 410,249 402,249 401,248 399,248 398,247 385,247 384,246 342,246 341,247 330,247 327,249 320,249 319,250 314,250 312,252 308,252 307,253 303,253 302,254 299,254 296,256 292,256 291,257 289,257 286,259 284,259 283,260 281,260 276,263 273,263 271,265 269,265 268,266 267,266 266,267 265,267 264,268 263,268 262,269 261,269 260,270 259,270 258,271 255,272 253,274 252,274 251,275 249,275 247,277 246,277 245,278 244,278 242,280 239,281 236,284 234,284 230,288 229,288 224,293 222,293 Z"/>
+    <path d="M 876,218 876,256 877,257 914,257 915,256 915,219 914,218 Z"/>
+  </symbol>
+ </defs>
+</svg>
+
 <div class="page">
  <nav class="frame top-nav" style="--i:0" aria-label="Əsas naviqasiya">
-  <a class="theme-toggle search-btn" id="searchBtn" href="sual_axtarisi" aria-label="Sual axtarışı"><svg class="rise theme-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></a>
   <div class="rise nav-links"><a href="/" class="nav-link">Əsas Səhifə</a><a href="elaqe" class="nav-link">Bizimlə Əlaqə</a></div>
   <button class="theme-toggle" type="button" id="themeToggle" aria-label="Gecə rejiminə keç"><svg class="rise theme-icon" id="themeIcon" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg></button>
  </nav>
@@ -176,7 +146,7 @@ footer{min-height:88px}
 
   <section id="s-count" class="screen active">
    <div class="frame box glow center" style="--i:2"><h2>Komanda sayı:</h2>
-    <input class="in" id="cnt" type="number" inputmode="numeric" min="2" max="40" placeholder="məs. 8">
+    <input class="in" id="cnt" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="məs. 8">
     <div class="actions"><button class="btn" id="cNext" type="button">Davam</button></div>
    </div>
   </section>
@@ -200,33 +170,7 @@ footer{min-height:88px}
  </main>
 </div>
 
-<footer>
- <div class="footer-line">Unikal İntellektual Oyunlar Platforması</div>
- <a href="https://www.instagram.com/piksel.iok" class="footer-line footer-link" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a>
- <a href="https://www.instagram.com/onurelzh" class="footer-line footer-link" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a>
-</footer>
-
-<div class="quick-actions" aria-label="Sürətli keçidlər">
- <button class="quick-action" type="button" id="quickNewsButton" aria-label="Tezliklə gələn yeniliklər" aria-controls="quickNewsOverlay" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.2 2.2 0 0 0 2.18-2h-4.36A2.2 2.2 0 0 0 12 22Zm6-6v-5a6 6 0 0 0-5-5.91V4a1 1 0 0 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2Z" fill="currentColor"/></svg></button>
- <button class="quick-action feedback-mark" type="button" id="quickFeedbackButton" aria-label="Xəta və ya çatışmazlıq bildir" aria-controls="quickFeedbackOverlay" aria-expanded="false">!</button>
-</div>
-<div class="quick-overlay" id="quickFeedbackOverlay" aria-hidden="true">
- <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Xəta və ya çatışmazlıq bildir">
-  <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
-  <p class="quick-feedback-copy">Platformada qarşılaşdığınız hər hansısa xətanı və ya funksiyalardakı əksiyi bildir</p>
-  <a class="quick-submit" href="https://wa.me/994508377942?text=peaksel.az-da%20..." rel="noopener noreferrer" target="_blank">BİLDİR</a>
- </section>
-</div>
-<div class="quick-overlay" id="quickNewsOverlay" aria-hidden="true">
- <section class="quick-panel" role="dialog" aria-modal="true" aria-label="Tezliklə gələn yeniliklər">
-  <button class="quick-close" type="button" aria-label="Pəncərəni bağla">×</button>
-  <h2 class="quick-news-title">TEZLİKLƏ...</h2>
-  <div class="quick-news-window"><div class="quick-news-roll" aria-label="Gələcək yeniliklər">
-   <span>πksel Ruleti</span><span>πksel Duel</span><span>πksel 3X3</span><span>Turnir xal/reytinq cədvəli</span><span>Xəmsə Səsli otaq sistemi</span><span>Sizdən gələn suallar</span><span>Şəxsi πksel akkontları</span><span>Sferada yeniliklər</span>
-   <span aria-hidden="true">πksel Ruleti</span><span aria-hidden="true">πksel Duel</span><span aria-hidden="true">πksel 3X3</span><span aria-hidden="true">Turnir xal/reytinq cədvəli</span><span aria-hidden="true">Xəmsə Səsli otaq sistemi</span><span aria-hidden="true">Sizdən gələn suallar</span><span aria-hidden="true">Şəxsi πksel akkontları</span><span aria-hidden="true">Sferada yeniliklər</span>
-  </div></div>
- </section>
-</div>
+<script src="footer.js"></script>
 
 <script>
 const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -234,6 +178,13 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random(
 const shake=el=>el.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],300);
 function fit(el,pad,start){el.style.fontSize=start?start+'px':'';let s=parseFloat(getComputedStyle(el).fontSize),b=el.parentNode;while(el.offsetWidth>b.clientWidth-pad&&s>7){s-=.5;el.style.fontSize=s+'px'}}
 const fitRow=r=>r.querySelectorAll('.team span').forEach(s=>fit(s,28));
+
+/* ===== SAĞ KLİK VƏ CTRL+U BLOKU ===== */
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+ const k=(e.key||'').toLowerCase();
+ if((e.ctrlKey||e.metaKey)&&k==='u'){e.preventDefault();e.stopPropagation()}
+},true);
 
 /* ===== TEMA ===== */
 const themeToggle=$('#themeToggle'),rays=[...document.querySelectorAll('.ray')];
@@ -247,14 +198,6 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add(
 /* ===== SİÇAN İŞIĞI ===== */
 document.addEventListener('pointermove',e=>{const n=e.target.closest&&e.target.closest('.glow');if(!n)return;const t=n.getBoundingClientRect();n.style.setProperty('--mx',e.clientX-t.left+'px');n.style.setProperty('--my',e.clientY-t.top+'px')});
 
-/* ===== AXTARIŞ DÜYMƏSİ ===== */
-$('#searchBtn').addEventListener('click',e=>{if(e.ctrlKey||e.metaKey||e.shiftKey)return;e.preventDefault();const b=e.currentTarget,ic=b.querySelector('svg');ic.getAnimations().forEach(a=>a.cancel());const an=ic.animate([{transform:'scale(1) rotate(0deg)'},{transform:'scale(.8) rotate(-18deg)',offset:.35},{transform:'scale(1.15) rotate(8deg)',offset:.7},{transform:'scale(1) rotate(0deg)'}],{duration:450,easing:'cubic-bezier(.4,0,.2,1)'});an.onfinish=()=>{location.href=b.getAttribute('href')}});
-
-/* ===== SAĞ KLİK BLOKU ===== */
-(()=>{const e=[[$('#quickFeedbackButton'),$('#quickFeedbackOverlay')],[$('#quickNewsButton'),$('#quickNewsOverlay')]],r=()=>e.forEach(([b,o])=>{o.classList.remove('open');o.setAttribute('aria-hidden','true');b.setAttribute('aria-expanded','false')});
- e.forEach(([b,o])=>{b.addEventListener('click',()=>{const w=!o.classList.contains('open');r();if(w){o.classList.add('open');o.setAttribute('aria-hidden','false');b.setAttribute('aria-expanded','true')}});o.addEventListener('click',x=>{x.target===o&&r()});o.querySelector('.quick-close').addEventListener('click',r)});
- document.addEventListener('keydown',x=>{'Escape'===x.key&&r()})})();
-
 /* ===== EKRANLAR ===== */
 let names=[],st={};
 async function go(id){
@@ -266,9 +209,10 @@ async function go(id){
 }
 $('#nBack').onclick=()=>go('s-count');
 $('#restart').onclick=()=>go('s-count');
-$('#cnt').onkeydown=e=>e.key==='Enter'&&$('#cNext').click();
+$('#cnt').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2);e.target.classList.remove('bad')});
+$('#cnt').addEventListener('keydown',e=>{if(e.key==='Enter')$('#cNext').click()});
 $('#cNext').onclick=async()=>{
- const n=parseInt($('#cnt').value);
+ const n=parseInt($('#cnt').value,10);
  if(!(n>=2&&n<=40)){shake($('#cnt'));$('#cnt').classList.add('bad');return}
  $('#cnt').classList.remove('bad');
  $('#nameGrid').innerHTML=Array.from({length:n},(_,i)=>`<div class="slot"><b>${i+1}</b><input class="in" maxlength="40" placeholder="Komanda adı"></div>`).join('');
@@ -295,7 +239,8 @@ function anim(r,D){
  r.querySelector('.vs').animate([{transform:'scale(0)'},{transform:'scale(1.4)',offset:.7},{transform:'scale(1)'}],{duration:D*.65,delay:D*.35,easing:'ease-out',fill:'both'});
  return sleep(D);
 }
-async function wait(){const t=performance.now();while(!st.skip&&performance.now()-t<(st.fast?1500:2500))await sleep(60)}
+// gələn yazının ekranda gözləmə müddəti: normal 2.3 san, sürətli 0.7 san
+async function wait(){const t=performance.now();while(!st.skip&&performance.now()-t<(st.fast?700:2300))await sleep(30)}
 function initDraw(){
  const M=$('#matches');M.innerHTML='';
  ['#fast','#skip'].forEach(s=>{$(s).style.display='';$(s).disabled=false});$('#dl').style.display='none';$('#backD').style.display='none';
@@ -320,12 +265,16 @@ async function runDraw(P){
 $('#fast').onclick=e=>{st.fast=true;e.currentTarget.disabled=true};
 $('#skip').onclick=()=>{st.skip=true;$('#fast').disabled=$('#skip').disabled=true};
 $('#dl').onclick=()=>{
- const M=$('#matches'),R=M.getBoundingClientRect(),k=2,P=20,cs=getComputedStyle(document.body),v=n=>cs.getPropertyValue(n).trim();
- const W=R.width+P*2,H=R.height+P*2,cv=document.createElement('canvas');cv.width=W*k;cv.height=H*k;
+ const M=$('#matches'),R=M.getBoundingClientRect(),k=2,P=20,HD=96,cs=getComputedStyle(document.body),v=n=>cs.getPropertyValue(n).trim();
+ const W=R.width+P*2,H=R.height+P*2+HD,cv=document.createElement('canvas');cv.width=W*k;cv.height=H*k;
  const g=cv.getContext('2d');g.scale(k,k);g.fillStyle=v('--page');g.fillRect(0,0,W,H);
+ // πksel loqosu ən üstdə: fon açıqdırsa tünd, fon tünddürsə açıq rəngdə (--accent)
+ const lh=64,ls=lh/640,lw=750*ls;
+ g.save();g.translate((W-lw)/2,(HD-lh)/2+4);g.scale(ls,ls);g.translate(-170,-210);g.fillStyle=v('--accent');
+ document.querySelectorAll('#pkLogo path').forEach(p=>g.fill(new Path2D(p.getAttribute('d'))));g.restore();
  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()};
- const txt=(el,x,y,w,h,col)=>{const s=getComputedStyle(el);g.font=`${s.fontWeight} ${s.fontSize} Poppins,sans-serif`;g.fillStyle=col;g.textAlign='center';g.textBaseline='middle';g.fillText(el.textContent,x+w/2,y+h/2+1)};
- M.querySelectorAll('.team,.vs').forEach(el=>{const b=el.getBoundingClientRect(),x=b.left-R.left+P,y=b.top-R.top+P;
+ const txt=(el,x,y,w,h,col)=>{const s=getComputedStyle(el.nodeType===1?el:el.parentNode);g.font=`${s.fontWeight} ${s.fontSize} Poppins,sans-serif`;g.fillStyle=col;g.textAlign='center';g.textBaseline='middle';g.fillText(el.textContent,x+w/2,y+h/2+1)};
+ M.querySelectorAll('.team,.vs').forEach(el=>{const b=el.getBoundingClientRect(),x=b.left-R.left+P,y=b.top-R.top+P+HD;
   if(el.classList.contains('team')){
    const bye=el.classList.contains('bye'),r=parseFloat(getComputedStyle(el).borderTopLeftRadius)||20;
    if(bye){rr(x+1,y+1,b.width-2,b.height-2,r);g.setLineDash([6,4]);g.strokeStyle=v('--accent');g.lineWidth=2;g.stroke();g.setLineDash([])}
