@@ -42,6 +42,10 @@
       '.g-drag{cursor:grabbing!important}';
     document.head.appendChild(st);
 
+    // başlıq tam enli görünməz şüa olmasın, yalnız yazı qədər yer tutsun
+    var ttl = document.querySelector('.section-title');
+    if (ttl) { ttl.style.width = 'fit-content'; ttl.style.marginLeft = 'auto'; ttl.style.marginRight = 'auto'; }
+
     var sy = window.scrollY || window.pageYOffset;
     var sx = window.scrollX || window.pageXOffset || 0;
     var vw = root.clientWidth;
@@ -49,6 +53,7 @@
     var floorPage = foot ? foot.getBoundingClientRect().top + sy : root.scrollHeight;
     var bodies = [];
     var topZ = 100;
+    var G = 2200, REST = .15;
 
     function add(el, parent, fixed, noRot) {
       var r = el.getBoundingClientRect();
@@ -61,6 +66,8 @@
       el.classList.add('g-body');
       var b = {
         el: el, parent: parent || null, fixed: !!fixed, noRot: !!noRot,
+        w: r.width, h: r.height,
+        inv: 1 / Math.sqrt(r.width * r.height),
         left0: left0, top0: top0,
         minX: -left0, maxX: Math.max(-left0, vw - r.width - left0),
         minY: -top0, maxY: Math.max(0, floor - (top0 + r.height)),
@@ -68,7 +75,7 @@
         a: 0, va: noRot ? 0 : (Math.random() - .5) * (wide ? 14 : 50),
         tilt: noRot ? 0 : (Math.random() - .5) * 5,
         start: performance.now() + Math.random() * 700,
-        rest: false, dragging: false
+        contact: false, dragging: false
       };
       bodies.push(b);
       return b;
@@ -85,21 +92,95 @@
           [].forEach.call(el.children, function (c) { add(c); });
           return;
         }
-        var wide = el.getBoundingClientRect().width > 400;
         var b = add(el, null, false, el.id === 'dock');
         if (b && el.id === 'dock') {
           el.style.overflow = 'visible';
           var g = document.getElementById('dockGrid');
           if (g) g.style.zIndex = 'auto';
+          // ikon düymələr (kvadrat + svg + yazı) bütöv bir cisimdir, öz kvadratından ayrılmır
           [].forEach.call(el.querySelectorAll('.tile'), function (t) { add(t, b); });
         }
       });
     }
     [].forEach.call(document.querySelectorAll('.quick-action'), function (q) { add(q, null, true); });
 
-    /* ---------- fizika dövrü ---------- */
-    var running = false, last = 0;
+    var maxStart = 0;
+    bodies.forEach(function (b) { if (b.start > maxStart) maxStart = b.start; });
+
+    /* ---------- fizika ---------- */
+    function norm(a) { return ((a + 180) % 360 + 360) % 360 - 180; }
+
+    function integrate(b, h, now) {
+      if (b.dragging || now < b.start) return;
+      var was = b.contact;
+      b.contact = false;
+      b.vy += G * h;
+      b.x += b.vx * h;
+      b.y += b.vy * h;
+      if (!b.noRot) {
+        b.a += b.va * h;
+        if (was) {
+          b.va *= Math.max(0, 1 - 10 * h);
+          b.a = norm(b.a);
+          b.a += (b.tilt - b.a) * Math.min(1, 8 * h);
+        }
+      }
+      if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = -b.vx * .5; b.va *= -.5; }
+      else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = -b.vx * .5; b.va *= -.5; }
+      if (b.y < b.minY) { b.y = b.minY; if (b.vy < 0) b.vy = -b.vy * .4; }
+      if (b.y >= b.maxY) {
+        b.y = b.maxY; b.contact = true;
+        if (b.vy > 90) { b.vy *= -.32; b.va *= .6; b.vx *= .9; }
+        else { b.vy = 0; b.vx *= Math.max(0, 1 - 6 * h); }
+      }
+    }
+
+    function clampB(b) {
+      if (b.dragging) return;
+      if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = 0; }
+      else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = 0; }
+      if (b.y < b.minY) { b.y = b.minY; if (b.vy < 0) b.vy = 0; }
+      if (b.y > b.maxY) { b.y = b.maxY; if (b.vy > 0) b.vy = 0; b.contact = true; }
+    }
+
+    function collide(h) {
+      var n = bodies.length;
+      for (var i = 0; i < n; i++) {
+        var A = bodies[i];
+        for (var j = i + 1; j < n; j++) {
+          var B = bodies[j];
+          if (A.fixed !== B.fixed) continue;
+          if (A.parent === B || B.parent === A) continue;
+          if (A.dragging && B.dragging) continue;
+          var ax = A.left0 + A.x, ay = A.top0 + A.y, bx = B.left0 + B.x, by = B.top0 + B.y;
+          var ox = Math.min(ax + A.w, bx + B.w) - Math.max(ax, bx);
+          if (ox <= 0) continue;
+          var oy = Math.min(ay + A.h, by + B.h) - Math.max(ay, by);
+          if (oy <= 0) continue;
+          var iA = A.dragging ? 0 : A.inv, iB = B.dragging ? 0 : B.inv, tot = iA + iB;
+          if (!tot) continue;
+          var nn, jj, vn, vt, jt;
+          if (ox < oy) {
+            nn = (ax + A.w / 2 < bx + B.w / 2) ? 1 : -1;
+            A.x -= nn * ox * iA / tot; B.x += nn * ox * iB / tot;
+            vn = (B.vx - A.vx) * nn;
+            if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
+            vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB;
+          } else {
+            nn = (ay + A.h / 2 < by + B.h / 2) ? 1 : -1; // 1: A üstdə
+            A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
+            vn = (B.vy - A.vy) * nn;
+            if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
+            vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB;
+            if (nn === 1) A.contact = true; else B.contact = true;
+          }
+        }
+      }
+    }
+
+    var running = false, last = 0, lowTime = 0;
     function kick() {
+      lowTime = 0;
       if (running) return;
       running = true;
       last = performance.now();
@@ -108,43 +189,27 @@
     function step(now) {
       var dt = Math.min((now - last) / 1000, .033);
       last = now;
-      var any = false;
+      var sub = 2, h = dt / sub;
+      for (var s = 0; s < sub; s++) {
+        bodies.forEach(function (b) { integrate(b, h, now); });
+        for (var it = 0; it < 4; it++) { collide(h); bodies.forEach(clampB); }
+      }
+      var moving = false;
       bodies.forEach(function (b) {
-        if (!b.dragging && !b.rest && now >= b.start) {
-          b.vy += 2200 * dt;
-          b.x += b.vx * dt;
-          b.y += b.vy * dt;
-          if (!b.noRot) b.a += b.va * dt;
-          if (b.x < b.minX) { b.x = b.minX; b.vx = Math.abs(b.vx) * .5; b.va *= -.5; }
-          else if (b.x > b.maxX) { b.x = b.maxX; b.vx = -Math.abs(b.vx) * .5; b.va *= -.5; }
-          if (b.y < b.minY) { b.y = b.minY; b.vy = Math.abs(b.vy) * .4; }
-          if (b.y >= b.maxY) {
-            b.y = b.maxY;
-            if (Math.abs(b.vy) > 90) {
-              b.vy *= -.32; b.va *= .6; b.vx *= .9;
-            } else {
-              b.vy = 0;
-              b.vx *= Math.max(0, 1 - 6 * dt);
-              if (!b.noRot) {
-                b.va = 0;
-                b.a = ((b.a + 180) % 360 + 360) % 360 - 180;
-                b.a += (b.tilt - b.a) * Math.min(1, 8 * dt);
-              }
-              if (Math.abs(b.vx) < 6 && (b.noRot || Math.abs(b.a - b.tilt) < .3)) {
-                b.vx = 0; b.rest = true;
-                if (!b.noRot) b.a = b.tilt;
-              }
-            }
-          }
-        }
-        if (b.dragging || !b.rest) any = true;
+        if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
+            (!b.noRot && b.contact && Math.abs(b.a - b.tilt) > .5))) moving = true;
         var px = b.parent ? b.parent.x : 0, py = b.parent ? b.parent.y : 0;
         b.el.style.translate = (b.x - px) + 'px ' + (b.y - py) + 'px';
         b.el.style.rotate = b.a + 'deg';
       });
-      if (any) requestAnimationFrame(step); else running = false;
+      if (grab || moving || now < maxStart + 100) lowTime = 0; else lowTime += dt;
+      if (lowTime > .5) {
+        bodies.forEach(function (b) { b.vx = 0; b.vy = 0; b.va = 0; if (!b.noRot) b.a = b.tilt; b.el.style.rotate = b.a + 'deg'; });
+        running = false;
+        return;
+      }
+      requestAnimationFrame(step);
     }
-    kick();
 
     /* ---------- tutub savurmaq ---------- */
     var grab = null, suppress = false;
@@ -154,6 +219,12 @@
         x: e.clientX + (b.fixed ? 0 : (window.scrollX || window.pageXOffset || 0)),
         y: e.clientY + (b.fixed ? 0 : (window.scrollY || window.pageYOffset || 0))
       };
+    }
+    function sampleVel(samples) {
+      if (samples.length < 2) return null;
+      var f = samples[0], l = samples[samples.length - 1], d = (l.t - f.t) / 1000;
+      if (d <= .005) return null;
+      return { vx: clamp((l.x - f.x) / d, -3000, 3000), vy: clamp((l.y - f.y) / d, -3000, 3000) };
     }
 
     document.addEventListener('pointerdown', function (e) {
@@ -167,7 +238,7 @@
       e.stopPropagation();
       e.preventDefault();
       var p = pagePt(e, b);
-      b.dragging = true; b.rest = false;
+      b.dragging = true;
       b.vx = 0; b.vy = 0; b.va = 0;
       b.el.style.zIndex = ++topZ;
       b.el.classList.add('g-drag');
@@ -181,15 +252,10 @@
     function release() {
       if (!grab) return;
       var b = grab.b, s = grab.samples, now = performance.now();
-      var vx = 0, vy = 0;
-      if (s.length > 1 && now - s[s.length - 1].t < 80) {
-        var f = s[0], l = s[s.length - 1], d = (l.t - f.t) / 1000;
-        if (d > .005) { vx = (l.x - f.x) / d; vy = (l.y - f.y) / d; }
-      }
-      vx = clamp(vx, -3000, 3000);
-      vy = clamp(vy, -3000, 3000);
-      b.vx = vx; b.vy = vy;
-      b.va = b.noRot ? 0 : clamp(vx * .04, -240, 240);
+      var v = (s.length > 1 && now - s[s.length - 1].t < 80) ? sampleVel(s) : null;
+      b.vx = v ? v.vx : 0;
+      b.vy = v ? v.vy : 0;
+      b.va = b.noRot ? 0 : clamp(b.vx * .04, -240, 240);
       b.dragging = false;
       b.el.classList.remove('g-drag');
       if (grab.moved) { suppress = true; setTimeout(function () { suppress = false; }, 60); }
@@ -207,7 +273,10 @@
       var t = performance.now();
       grab.samples.push({ t: t, x: p.x, y: p.y });
       while (grab.samples.length > 1 && t - grab.samples[0].t > 100) grab.samples.shift();
+      var v = sampleVel(grab.samples);
+      if (v) { b.vx = v.vx; b.vy = v.vy; } // tutulan cisim başqalarına zərbə ilə təsir etsin
       if (!b.noRot) b.a += (clamp((e.movementX || 0) * 1.2, -18, 18) - b.a) * .25;
+      lowTime = 0;
     }, true);
 
     window.addEventListener('pointerup', function (e) { if (grab && e.pointerId === grab.id) release(); }, true);
@@ -218,5 +287,7 @@
       if (suppress) { e.preventDefault(); e.stopPropagation(); }
     }, true);
     document.addEventListener('dragstart', function (e) { e.preventDefault(); }, true);
+
+    kick();
   }
 })();
