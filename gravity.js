@@ -230,6 +230,7 @@
     }
 
     // üstdəki cisim altdakının kənarından çıxıbsa (ağırlıq mərkəzi dayağın kənarındadır) yıxılır
+    // true: həqiqətən dayaqdadır; false: dayaq yoxdur, sürüşüb düşməlidir
     function support(top, sup, horiz, sign, h) {
       var tc, s0, s1;
       if (horiz) {
@@ -239,11 +240,12 @@
         tc = top.left0 + top.x + top.dx + top.ew / 2;
         s0 = sup.left0 + sup.x + sup.dx; s1 = s0 + sup.ew;
       }
-      if (tc >= s0 && tc <= s1) { top.contact = true; return; }
-      if (top.dragging) return;
+      if (tc >= s0 && tc <= s1) { top.contact = true; return true; }
+      if (top.dragging) return false;
       var dir = tc < (s0 + s1) / 2 ? -1 : 1;
-      if (horiz) top.vy += dir * 600 * h; else top.vx += dir * 600 * h;
-      if (!top.noRot) top.va = clamp(top.va + dir * sign * 250 * h, -400, 400);
+      if (horiz) top.vy += dir * 1000 * h; else top.vx += dir * 1000 * h;
+      if (!top.noRot) top.va = clamp(top.va + dir * sign * 300 * h, -400, 400);
+      return false;
     }
 
     function collide(h) {
@@ -267,20 +269,22 @@
           var nn, jj, vn, vt, jt;
           if (ox < oy) {
             nn = (ax + A.ew / 2 < bx + B.ew / 2) ? 1 : -1;
+            var okX = true;
+            if (A.glx > S) { okX = nn === 1 ? support(A, B, true, -1, h) : support(B, A, true, -1, h); }
+            else if (A.glx < -S) { okX = nn === 1 ? support(B, A, true, 1, h) : support(A, B, true, 1, h); }
             A.x -= nn * ox * iA / tot; B.x += nn * ox * iB / tot;
             vn = (B.vx - A.vx) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
-            vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB;
-            if (A.glx > S) { if (nn === 1) support(A, B, true, -1, h); else support(B, A, true, -1, h); }
-            else if (A.glx < -S) { if (nn === 1) support(B, A, true, 1, h); else support(A, B, true, 1, h); }
+            if (okX) { vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB; }
           } else {
             nn = (ay + A.eh / 2 < by + B.eh / 2) ? 1 : -1; // 1: A üstdə
+            var okY = true;
+            if (A.gly > S) { okY = nn === 1 ? support(A, B, false, 1, h) : support(B, A, false, 1, h); }
+            else if (A.gly < -S) { okY = nn === 1 ? support(B, A, false, -1, h) : support(A, B, false, -1, h); }
             A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
             vn = (B.vy - A.vy) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
-            vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB;
-            if (A.gly > S) { if (nn === 1) support(A, B, false, 1, h); else support(B, A, false, 1, h); }
-            else if (A.gly < -S) { if (nn === 1) support(B, A, false, -1, h); else support(A, B, false, -1, h); }
+            if (okY) { vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB; }
           }
         }
       }
@@ -296,12 +300,16 @@
       var ax = clamp((g.svx - g.pvx) / dt, -12000, 12000), ay = clamp((g.svy - g.pvy) / dt, -12000, 12000);
       g.pvx = g.svx; g.pvy = g.svy;
       g.sax += (ax - g.sax) * .3; g.say += (ay - g.say) * .3;
-      var n = 4, h = dt / n, dx = 0, dy = 0;
+      // yalnız basanda fırlanmasın: sürüşdürmə başlayana qədər torque yoxdur
+      if (!g.moved) { g.om = 0; g.sax = 0; g.say = 0; }
+      var sp = Math.sqrt(g.svx * g.svx + g.svy * g.svy);
+      g.act += (Math.min(1, sp / 150) - g.act) * Math.min(1, 8 * dt);
+      var n = g.moved ? 4 : 0, h = dt / 4, dx = 0, dy = 0;
       for (var i = 0; i < n; i++) {
         var th = b.a * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
         dx = -(g.rx * c - g.ry * s);
         dy = -(g.rx * s + g.ry * c);
-        var Fx = b.glx * 3000 / G - g.sax, Fy = b.gly * 3000 / G - g.say;
+        var Fx = b.glx * 3000 / G * g.act - g.sax, Fy = b.gly * 3000 / G * g.act - g.say;
         var al = (dx * Fy - dy * Fx) / (dx * dx + dy * dy + g.k2);
         g.om += al * h;
         g.om *= Math.max(0, 1 - 3 * h);
@@ -397,7 +405,7 @@
         b: b, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false, samples: [],
         gx: p.x - (b.left0 + b.x), gy: p.y - (b.top0 + b.y),
         px: p.x, py: p.y, ppx: p.x, ppy: p.y,
-        svx: 0, svy: 0, pvx: 0, pvy: 0, sax: 0, say: 0, om: 0,
+        svx: 0, svy: 0, pvx: 0, pvy: 0, sax: 0, say: 0, om: 0, act: 0,
         k2: (b.w * b.w + b.h * b.h) / 12
       };
       // tutulan nöqtənin cismin mərkəzinə nisbətən (fırlanmamış) mövqeyi
