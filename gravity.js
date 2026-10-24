@@ -27,28 +27,49 @@
     var sy = window.scrollY || window.pageYOffset;
     var foot = document.querySelector('footer');
     var floorPage = foot ? foot.getBoundingClientRect().top + sy : document.documentElement.scrollHeight;
-    var dock = document.getElementById('dock');
-    if (dock) dock.style.overflow = 'visible';
-
-    var sel = '.top-nav,.hero,.section-title,.dock .tile,.cards .card,.quick-action';
     var bodies = [];
-    [].forEach.call(document.querySelectorAll(sel), function (el) {
+
+    function add(el, parent, fixed) {
       var r = el.getBoundingClientRect();
-      if (!r.width && !r.height) return;
-      var fixed = !!el.closest('.quick-actions');
+      if (!r.width && !r.height) return null;
       var bottom = fixed ? r.bottom : r.bottom + sy;
       var floor = fixed ? window.innerHeight : floorPage;
-      bodies.push({
-        el: el,
+      var wide = r.width > 400;
+      var b = {
+        el: el, parent: parent || null,
         room: Math.max(0, floor - bottom),
         x: 0, y: 0, vy: 0,
-        vx: (Math.random() - .5) * 60,
+        vx: (Math.random() - .5) * (wide ? 20 : 60),
         a: 0,
-        va: (Math.random() - .5) * 50,
+        va: (Math.random() - .5) * (wide ? 14 : 50),
         start: performance.now() + Math.random() * 700,
         done: false
+      };
+      bodies.push(b);
+      return b;
+    }
+
+    var nav = document.querySelector('.top-nav');
+    if (nav) add(nav);
+
+    var main = document.querySelector('main');
+    if (main) {
+      [].forEach.call(main.children, function (el) {
+        if (/^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return;
+        if (el.classList.contains('cards')) {
+          [].forEach.call(el.children, function (c) { add(c); });
+          return;
+        }
+        var b = add(el);
+        if (b && el.id === 'dock') {
+          b.va = 0; // çərçivə fırlanmasın, içindəkilər öz-özünə düşür
+          el.style.overflow = 'visible';
+          [].forEach.call(el.querySelectorAll('.tile'), function (t) { add(t, b); });
+        }
       });
-    });
+    }
+
+    [].forEach.call(document.querySelectorAll('.quick-action'), function (q) { add(q, null, true); });
 
     var last = performance.now();
     function step(now) {
@@ -56,25 +77,29 @@
       last = now;
       var running = false;
       bodies.forEach(function (b) {
-        if (b.done) return;
-        running = true;
-        if (now < b.start) return;
-        b.vy += 2200 * dt;
-        b.y += b.vy * dt;
-        b.x += b.vx * dt;
-        b.a += b.va * dt;
-        if (b.y >= b.room) {
-          b.y = b.room;
-          if (Math.abs(b.vy) < 90) {
-            b.done = true;
-            b.a = (Math.random() - .5) * 6;
-          } else {
-            b.vy *= -.32;
-            b.vx *= .7;
-            b.va *= .6;
+        if (!b.done) {
+          running = true;
+          if (now >= b.start) {
+            b.vy += 2200 * dt;
+            b.y += b.vy * dt;
+            b.x += b.vx * dt;
+            b.a += b.va * dt;
+            if (b.y >= b.room) {
+              b.y = b.room;
+              if (Math.abs(b.vy) < 90) {
+                b.done = true;
+                b.a = b.va === 0 ? 0 : (Math.random() - .5) * 6;
+              } else {
+                b.vy *= -.32;
+                b.vx *= .7;
+                b.va *= .6;
+              }
+            }
           }
         }
-        b.el.style.translate = b.x + 'px ' + b.y + 'px';
+        var px = b.parent ? b.parent.x : 0;
+        var py = b.parent ? b.parent.y : 0;
+        b.el.style.translate = (b.x - px) + 'px ' + (b.y - py) + 'px';
         b.el.style.rotate = b.a + 'deg';
       });
       if (running) requestAnimationFrame(step);
