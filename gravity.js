@@ -178,6 +178,35 @@
       }
     }
 
+    // tutulan cisim tutduğun nöqtədən asılmış kimi yelləncək olur: küncdən dartanda fırlanır
+    function swing(dt) {
+      var g = grab, b = g.b;
+      if (b.noRot || dt < .001) return;
+      var vx = (g.px - g.ppx) / dt, vy = (g.py - g.ppy) / dt;
+      g.ppx = g.px; g.ppy = g.py;
+      g.svx += (vx - g.svx) * .4; g.svy += (vy - g.svy) * .4;
+      var ax = clamp((g.svx - g.pvx) / dt, -12000, 12000), ay = clamp((g.svy - g.pvy) / dt, -12000, 12000);
+      g.pvx = g.svx; g.pvy = g.svy;
+      g.sax += (ax - g.sax) * .3; g.say += (ay - g.say) * .3;
+      var n = 4, h = dt / n, dx = 0, dy = 0;
+      for (var i = 0; i < n; i++) {
+        var th = b.a * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
+        dx = -(g.rx * c - g.ry * s);
+        dy = -(g.rx * s + g.ry * c);
+        var Fx = -g.sax, Fy = 3000 - g.say;
+        var al = (dx * Fy - dy * Fx) / (dx * dx + dy * dy + g.k2);
+        g.om += al * h;
+        g.om *= Math.max(0, 1 - 3 * h);
+        g.om = clamp(g.om, -25, 25);
+        b.a += g.om * h * 180 / Math.PI;
+      }
+      var th2 = b.a * Math.PI / 180, c2 = Math.cos(th2), s2 = Math.sin(th2);
+      dx = -(g.rx * c2 - g.ry * s2);
+      dy = -(g.rx * s2 + g.ry * c2);
+      b.x = clamp(g.px + dx - b.left0 - b.w / 2, b.minX, b.maxX);
+      b.y = clamp(g.py + dy - b.top0 - b.h / 2, b.minY, b.maxY);
+    }
+
     var running = false, last = 0, lowTime = 0;
     function kick() {
       lowTime = 0;
@@ -189,6 +218,7 @@
     function step(now) {
       var dt = Math.min((now - last) / 1000, .033);
       last = now;
+      if (grab) swing(dt);
       var sub = 2, h = dt / sub;
       for (var s = 0; s < sub; s++) {
         bodies.forEach(function (b) { integrate(b, h, now); });
@@ -244,8 +274,16 @@
       b.el.classList.add('g-drag');
       grab = {
         b: b, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false, samples: [],
-        gx: p.x - (b.left0 + b.x), gy: p.y - (b.top0 + b.y)
+        gx: p.x - (b.left0 + b.x), gy: p.y - (b.top0 + b.y),
+        px: p.x, py: p.y, ppx: p.x, ppy: p.y,
+        svx: 0, svy: 0, pvx: 0, pvy: 0, sax: 0, say: 0, om: 0,
+        k2: (b.w * b.w + b.h * b.h) / 12
       };
+      // tutulan nöqtənin cismin mərkəzinə nisbətən (fırlanmamış) mövqeyi
+      var cx = b.left0 + b.x + b.w / 2, cy = b.top0 + b.y + b.h / 2;
+      var wx = p.x - cx, wy = p.y - cy, th0 = b.a * Math.PI / 180;
+      grab.rx = wx * Math.cos(th0) + wy * Math.sin(th0);
+      grab.ry = -wx * Math.sin(th0) + wy * Math.cos(th0);
       kick();
     }, true);
 
@@ -255,7 +293,7 @@
       var v = (s.length > 1 && now - s[s.length - 1].t < 80) ? sampleVel(s) : null;
       b.vx = v ? v.vx : 0;
       b.vy = v ? v.vy : 0;
-      b.va = b.noRot ? 0 : clamp(b.vx * .04, -240, 240);
+      b.va = b.noRot ? 0 : clamp(grab.om * 180 / Math.PI, -600, 600);
       b.dragging = false;
       b.el.classList.remove('g-drag');
       if (grab.moved) { suppress = true; setTimeout(function () { suppress = false; }, 60); }
@@ -267,15 +305,17 @@
       if (!grab || e.pointerId !== grab.id) return;
       if (e.pointerType === 'mouse' && e.buttons === 0) { release(); return; }
       var b = grab.b, p = pagePt(e, b);
-      b.x = clamp(p.x - grab.gx - b.left0, b.minX, b.maxX);
-      b.y = clamp(p.y - grab.gy - b.top0, b.minY, b.maxY);
+      grab.px = p.x; grab.py = p.y;
+      if (b.noRot) {
+        b.x = clamp(p.x - grab.gx - b.left0, b.minX, b.maxX);
+        b.y = clamp(p.y - grab.gy - b.top0, b.minY, b.maxY);
+      }
       if (Math.abs(e.clientX - grab.sx) + Math.abs(e.clientY - grab.sy) > 6) grab.moved = true;
       var t = performance.now();
       grab.samples.push({ t: t, x: p.x, y: p.y });
       while (grab.samples.length > 1 && t - grab.samples[0].t > 100) grab.samples.shift();
       var v = sampleVel(grab.samples);
       if (v) { b.vx = v.vx; b.vy = v.vy; } // tutulan cisim başqalarına zərbə ilə təsir etsin
-      if (!b.noRot) b.a += (clamp((e.movementX || 0) * 1.2, -18, 18) - b.a) * .25;
       lowTime = 0;
     }, true);
 
