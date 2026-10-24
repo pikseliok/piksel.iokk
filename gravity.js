@@ -100,6 +100,7 @@
         ew: r.width, eh: r.height, dx: 0, dy: 0,
         minX: 0, maxX: 0, minY: 0, maxY: 0,
         ax: 0, ay: 0, pvx: 0, pvy: 0, px0: 0, py0: 0, isFrame: false,
+        lx: 0, ly: G, glx: 0, gly: G,
         x: 0, y: 0, vx: (Math.random() - .5) * (wide ? 20 : 60), vy: 0,
         a: 0, va: noRot ? 0 : (Math.random() - .5) * (wide ? 14 : 50),
         tilt: noRot ? 0 : (Math.random() - .5) * 5,
@@ -130,7 +131,7 @@
           [].forEach.call(el.children, function (c) { add(c); });
           return;
         }
-        var b = add(el, null, false, el.id === 'dock');
+        var b = add(el, null, false);
         if (b && el.id === 'dock') {
           el.style.overflow = 'visible';
           var g = document.getElementById('dockGrid');
@@ -148,13 +149,33 @@
     /* ---------- fizika ---------- */
     function norm(a) { return ((a + 180) % 360 + 360) % 360 - 180; }
 
+    // yerçəkimi cismin öz çərçivəsində: fırlanmış çərçivənin içindəki ikonlar üçün istiqamət dəyişir
+    function updG(b) {
+      var pa = b.parent;
+      if (!pa) { b.glx = 0; b.gly = G; b.lx = 0; b.ly = G; return; }
+      var th = pa.a * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
+      b.glx = G * s; b.gly = G * c;
+      var wx = -pa.ax, wy = G - pa.ay;
+      b.lx = wx * c + wy * s;
+      b.ly = -wx * s + wy * c;
+    }
+
+    // dünya (səhifə) koordinatını cismin valideyn çərçivəsinin yerli koordinatına çevir
+    function toLocal(b, p) {
+      var P = b.parent;
+      if (!P) return p;
+      var th = P.a * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
+      var c0x = P.left0 + P.w / 2, c0y = P.top0 + P.h / 2;
+      var dx = p.x - (c0x + P.x), dy = p.y - (c0y + P.y);
+      return { x: c0x + dx * c + dy * s, y: c0y - dx * s + dy * c };
+    }
+
     function integrate(b, h, now) {
       if (b.dragging || now < b.start) return;
       var was = b.contact;
       b.contact = false;
-      var pa = b.parent;
-      b.vx += (pa ? -pa.ax : 0) * h;
-      b.vy += (G - (pa ? pa.ay : 0)) * h;
+      b.vx += b.lx * h;
+      b.vy += b.ly * h;
       b.x += b.vx * h;
       b.y += b.vy * h;
       if (!b.noRot) {
@@ -166,22 +187,48 @@
         }
         setBounds(b);
       }
-      if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = -b.vx * .5; b.va *= -.5; }
-      else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = -b.vx * .5; b.va *= -.5; }
-      if (b.y < b.minY) { b.y = b.minY; if (b.vy < 0) b.vy = -b.vy * .4; }
+      var S = G * .5, fr = Math.max(0, 1 - 6 * h);
+      var sl = b.glx < -S, sr = b.glx > S, sc = b.gly < -S, sf = b.gly > S;
+      if (b.x < b.minX || (sl && b.x <= b.minX)) {
+        b.x = b.minX;
+        if (sl) {
+          if (b.vx < -90) { b.vx *= -.32; b.va *= .6; b.vy *= .9; }
+          else if (b.vx <= 0) { b.vx = 0; b.vy *= fr; }
+          b.contact = true;
+        } else { if (b.vx < 0) b.vx = -b.vx * .5; b.va *= -.5; }
+      } else if (b.x > b.maxX || (sr && b.x >= b.maxX)) {
+        b.x = b.maxX;
+        if (sr) {
+          if (b.vx > 90) { b.vx *= -.32; b.va *= .6; b.vy *= .9; }
+          else if (b.vx >= 0) { b.vx = 0; b.vy *= fr; }
+          b.contact = true;
+        } else { if (b.vx > 0) b.vx = -b.vx * .5; b.va *= -.5; }
+      }
+      if (b.y < b.minY || (sc && b.y <= b.minY)) {
+        b.y = b.minY;
+        if (sc) {
+          if (b.vy < -90) { b.vy *= -.32; b.va *= .6; b.vx *= .9; }
+          else if (b.vy <= 0) { b.vy = 0; b.vx *= fr; }
+          b.contact = true;
+        } else { if (b.vy < 0) b.vy = -b.vy * .4; }
+      }
       if (b.y >= b.maxY) {
-        b.y = b.maxY; b.contact = true;
-        if (b.vy > 90) { b.vy *= -.32; b.va *= .6; b.vx *= .9; }
-        else { b.vy = 0; b.vx *= Math.max(0, 1 - 6 * h); }
+        b.y = b.maxY;
+        if (sf) {
+          b.contact = true;
+          if (b.vy > 90) { b.vy *= -.32; b.va *= .6; b.vx *= .9; }
+          else { b.vy = 0; b.vx *= fr; }
+        } else { if (b.vy > 0) b.vy = -b.vy * .4; }
       }
     }
 
     function clampB(b) {
       if (b.dragging) return;
-      if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = 0; }
-      else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = 0; }
-      if (b.y < b.minY) { b.y = b.minY; if (b.vy < 0) b.vy = 0; }
-      if (b.y > b.maxY) { b.y = b.maxY; if (b.vy > 0) b.vy = 0; b.contact = true; }
+      var S = G * .5;
+      if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = 0; if (b.glx < -S) b.contact = true; }
+      else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = 0; if (b.glx > S) b.contact = true; }
+      if (b.y < b.minY) { b.y = b.minY; if (b.vy < 0) b.vy = 0; if (b.gly < -S) b.contact = true; }
+      if (b.y > b.maxY) { b.y = b.maxY; if (b.vy > 0) b.vy = 0; if (b.gly > S) b.contact = true; }
     }
 
     function collide(h) {
@@ -209,13 +256,16 @@
             vn = (B.vx - A.vx) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
             vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB;
+            if (A.glx > G * .5) { if (nn === 1) A.contact = true; else B.contact = true; }
+            else if (A.glx < -G * .5) { if (nn === 1) B.contact = true; else A.contact = true; }
           } else {
             nn = (ay + A.eh / 2 < by + B.eh / 2) ? 1 : -1; // 1: A üstdə
             A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
             vn = (B.vy - A.vy) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
             vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB;
-            if (nn === 1) A.contact = true; else B.contact = true;
+            if (A.gly > G * .5) { if (nn === 1) A.contact = true; else B.contact = true; }
+            else if (A.gly < -G * .5) { if (nn === 1) B.contact = true; else A.contact = true; }
           }
         }
       }
@@ -236,7 +286,7 @@
         var th = b.a * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
         dx = -(g.rx * c - g.ry * s);
         dy = -(g.rx * s + g.ry * c);
-        var Fx = -g.sax, Fy = 3000 - g.say;
+        var Fx = b.glx * 3000 / G - g.sax, Fy = b.gly * 3000 / G - g.say;
         var al = (dx * Fy - dy * Fx) / (dx * dx + dy * dy + g.k2);
         g.om += al * h;
         g.om *= Math.max(0, 1 - 3 * h);
@@ -247,9 +297,8 @@
       var th2 = b.a * Math.PI / 180, c2 = Math.cos(th2), s2 = Math.sin(th2);
       dx = -(g.rx * c2 - g.ry * s2);
       dy = -(g.rx * s2 + g.ry * c2);
-      var po = b.parent || { x: 0, y: 0 };
-      b.x = clamp(g.px + dx - b.left0 - po.x - b.w / 2, b.minX, b.maxX);
-      b.y = clamp(g.py + dy - b.top0 - po.y - b.h / 2, b.minY, b.maxY);
+      b.x = clamp(g.px + dx - b.left0 - b.w / 2, b.minX, b.maxX);
+      b.y = clamp(g.py + dy - b.top0 - b.h / 2, b.minY, b.maxY);
     }
 
     var running = false, last = 0, lowTime = 0;
@@ -263,6 +312,7 @@
     function step(now) {
       var dt = Math.min((now - last) / 1000, .033);
       last = now;
+      bodies.forEach(updG);
       if (grab) swing(dt);
       var sub = 2, h = dt / sub;
       for (var s = 0; s < sub; s++) {
@@ -324,7 +374,7 @@
       if (!b) return;
       e.stopPropagation();
       e.preventDefault();
-      var p = pagePt(e, b);
+      var p = toLocal(b, pagePt(e, b));
       b.dragging = true;
       b.vx = 0; b.vy = 0; b.va = 0;
       b.el.style.zIndex = ++topZ;
@@ -337,8 +387,7 @@
         k2: (b.w * b.w + b.h * b.h) / 12
       };
       // tutulan nöqtənin cismin mərkəzinə nisbətən (fırlanmamış) mövqeyi
-      var po = b.parent || { x: 0, y: 0 };
-      var cx = b.left0 + po.x + b.x + b.w / 2, cy = b.top0 + po.y + b.y + b.h / 2;
+      var cx = b.left0 + b.x + b.w / 2, cy = b.top0 + b.y + b.h / 2;
       var wx = p.x - cx, wy = p.y - cy, th0 = b.a * Math.PI / 180;
       grab.rx = wx * Math.cos(th0) + wy * Math.sin(th0);
       grab.ry = -wx * Math.sin(th0) + wy * Math.cos(th0);
@@ -362,7 +411,7 @@
     window.addEventListener('pointermove', function (e) {
       if (!grab || e.pointerId !== grab.id) return;
       if (e.pointerType === 'mouse' && e.buttons === 0) { release(); return; }
-      var b = grab.b, p = pagePt(e, b);
+      var b = grab.b, p = toLocal(b, pagePt(e, b));
       grab.px = p.x; grab.py = p.y;
       if (b.noRot) {
         b.x = clamp(p.x - grab.gx - b.left0, b.minX, b.maxX);
