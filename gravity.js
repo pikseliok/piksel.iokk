@@ -230,27 +230,55 @@
       if (b.y > b.maxY) { b.y = b.maxY; if (b.vy > 0) b.vy = 0; if (b.gly > S) b.contact = true; }
     }
 
-    // üstdəki cisim altdakının kənarından çıxıbsa (ağırlıq mərkəzi dayağın kənarındadır) yıxılır
-    // true: həqiqətən dayaqdadır; false: dayaq yoxdur, sürüşüb düşməlidir
-    function support(top, sup, horiz, sign, h) {
-      var tc, s0, s1;
-      if (horiz) {
-        tc = top.top0 + top.y + top.dy + top.eh / 2;
-        s0 = sup.top0 + sup.y + sup.dy; s1 = s0 + sup.eh;
-      } else {
-        tc = top.left0 + top.x + top.dx + top.ew / 2;
-        s0 = sup.left0 + sup.x + sup.dx; s1 = s0 + sup.ew;
+    /* ---------- fırlanmış düzbucaqlılar arasında toqquşma (SAT) ---------- */
+    function prep(b) {
+      var th = b.noRot ? 0 : b.a * Math.PI / 180;
+      b.gc = Math.cos(th); b.gs = Math.sin(th);
+      b.cx = b.left0 + b.x + b.w / 2;
+      b.cy = b.top0 + b.y + b.h / 2;
+    }
+
+    var qx = 0, qy = 0, qd = 0;
+    // A-dan B-yə normal (sx, sy) və nüfuzetmə dərinliyi sd; üst-üstə düşmürsə false
+    function sat(A, B) {
+      var best = 1e9, dx = B.cx - A.cx, dy = B.cy - A.cy;
+      var axes = [A.gc, A.gs, -A.gs, A.gc, B.gc, B.gs, -B.gs, B.gc];
+      for (var k = 0; k < 4; k++) {
+        var ax = axes[2 * k], ay = axes[2 * k + 1];
+        var rA = A.w / 2 * Math.abs(A.gc * ax + A.gs * ay) + A.h / 2 * Math.abs(-A.gs * ax + A.gc * ay);
+        var rB = B.w / 2 * Math.abs(B.gc * ax + B.gs * ay) + B.h / 2 * Math.abs(-B.gs * ax + B.gc * ay);
+        var dist = dx * ax + dy * ay;
+        var ov = rA + rB - Math.abs(dist);
+        if (ov <= 0) return false;
+        if (ov < best) {
+          best = ov;
+          if (dist < 0) { qx = -ax; qy = -ay; } else { qx = ax; qy = ay; }
+        }
       }
-      if (tc >= s0 && tc <= s1) { top.contact = true; return true; }
+      qd = best;
+      return true;
+    }
+
+    // üstdəki cisim altdakının kənarından çıxıbsa (ağırlıq mərkəzi dayağın kənarındadır) yıxılır
+    // normal (nx, ny): üstdən altdakına. true: həqiqətən dayaqdadır; false: sürüşüb düşməlidir
+    function support(top, sup, nx, ny, h) {
+      var tx = -ny, ty = nx;
+      var tc = (top.cx - sup.cx) * tx + (top.cy - sup.cy) * ty;
+      var eS = sup.w / 2 * Math.abs(sup.gc * tx + sup.gs * ty) + sup.h / 2 * Math.abs(-sup.gs * tx + sup.gc * ty);
+      if (Math.abs(tc) <= eS) { top.contact = true; return true; }
       if (top.dragging) return false;
-      var dir = tc < (s0 + s1) / 2 ? -1 : 1;
-      if (horiz) top.vy += dir * 1000 * h; else top.vx += dir * 1000 * h;
-      if (!top.noRot && !top.free) top.va = clamp(top.va + dir * sign * 300 * h, -400, 400);
+      var sg = tc < 0 ? -1 : 1, dxv = tx * sg, dyv = ty * sg;
+      top.vx += dxv * 1000 * h; top.vy += dyv * 1000 * h;
+      if (!top.noRot && !top.free) {
+        var tq = dxv * (top.gly / G) - dyv * (top.glx / G);
+        top.va = clamp(top.va + (tq > 0 ? 1 : -1) * 300 * h, -400, 400);
+      }
       return false;
     }
 
     function collide(h) {
-      var n = bodies.length, S = G * .5;
+      var n = bodies.length;
+      bodies.forEach(prep);
       for (var i = 0; i < n; i++) {
         var A = bodies[i];
         for (var j = i + 1; j < n; j++) {
@@ -258,37 +286,55 @@
           if (A.fixed !== B.fixed) continue;
           if (A.parent !== B.parent) continue;
           if (A.dragging && B.dragging) continue;
-          // görünən (fırlanmış) qutular
-          var ax = A.left0 + A.x + A.dx, ay = A.top0 + A.y + A.dy;
-          var bx = B.left0 + B.x + B.dx, by = B.top0 + B.y + B.dy;
-          var ox = Math.min(ax + A.ew, bx + B.ew) - Math.max(ax, bx);
-          if (ox <= 0) continue;
-          var oy = Math.min(ay + A.eh, by + B.eh) - Math.max(ay, by);
-          if (oy <= 0) continue;
+          if (Math.abs(B.cx - A.cx) >= (A.ew + B.ew) / 2 || Math.abs(B.cy - A.cy) >= (A.eh + B.eh) / 2) continue;
+          if (!sat(A, B)) continue;
+          var nx = qx, ny = qy, d = qd;
           var iA = A.dragging ? 0 : A.inv, iB = B.dragging ? 0 : B.inv, tot = iA + iB;
           if (!tot) continue;
-          var nn, jj, vn, vt, jt;
-          if (ox < oy) {
-            nn = (ax + A.ew / 2 < bx + B.ew / 2) ? 1 : -1;
-            var okX = true;
-            if (A.glx > S) { okX = nn === 1 ? support(A, B, true, -1, h) : support(B, A, true, -1, h); }
-            else if (A.glx < -S) { okX = nn === 1 ? support(B, A, true, 1, h) : support(A, B, true, 1, h); }
-            A.x -= nn * ox * iA / tot; B.x += nn * ox * iB / tot;
-            vn = (B.vx - A.vx) * nn;
-            if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
-            if (okX) { vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB; }
-          } else {
-            nn = (ay + A.eh / 2 < by + B.eh / 2) ? 1 : -1; // 1: A üstdə
-            var okY = true;
-            if (A.gly > S) { okY = nn === 1 ? support(A, B, false, 1, h) : support(B, A, false, 1, h); }
-            else if (A.gly < -S) { okY = nn === 1 ? support(B, A, false, -1, h) : support(A, B, false, -1, h); }
-            A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
-            vn = (B.vy - A.vy) * nn;
-            if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
-            if (okY) { vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB; }
+
+          var ok = true, gn = nx * A.glx / G + ny * A.gly / G;
+          if (gn > .5) ok = support(A, B, nx, ny, h);
+          else if (gn < -.5) ok = support(B, A, -nx, -ny, h);
+
+          // yerdəyişmə
+          var ma = d * iA / tot, mb = d * iB / tot;
+          A.x -= nx * ma; A.y -= ny * ma; A.cx -= nx * ma; A.cy -= ny * ma;
+          B.x += nx * mb; B.y += ny * mb; B.cx += nx * mb; B.cy += ny * mb;
+
+          // normal impuls
+          var vn = (B.vx - A.vx) * nx + (B.vy - A.vy) * ny, jn = 0;
+          if (vn < 0) {
+            jn = -(1 + REST) * vn / tot;
+            A.vx -= nx * jn * iA; A.vy -= ny * jn * iA;
+            B.vx += nx * jn * iB; B.vy += ny * jn * iB;
+          }
+          // sürtünmə (Coulomb): dayaqsız cisimdə yoxdur ki, sürüşüb düşsün
+          if (ok && jn > 0) {
+            var tx = -ny, ty = nx;
+            var vt = (B.vx - A.vx) * tx + (B.vy - A.vy) * ty;
+            var jt = clamp(-vt / tot, -.5 * jn, .5 * jn);
+            A.vx -= tx * jt * iA; A.vy -= ty * jt * iA;
+            B.vx += tx * jt * iB; B.vy += ty * jt * iB;
           }
         }
       }
+    }
+
+    // tutulan cisim başqa cismin içinə girə bilməz: o cisim hərəkət edə bilmirsə, tutulan geri çəkilir
+    function dragPass() {
+      var D = grab.b;
+      bodies.forEach(prep);
+      for (var pass = 0; pass < 3; pass++) {
+        for (var i = 0; i < bodies.length; i++) {
+          var O = bodies[i];
+          if (O === D || O.fixed !== D.fixed || O.parent !== D.parent) continue;
+          if (Math.abs(O.cx - D.cx) >= (D.ew + O.ew) / 2 || Math.abs(O.cy - D.cy) >= (D.eh + O.eh) / 2) continue;
+          if (!sat(D, O)) continue;
+          D.x -= qx * qd; D.y -= qy * qd; D.cx -= qx * qd; D.cy -= qy * qd;
+        }
+      }
+      D.x = clamp(D.x, D.minX, D.maxX);
+      D.y = clamp(D.y, D.minY, D.maxY);
     }
 
     // tutulan cisim tutduğun nöqtədən asılmış kimi yelləncək olur: küncdən dartanda fırlanır
@@ -343,6 +389,7 @@
         bodies.forEach(function (b) { integrate(b, h, now); });
         for (var it = 0; it < 4; it++) { collide(h); bodies.forEach(clampB); }
       }
+      if (grab) dragPass();
       var moving = false;
       bodies.forEach(function (b) {
         if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
