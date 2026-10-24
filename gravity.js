@@ -55,16 +55,21 @@
     var topZ = 100;
     var G = 2200, REST = .15;
 
-    // cismin görünən qutusu: 90° yaxınlığında en və hündürlük yer dəyişir
+    // cismin görünən qutusu: istənilən bucaqda fırlanmış düzbucaqlının əhatə qutusu
     function setBounds(b) {
-      var vert = !b.noRot && Math.abs(Math.sin(b.a * Math.PI / 180)) > .7071;
-      var ew = vert ? b.h : b.w, eh = vert ? b.w : b.h;
+      var ew = b.w, eh = b.h;
+      if (!b.noRot) {
+        var th = b.a * Math.PI / 180, c = Math.abs(Math.cos(th)), sn = Math.abs(Math.sin(th));
+        ew = b.w * c + b.h * sn;
+        eh = b.w * sn + b.h * c;
+      }
       b.ew = ew; b.eh = eh;
       b.dx = (b.w - ew) / 2; b.dy = (b.h - eh) / 2;
       var mnX = b.L - b.left0 - b.dx, mxX = b.R - ew - b.left0 - b.dx;
       var mnY = b.T - b.top0 - b.dy, mxY = b.B - eh - b.top0 - b.dy;
+      var flat = Math.abs(b.dx) < .5 && Math.abs(b.dy) < .5;
       if (b.parent) {
-        if (!vert) {
+        if (flat) {
           mnX = Math.min(0, mnX); mxX = Math.max(0, mxX);
           mnY = Math.min(0, mnY); mxY = Math.max(0, mxY);
         } else {
@@ -72,14 +77,9 @@
         }
       } else {
         mxX = Math.max(mnX, mxX);
-        mxY = vert ? Math.max(mnY, mxY) : Math.max(0, mxY);
+        mxY = flat ? Math.max(0, mxY) : Math.max(mnY, mxY);
       }
       b.minX = mnX; b.maxX = mxX; b.minY = mnY; b.maxY = mxY;
-    }
-
-    // yerdə dayananda ən yaxın 90° qatına otursun (yatay və ya dik)
-    function restAngle(b) {
-      return b.noRot ? 0 : Math.round(b.a / 90) * 90 + b.tilt;
     }
 
     function add(el, parent, fixed, noRot) {
@@ -182,8 +182,6 @@
         b.a += b.va * h;
         if (was) {
           b.va *= Math.max(0, 1 - 10 * h);
-          b.a = norm(b.a);
-          b.a += (restAngle(b) - b.a) * Math.min(1, 8 * h);
         }
         setBounds(b);
       }
@@ -231,8 +229,25 @@
       if (b.y > b.maxY) { b.y = b.maxY; if (b.vy > 0) b.vy = 0; if (b.gly > S) b.contact = true; }
     }
 
+    // üstdəki cisim altdakının kənarından çıxıbsa (ağırlıq mərkəzi dayağın kənarındadır) yıxılır
+    function support(top, sup, horiz, sign, h) {
+      var tc, s0, s1;
+      if (horiz) {
+        tc = top.top0 + top.y + top.dy + top.eh / 2;
+        s0 = sup.top0 + sup.y + sup.dy; s1 = s0 + sup.eh;
+      } else {
+        tc = top.left0 + top.x + top.dx + top.ew / 2;
+        s0 = sup.left0 + sup.x + sup.dx; s1 = s0 + sup.ew;
+      }
+      if (tc >= s0 && tc <= s1) { top.contact = true; return; }
+      if (top.dragging) return;
+      var dir = tc < (s0 + s1) / 2 ? -1 : 1;
+      if (horiz) top.vy += dir * 600 * h; else top.vx += dir * 600 * h;
+      if (!top.noRot) top.va = clamp(top.va + dir * sign * 250 * h, -400, 400);
+    }
+
     function collide(h) {
-      var n = bodies.length;
+      var n = bodies.length, S = G * .5;
       for (var i = 0; i < n; i++) {
         var A = bodies[i];
         for (var j = i + 1; j < n; j++) {
@@ -256,16 +271,16 @@
             vn = (B.vx - A.vx) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
             vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB;
-            if (A.glx > G * .5) { if (nn === 1) A.contact = true; else B.contact = true; }
-            else if (A.glx < -G * .5) { if (nn === 1) B.contact = true; else A.contact = true; }
+            if (A.glx > S) { if (nn === 1) support(A, B, true, -1, h); else support(B, A, true, -1, h); }
+            else if (A.glx < -S) { if (nn === 1) support(B, A, true, 1, h); else support(A, B, true, 1, h); }
           } else {
             nn = (ay + A.eh / 2 < by + B.eh / 2) ? 1 : -1; // 1: A üstdə
             A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
             vn = (B.vy - A.vy) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
             vt = B.vx - A.vx; jt = -vt * .3 / tot; A.vx -= jt * iA; B.vx += jt * iB;
-            if (A.gly > G * .5) { if (nn === 1) A.contact = true; else B.contact = true; }
-            else if (A.gly < -G * .5) { if (nn === 1) B.contact = true; else A.contact = true; }
+            if (A.gly > S) { if (nn === 1) support(A, B, false, 1, h); else support(B, A, false, 1, h); }
+            else if (A.gly < -S) { if (nn === 1) support(B, A, false, -1, h); else support(A, B, false, -1, h); }
           }
         }
       }
@@ -322,7 +337,7 @@
       var moving = false;
       bodies.forEach(function (b) {
         if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
-            (!b.noRot && b.contact && Math.abs(b.a - restAngle(b)) > .5))) moving = true;
+            (!b.noRot && Math.abs(b.va) > 3))) moving = true;
         b.el.style.translate = b.x + 'px ' + b.y + 'px';
         b.el.style.rotate = b.a + 'deg';
       });
@@ -339,7 +354,6 @@
       if (lowTime > .5) {
         bodies.forEach(function (b) {
           b.vx = 0; b.vy = 0; b.va = 0;
-          if (!b.noRot) { b.a = restAngle(b); setBounds(b); }
           b.el.style.rotate = b.a + 'deg';
         });
         running = false;
