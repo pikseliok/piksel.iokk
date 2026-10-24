@@ -71,12 +71,23 @@
         left0: left0, top0: top0,
         minX: -left0, maxX: Math.max(-left0, vw - r.width - left0),
         minY: -top0, maxY: Math.max(0, floor - (top0 + r.height)),
+        ax: 0, ay: 0, pvx: 0, pvy: 0, px0: 0, py0: 0, isFrame: false,
         x: 0, y: 0, vx: (Math.random() - .5) * (wide ? 20 : 60), vy: 0,
         a: 0, va: noRot ? 0 : (Math.random() - .5) * (wide ? 14 : 50),
         tilt: noRot ? 0 : (Math.random() - .5) * 5,
         start: performance.now() + Math.random() * 700,
         contact: false, dragging: false
       };
+      if (parent) {
+        // ikon çərçivənin içində qalır: sərhədlər çərçivənin daxili qutusudur
+        var pl = parent.left0 + 10, pr = parent.left0 + parent.w - 10;
+        var pt = parent.top0 + 8, pb = parent.top0 + parent.h - 8;
+        b.minX = Math.min(0, pl - left0);
+        b.maxX = Math.max(0, pr - r.width - left0);
+        b.minY = Math.min(0, pt - top0);
+        b.maxY = Math.max(0, pb - r.height - top0);
+        parent.isFrame = true;
+      }
       bodies.push(b);
       return b;
     }
@@ -114,7 +125,9 @@
       if (b.dragging || now < b.start) return;
       var was = b.contact;
       b.contact = false;
-      b.vy += G * h;
+      var pa = b.parent;
+      b.vx += (pa ? -pa.ax : 0) * h;
+      b.vy += (G - (pa ? pa.ay : 0)) * h;
       b.x += b.vx * h;
       b.y += b.vy * h;
       if (!b.noRot) {
@@ -150,7 +163,7 @@
         for (var j = i + 1; j < n; j++) {
           var B = bodies[j];
           if (A.fixed !== B.fixed) continue;
-          if (A.parent === B || B.parent === A) continue;
+          if (A.parent !== B.parent) continue;
           if (A.dragging && B.dragging) continue;
           var ax = A.left0 + A.x, ay = A.top0 + A.y, bx = B.left0 + B.x, by = B.top0 + B.y;
           var ox = Math.min(ax + A.w, bx + B.w) - Math.max(ax, bx);
@@ -203,8 +216,9 @@
       var th2 = b.a * Math.PI / 180, c2 = Math.cos(th2), s2 = Math.sin(th2);
       dx = -(g.rx * c2 - g.ry * s2);
       dy = -(g.rx * s2 + g.ry * c2);
-      b.x = clamp(g.px + dx - b.left0 - b.w / 2, b.minX, b.maxX);
-      b.y = clamp(g.py + dy - b.top0 - b.h / 2, b.minY, b.maxY);
+      var po = b.parent || { x: 0, y: 0 };
+      b.x = clamp(g.px + dx - b.left0 - po.x - b.w / 2, b.minX, b.maxX);
+      b.y = clamp(g.py + dy - b.top0 - po.y - b.h / 2, b.minY, b.maxY);
     }
 
     var running = false, last = 0, lowTime = 0;
@@ -228,9 +242,17 @@
       bodies.forEach(function (b) {
         if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
             (!b.noRot && b.contact && Math.abs(b.a - b.tilt) > .5))) moving = true;
-        var px = b.parent ? b.parent.x : 0, py = b.parent ? b.parent.y : 0;
-        b.el.style.translate = (b.x - px) + 'px ' + (b.y - py) + 'px';
+        b.el.style.translate = b.x + 'px ' + b.y + 'px';
         b.el.style.rotate = b.a + 'deg';
+      });
+      bodies.forEach(function (b) {
+        if (!b.isFrame || dt < .001) return;
+        var vx = (b.x - b.px0) / dt, vy = (b.y - b.py0) / dt;
+        var ax = clamp((vx - b.pvx) / dt, -6000, 6000), ay = clamp((vy - b.pvy) / dt, -6000, 6000);
+        if (Math.abs(ax) < 300) ax = 0;
+        if (Math.abs(ay) < 300) ay = 0;
+        b.ax += (ax - b.ax) * .25; b.ay += (ay - b.ay) * .25;
+        b.px0 = b.x; b.py0 = b.y; b.pvx = vx; b.pvy = vy;
       });
       if (grab || moving || now < maxStart + 100) lowTime = 0; else lowTime += dt;
       if (lowTime > .5) {
@@ -280,7 +302,8 @@
         k2: (b.w * b.w + b.h * b.h) / 12
       };
       // tutulan nöqtənin cismin mərkəzinə nisbətən (fırlanmamış) mövqeyi
-      var cx = b.left0 + b.x + b.w / 2, cy = b.top0 + b.y + b.h / 2;
+      var po = b.parent || { x: 0, y: 0 };
+      var cx = b.left0 + po.x + b.x + b.w / 2, cy = b.top0 + po.y + b.y + b.h / 2;
       var wx = p.x - cx, wy = p.y - cy, th0 = b.a * Math.PI / 180;
       grab.rx = wx * Math.cos(th0) + wy * Math.sin(th0);
       grab.ry = -wx * Math.sin(th0) + wy * Math.cos(th0);
