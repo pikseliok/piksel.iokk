@@ -55,6 +55,33 @@
     var topZ = 100;
     var G = 2200, REST = .15;
 
+    // cismin görünən qutusu: 90° yaxınlığında en və hündürlük yer dəyişir
+    function setBounds(b) {
+      var vert = !b.noRot && Math.abs(Math.sin(b.a * Math.PI / 180)) > .7071;
+      var ew = vert ? b.h : b.w, eh = vert ? b.w : b.h;
+      b.ew = ew; b.eh = eh;
+      b.dx = (b.w - ew) / 2; b.dy = (b.h - eh) / 2;
+      var mnX = b.L - b.left0 - b.dx, mxX = b.R - ew - b.left0 - b.dx;
+      var mnY = b.T - b.top0 - b.dy, mxY = b.B - eh - b.top0 - b.dy;
+      if (b.parent) {
+        if (!vert) {
+          mnX = Math.min(0, mnX); mxX = Math.max(0, mxX);
+          mnY = Math.min(0, mnY); mxY = Math.max(0, mxY);
+        } else {
+          mxX = Math.max(mnX, mxX); mxY = Math.max(mnY, mxY);
+        }
+      } else {
+        mxX = Math.max(mnX, mxX);
+        mxY = vert ? Math.max(mnY, mxY) : Math.max(0, mxY);
+      }
+      b.minX = mnX; b.maxX = mxX; b.minY = mnY; b.maxY = mxY;
+    }
+
+    // yerdə dayananda ən yaxın 90° qatına otursun (yatay və ya dik)
+    function restAngle(b) {
+      return b.noRot ? 0 : Math.round(b.a / 90) * 90 + b.tilt;
+    }
+
     function add(el, parent, fixed, noRot) {
       var r = el.getBoundingClientRect();
       if (!r.width && !r.height) return null;
@@ -69,8 +96,9 @@
         w: r.width, h: r.height,
         inv: 1 / Math.sqrt(r.width * r.height),
         left0: left0, top0: top0,
-        minX: -left0, maxX: Math.max(-left0, vw - r.width - left0),
-        minY: -top0, maxY: Math.max(0, floor - (top0 + r.height)),
+        L: 0, R: vw, T: 0, B: floor,
+        ew: r.width, eh: r.height, dx: 0, dy: 0,
+        minX: 0, maxX: 0, minY: 0, maxY: 0,
         ax: 0, ay: 0, pvx: 0, pvy: 0, px0: 0, py0: 0, isFrame: false,
         x: 0, y: 0, vx: (Math.random() - .5) * (wide ? 20 : 60), vy: 0,
         a: 0, va: noRot ? 0 : (Math.random() - .5) * (wide ? 14 : 50),
@@ -80,14 +108,13 @@
       };
       if (parent) {
         // ikon çərçivənin içində qalır: sərhədlər çərçivənin daxili qutusudur
-        var pl = parent.left0 + 10, pr = parent.left0 + parent.w - 10;
-        var pt = parent.top0 + 8, pb = parent.top0 + parent.h - 8;
-        b.minX = Math.min(0, pl - left0);
-        b.maxX = Math.max(0, pr - r.width - left0);
-        b.minY = Math.min(0, pt - top0);
-        b.maxY = Math.max(0, pb - r.height - top0);
+        b.L = parent.left0 + 10;
+        b.R = parent.left0 + parent.w - 10;
+        b.T = parent.top0 + 8;
+        b.B = parent.top0 + parent.h - 8;
         parent.isFrame = true;
       }
+      setBounds(b);
       bodies.push(b);
       return b;
     }
@@ -135,8 +162,9 @@
         if (was) {
           b.va *= Math.max(0, 1 - 10 * h);
           b.a = norm(b.a);
-          b.a += (b.tilt - b.a) * Math.min(1, 8 * h);
+          b.a += (restAngle(b) - b.a) * Math.min(1, 8 * h);
         }
+        setBounds(b);
       }
       if (b.x < b.minX) { b.x = b.minX; if (b.vx < 0) b.vx = -b.vx * .5; b.va *= -.5; }
       else if (b.x > b.maxX) { b.x = b.maxX; if (b.vx > 0) b.vx = -b.vx * .5; b.va *= -.5; }
@@ -165,22 +193,24 @@
           if (A.fixed !== B.fixed) continue;
           if (A.parent !== B.parent) continue;
           if (A.dragging && B.dragging) continue;
-          var ax = A.left0 + A.x, ay = A.top0 + A.y, bx = B.left0 + B.x, by = B.top0 + B.y;
-          var ox = Math.min(ax + A.w, bx + B.w) - Math.max(ax, bx);
+          // görünən (fırlanmış) qutular
+          var ax = A.left0 + A.x + A.dx, ay = A.top0 + A.y + A.dy;
+          var bx = B.left0 + B.x + B.dx, by = B.top0 + B.y + B.dy;
+          var ox = Math.min(ax + A.ew, bx + B.ew) - Math.max(ax, bx);
           if (ox <= 0) continue;
-          var oy = Math.min(ay + A.h, by + B.h) - Math.max(ay, by);
+          var oy = Math.min(ay + A.eh, by + B.eh) - Math.max(ay, by);
           if (oy <= 0) continue;
           var iA = A.dragging ? 0 : A.inv, iB = B.dragging ? 0 : B.inv, tot = iA + iB;
           if (!tot) continue;
           var nn, jj, vn, vt, jt;
           if (ox < oy) {
-            nn = (ax + A.w / 2 < bx + B.w / 2) ? 1 : -1;
+            nn = (ax + A.ew / 2 < bx + B.ew / 2) ? 1 : -1;
             A.x -= nn * ox * iA / tot; B.x += nn * ox * iB / tot;
             vn = (B.vx - A.vx) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vx -= nn * jj * iA; B.vx += nn * jj * iB; }
             vt = B.vy - A.vy; jt = -vt * .1 / tot; A.vy -= jt * iA; B.vy += jt * iB;
           } else {
-            nn = (ay + A.h / 2 < by + B.h / 2) ? 1 : -1; // 1: A üstdə
+            nn = (ay + A.eh / 2 < by + B.eh / 2) ? 1 : -1; // 1: A üstdə
             A.y -= nn * oy * iA / tot; B.y += nn * oy * iB / tot;
             vn = (B.vy - A.vy) * nn;
             if (vn < 0) { jj = -(1 + REST) * vn / tot; A.vy -= nn * jj * iA; B.vy += nn * jj * iB; }
@@ -213,6 +243,7 @@
         g.om = clamp(g.om, -25, 25);
         b.a += g.om * h * 180 / Math.PI;
       }
+      setBounds(b);
       var th2 = b.a * Math.PI / 180, c2 = Math.cos(th2), s2 = Math.sin(th2);
       dx = -(g.rx * c2 - g.ry * s2);
       dy = -(g.rx * s2 + g.ry * c2);
@@ -241,7 +272,7 @@
       var moving = false;
       bodies.forEach(function (b) {
         if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
-            (!b.noRot && b.contact && Math.abs(b.a - b.tilt) > .5))) moving = true;
+            (!b.noRot && b.contact && Math.abs(b.a - restAngle(b)) > .5))) moving = true;
         b.el.style.translate = b.x + 'px ' + b.y + 'px';
         b.el.style.rotate = b.a + 'deg';
       });
@@ -256,7 +287,11 @@
       });
       if (grab || moving || now < maxStart + 100) lowTime = 0; else lowTime += dt;
       if (lowTime > .5) {
-        bodies.forEach(function (b) { b.vx = 0; b.vy = 0; b.va = 0; if (!b.noRot) b.a = b.tilt; b.el.style.rotate = b.a + 'deg'; });
+        bodies.forEach(function (b) {
+          b.vx = 0; b.vy = 0; b.va = 0;
+          if (!b.noRot) { b.a = restAngle(b); setBounds(b); }
+          b.el.style.rotate = b.a + 'deg';
+        });
         running = false;
         return;
       }
