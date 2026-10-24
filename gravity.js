@@ -100,7 +100,7 @@
         ew: r.width, eh: r.height, dx: 0, dy: 0,
         minX: 0, maxX: 0, minY: 0, maxY: 0,
         ax: 0, ay: 0, pvx: 0, pvy: 0, px0: 0, py0: 0, isFrame: false,
-        lx: 0, ly: G, glx: 0, gly: G,
+        lx: 0, ly: G, glx: 0, gly: G, free: true,
         x: 0, y: 0, vx: (Math.random() - .5) * (wide ? 20 : 60), vy: 0,
         a: 0, va: noRot ? 0 : (Math.random() - .5) * (wide ? 14 : 50),
         tilt: noRot ? 0 : (Math.random() - .5) * 5,
@@ -182,6 +182,7 @@
         b.a += b.va * h;
         if (was) {
           b.va *= Math.max(0, 1 - 10 * h);
+          if (b.free) { b.a = norm(b.a); b.a += (b.tilt - b.a) * Math.min(1, 8 * h); }
         }
         setBounds(b);
       }
@@ -244,7 +245,7 @@
       if (top.dragging) return false;
       var dir = tc < (s0 + s1) / 2 ? -1 : 1;
       if (horiz) top.vy += dir * 1000 * h; else top.vx += dir * 1000 * h;
-      if (!top.noRot) top.va = clamp(top.va + dir * sign * 300 * h, -400, 400);
+      if (!top.noRot && !top.free) top.va = clamp(top.va + dir * sign * 300 * h, -400, 400);
       return false;
     }
 
@@ -345,7 +346,7 @@
       var moving = false;
       bodies.forEach(function (b) {
         if (!b.dragging && (Math.abs(b.vx) > 8 || Math.abs(b.vy) > 40 ||
-            (!b.noRot && Math.abs(b.va) > 3))) moving = true;
+            (!b.noRot && (Math.abs(b.va) > 3 || (b.free && b.contact && Math.abs(b.a - b.tilt) > .5))))) moving = true;
         b.el.style.translate = b.x + 'px ' + b.y + 'px';
         b.el.style.rotate = b.a + 'deg';
       });
@@ -397,6 +398,7 @@
       e.stopPropagation();
       e.preventDefault();
       var p = toLocal(b, pagePt(e, b));
+      b.free = false;
       b.dragging = true;
       b.vx = 0; b.vy = 0; b.va = 0;
       b.el.style.zIndex = ++topZ;
