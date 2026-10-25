@@ -125,15 +125,29 @@ themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.conta
 const PKG={vesper1:{title:'"Vesper" kuboku',link:"/vesper_kuboku"},amazon:{title:'"Amazon" kuboku',link:"/amazon_kuboku"},moonopoly:{title:'"Moonopoly" turniri',link:"/moonopoly_turniri"},whatsapp:{title:'"πksel.iok" WhatsApp paketi',link:"/piksel_paketi_1"},diamonds1:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm I oyun',link:"/diamonds2_1"},vesper2:{title:'II "Vesper" kuboku',link:"/vesper_kuboku_2"},diamonds2:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm II oyun',link:"/diamonds2_2"},gencler:{title:"Gənclər həftəsi NHN kuboku",link:"/gencler_heftesi_nhn"},solo:{title:'"Solo Leveling" kuboku',link:"/solo_leveling"},maqrit:{title:'"Maqrit" kuboku',link:"/maqrit_kuboku"},diamonds3:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm III oyun',link:"/diamonds2_3"},yubiley:{title:'"Yubiley" kuboku',link:"/yubiley_turniri"},khuamsa:{title:'"Khuamsa" turniri',link:"/khuamsa"},sentyabr:{title:'"Sentyabr" kuboku',link:"/sentyabr_kuboku"},birlik:{title:'"Birlik" paketi',link:"/birlik_kuboku"},diamonds4:{title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - FİNAL',link:"/diamonds2_final"},qanbat2:{title:'"QanbAT2" kuboku',link:"/qanbat2_kuboku"},breynfayt76:{title:'"Breyn Fayt" Üzvlərarası turnir #76',link:"/breynfayt_uzvlerarasi76"}},
 authors=[{name:"Əhmədli İkram",packages:[PKG.breynfayt76]},{name:"Eyvazov Kənan",packages:[PKG.breynfayt76]},{name:"Manafov Azim",packages:[PKG.breynfayt76]},{name:"Mahmud Sadiq",packages:[PKG.breynfayt76]},{name:"Qocayev İbrahim",packages:[PKG.birlik]},{name:"Adayeva Nübar",packages:[PKG.birlik]},{name:"Axundova Ceyran",packages:[PKG.birlik]},{name:"Qafarov Vüsal",packages:[PKG.birlik]},{name:"Əlibəndova Zəhra",packages:[PKG.birlik]},{name:"Quliyev Samir",packages:[PKG.birlik]},{name:"Xəlilov Babək",packages:[PKG.birlik]},{name:"Babayeva Zümrüd",packages:[PKG.birlik]},{name:"Abdullayeva Nuray",packages:[PKG.birlik]},{name:"Məmmədquliyev İsmayıl",packages:[PKG.breynfayt76,PKG.sentyabr,PKG.gencler]},{name:"Abbaslı Nigar",packages:[PKG.birlik,PKG.whatsapp]},{name:"Bəylərov Kamal",packages:[PKG.yubiley]},{name:"Cəfərzadə Yəhya",packages:[PKG.yubiley]},{name:"Əliyeva Zəhra",packages:[PKG.whatsapp]},{name:"Əlizadə Onur",packages:[PKG.birlik,PKG.whatsapp]},{name:"Əlizadə Rüfət",packages:[PKG.diamonds4,PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},{name:"Hacızadə Nihad",packages:[PKG.maqrit,PKG.khuamsa]},{name:"Həsənov Kamil",packages:[PKG.diamonds3]},{name:"Həsənli Şehra",packages:[PKG.khuamsa]},{name:"Heydərli Hüseyn",packages:[PKG.khuamsa]},{name:"Hüseynli Muhəmməd",packages:[PKG.birlik,PKG.whatsapp]},{name:"Hüseynli Qabil",packages:[PKG.vesper2,PKG.vesper1]},{name:"Hüseynzadə Yusif",packages:[PKG.diamonds4,PKG.diamonds3]},{name:"Kərimli Kərim",packages:[PKG.maqrit,PKG.solo,PKG.vesper2,PKG.vesper1]},{name:"Mahmudlu Nəzrin",packages:[PKG.solo]},{name:"Məhərrəmov Ağasəf",packages:[PKG.solo]},{name:"Məmmədli Nurşad",packages:[PKG.yubiley]},{name:"Məmmədov Şəmil",packages:[PKG.yubiley]},{name:"Nəhmətli Adil",packages:[PKG.khuamsa]},{name:"Nəhmətli Turqut",packages:[PKG.qanbat2,PKG.diamonds4,PKG.khuamsa,PKG.maqrit,PKG.solo,PKG.diamonds3,PKG.vesper2,PKG.vesper1]},{name:"Baxşəliyev Turqay",packages:[PKG.qanbat2]},{name:"Əzizov Toğrul",packages:[PKG.qanbat2]},{name:"Babaşova Arzum",packages:[PKG.qanbat2]},{name:"Pənahov Səmral",packages:[PKG.solo]},{name:"Qarayev Ramiz",packages:[PKG.whatsapp]},{name:"Rzalı Üsyan",packages:[PKG.diamonds4,PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},{name:"Seyidova Aydan",packages:[PKG.amazon]},{name:"Səmədov İslam",packages:[PKG.vesper2,PKG.vesper1]},{name:"Şentürk Serkan",packages:[PKG.diamonds4,PKG.diamonds3,PKG.diamonds2,PKG.diamonds1]},{name:"Şükürov Tərlan",packages:[PKG.khuamsa]},{name:"Vəlili Murad",packages:[PKG.yubiley,PKG.birlik]},{name:"Yuniszadə Ema",packages:[PKG.whatsapp]},{name:"Yusifov Zeynal",packages:[PKG.birlik,PKG.vesper2,PKG.amazon,PKG.moonopoly,PKG.vesper1]},{name:"İbrahimli Şükran",packages:[PKG.khuamsa]},{name:"Cəfərov Saday",packages:[PKG.khuamsa]}];
 
-/* ---------- Statistika: sual sayı və mövzu sayı (Xəmsə və Fərdi paketlərdə mövzu = tur) ---------- */
+/* ---------- Statistika: sual sayı və mövzu sayı ----------
+   Breyn/NHN: hər sual müəllifə +1.
+   Xəmsə/Fərdi: hər mövzu 5 sual sayılır. Mövzuda 1 müəllif varsa ona 5,
+   2 müəllif varsa hər birinə 3, 3 müəllif varsa hər birinə 2 (ceil(5/n)). */
 const AN=s=>s.toLocaleLowerCase("az-AZ").replace(/quluyev/g,"quliyev");
 const nameKey=n=>{let s=AN(n.trim());if(s==="kk")s="kərimli kərim";return s.split(/\s+/).filter(Boolean).sort().join(" ")};
-const STAT={};
-(window.SUAL_DATA||[]).forEach((p,pi)=>{Object.keys(p.tours).forEach(t=>{p.tours[t].forEach(q=>{
-  new Set(String(q.author||"").split(/,|;|\s+və\s+/).map(nameKey).filter(Boolean)).forEach(k=>{
-    const s=STAT[k]||(STAT[k]={q:0,t:new Set()});s.q++;
-    if(p.type==="xemse"||p.type==="ferdi")s.t.add(pi+"|"+t);
-  })})})});
+const STAT={},TOPIC_Q=5;
+const gs=k=>STAT[k]||(STAT[k]={q:0,t:new Set()});
+(window.SUAL_DATA||[]).forEach((p,pi)=>{
+  const isTopic=p.type==="xemse"||p.type==="ferdi";
+  Object.keys(p.tours).forEach(t=>{
+    const ta=new Set();
+    p.tours[t].forEach(q=>{
+      new Set(String(q.author||"").split(/,|;|\s+və\s+/).map(nameKey).filter(Boolean)).forEach(k=>{
+        if(isTopic)ta.add(k);else gs(k).q++;
+      });
+    });
+    if(isTopic&&ta.size){
+      const share=Math.ceil(TOPIC_Q/ta.size);
+      ta.forEach(k=>{const s=gs(k);s.q+=share;s.t.add(pi+"|"+t)});
+    }
+  });
+});
 authors.forEach(a=>{const s=STAT[nameKey(a.name)];a.sq=s?s.q:0;a.st=s?s.t.size:0});
 function fitCounts(){requestAnimationFrame(()=>{const els=[...document.querySelectorAll(".author-count")];els.forEach(e=>e.style.fontSize="");let min=Infinity;els.forEach(e=>{let f=parseFloat(getComputedStyle(e).fontSize);while(e.scrollWidth>e.clientWidth+.5&&f>6){f-=.5;e.style.fontSize=f+"px"}min=Math.min(min,f)});if(min<Infinity)els.forEach(e=>e.style.fontSize=min+"px")})}
 window.addEventListener("resize",()=>{clearTimeout(window._ft);window._ft=setTimeout(fitCounts,120)});
@@ -164,7 +178,7 @@ i.innerHTML=`
 <span class="author-icon${e}"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="8.5" r="5.5" fill="currentColor"/><path d="M5 26a11 11 0 0 1 22 0 2 2 0 0 1-2 2H7a2 2 0 0 1-2-2Z" fill="currentColor"/></svg></span>
 <div class="author-right${e}">
 <div class="author-name">${highlight(a.name,query)}</div>
-<div class="author-count"><span>Paket sayı: <b>${a.packages.length}</b></span><span>Sual sayı: <b>${a.sq}</b></span><span>Mövzu sayı: <b>${a.st}</b></span></div>
+<div class="author-count"><span><b>${a.packages.length}</b> paket</span><span><b>${a.sq}</b> sual</span><span><b>${a.st}</b> mövzu</span></div>
 </div>
 <button class="share-btn${e}" type="button" data-i="${authors.indexOf(a)}" aria-label="Paylaş"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button>`;
 const r=document.createElement("div");r.className="packages-panel";
