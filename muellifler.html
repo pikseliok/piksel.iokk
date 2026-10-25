@@ -133,7 +133,7 @@ const nameKey=n=>{let s=AN(n.trim());if(s==="kk")s="kərimli kərim";return s.sp
 const STAT={};
 const gs=k=>STAT[k]||(STAT[k]={q:0,t:new Set()});
 (window.SUAL_DATA||[]).forEach((p,pi)=>{
-  const isTopic=p.type==="xemse"||p.type==="ferdi";
+  const isTopic=/xemse|xəmsə|khuamsa|ferdi|fərdi|diamonds/.test(AN(String(p.type||"")+" "+String(p.title||p.name||p.id||"")));
   Object.keys(p.tours).forEach(t=>{
     const ta=new Set();
     p.tours[t].forEach(q=>{
