@@ -71,9 +71,11 @@ body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
 #searchInput::placeholder{color:inherit;opacity:.6}
 .pill-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .sep{height:1px;background:currentColor;opacity:.22;margin:12px 0}
-.pill{height:38px;padding:0 18px;border-radius:50px;border:2px solid currentColor;background-color:transparent;color:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .25s ease}
+.pill{height:38px;padding:0 18px;border-radius:50px;border:2px solid currentColor;background-color:transparent;color:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .25s ease,opacity .3s ease}
 .pill.sel{background-color:var(--ink);color:var(--deep);border-color:var(--ink)}
 .dark .pill.sel{background-color:var(--dark-bg);color:var(--dark-light);border-color:var(--dark-bg)}
+.pill:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+#authRow>.pill{width:100%;justify-content:center}
 .info-dot{width:18px;height:18px;flex:0 0 18px;margin-left:1px;border:1.6px solid currentColor;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-weight:700;line-height:1;font-style:normal;cursor:pointer}
 .tip{position:fixed;z-index:10000;width:min(280px,calc(100vw - 32px));padding:12px 14px;border-radius:16px;border:2px solid var(--ink);background:var(--deep);color:var(--ink);font-size:13px;font-weight:500;line-height:1.45;text-align:center;box-shadow:0 10px 28px rgba(0,20,110,.3);opacity:0;pointer-events:none;transition:opacity .3s ease}
 .tip.show{opacity:1}
@@ -123,96 +125,23 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
 .msg{text-align:center;font-size:var(--pq);font-weight:500}
 .pager{margin:8px 0 0;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px}
 .pager:empty{display:none}
-.pager{
-  margin:8px 0 0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.pager:empty{display:none}
-
-.pg-btn{
-  position:relative;
-  isolation:isolate;
-  overflow:hidden;
-  width:42px;
-  height:42px;
-  border:2px solid var(--accent);
-  border-radius:12px;
-  background:transparent;
-  color:var(--accent);
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
-  transition:transform .25s ease,color .3s ease,border-color .3s ease;
-}
-.pg-btn::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  border-radius:inherit;
-  background:linear-gradient(135deg,var(--deep),var(--bright),var(--deep));
-  transform:scaleX(0);
-  transform-origin:left;
-}
-.pg-btn.cur{
-  transform:scale(1.06);
-  color:var(--ink);
-  cursor:default;
-  animation:pageSelected .35s cubic-bezier(.2,.8,.2,1) both;
-}
-.pg-btn.cur::before{
-  animation:pageFill .35s cubic-bezier(.2,.8,.2,1) both;
-}
-@keyframes pageFill{
-  to{transform:scaleX(1)}
-}
-@keyframes pageSelected{
-  50%{transform:scale(1.12)}
-  to{transform:scale(1.06)}
-}
-.dark .pg-btn{
-  border-color:var(--accent);
-  color:var(--accent);
-}
-.dark .pg-btn::before{
-  background:linear-gradient(135deg,var(--dark-light),var(--dark-bright),var(--dark-light));
-}
-.dark .pg-btn.cur{
-  color:var(--dark-ink);
-}
+.pg-btn{position:relative;isolation:isolate;overflow:hidden;width:42px;height:42px;border:2px solid var(--accent);border-radius:12px;background:transparent;color:var(--accent);font-size:16px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:transform .25s ease,color .3s ease,border-color .3s ease}
+.pg-btn::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(135deg,var(--deep),var(--bright),var(--deep));transform:scaleX(0);transform-origin:left}
+.pg-btn.cur{transform:scale(1.06);color:var(--ink);cursor:default;animation:pageSelected .35s cubic-bezier(.2,.8,.2,1) both}
+.pg-btn.cur::before{animation:pageFill .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pageFill{to{transform:scaleX(1)}}
+@keyframes pageSelected{50%{transform:scale(1.12)}to{transform:scale(1.06)}}
+.dark .pg-btn{border-color:var(--accent);color:var(--accent)}
+.dark .pg-btn::before{background:linear-gradient(135deg,var(--dark-light),var(--dark-bright),var(--dark-light))}
+.dark .pg-btn.cur{color:var(--dark-ink)}
 .pg-btn:active{transform:scale(.96)}
-
-.pg-arrow{
-  width:36px;
-  border:0;
-  border-radius:50%;
-  background:transparent!important;
-  color:var(--accent)!important;
-}
+.pg-arrow{width:36px;border:0;border-radius:50%;background:transparent!important;color:var(--accent)!important}
 .pg-arrow::before{display:none}
-.pg-arrow svg{
-  width:24px;
-  height:24px;
-}
+.pg-arrow svg{width:24px;height:24px}
 .dark .pg-arrow{color:var(--accent)!important}
-
-.pg-ellipsis{
-  color:var(--accent);
-  font-size:18px;
-  font-weight:700;
-  line-height:1;
-}
+.pg-ellipsis{color:var(--accent);font-size:18px;font-weight:700;line-height:1}
 .pg-ph{visibility:hidden}
-
-@media (hover:hover){
-  .pg-btn:not(.cur):hover{transform:translateY(-2px)}
-}
+@media (hover:hover){.pg-btn:not(.cur):hover{transform:translateY(-2px)}}
 /* ---------- Statistika ---------- */
 .stats{display:flex;flex-direction:column;gap:10px}
 .stats:empty{display:none}
@@ -271,7 +200,7 @@ footer{min-height:88px}
 .pill-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .pill-row>.pill{width:100%;min-width:0;padding:0 10px;justify-content:center;text-align:center;white-space:nowrap}
 .pill-row>.pill:last-child:nth-child(odd){grid-column:1/-1}
-#optRow{grid-template-columns:minmax(0,1fr)}
+#optRow,#authRow{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 </head>
@@ -304,8 +233,10 @@ footer{min-height:88px}
 <div class="pill-row" id="fieldRow"></div>
 <div class="rise sep" style="--n:10"></div>
 <div class="pill-row" id="optRow"></div>
+<div class="rise sep" style="--n:13"></div>
+<div class="pill-row" id="authRow"></div>
 </div>
-<button class="frame glow go-btn" id="goBtn" style="--i:13" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Axtar</button>
+<button class="frame glow go-btn" id="goBtn" style="--i:14" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Axtar</button>
 <h2 class="section-title" id="rTitle"></h2>
 <div class="questions-container" id="qc"></div>
 <div class="pager" id="pager"></div>
@@ -332,9 +263,9 @@ const TYPES=[{key:"nhn",label:"Nə? Harada? Nə zaman?"},{key:"xemse",label:"Xə
 const FIELDS=[{key:"q",label:"Sualın mətni"},{key:"a",label:"Sualın cavabı"},{key:"c",label:"Sualın şərhi"}];
 const PAGE_SIZE=12;
 const types=new Set(TYPES.map(t=>t.key)),fields=new Set(FIELDS.map(f=>f.key));
-let optAns=false,optEng=false;
-/* Axtarış düyməsi basılan anda götürülən seçimlər (sonradan dəyişiklik növbəti axtarışa qədər tətbiq olunmur) */
-let S={types:new Set(types),fields:new Set(fields),eng:false,ans:false};
+let optAns=false,optEng=false,authorMode=false;
+/* Axtarış düyməsi basılan anda götürülən seçimlər */
+let S={types:new Set(types),fields:new Set(fields),eng:false,ans:false,author:false};
 let results=null,terms=[],page=1,activeZoomedImg=null,activeClone=null;
 
 /* ---------- Tema ---------- */
@@ -359,23 +290,23 @@ $("searchBtn").addEventListener("click",e=>{
 });
 
 /* ---------- Məlumat ---------- */
-/* Adi rejim: yalnız böyük/kiçik hərf fərqi yoxdur (İ→i, I→ı Azərbaycan qaydası) */
 const NMAP={"İ":"i","I":"ı"};
 function foldN(s){let r="";for(let i=0;i<s.length;i++){const c=s[i],m=NMAP[c];if(m){r+=m;continue}const l=c.toLowerCase();r+=l.length===1?l:c}return r}
-/* İngilis klaviatura rejimi: ə→e, ı→i, ö→o, ü→u, ç→c, ş→s, ğ→g + böyük/kiçik hərf fərqi yoxdur */
 const EMAP={"ə":"e","ı":"i","ö":"o","ü":"u","ç":"c","ş":"s","ğ":"g","İ":"i","I":"i","Ə":"e","Ö":"o","Ü":"u","Ç":"c","Ş":"s","Ğ":"g"};
 function foldE(s){let r="";for(let i=0;i<s.length;i++){const c=s[i],m=EMAP[c];if(m){r+=m;continue}const l=c.toLowerCase();r+=l.length===1?l:c}return r}
 function plain(h){const d=document.createElement("div");d.innerHTML=String(h||"").replace(/<br\s*\/?>/gi," ");return d.textContent.replace(/\s+/g," ")}
+/* Müəllif adı eyniləşdirmə: KK = Kərimli Kərim, Məmmədquluyev = Məmmədquliyev */
+const fixAuthor=s=>String(s||"").replace(/\bKK\b/g,"Kərimli Kərim").replace(/quluyev/gi,"quliyev");
 const ALL=[];
 (window.SUAL_DATA||[]).map((p,o)=>({...p,order:o})).sort((a,b)=>b.date.localeCompare(a.date)||b.order-a.order).forEach(p=>{
   Object.keys(p.tours).sort((a,b)=>a-b).forEach(t=>p.tours[t].forEach(q=>{
-    const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment);
-    ALL.push({p,q,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc)}});
+    const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment),tu=plain(fixAuthor(q.author));
+    ALL.push({p,q,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc),u:foldN(tu)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc),u:foldE(tu)}});
   }));
 });
 
-/* ---------- Seçimlər (hər düymə öz sırası ilə --n gəlir) ---------- */
-function pills(host,items,set,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.className="pill sel rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
+/* ---------- Seçimlər ---------- */
+function pills(host,items,set,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.dataset.key=it.key;b.className="pill sel rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(authorMode)return;if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
 function toggles(host,items,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.className="pill rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","false");b.innerHTML="<span>"+it.label+"</span>"+(it.info?'<span class="info-dot" aria-label="Məlumat">i</span>':"");b.onclick=e=>{const d=e.target.closest(".info-dot");if(d){showTip(d);return}const on=b.classList.toggle("sel");b.setAttribute("aria-pressed",on);it.set(on)};host.appendChild(b)})}
 /* ---------- Məlumat qeydi ---------- */
 let tipTimer=null;
@@ -393,7 +324,11 @@ window.addEventListener("scroll",hideTip,{passive:true});
 pills($("typeRow"),TYPES,types,2);pills($("fieldRow"),FIELDS,fields,7);
 toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",info:true,set:v=>{optEng=v}}],11);
 
-/* Düymə yazısı 1 sətirdə qalır: sığmırsa şrift düymənin sərhədinə qədər kiçilir, sığırsa dəyişmir */
+/* Müəllif rejimi: Növ və Sahə düymələri sönür, seçilmiş olsalar da bağlanır və seçilə bilmir */
+function syncPills(){[["typeRow",types],["fieldRow",fields]].forEach(([id,set])=>{[...$(id).children].forEach(b=>{const on=!authorMode&&set.has(b.dataset.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on);b.disabled=authorMode})})}
+(function(){const b=document.createElement("button");b.type="button";b.className="pill rise";b.style.setProperty("--n",14);b.setAttribute("aria-pressed","false");b.innerHTML="<span>Müəllif suallarını axtar</span>";b.onclick=()=>{authorMode=!authorMode;b.classList.toggle("sel",authorMode);b.setAttribute("aria-pressed",authorMode);syncPills();$("searchInput").placeholder=authorMode?"Müəllif axtar":"Sual axtar"};$("authRow").appendChild(b)})();
+
+/* Düymə yazısı 1 sətirdə qalır */
 function fitPills(){
   document.querySelectorAll(".pill-row .pill").forEach(b=>{
     b.style.fontSize="";
@@ -401,8 +336,7 @@ function fitPills(){
     while(b.scrollWidth>b.clientWidth+0.5&&fs>8){fs-=0.5;b.style.fontSize=fs+"px"}
   });
 }
-/* Statistika çərçivələrində yazılar 1 sətirdə qalır: sığmırsa sığana qədər kiçilir.
-   4-lük çərçivələrin hamısı eyni ölçüdə olur, "Paket sayı" çərçivəsi ayrıca kiçilir */
+/* Statistika çərçivələrində yazılar 1 sətirdə qalır */
 function fitStats(){
   const cards=[...document.querySelectorAll(".stat-card")];
   if(!cards.length)return;
@@ -420,15 +354,16 @@ window.addEventListener("orientationchange",()=>setTimeout(()=>{fitPills();fitSt
 
 /* ---------- Axtarış ---------- */
 function doSearch(){
-  const inp=$("searchInput");
-  S={types:new Set(types),fields:new Set(fields),eng:optEng,ans:optAns};
+  const inp=$("searchInput"),au=authorMode;
+  S={types:au?new Set(TYPES.map(t=>t.key)):new Set(types),fields:au?new Set():new Set(fields),eng:optEng,ans:optAns,author:au};
   const fold=S.eng?foldE:foldN,k=S.eng?"e":"n";
-  const v=fold(inp.value.trim());
+  const v=fold((au?fixAuthor(inp.value):inp.value).trim());
   inp.blur();
   terms=v.split(/\s+/).filter(Boolean);
   page=1;
   if(v.length<2){results=null;render(true,"Ən azı 2 simvol yazın");return}
-  results=ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
+  /* Müəllif rejimi: yalnız müəllifi uyğun gələn suallar (Xəmsə/Fərdi mövzularda da yalnız uyğun sual və ya suallar), ən yenisi üstdə */
+  results=au?ALL.filter(x=>terms.every(t=>x[k].u.includes(t))):ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
   render(true);
   setTimeout(()=>$("rTitle").scrollIntoView({behavior:"smooth",block:"start"}),60);
 }
@@ -485,37 +420,35 @@ function renderInner(anim,msg){
     const com=q.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${hl(q.comment,S.fields.has("c"))}</div>`:"";
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
+    const auth=S.author?hl(q.author||"",true):(q.author||"");
     card.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>
 <div class="q-text${rs}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
 <div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
-<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${q.author||""}</span>
+<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>
 <button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
     qc.appendChild(card);
   });
-/* Səhifələmə: cari səhifə ortada, oxlar bir səhifə irəli/geri keçir */
-if(pages>1){
-  if(anim){
-    pg.className="pager frame";
-    pg.style.setProperty("--i",Math.min(slice.length,8)+1);
+  /* Səhifələmə */
+  if(pages>1){
+    if(anim){pg.className="pager frame";pg.style.setProperty("--i",Math.min(slice.length,8)+1)}
+    const first=page===1,last=page===pages;
+    let s,e;
+    if(first){s=1;e=Math.min(3,pages)}
+    else if(last){s=Math.max(1,pages-2);e=pages}
+    else{s=page-1;e=page+1}
+    const leftDots=last?s>1:(!first&&page>=3);
+    const rightDots=first?e<pages:(!last&&pages-page>=2);
+    const dots='<span class="pg-ellipsis" aria-hidden="true">…</span>';
+    const ph='<span class="pg-ellipsis pg-ph" aria-hidden="true">…</span>';
+    let h="";
+    if(leftDots)h+=dots;else if(!first&&!last)h+=ph;
+    if(!first)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`;
+    for(let p=s;p<=e;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
+    if(!last)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
+    if(rightDots)h+=dots;else if(!first&&!last)h+=ph;
+    pg.innerHTML=h;
   }
-  const first=page===1,last=page===pages;
-  let s,e;
-  if(first){s=1;e=Math.min(3,pages)}
-  else if(last){s=Math.max(1,pages-2);e=pages}
-  else{s=page-1;e=page+1}
-  /* "..." yalnız gizlənmiş səhifələr olanda; ortadakı səhifə həmişə düz mərkəzdə qalsın deyə boş tərəfə görünməz yer tutucu qoyulur */
-  const leftDots=last?s>1:(!first&&page>=3);
-  const rightDots=first?e<pages:(!last&&pages-page>=2);
-  const dots='<span class="pg-ellipsis" aria-hidden="true">…</span>';
-  const ph='<span class="pg-ellipsis pg-ph" aria-hidden="true">…</span>';
-  let h="";
-  if(leftDots)h+=dots;else if(!first&&!last)h+=ph;
-  if(!first)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`;
-  for(let p=s;p<=e;p++)h+=`<button class="pg-btn${p===page?" cur":""}" type="button" data-p="${p}"${p===page?' aria-current="page"':""}>${p}</button>`;
-  if(!last)h+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`;
-  if(rightDots)h+=dots;else if(!first&&!last)h+=ph;
-  pg.innerHTML=h;
-}  /* "Cavablar" seçilibsə: əvvəlcə çərçivələr, sonra suallar animasiya ilə gəlir, bundan sonra çərçivələr özləri açılır */
+  /* "Cavablar" seçilibsə çərçivələr sonra özləri açılır */
   if(S.ans){
     const wait=anim?(Math.min(slice.length-1,8)+1)*100+1300:60;
     setTimeout(()=>{
@@ -528,8 +461,12 @@ if(pages>1){
 /* ---------- Statistika (yalnız ekranda sual olmayanda görünür) ---------- */
 let statsShown=false,firstStats=true;
 function statsHTML(anim,base){
+  /* NHN və Breyn Rinq: sual sayı. Xəmsə və Fərdi Oyun: mövzu sayı (hər tur = bir mövzu) */
   const cnt={};
-  ALL.forEach(x=>{cnt[x.p.type]=(cnt[x.p.type]||0)+1});
+  (window.SUAL_DATA||[]).forEach(p=>{
+    if(p.type==="xemse"||p.type==="ferdi")cnt[p.type]=(cnt[p.type]||0)+Object.keys(p.tours).length;
+    else cnt[p.type]=(cnt[p.type]||0)+Object.keys(p.tours).reduce((a,t)=>a+p.tours[t].length,0);
+  });
   const pk=(window.SUAL_DATA||[]).length;
   const items=[["nhn","Nə? Harada? Nə zaman?","sual"],["xemse","Xəmsə","mövzu"],["breyn","Breyn Rinq","sual"],["ferdi","Fərdi Oyun","mövzu"]];
   const f=(i)=>anim?` frame" style="--i:${i}`:"";
@@ -545,7 +482,7 @@ function updateStats(anim){
   const box=$("stats");
   const show=!(results&&results.length);
   if(show){
-    if(!statsShown){box.innerHTML=statsHTML(anim,firstStats?14:3);statsShown=true;firstStats=false;fitStats()}
+    if(!statsShown){box.innerHTML=statsHTML(anim,firstStats?15:3);statsShown=true;firstStats=false;fitStats()}
   }else if(statsShown){box.innerHTML="";statsShown=false}
 }
 updateStats(true);
@@ -608,7 +545,7 @@ function removeZoom(){
 }
 document.addEventListener("click",e=>{if(activeZoomedImg&&e.target!==activeClone)removeZoom()});
 
-/* ---------- Giriş animasiyası: şrift yüklənib düymələr yerini alandan sonra hər şey sıra ilə gəlir ---------- */
+/* ---------- Giriş animasiyası ---------- */
 (function(){
   const reveal=()=>{fitPills();fitStats();requestAnimationFrame(()=>document.documentElement.classList.remove("pre"))};
   if(!document.fonts||!document.fonts.load){reveal();return}
