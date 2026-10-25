@@ -157,6 +157,7 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
 .topic-line{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:12px}
 .topic-line b{font-weight:700}
 .group-inner{display:flex;flex-direction:column;gap:10px}
+.group-author{font-size:var(--pq);line-height:1.55;margin-top:12px}
 .q-group .q-card{background:rgba(255,255,255,.14);box-shadow:none;border-radius:20px;padding:14px 16px}
 .dark .q-group .q-card{background:rgba(0,7,44,.1)}
 footer{width:100%;flex:0 0 auto;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
@@ -434,8 +435,9 @@ function renderInner(anim,msg){
         const w=document.createElement("div");
         w.className="q-card q-group glow"+fr;
         if(anim)w.style.setProperty("--i",Math.min(i,8)+1);
-        const tn=(x.p.topics&&x.p.topics[x.t])||("№"+x.t);
-        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a><div class="topic-line${rs}"><b>Mövzu:</b> ${tn}</div><div class="group-inner"></div>`;
+        const tn=(x.p.topics&&x.p.topics[x.t])||"";
+        const au=[...new Set((x.p.tours[x.t]||[]).map(z=>fixAuthor(z.author)).filter(Boolean))].join(", ");
+        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a><div class="topic-line${rs}"><b>${x.t}.</b> ${tn}</div><div class="group-inner"></div><div class="group-author${rs}"><span class="ans-label">Müəllif:</span> ${S.author?hl(au,true):au}</div>`;
         qc.appendChild(w);
         grp={key,inner:w.querySelector(".group-inner")};
       }
@@ -446,17 +448,22 @@ function renderInner(anim,msg){
     const req=q.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`:"";
     const qh=hl(q.question,S.fields.has("q"));
-    const body=`<b>${g+1}.</b> `+(req||hand?`${req}${hand}<div class="mat-after">${qh}</div>`:qh);
+    /* Xəmsə / Fərdi: sual nömrəsi mövzu daxilində (1,2,3...) */
+    const qn=grouped?((x.p.tours[x.t]||[]).indexOf(q)+1||i+1):g+1;
+    const body=`<b>${qn}.</b> `+(req||hand?`${req}${hand}<div class="mat-after">${qh}</div>`:qh);
     const crit=q.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${hl(q.criteria,S.fields.has("a"))}</div>`:"";
     const com=q.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${hl(q.comment,S.fields.has("c"))}</div>`:"";
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
     const auth=S.author?hl(q.author||"",true):(q.author||"");
+    const copyBtn=`<button class="copy-btn" type="button" onclick="copyQuestion(${g},this,${qn})" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>`;
+    const authBlock=grouped
+      ?`<div class="ans-row author-row"><span></span>${copyBtn}</div>`
+      :`<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>${copyBtn}</div>`;
     card.innerHTML=`${grouped?"":`<a class="pkg-link${r2}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>`}
 <div class="q-text${r2}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
 <div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
-<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>
-<button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
+${authBlock}</div>`;
     (grouped?grp.inner:qc).appendChild(card);
   });
   /* Səhifələmə */
@@ -541,10 +548,11 @@ function qTextKey(e,i){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggl
 
 /* ---------- Kopyala ---------- */
 function h2t(h){return String(h).replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").trim()}
-function buildText(q,n){let t=`${n}. ${h2t(q.question)}\n\nCavab: ${q.answer}`;if(q.criteria)t+=`\nSayılma meyarı: ${q.criteria}`;if(q.comment)t+=`\nŞərh: ${h2t(q.comment)}`;if(q.source)t+=`\nMənbə: ${h2t(q.source)}`;return t+`\nMüəllif: ${q.author||""}`}
-function copyQuestion(g,btn){
+function buildText(q,n,noAuthor){let t=`${n}. ${h2t(q.question)}\n\nCavab: ${q.answer}`;if(q.criteria)t+=`\nSayılma meyarı: ${q.criteria}`;if(q.comment)t+=`\nŞərh: ${h2t(q.comment)}`;if(q.source)t+=`\nMənbə: ${h2t(q.source)}`;return noAuthor?t:t+`\nMüəllif: ${q.author||""}`}
+function copyQuestion(g,btn,n){
   const x=results&&results[g];if(!x)return;
-  const text=buildText(x.q,g+1);
+  const grouped=x.p.type==="xemse"||x.p.type==="ferdi";
+  const text=buildText(x.q,n||g+1,grouped);
   const done=()=>{btn.classList.add("copied");clearTimeout(btn._t);btn._t=setTimeout(()=>btn.classList.remove("copied"),1600)};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(()=>fb(text,done));else fb(text,done);
 }
