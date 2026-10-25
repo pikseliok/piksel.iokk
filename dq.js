@@ -1,33 +1,18 @@
 /* πksel · Günün sualı. Bu fayl ayrı GitHub repoda durur, index.html-də yalnız bir sətir var:
    <script src=https://pikseliok.github.io/REPO-ADI/dq.js></script>   ("Keçidlər" başlığının qabağında)
-   Sualları əlavə etmək üçün yalnız aşağıdakı AYARLAR hissəsini dəyiş.
 
-   VACİB QAYDALAR (istifadəçilərin seriyası və səsləri qorunsun deyə):
-   1) Yeni sualları həmişə siyahının SONUNA əlavə et. Köhnə sualları silmə, yerini dəyişmə.
-   2) Hər suala unikal "id" ver və onu heç vaxt dəyişmə (like/dislike bu id ilə saxlanır).
-   3) Bu gün çıxmış sualı dəyişmə.
+   Sual əl ilə yazılmır: sual datasından (window.SUAL_DATA) hər gün (Bakı vaxtı 00:00) təsadüfi 1 NHN paketi,
+   onun içindən təsadüfi 1 sual seçilir. Seçim bütün istifadəçilər üçün eynidir və gün ərzində dəyişmir.
+   Sual datası fayl ünvanını aşağıdakı DATA_URL-ə yaz (səhifədə artıq yüklənirsə boş qala bilər).
+
+   VACİB: aşağıdakı yaddaş açar adlarını (piksel-uid, piksel-dq ...) heç vaxt dəyişmə.
    Seriya, ad və səslər Google Sheets-dədir, dq.js-i dəyişmək onlara təsir etmir. */
 (function () {
   // ===================== AYARLAR =====================
   var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
-  var START = "2026-10-19"; // birinci sualın çıxdığı gün (hər gün növbəti sual, sıra ilə, Bakı vaxtı 00:00-da)
-  var QUESTIONS = [
-    { id: "s1", author: "Sual Müəllifi", authorGen: "", question: "Sual mətni buraya", answer: "Düzgün cavab buraya", criteria: "Sayılma meyarı buraya", comment: "Şərh buraya", source: "" }, 
-    { id: "s2", author: "Sizdən gələn suallar / Adayeva Nübar", authorGen: "ın", question: "XVI əsrdə İtaliyada fəaliyyət göstərən kapusin adlı rahiblər geyindikləri uzun bej rəngli cübbələr və başlarına örtdükləri ağ başlıqlar İKS-ə bənzədiyi üçün , İKS-ə rahiblərin ümumi adı verilir. İKS-i xarici mənşəli bir sözlə yazın ", answer: "Kapuçino", criteria: "Cappuccino", comment: "Kapusinlərin geyimləri  qəhvəyə süd tökülərkən yaranan rəngə bənzəyirdi. Buna görə də həmin kofe növünə \"Kiçik kapusin\" yəni kapuçino adı verilir", source: "" },
-    { id: "s3", author: "Hüseynli Muhamməd", authorGen: "", question: "Bədənlərindən nəfəs aldıqları üçün tarakanlar bir həftəyə qədər BUNU EDƏ bilərlər. Mayk adlı xoruz isə 18 ay boyunca BUNU EDİB rekordlar kitabına düşmüşdü. BUNU ETMƏKLƏ əvəz etdiyimizi bir neçə sözlə yazın.", answer: "Başsız yaşamaq", criteria: "Mənaya uyğun digər cavablar", comment: "Bədənlərindən nəfəs aldıqları üçün tarakanlar başları olmadan bir neçə müddət yaşaya bilir, lakin susuzluğa görə ölürlər.", source: " 1. https://en.wikipedia.org/wiki/Mike_the_Headless_Chicken 2. https://share.google/CKKvnCZkpsH35b3ln" },
-    { id: "s4", author: "Sizdən gələn suallar / Məmmədov Aydın", authorGen: "", handout: "₺", question: "Paylama materialında verilmiş simvolun yaradıcısı Tülay Lalə bu simvolu yaradarkən kiçik \"L\" hərfinin üstündəki 2 paralel xəttin hər birinə məna yükləmişdi. Birincisi Türk Lirəsi ifadəsinin baş hərfləri. Bəs ikincisi?", answer: "Tülay Lalənin adı və soyadının baş hərfləri", criteria: "", comment: "Dizayner Tülay Lalə simvolu elə hazırlamışdı ki, oradakı T və L hərfləri həm \"Türk Lirəsi\" ifadəsini, həm də öz adının və soyadının baş hərflərini (Tülay Lale) təcəssüm etdirirdi.", source: "" },
-    { id: "s5", author: "Yuniszadə Ema", authorGen: "", question: "Su samurları həyatlarının böyük hissəsini suda keçirir və suyun üzərində üzərək yatırlar. Maraqlıdır ki, onlar yatarkən axının təsiri ilə ayrılmamaq üçün BUNU EDİRLƏR. Alimlərin fikrincə, insanlar BUNU EDƏRKƏN tərəflərin beyin dalğaları müəyyən dərəcədə sinxronlaşır. BUNU ETMƏK ifadəsi ilə əvəz olunmuş anlayışı  yazın.", answer: "Əl-ələ tutmaq", criteria: "Mənaya uyğun digər cavablar", comment: " Su samurları suda yatarkən axıntının onları fərqli istiqamətlərə aparmasının və bir-birlərini itirmələrinin qarşısını almaq üçün çox sevimli bir instinktə sahibdirlər. Onlar əl-ələ tutuşaraq yatırlar. Digər tərəfdən, nevroloji araşdırmalar göstərir ki, insanlar bir-birlərinin əlindən tutdușduqda tərəfdaşların beyin fəaliyyətləri və dalğaları arasında sinxronizasiya yaranır, bu da empatiyanı artırır və ağrını azaldır.", source: "https://www.facebook.com/YolveMacera/videos/1910814592410728/?mibextid=rS40aB7S9Ucbxw6v" },
-   { id: "s6", author: "Sizdən gələn suallar / Hüseynov Elnur", authorGen: "", question: "Qadınların gələcək illərdə təxminən yarısının subay və övladsız qalacağı gözlənilir. Bu barədə bir paylaşımda ekspertlər qadınların iqtisadiyyatda artan rolunu \"economy\" anlayışı ilə izah edirlər. İki hərfin buraxıldığını nəzərə alaraq, sözü bərpa edin. ", answer: "Sheconomy", criteria: "", comment: "İngilis dilindəki She - yəni o qadın əvəzliyi ilə economy - yəni iqtisadiyyat sözlərinin birləşməsindən yaranan Sheconomy termini qadınların alıcılıq qabiliyyətinin və iqtisadiyyatdakı rolunun artmasını təsvir edir. Mətndə economy sözünün əvvəlinə S və H hərfləri artırılaraq söz bərpa olunur.", source: "" },
-     
-     
-     
-     
-     
-     // { id: "s6", author: "...", authorGen: "", question: "...", answer: "...", criteria: "", comment: "", source: "https://..." },
-  ];
-  // author nə yazsan, olduğu kimi görünür (məs. "Müəllif Əli Məmmədov" → "Müəllif Əli Məmmədovun sualı").
-  // authorGen adətən BOŞ qalmalıdır (şəkilçi avtomatik qoyulur). Səhv çıxsa: ya qısa şəkilçi yaz ("un" → ad+un), ya da tam forma ("Əli Məmmədovun").
-  // handout (ixtiyari): paylama materialı. Doldurulsa, müəllifin altında qalın "Paylama materialı" başlığı və onun altında materialın özü göstərilir.
+  var START = "2026-10-19"; // günlərin sayılmağa başladığı tarix (qn = bu tarixdən bəri neçənci gün)
+  var DATA_URL = ""; // SUAL_DATA faylının tam ünvanı, məs. "https://peaksel.az/sual-data.js"
+  var START_DAY = Date.parse(START + "T00:00:00Z") / 864e5;
   var SHARE_PHONE = "994508377942";   // WhatsApp nömrəsi (050 837 7942)
   var SHARE_TEXT = "Günlük sual bölməsi üçün öz sualımı sizinlə bölüşmək istəyirəm";
   // ================== AYARLAR BİTDİ ==================
@@ -64,7 +49,8 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-cta.gone{display:none}
 .dq-cta svg{width:20px;height:20px;flex:0 0 20px;display:block}
 .dq-body{display:none;padding:20px 4px 22px}
-.dq-author{font-size:16px;font-weight:700;letter-spacing:-.3px}
+.dq-author{font-size:16px;font-weight:700;letter-spacing:-.3px;overflow-wrap:anywhere}
+.dq-by{display:none;margin-top:2px;font-size:13px;font-weight:500;opacity:.8;overflow-wrap:anywhere}
 .dq-hl{display:none;margin-top:8px;font-size:15px;line-height:1.5;font-weight:700}
 .dq-hm{display:none;margin-top:2px;font-size:17px;line-height:1.5;font-weight:500;white-space:pre-line;overflow-wrap:anywhere}
 .dq-text{margin-top:8px;font-size:15px;line-height:1.5;font-weight:500;white-space:pre-line;overflow-wrap:anywhere}
@@ -82,7 +68,7 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-send:active{transform:scale(.93)}
 .dq-send svg{width:22px;height:22px;display:block}
 .dq-res{display:none;margin-top:18px}
-.dq-line{font-size:15px;line-height:1.5;font-weight:500;overflow-wrap:anywhere}
+.dq-line{font-size:15px;line-height:1.5;font-weight:500;overflow-wrap:anywhere;white-space:pre-line}
 .dq-line+.dq-line{margin-top:8px}
 .dq-line b{font-weight:700}
 .dq-line a{text-decoration:underline;text-underline-offset:3px}
@@ -114,6 +100,7 @@ body.dark .dq{--flame-off:#4b546e}
 .dq-timer small{font-size:7px}
 .dq-field.n{flex-basis:32%}
 .dq-author{font-size:13px}
+.dq-by{font-size:11px}
 .dq-text,.dq-line{font-size:12px}
 .dq-hl{font-size:12px}
 .dq-hm{font-size:14px}
@@ -153,6 +140,7 @@ body.dark .dq{--flame-off:#4b546e}
   </div>
   <div class="dq-body" id="dqBody">
    <div class="dq-author" id="dqAuthor"></div>
+   <div class="dq-by" id="dqBy"></div>
    <div class="dq-hl" id="dqHL">Paylama materialı</div>
    <div class="dq-hm" id="dqHM"></div>
    <div class="dq-text" id="dqText"></div>
@@ -288,24 +276,97 @@ body.dark .dq{--flame-off:#4b546e}
   likeB.addEventListener("click", function () { castVote(1); });
   disB.addEventListener("click", function () { castVote(-1); });
 
-  // ---- Azərbaycan dilində yiyəlik hal: Əli → Əlinin, Məmmədov → Məmmədovun
-  function gen(n) {
-    n = n.trim();
-    var low = n.replace(/İ/g, "i").replace(/I/g, "ı").toLowerCase(), v = "aıoueəiöü", last = "", ends = false;
-    for (var i = low.length - 1; i >= 0; i--) if (v.indexOf(low[i]) > -1) { last = low[i]; ends = i === low.length - 1; break; }
-    var s = { a: "ı", "ı": "ı", e: "i", "ə": "i", i: "i", o: "u", u: "u", "ö": "ü", "ü": "ü" }[last] || "ı";
-    return n + (ends ? "n" + s + "n" : s + "n");
-  }
-  function hid(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return "h" + (h >>> 0).toString(36); }
+  // ---- SUAL_DATA-dan gündəlik seçim (təsadüfi NHN paketi → təsadüfi sual)
+  var DP = new DOMParser();
+  // şəkil/paylama/rekvizit tələb edən, çoxhissəli və ya başqa suala/mövzuya istinad edən suallar çıxarılır
+  var SKIP = /paylama materialı|rekvizit|gördüyünüz|görürsünüz|blitz|duplet|şəkil|əvvəlki sual|sual əvvəl|mövzu|fasilə|(birinci|ikinci|üçüncü|dördüncü|beşinci|son|\d+-c[iıuü])\s+sual/i;
+  var POOL = null, pickCache = {};
 
-  // ---- vəziyyət: sual yerli siyahıdan, ad/seriya/cavablama yerli yaddaşdan (server ilə arxa planda sinxron)
+  function h32(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    h ^= h >>> 16; h = Math.imul(h, 2246822507); h ^= h >>> 13; h = Math.imul(h, 3266489909); h ^= h >>> 16;
+    return h >>> 0;
+  }
+  function toText(h) {
+    if (!h) return "";
+    var d = DP.parseFromString("<body>" + String(h).replace(/<br\s*\/?>/gi, "\n") + "</body>", "text/html");
+    return (d.body.textContent || "").replace(/[ \t]+\n/g, "\n").trim();
+  }
+  function srcText(h) { return toText(String(h || "").replace(/<a [^>]*href=['"]([^'"]+)['"][^>]*>[\s\S]*?<\/a>/gi, "$1")); }
+  function richInto(parent, h) {
+    var d = DP.parseFromString("<body>" + String(h).replace(/<br\s*\/?>/gi, "\n") + "</body>", "text/html");
+    (function walk(n, p) {
+      for (var c = n.firstChild; c; c = c.nextSibling) {
+        if (c.nodeType === 3) p.appendChild(document.createTextNode(c.nodeValue));
+        else if (c.nodeName === "A") {
+          var href = c.getAttribute("href") || "";
+          if (/^https?:\/\//i.test(href)) {
+            var a = document.createElement("a");
+            a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer";
+            walk(c, a); p.appendChild(a);
+          } else walk(c, p);
+        } else walk(c, p);
+      }
+    })(d.body, parent);
+  }
+  // "…paketi" → "…paketindən bir sual", digərləri → "… paketindən bir sual"
+  function pkgLine(t) {
+    t = toText(t || "").trim();
+    if (!t) return "Günün sualı";
+    return /paketi$/i.test(t) ? t.replace(/paketi$/i, function (m) { return m.charAt(0) === "P" ? "Paketindən" : "paketindən"; }) + " bir sual" : t + " paketindən bir sual";
+  }
+  function norm(q, key, title) {
+    if (!q || !q.question || !q.answer || q.reqImg || q.extraImage) return null;
+    var raw = String(q.question).replace(/<i>\s*\(?\s*Aparıcı[\s\S]*?<\/i>/gi, "").replace(/\(\s*Aparıcı[^)]*\)/gi, "");
+    if (SKIP.test(raw)) return null;
+    var text = toText(raw);
+    if (text.length < 20) return null;
+    return {
+      id: "d" + h32(key + "|" + text).toString(36), pack: pkgLine(title), author: toText(q.author || ""),
+      question: text, answer: toText(q.answer), criteria: q.criteria || "", comment: q.comment || "", source: q.source || ""
+    };
+  }
+  function buildPool() {
+    var out = [];
+    (window.SUAL_DATA || []).forEach(function (p) {
+      if (!p || p.type !== "nhn") return;
+      var key = p.link || p.title, qs = [];
+      Object.keys(p.tours || {}).forEach(function (t) {
+        (p.tours[t] || []).forEach(function (q) { var n = norm(q, key, p.title); if (n) qs.push(n); });
+      });
+      if (qs.length) out.push({ key: key, qs: qs });
+    });
+    return out;
+  }
+  // ən yüksək hash qalib gəlir: data dəyişsə də (yeni paket/sual) gündəlik seçim demək olar ki, sabit qalır
+  function best(arr, keyOf, day, tag) {
+    var b = null, bs = -1;
+    arr.forEach(function (x) { var s = h32(day + "|" + tag + "|" + keyOf(x)); if (s > bs) { bs = s; b = x; } });
+    return b;
+  }
+  function pick(day) {
+    if (pickCache.d === day) return pickCache.q;
+    var pk = best(POOL, function (p) { return p.key; }, day, "P");
+    var q = best(pk.qs, function (x) { return x.id; }, day, "Q");
+    pickCache = { d: day, q: q };
+    return q;
+  }
+  function loadData(cb) {
+    function have() { return window.SUAL_DATA && window.SUAL_DATA.length; }
+    if (have()) return cb();
+    if (!DATA_URL) { var t = 0, iv = setInterval(function () { if (have() || ++t > 50) { clearInterval(iv); cb(); } }, 200); return; }
+    var s = document.createElement("script");
+    s.src = DATA_URL; s.onload = cb; s.onerror = cb; document.head.appendChild(s);
+  }
+
+  // ---- vəziyyət: sual datadan, ad/seriya/cavablama yerli yaddaşdan (server ilə arxa planda sinxron)
   var OFF = 4 * 36e5, DAY = 864e5, dnum = function (t) { return Math.floor((t + OFF) / DAY); };
   function build(d) {
-    var today = dnum(d.now), n = QUESTIONS.length,
-      idx = Math.max(0, today - Date.parse(START + "T00:00:00Z") / DAY) % n, q = QUESTIONS[idx],
+    var today = dnum(d.now), q = pick(today),
       lit = d.streak > 0 && (d.last === today || d.last === today - 1), done = d.last === today;
-    return { now: d.now, next: (today + 1) * DAY - OFF, qn: idx + 1, id: String(q.id || hid(q.question || "")), author: q.author, authorGen: q.authorGen || "",
-      question: q.question, handout: q.handout || "", name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
+    return { now: d.now, next: (today + 1) * DAY - OFF, qn: Math.max(1, today - START_DAY + 1), id: q.id, pack: q.pack, author: q.author,
+      question: q.question, handout: "", name: d.name || "", streak: lit ? d.streak : 0, lit: lit, answered: done, reveal: done ? q : null };
   }
   function cur() { return build({ now: Date.now() + skew, name: D.name, streak: D.streak, last: D.last }); }
 
@@ -441,27 +502,21 @@ body.dark .dq{--flame-off:#4b546e}
       b.textContent = x[0];
       d.appendChild(b);
       d.appendChild(document.createTextNode(" "));
-      if (x[0] === "Mənbə:" && /^https?:\/\//i.test(v)) {
-        var a = document.createElement("a");
-        a.href = v; a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = v;
-        d.appendChild(a);
-      } else d.appendChild(document.createTextNode(v));
+      richInto(d, v);
       resIn.appendChild(d);
     });
     renderVotes();
   }
-  function title() {
+  function byLine() {
     var a = (S.author || "").trim();
-    if (!a) return "Günün sualı";
-    var g = (S.authorGen || "").trim();
-    return (!g ? gen(a) : g.length <= 4 ? a + g : g) + " sualı";   // boş → avtomatik; qısa → şəkilçi; uzun → tam forma
+    return a ? "Sual müəllifi: " + a : "";
   }
   function copyText() {
-    var r = S.reveal || {}, t = title() + "\n" + (S.handout ? "Paylama materialı: " + S.handout + "\n" : "") + S.question + "\n";
+    var r = S.reveal || {}, by = byLine(), t = S.pack + "\n" + (by ? by + "\n" : "") + S.question + "\n";
     if (r.answer) t += "\nCavab: " + r.answer;
-    if (r.criteria) t += "\nSayılma Meyarı: " + r.criteria;
-    if (r.comment) t += "\nŞərh: " + r.comment;
-    if (r.source) t += "\nMənbə: " + r.source;
+    if (r.criteria) t += "\nSayılma Meyarı: " + toText(r.criteria);
+    if (r.comment) t += "\nŞərh: " + toText(r.comment);
+    if (r.source) t += "\nMənbə: " + srcText(r.source);
     return t + "\n\nπksel — peaksel.az";
   }
   $("dqCopy").addEventListener("click", function () {
@@ -508,7 +563,10 @@ body.dark .dq{--flame-off:#4b546e}
     if (busy || open || !S) return;
     busy = true;
     review = !!S.answered;
-    $("dqAuthor").textContent = title();
+    $("dqAuthor").textContent = S.pack;
+    var by = byLine();
+    $("dqBy").textContent = by;
+    $("dqBy").style.display = by ? "block" : "none";
     $("dqText").textContent = S.question;
     $("dqHL").style.display = S.handout ? "block" : "none";
     $("dqHM").style.display = S.handout ? "block" : "none";
@@ -561,7 +619,7 @@ body.dark .dq{--flame-off:#4b546e}
     busy = false;
   }
 
-  // ---- açıq çərçivənin yuxarı hissəsinə (müəllif + sual) toxunanda da bağlansın
+  // ---- açıq çərçivənin yuxarı hissəsinə (paket + sual) toxunanda da bağlansın
   root.addEventListener("click", function (e) {
     if (!open || busy) return;
     if (e.target.closest && e.target.closest("a,button,input")) return;
@@ -643,15 +701,24 @@ body.dark .dq{--flame-off:#4b546e}
   cta.addEventListener("click", openDQ);
   cta.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDQ(); } });
 
-  // ---- start: dərhal göstər, serverlə arxa planda sinxronlaş
+  // ---- start: data yüklənəndən sonra dərhal göstər, serverlə arxa planda sinxronlaş
   if (DBG) console.log("dq.js yükləndi");
-  if (/XXXX/.test(API) || !QUESTIONS.length) {
-    if (DBG) ctaT.textContent = "Xəta: API və ya suallar boşdur"; else root.remove();
+  if (/XXXX/.test(API)) {
+    if (DBG) ctaT.textContent = "Xəta: API boşdur"; else root.remove();
   } else {
-    S = cur();
-    render();
-    var pend = readPend();
-    if (pend) send(pend, 0); else refresh(3);
-    flushVotes();
+    root.style.display = "none";
+    loadData(function () {
+      POOL = buildPool();
+      if (!POOL.length) {
+        if (DBG) { root.style.display = ""; ctaT.textContent = "Xəta: sual datası boşdur"; } else root.remove();
+        return;
+      }
+      root.style.display = "";
+      S = cur();
+      render();
+      var pend = readPend();
+      if (pend) send(pend, 0); else refresh(3);
+      flushVotes();
+    });
   }
 })();
