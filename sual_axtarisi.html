@@ -6,7 +6,6 @@
 <meta content="#9DC3FF" name="theme-color">
 <title>πksel - Sual Axtarışı</title>
 <script>
-/* Tema və giriş animasiyası vəziyyəti ilk çəkilişdən ƏVVƏL təyin olunur (yanıb-sönmənin qarşısı) */
 (function(){var d=document.documentElement;d.classList.add("pre");try{var s=localStorage.getItem("piksel-theme");var dk=s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);if(dk)d.classList.add("dark")}catch(e){}
 setTimeout(function(){d.classList.remove("pre")},3500)})();
 </script>
@@ -153,6 +152,13 @@ mark.hl{background:rgba(255,255,255,.3);color:inherit;font-weight:800;border:2px
 .stat-wide .stat-name{display:inline}
 .stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 @media (hover:hover){.stat-card:hover{transform:scale(1.025)}}
+/* ---------- Xəmsə / Fərdi: vahid böyük çərçivə ---------- */
+.q-group{padding:20px 22px}
+.topic-line{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:12px}
+.topic-line b{font-weight:700}
+.group-inner{display:flex;flex-direction:column;gap:10px}
+.q-group .q-card{background:rgba(255,255,255,.14);box-shadow:none;border-radius:20px;padding:14px 16px}
+.dark .q-group .q-card{background:rgba(0,7,44,.1)}
 footer{width:100%;flex:0 0 auto;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
@@ -181,6 +187,8 @@ footer{width:100%;flex:0 0 auto;background:linear-gradient(100deg,var(--deep) 0,
 .stat-card{--sf:13px;border-radius:18px;padding:12px 10px}
 .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .stats{gap:8px}
+.q-group{padding:16px;border-radius:22px}
+.q-group .q-card{padding:12px 14px;border-radius:16px}
 footer{min-height:96px;padding:16px 12px;gap:5px}
 .footer-line{font-size:13px}}
 @media (max-width:420px){:root{--pr:13px;--pq:13px}
@@ -192,6 +200,8 @@ footer{min-height:96px;padding:16px 12px;gap:5px}
 .search-btn{right:auto;left:5px}
 .theme-icon{width:20px;height:20px}
 .search-card,.q-card,.msg{padding:14px}
+.q-group{padding:14px}
+.q-group .q-card{padding:11px 12px}
 .stat-card{--sf:12px;padding:11px 8px}
 .pill{height:32px;padding:0 12px;font-size:12px;gap:5px}
 footer{min-height:88px}
@@ -275,7 +285,8 @@ function setTheme(d,an){document.documentElement.classList.toggle("dark",d);docu
 (function(){let s=null;try{s=localStorage.getItem("piksel-theme")}catch(e){}setTheme(s?s==="dark":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches),false)})();
 themeToggle.addEventListener("click",()=>setTheme(!document.documentElement.classList.contains("dark"),true));
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
-document.addEventListener("pointermove",e=>{const g=e.target.closest(".glow");if(g){const r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px")}});
+/* Mouse işığı: həm içdəki, həm də onu əhatə edən böyük çərçivə işıqlanır */
+document.addEventListener("pointermove",e=>{let g=e.target.closest&&e.target.closest(".glow");while(g){const r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px");g=g.parentElement&&g.parentElement.closest(".glow")}});
 
 /* ---------- Axtarış düyməsi (navbar) ---------- */
 $("searchBtn").addEventListener("click",e=>{
@@ -301,12 +312,13 @@ const ALL=[];
 (window.SUAL_DATA||[]).map((p,o)=>({...p,order:o})).sort((a,b)=>b.date.localeCompare(a.date)||b.order-a.order).forEach(p=>{
   Object.keys(p.tours).sort((a,b)=>a-b).forEach(t=>p.tours[t].forEach(q=>{
     const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment),tu=plain(fixAuthor(q.author));
-    ALL.push({p,q,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc),u:foldN(tu)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc),u:foldE(tu)}});
+    ALL.push({p,q,t,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc),u:foldN(tu)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc),u:foldE(tu)}});
   }));
 });
 
 /* ---------- Seçimlər ---------- */
-function pills(host,items,set,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.dataset.key=it.key;b.className="pill sel rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(authorMode)return;if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
+/* lock=true olan sıra (sahə düymələri) müəllif rejimində bağlanır; növ düymələri isə həmişə işləyir */
+function pills(host,items,set,n0,lock){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.dataset.key=it.key;b.className="pill sel rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","true");b.innerHTML="<span>"+it.label+"</span>";b.onclick=()=>{if(lock&&authorMode)return;if(set.has(it.key)){if(set.size<2)return;set.delete(it.key)}else set.add(it.key);const on=set.has(it.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on)};host.appendChild(b)})}
 function toggles(host,items,n0){items.forEach((it,k)=>{const b=document.createElement("button");b.type="button";b.className="pill rise";b.style.setProperty("--n",n0+k);b.setAttribute("aria-pressed","false");b.innerHTML="<span>"+it.label+"</span>"+(it.info?'<span class="info-dot" aria-label="Məlumat">i</span>':"");b.onclick=e=>{const d=e.target.closest(".info-dot");if(d){showTip(d);return}const on=b.classList.toggle("sel");b.setAttribute("aria-pressed",on);it.set(on)};host.appendChild(b)})}
 /* ---------- Məlumat qeydi ---------- */
 let tipTimer=null;
@@ -321,11 +333,14 @@ function showTip(dot){
 }
 document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest(".info-dot"))return;hideTip()},true);
 window.addEventListener("scroll",hideTip,{passive:true});
-pills($("typeRow"),TYPES,types,2);pills($("fieldRow"),FIELDS,fields,7);
+pills($("typeRow"),TYPES,types,2,false);pills($("fieldRow"),FIELDS,fields,7,true);
 toggles($("optRow"),[{label:"Cavablar",set:v=>{optAns=v}},{label:"İngilis klaviatura rejimi",info:true,set:v=>{optEng=v}}],11);
 
-/* Müəllif rejimi: Növ və Sahə düymələri sönür, seçilmiş olsalar da bağlanır və seçilə bilmir */
-function syncPills(){[["typeRow",types],["fieldRow",fields]].forEach(([id,set])=>{[...$(id).children].forEach(b=>{const on=!authorMode&&set.has(b.dataset.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on);b.disabled=authorMode})})}
+/* Müəllif rejimi: yalnız Sahə düymələri (mətn/cavab/şərh) sönür; Növ düymələri işləyir */
+function syncPills(){
+  [...$("fieldRow").children].forEach(b=>{const on=!authorMode&&fields.has(b.dataset.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on);b.disabled=authorMode});
+  [...$("typeRow").children].forEach(b=>{const on=types.has(b.dataset.key);b.classList.toggle("sel",on);b.setAttribute("aria-pressed",on);b.disabled=false});
+}
 (function(){const b=document.createElement("button");b.type="button";b.className="pill rise";b.style.setProperty("--n",14);b.setAttribute("aria-pressed","false");b.innerHTML="<span>Müəllif suallarını axtar</span>";b.onclick=()=>{authorMode=!authorMode;b.classList.toggle("sel",authorMode);b.setAttribute("aria-pressed",authorMode);syncPills();$("searchInput").placeholder=authorMode?"Müəllif axtar":"Sual axtar"};$("authRow").appendChild(b)})();
 
 /* Düymə yazısı 1 sətirdə qalır */
@@ -355,15 +370,15 @@ window.addEventListener("orientationchange",()=>setTimeout(()=>{fitPills();fitSt
 /* ---------- Axtarış ---------- */
 function doSearch(){
   const inp=$("searchInput"),au=authorMode;
-  S={types:au?new Set(TYPES.map(t=>t.key)):new Set(types),fields:au?new Set():new Set(fields),eng:optEng,ans:optAns,author:au};
+  S={types:new Set(types),fields:au?new Set():new Set(fields),eng:optEng,ans:optAns,author:au};
   const fold=S.eng?foldE:foldN,k=S.eng?"e":"n";
   const v=fold((au?fixAuthor(inp.value):inp.value).trim());
   inp.blur();
   terms=v.split(/\s+/).filter(Boolean);
   page=1;
   if(v.length<2){results=null;render(true,"Ən azı 2 simvol yazın");return}
-  /* Müəllif rejimi: yalnız müəllifi uyğun gələn suallar (Xəmsə/Fərdi mövzularda da yalnız uyğun sual və ya suallar), ən yenisi üstdə */
-  results=au?ALL.filter(x=>terms.every(t=>x[k].u.includes(t))):ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
+  /* Müəllif rejimi: seçilmiş növlər daxilində yalnız müəllifi uyğun gələn suallar, ən yenisi üstdə */
+  results=au?ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>x[k].u.includes(t))):ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
   render(true);
   setTimeout(()=>$("rTitle").scrollIntoView({behavior:"smooth",block:"start"}),60);
 }
@@ -408,10 +423,26 @@ function renderInner(anim,msg){
   if(!results.length){T.textContent="Heç nə tapılmadı";return}
   T.textContent=results.length+" sual tapıldı";
   const start=(page-1)*PAGE_SIZE,pages=Math.ceil(results.length/PAGE_SIZE),slice=results.slice(start,start+PAGE_SIZE);
+  let grp=null;
   slice.forEach((x,i)=>{
     const g=start+i,q=x.q,card=document.createElement("div");
-    card.className="q-card glow"+fr;card.id="q-card-"+i;
-    if(anim)card.style.setProperty("--i",Math.min(i,8)+1);
+    /* Xəmsə və Fərdi Oyun: eyni paket + eyni mövzu = vahid böyük çərçivə */
+    const grouped=x.p.type==="xemse"||x.p.type==="ferdi";
+    if(grouped){
+      const key=x.p.link+"|"+x.t;
+      if(!grp||grp.key!==key){
+        const w=document.createElement("div");
+        w.className="q-card q-group glow"+fr;
+        if(anim)w.style.setProperty("--i",Math.min(i,8)+1);
+        const tn=(x.p.topics&&x.p.topics[x.t])||("№"+x.t);
+        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a><div class="topic-line${rs}"><b>Mövzu:</b> ${tn}</div><div class="group-inner"></div>`;
+        qc.appendChild(w);
+        grp={key,inner:w.querySelector(".group-inner")};
+      }
+    }else grp=null;
+    const f2=grouped?"":fr,r2=grouped?"":rs;
+    card.className="q-card glow"+f2;card.id="q-card-"+i;
+    if(anim&&!grouped)card.style.setProperty("--i",Math.min(i,8)+1);
     const req=q.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`:"";
     const qh=hl(q.question,S.fields.has("q"));
@@ -421,12 +452,12 @@ function renderInner(anim,msg){
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
     const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
     const auth=S.author?hl(q.author||"",true):(q.author||"");
-    card.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>
-<div class="q-text${rs}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
+    card.innerHTML=`${grouped?"":`<a class="pkg-link${r2}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>`}
+<div class="q-text${r2}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
 <div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
 <div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>
 <button class="copy-btn" type="button" onclick="copyQuestion(${g},this)" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button></div></div>`;
-    qc.appendChild(card);
+    (grouped?grp.inner:qc).appendChild(card);
   });
   /* Səhifələmə */
   if(pages>1){
@@ -448,12 +479,12 @@ function renderInner(anim,msg){
     if(rightDots)h+=dots;else if(!first&&!last)h+=ph;
     pg.innerHTML=h;
   }
-  /* "Cavablar" seçilibsə çərçivələr sonra özləri açılır */
+  /* "Cavablar" seçilibsə sual çərçivələri sonra özləri açılır (böyük qrup çərçivəsi toxunulmaz qalır) */
   if(S.ans){
     const wait=anim?(Math.min(slice.length-1,8)+1)*100+1300:60;
     setTimeout(()=>{
       if(rid!==renderId)return;
-      qc.querySelectorAll(".q-card").forEach(c=>{c.classList.add("active");c.querySelector(".q-text").setAttribute("aria-expanded","true")});
+      qc.querySelectorAll(".q-card:not(.q-group)").forEach(c=>{c.classList.add("active");const t=c.querySelector(".q-text");if(t)t.setAttribute("aria-expanded","true")});
     },wait);
   }
 }
