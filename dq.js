@@ -11,7 +11,7 @@
   // ===================== AYARLAR =====================
   var API = "https://script.google.com/macros/s/AKfycbwQz8bWarz8pudNlJaFCPmD3Pzkon3ZAJ2G1LXG4e5wwwf-twULEDZgSwqbFxuoUQxQCQ/exec"; // Apps Script "Web app" ünvanı
   var START = "2026-10-19"; // günlərin sayılmağa başladığı tarix (qn = bu tarixdən bəri neçənci gün)
-  var DATA_URL = ""; // SUAL_DATA faylının tam ünvanı, məs. "https://peaksel.az/sual-data.js"
+  var DATA_URL = "/suallar-data.js";
   var START_DAY = Date.parse(START + "T00:00:00Z") / 864e5;
   var SHARE_PHONE = "994508377942";   // WhatsApp nömrəsi (050 837 7942)
   var SHARE_TEXT = "Günlük sual bölməsi üçün öz sualımı sizinlə bölüşmək istəyirəm";
