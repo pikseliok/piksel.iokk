@@ -155,7 +155,7 @@ let query="",page=1,firstRender=!0,lastKey="";
 const openSet=new Set,searchInput=document.getElementById("searchInput"),cardsList=document.getElementById("cardsList"),pager=document.getElementById("pager"),wide=matchMedia("(min-width:701px)"),pageSize=()=>wide.matches?20:10;
 function normalize(e){return e.toLocaleLowerCase("az-AZ")}
 function highlight(e,a){if(!a)return e;var t=normalize(e).indexOf(a);return-1===t?e:e.slice(0,t)+"<mark class='hl'>"+e.slice(t,t+a.length)+"</mark>"+e.slice(t+a.length)}
-function authorCompare(e,a){return a.sq-e.sq||a.st-e.st||a.packages.length-e.packages.length}
+function authorCompare(e,a){return a.packages.length-e.packages.length}
 function render(e){
 const a=authors.filter(e=>!query||normalize(e.name).includes(query)).sort(authorCompare);
 var t=pageSize(),n=Math.max(1,Math.ceil(a.length/t));page>n&&(page=n);
