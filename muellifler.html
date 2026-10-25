@@ -92,8 +92,8 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .author-card:focus-visible,.footer-link:focus-visible,.nav-link:focus-visible,.package-item:focus-visible,.pg-btn:focus-visible,.share-btn:focus-visible,.sheet-opt:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media (min-width:701px){.share-btn svg{width:18px;height:18px}}
-@media (max-width:700px){.page{width:calc(100vw - 44px);padding:11px 0 26px}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}.search-wrap{margin-top:12px;height:46px;padding:0 14px}#searchInput{font-size:16px}.section-title{font-size:17px;margin:20px 0 12px}.cards-list,.col{gap:10px}.author-card{height:88px;padding:12px 16px;gap:12px;border-radius:22px}.author-icon{width:48px;height:48px;flex-basis:48px;border-radius:13px}.author-name{font-size:17px;letter-spacing:-.5px}.author-count{font-size:9px}.share-btn{width:32px;height:32px}.share-btn svg{width:14px;height:14px;display:block}.package-item{min-height:42px;padding:8px 14px;border-radius:14px;font-size:10px}.packages-inner{gap:7px}.pager{gap:8px;margin-top:18px}.pg-btn{width:36px;height:36px;border-radius:12px;font-size:14px}.pg-arrow{width:32px}footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}}
-@media (max-width:420px){.page{width:calc(100vw - 36px)}.top-nav{height:42px;padding:0 42px}.nav-links{gap:22px}.nav-link{font-size:11px}.theme-toggle{width:32px;height:32px;right:5px}.theme-icon{width:20px;height:20px}#searchInput{font-size:15px}.section-title{font-size:15px}.author-card{height:82px;padding:10px 14px;gap:10px}.author-icon{width:44px;height:44px;flex-basis:44px}.author-name{font-size:15px}.author-count{font-size:8px}.share-btn{width:30px;height:30px}.package-item{min-height:40px;padding:7px 12px;font-size:9px}footer{min-height:88px}.footer-line{font-size:11px}}
+@media (max-width:700px){.page{width:calc(100vw - 44px);padding:11px 0 26px}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}.search-wrap{margin-top:12px;height:46px;padding:0 14px}#searchInput{font-size:16px}.section-title{font-size:17px;margin:20px 0 12px}.cards-list,.col{gap:10px}.author-card{height:88px;padding:12px 16px;gap:12px;border-radius:22px}.author-icon{width:48px;height:48px;flex-basis:48px;border-radius:13px}.author-name{font-size:17px;letter-spacing:-.5px}.author-count{font-size:11px}.share-btn{width:32px;height:32px}.share-btn svg{width:14px;height:14px;display:block}.package-item{min-height:42px;padding:8px 14px;border-radius:14px;font-size:10px}.packages-inner{gap:7px}.pager{gap:8px;margin-top:18px}.pg-btn{width:36px;height:36px;border-radius:12px;font-size:14px}.pg-arrow{width:32px}footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}}
+@media (max-width:420px){.page{width:calc(100vw - 36px)}.top-nav{height:42px;padding:0 42px}.nav-links{gap:22px}.nav-link{font-size:11px}.theme-toggle{width:32px;height:32px;right:5px}.theme-icon{width:20px;height:20px}#searchInput{font-size:15px}.section-title{font-size:15px}.author-card{height:82px;padding:10px 14px;gap:10px}.author-icon{width:44px;height:44px;flex-basis:44px}.author-name{font-size:15px}.author-count{font-size:10px}.share-btn{width:30px;height:30px}.package-item{min-height:40px;padding:7px 12px;font-size:9px}footer{min-height:88px}.footer-line{font-size:11px}}
 </style>
 <div class="page">
 <nav aria-label="Əsas naviqasiya" class="frame top-nav" style="--i:0">
@@ -127,11 +127,10 @@ authors=[{name:"Əhmədli İkram",packages:[PKG.breynfayt76]},{name:"Eyvazov Kə
 
 /* ---------- Statistika: sual sayı və mövzu sayı ----------
    Breyn/NHN: hər sual müəllifə +1.
-   Xəmsə/Fərdi: hər mövzu 5 sual sayılır. Mövzuda 1 müəllif varsa ona 5,
-   2 müəllif varsa hər birinə 3, 3 müəllif varsa hər birinə 2 (ceil(5/n)). */
+   Xəmsə/Fərdi: yalnız mövzu sayılır, sual sayılmır. */
 const AN=s=>s.toLocaleLowerCase("az-AZ").replace(/quluyev/g,"quliyev");
 const nameKey=n=>{let s=AN(n.trim());if(s==="kk")s="kərimli kərim";return s.split(/\s+/).filter(Boolean).sort().join(" ")};
-const STAT={},TOPIC_Q=5;
+const STAT={};
 const gs=k=>STAT[k]||(STAT[k]={q:0,t:new Set()});
 (window.SUAL_DATA||[]).forEach((p,pi)=>{
   const isTopic=p.type==="xemse"||p.type==="ferdi";
@@ -143,8 +142,7 @@ const gs=k=>STAT[k]||(STAT[k]={q:0,t:new Set()});
       });
     });
     if(isTopic&&ta.size){
-      const share=Math.ceil(TOPIC_Q/ta.size);
-      ta.forEach(k=>{const s=gs(k);s.q+=share;s.t.add(pi+"|"+t)});
+      ta.forEach(k=>{gs(k).t.add(pi+"|"+t)});
     }
   });
 });
