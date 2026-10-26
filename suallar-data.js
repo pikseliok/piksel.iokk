@@ -1,4 +1,4 @@
-/* Hər paket üçün bir blok: title/type/date/link (paketler səhifəsindəki ilə eyni) + tours (nömrələnmiş siyahılar) */
+ 
 window.SUAL_DATA = window.SUAL_DATA || [];
 
 /* ===== 1) Vesper kuboku - Məktəblilərarası (NHN) ===== */
