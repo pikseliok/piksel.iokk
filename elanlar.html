@@ -41,6 +41,8 @@ async function makeStory(e){
 
   /* ---- telefon (əyilmiş, qara) ---- */
   const px=150,pcy=phoneTop+ph/2,phoneBodyH=ph+260;
+  /* ekran telefonun gövdəsini tam doldurur (aşağıda qara qalmasın) */
+  const sHs=phoneBodyH-32;
   c.save();c.translate(540,pcy);c.rotate(-0.09);c.translate(-540,-pcy);
   c.save();c.shadowColor="rgba(0,110,255,.45)";c.shadowBlur=90;c.shadowOffsetY=24;R(px,phoneTop,780,phoneBodyH,120);c.fillStyle="#050506";c.fill();c.restore();
   const fr=c.createLinearGradient(px,phoneTop,px+780,phoneTop+phoneBodyH);;
@@ -53,9 +55,9 @@ async function makeStory(e){
 
   /* ---- ekran ---- */
   const sx=px+16,sy=phoneTop+16;
-  R(sx,sy,748,sH,104);c.fillStyle="#000";c.fill();
-  c.save();R(sx+2,sy+2,744,sH-4,102);c.clip();c.translate(sx,sy);
-  c.fillStyle="#9DC3FF";c.fillRect(0,0,748,sH);
+  R(sx,sy,748,sHs,104);c.fillStyle="#000";c.fill();
+  c.save();R(sx+2,sy+2,744,sHs-4,102);c.clip();c.translate(sx,sy);
+  c.fillStyle="#9DC3FF";c.fillRect(0,0,748,sHs);
   // status bar + island
   c.textAlign="left";c.font=F("600",22);c.fillStyle="#001E6F";c.fillText("3:14",58,40);
   c.strokeStyle="#001E6F";c.lineWidth=2;R(640,30,38,20,6);c.stroke();R(643,33,28,14,4);c.fill();R(680,36,3,8,1.5);c.fill();
