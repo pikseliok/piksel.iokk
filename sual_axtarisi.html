@@ -271,7 +271,7 @@ document.addEventListener("keydown",e=>{if(e.keyCode===123||(e.ctrlKey&&e.shiftK
 <script>
 const $=id=>document.getElementById(id);
 const TYPES=[{key:"nhn",label:"Nə? Harada? Nə zaman?"},{key:"xemse",label:"Xəmsə"},{key:"breyn",label:"Breyn Rinq"},{key:"ferdi",label:"Fərdi Oyun"}];
-const FIELDS=[{key:"q",label:"Sualın mətni"},{key:"a",label:"Sualın cavabı"},{key:"c",label:"Sualın şərhi"}];
+const FIELDS=[{key:"q",label:"Sualın mətni"},{key:"a",label:"Sualın cavabı"},{key:"c",label:"Sualın şərhi"},{key:"t",label:"Mövzu"}];
 const PAGE_SIZE=12;
 const types=new Set(TYPES.map(t=>t.key)),fields=new Set(FIELDS.map(f=>f.key));
 let optAns=false,optEng=false,authorMode=false;
@@ -312,8 +312,8 @@ const fixAuthor=s=>String(s||"").replace(/\bKK\b/g,"Kərimli Kərim").replace(/q
 const ALL=[];
 (window.SUAL_DATA||[]).map((p,o)=>({...p,order:o})).sort((a,b)=>b.date.localeCompare(a.date)||b.order-a.order).forEach(p=>{
   Object.keys(p.tours).sort((a,b)=>a-b).forEach(t=>p.tours[t].forEach(q=>{
-    const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment),tu=plain(fixAuthor(q.author));
-    ALL.push({p,q,t,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc),u:foldN(tu)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc),u:foldE(tu)}});
+    const tq=plain(q.question),ta=plain((q.answer||"")+" "+(q.criteria||"")),tc=plain(q.comment),tu=plain(fixAuthor(q.author)),tt=plain((p.topics&&p.topics[t])||"");
+    ALL.push({p,q,t,n:{q:foldN(tq),a:foldN(ta),c:foldN(tc),u:foldN(tu),t:foldN(tt)},e:{q:foldE(tq),a:foldE(ta),c:foldE(tc),u:foldE(tu),t:foldE(tt)}});
   }));
 });
 
@@ -379,7 +379,7 @@ function doSearch(){
   page=1;
   if(v.length<2){results=null;render(true,"Ən azı 2 simvol yazın");return}
   /* Müəllif rejimi: seçilmiş növlər daxilində yalnız müəllifi uyğun gələn suallar, ən yenisi üstdə */
-  results=au?ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>x[k].u.includes(t))):ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))));
+  results=au?ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>x[k].u.includes(t))):ALL.filter(x=>S.types.has(x.p.type)&&terms.every(t=>(S.fields.has("q")&&x[k].q.includes(t))||(S.fields.has("a")&&x[k].a.includes(t))||(S.fields.has("c")&&x[k].c.includes(t))||(S.fields.has("t")&&x[k].t.includes(t))));
   render(true);
   setTimeout(()=>$("rTitle").scrollIntoView({behavior:"smooth",block:"start"}),60);
 }
@@ -437,7 +437,7 @@ function renderInner(anim,msg){
         if(anim)w.style.setProperty("--i",Math.min(i,8)+1);
         const tn=(x.p.topics&&x.p.topics[x.t])||"";
         const au=[...new Set((x.p.tours[x.t]||[]).map(z=>fixAuthor(z.author)).filter(Boolean))].join(", ");
-        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a><div class="topic-line${rs}"><b>${x.t}.</b> ${tn}</div><div class="group-inner"></div><div class="group-author${rs}"><span class="ans-label">Müəllif:</span> ${S.author?hl(au,true):au}</div>`;
+        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>${tn?`<div class="topic-line${rs}"><b>${x.t}.</b> ${hl(tn,S.fields.has("t"))}</div>`:""}<div class="group-inner"></div><div class="group-author${rs}"><span class="ans-label">Müəllif:</span> ${S.author?hl(au,true):au}</div>`;
         qc.appendChild(w);
         grp={key,inner:w.querySelector(".group-inner")};
       }
