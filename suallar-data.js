@@ -1,4 +1,4 @@
- 
+
 window.SUAL_DATA = window.SUAL_DATA || [];
 
 /* ===== 1) Vesper kuboku - Məktəblilərarası (NHN) ===== */
@@ -148,7 +148,7 @@ B(`ABŞ-in 34-cü prezidenti Duayt Devid Eyzenhauer xristian ailəsində böyüm
 (function(){
 const A=(question,answer,comment)=>({question,answer,comment:comment||"",author:"Yusifov Zeynal"});
 SUAL_DATA.push({
-title:'"Moonopoly" turniri',type:"xemse",date:"2026-09-04",link:"/moonopoly_turniri",
+title:'"Moonopoly" turniri',type:"xemse",date:"2026-09-04",link:"/moonopoly_turniri",topics:{1:"Filmlər və rejissorları",2:"İtalya şəhərləri",3:"Beysbol",4:"Dəniz quldurları",5:"Kitablar və müəllifləri",6:"Musiqi",7:"Türkiyə",8:"İspanlar",9:"…dan…",10:"Fransa mətbəxi",11:"Təyyarə",12:"Qalatasaraydan gedən oyunçular",13:"Şokoladlar",14:"Tortlar",15:"Cizgi filmləri"},
 tours:{
 /* ---- Seçim turu ---- */
 1:[
@@ -496,6 +496,7 @@ V("Siz rekvizitdə bir romantik-komediya filminin afişasını görürsünüz. D
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
 title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - I tur',type:"ferdi",date:"2026-08-05",link:"/diamonds2_1",
+topics:{1:"Təmiz",2:"Heyvanlar ətrafında",3:"Buraxılmış sözlər və ya hərflər",4:"Jül Vernin \"İyirmi min lye su altında\" romanı",5:"Beşinci mövzu",6:"Qustavlar",7:"Dondurma",8:"Qurbağa",9:"Soyuq",10:"Qolf",11:"Səyyahlar",12:"1937-ci ildə dünyasını dəyişənlər",13:"Almaz",14:"Marslı kitabı",15:"Vikipediya",16:"Effektlər",17:"Proqramlaşdırma dilləri və kodlar",18:"Saç",19:"Şokolad",20:"Osmanlı",21:"Konqo Demokratik Respublikası",22:"Musiqiçilər",23:"Cavablar Ponzi piramidasında",24:"Əkizlər",25:"Memarlar",26:"Sloveniya və sloveniyalılar",27:"Pişiklər",28:"Soyadı \"Bar\" ilə başlayan şəxslər",29:"Elementlər",30:"Yemək-içmək ətrafında"},
 tours:{
 /* ===== 1) Seçim turu — Təmiz ===== */
 1:[
@@ -1033,7 +1034,8 @@ V("2015-ci ildə yayımlanmış \"Gəzinti\" filmi 1949-cu ildə doğulmuş hans
 (function(){
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
-title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - II tur',type:"nhn",date:"2026-09-13",link:"/diamonds2_2",
+title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - II tur',type:"ferdi",date:"2026-09-13",link:"/diamonds2_2",
+topics:{1:"Meyvələr ətrafında",2:"Kəllə",3:"Norveç ətrafında",4:"Botanika",5:"...ant..",6:"A piramidasında Hindistan",7:"...ber...",8:"Bir şəxs ətrafında",9:"Pr ilə başlayır",10:"Əks-səda (Kankan, Tintin, qonq-qonq və s.)",11:"Şəxslərin ad və ya soyadlarından yaranmış “izm”lər",12:"Tomaslar",13:"Kartof",14:"Afrika ölkələri",15:"Fotoqrafiya ətrafında",16:"Desertlər",17:"Polşa və polşalılar",18:"Bir əlində iki qarpız tutanlar",19:"Tarixi Abidələr",20:"Ləqəblər",21:"Menyunun səhifələri",22:"Amerikan rəssamlığı",23:"Cavablar Ka ilə başlayır",24:"Aviaşirkətlər",25:"Tennisçilər",26:"Kanada və kanadalılar",27:"Müqəddəslər",28:"Saatlar",29:"Rəngli",30:"Əlifbada qonşu hərflə başlayan iki söz",31:"Həndəsi fiqurlar ətrafında"},
 tours:{
 /* ===== 1) Seçim turu — Meyvələr ətrafında ===== */
 1:[
@@ -1339,6 +1341,7 @@ V("İlk dəfə XX əsrin əvvəllərində Amerikada satışa çıxarılan bu oyu
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
 title:"Solo Leveling turniri",type:"ferdi",date:"2026-05-16",link:"/solo_leveling",
+topics:{1:"Qara mövzu",2:"“Pas” ilə başlayır",3:"Madam Tüsso heykəlləri",4:"İllər",5:"Şəhərlər",6:"‘‘Azərbaycan Xalq Cümhuriyyəti haqqında ən maraqlı 100 fakt’’ kitabı",7:"Eyni hərflə başlayan iki söz",8:"Şəxs + isim",9:"Təkrarlanan hecalı sözlər",10:"Don adlı şəxslər",11:"Saitləri eyni olan toponimlər",12:"Film adı ilə deyin",13:"İntellektual oyunlarda komanda adları",14:"Palindromlar",15:"Fast Food restoranları (şəbəkələri)",16:"...ank...",17:"Qısa sözlər",18:"S və Ş ilə başlayan iki söz",19:"Sürünən personajlar",20:"İtalyan əsilli amerikanlar",21:"S. q.",22:"+1",23:"Qəribə çempionatlar",24:"Nəqliyyat",25:"Benksi",26:"Film adları eyni hərflə başlayan 2 sözlə",27:"Letterboxd Easter eggs",28:"Bioqrafik filmlər",29:"İçkilər",30:"“Google easter egg”ləri"},
 tours:{
 /* ===== 1) Seçim turu — Qara mövzu ===== */
 1:[
@@ -1639,6 +1642,7 @@ V("<b>Diqqət, son sual!</b> Onore de Balzak gecələr işləməyə o qədər al
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
 title:'"Diamonds" Fərdi Oyun Liqası II Mövsüm - III tur',type:"ferdi",date:"2026-09-20",link:"/diamonds2_3",
+topics:{1:"Ədalət",2:"İspanca",3:"Cavabın içində heyvan adları (Ceyranbatan)",4:"Qanadlı",5:"Eyni hərflərlə başlayan sözlər",6:"Qida və fast-fud şirkətləri",7:"Astek mifologiyası",8:"Delfin",9:"1883-1887-ci illər",10:"Kölgədə qalanlar",11:"V-dən a-ya",12:"Adalar ətrafında",13:"Heyvanlar diplomatiyada",14:"İspan şəhərləri",15:"Barmaq",16:"Qızıl",17:"SSRİ-də doğulan yəhudilər",18:"İncəsənət terminləri",19:"Saitləri yalnız dodaqlanan",20:"Çin",21:"McDonald's məhsulları",22:"T-dən a-ya",23:"Bir şəxs ətrafında",24:"Musiqi qruplarının mahnı adları fərqli prizmada",25:"İlya Repin və onun rəsm əsərləri ətrafında",26:"Cavablar \"K\" hərfi ilə başlayır",27:"Transilvaniya",28:"Ekologiya",29:"Titullar",30:"Dilçilik ətrafında"},
 tours:{
 /* ===== 1) Seçim turu — Ədalət ===== */
 1:[
@@ -1974,6 +1978,7 @@ V("Hit Lecer (Heath Leager) ən çox şöhrəti onuncu filmində - “Qara cəng
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
 title:"\"Khuamsa\" turniri - XƏMSƏ",type:"xemse",date:"2026-01-24",link:"/khuamsa",
+topics:{1:"Rik və Morti sitkomundan elmi-fantastik filmlərə allüziyalar",2:"Avroviziya qalibi olmuş mahnılar",3:"İnisialları A.R",4:"Hecavi mövzu \"Ra\"",5:"Uydurulmuş gəmilər",6:"Avropa şəhərləri rəssamlıqda",7:"Q ilə başlayan təkhecalı sözlər",8:"Avropa şəhərləri",9:"Masaüstü oyunlar",10:"Rəngli mövzu",11:"Azərbaycan musiqi qrupları fərqli prizmada",12:"Yeməli personajlar",13:"Cənubi Koreya şirkətləri",14:"Qolf",15:"Ölü mövzu",16:"Cəmi dörd hərf",17:"Yaşıl mövzu",18:"Saitləri yalnız \"a\"",19:"İnisialları A.A",20:"İstanbul",21:"Norveç",22:"Ədəbi sindromlar",23:"\"S\" ilə başlayan soyad",24:"Filmlərdə allüziyalar",25:"Həşəratlar",26:"Öpüş",27:"İrlandiya",28:"İtirilmiş ədəbiyyat",29:"Komiks",30:"Formasında ləqəbi yazılan Braziliyalı futbolçular",31:"Hesab",32:"Siqaret",33:"Musiqi qruplarının adlarının etimologiyası",34:"Fransızlar",35:"Game of Thrones",36:"Qəsəbələr film və seriallarda",37:"Eyni hərflə başlayan iki söz",38:"Bir parça ət",39:"Rep",40:"Cavablarda saylar",41:"Şahmat və ekranizasiya",42:"Q ilə başlayan dodaqlanan saitli sözlər",43:"Animasiyalar",44:"Bir şəxs ətrafında",45:"...lak...",46:"Saitləri iki \"ə\"",47:"Hindistan",48:"Eyni hərflə başlayan heyvan və isim",49:"Azərbaycan rəssamlığı",50:"Yunan mifologiyası və idiomlar",51:"Çoban",52:"Video oyunlarla bağlı mövzu",53:"Çəhrayının çalarları",54:"Ədəbiyyat üzrə Nobel mükafatı laureatları",55:"İnisialları M.V.",56:"Müharibə və idman",57:"Musiqinin kimyası",58:"Pis qoxu",59:"Göy qurşağı",60:"İrlandiya ədəbiyyatı",61:"Ölülərdən geriyə qalanlar",62:"K.d",63:"Xalça",64:"Lənətli mövzu",65:"1 kimyəvi element ətrafında",66:"Beyin",67:"\"P\" ilə başlayan rəssamlıq",68:"İrlandiya"},
 tours:{
 /* ===== 1) Seçim turu — Rik və Morti sitkomundan elmi-fantastik filmlərə allüziyalar ===== */
 1:[
@@ -2556,6 +2561,7 @@ V("XVII əsr doğumlu ONUN haqqında məqalədə qeyd olunur ki, əslində O əv
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
 title:"Diamonds Fərdi Oyun liqası II mövsüm - FİNAL",type:"ferdi",date:"2026-10-04",link:"/diamonds2_final",
+topics:{1:"Bir rəng ətrafında",2:"Cavablar sonor samitlərlə başlayır",3:"Ceklər",4:"Adına qida və içki olan toponimlər",5:"Astek mifologiyasında eyni saitli sözlər",6:"Uydurma planetlər",7:"Bir şəxs ətrafında",8:"Effektlər",9:"Tibb",10:"Fransız yazıçılarının əsərləri fərqli prizmada",11:"Bioqrafik mövzu (Bir şəxs ətrafında)",12:"Kanada tarixi",13:"Afrikada qəddarlıq",14:"Vampir",15:"Eyni hərflə başlayıb bitən sözlər",16:"“R” ilə başlayan toponimlər",17:"Rəssamlıq və ölüm",18:"Qanunlar və qaydalar",19:"\"Disney Şahzadələri\"",20:"Afrika",21:"Cavablar B ilə başlayır",22:"Kəndlər ətrafında",23:"XIX əsrdə yaşamış şəxslər",24:"Rejissor + filmi",25:"Almaniya, almanlar, alman dili"},
 tours:{
 /* ===== 1) I tur — Bir rəng ətrafında ===== */
 1:[
@@ -2849,7 +2855,3 @@ V("“Kor futbolu” adlandırılan oyunda gözübağlı iştırakçılar kömə
 ],
 }});
 })();
-
-
-
-
