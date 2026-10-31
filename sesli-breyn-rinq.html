@@ -1204,6 +1204,12 @@ function presence(){
     }).catch(()=>{});
   });
 }
+/* ürək döyüntüsü: aparıcı kapitanın yoxa çıxdığını tez bilsin */
+function beat(){
+  if(!room||role==="host"||!R||!P()[pid])return;
+  db.ref("rooms/"+room+"/players/"+pid+"/ping").set(firebase.database.ServerValue.TIMESTAMP).catch(()=>{});
+}
+setInterval(beat,8000);
 function leaveClean(){
   try{
     sessionStorage.removeItem("piksel-br-sess");
@@ -1247,7 +1253,8 @@ function capReconcile(){
       reset=true;return;
     }
     const by={};mem.forEach(m=>{by[m.id]=m});
-    const good=m=>!!m&&!m.pen&&!m.off;
+    const stale=m=>!!m.off||!!(m.ping&&ts-m.ping>30000);
+    const good=m=>!!m&&!m.pen&&!stale(m);
     const cur=by[tm.captain]||mem.find(m=>m.cap);
     const bk2=by[tm.backup];
     if(tm.backup&&(!bk2||(cur&&bk2.id===cur.id)))up["teams/"+t+"/backup"]=null;
@@ -1318,7 +1325,7 @@ async function wake(){
       }catch(e){}
     }
   }
-  lastSync=0;
+  lastSync=0;beat();
   Object.keys(pcs).forEach(k=>{
     const s=pcs[k].connectionState;
     if(s==="failed"||s==="disconnected"||s==="closed")drop(k);
