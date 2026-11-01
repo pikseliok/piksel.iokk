@@ -135,6 +135,8 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .hb.o{background:0 0;color:inherit;border:2px solid currentColor}
 .hb:disabled{opacity:.4;cursor:default}
 .hb:active,.ib:active{transform:scale(.96);transition:transform .2s}
+.goalrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.7fr);gap:8px;align-items:stretch}
+.goalrow .hb{padding:8px 4px;font-size:calc(var(--c) - 1px)}
 .hg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .bg2{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 #top{margin-top:14px}
@@ -334,7 +336,7 @@ async function start(){
         if(!snap.exists()){code=t;break}
       }
       if(!code)return alert("Otaq kodu yaradıla bilmədi, yenidən yoxla");
-      await db.ref("rooms/"+code).set({createdAt:firebase.database.ServerValue.TIMESTAMP,status:"lobby",host:pid});
+      await db.ref("rooms/"+code).set({createdAt:firebase.database.ServerValue.TIMESTAMP,status:"lobby",host:pid,goal:5});
       room=code;role="host";
     }else if(mode==="cap"){
       const r=norm($("fRoom").value),teamName=$("fTeam").value.trim(),pname=$("fName").value.trim();
@@ -496,21 +498,30 @@ function presserOf(tid){
   const t=T()[tid];
   return t&&t.presser&&members(tid).some(m=>m.id===t.presser)?t.presser:null;
 }
-(function loop(){paintTm();requestAnimationFrame(loop)})();
-setInterval(paintTm,25);
+/* Düyməsıxanı cərimə skamyasında olan komandalar (bu turda falstart etməyibsə): yeni düyməsıxan seçilənə qədər aparıcı start verə bilməz */
+function blockedTeams(){
+  if(!R)return [];
+  return Object.keys(T()).filter(id=>{
+    const pr=presserOf(id);
+    return !!pr&&isPen(pr)&&!(R.fs||{})[id];
+  });
+}
+/* Taymer saniyədə 15 dəfə yenilənir */
+setInterval(paintTm,1000/15);
 
 const MICSVG=slash=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${slash?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':""}</svg>`,
 BTNSVG='<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>';
 
 function render(){
   if(role!=="host"&&P()[pid])role=P()[pid].cap?"captain":"player";
-  const isHost=isH(),me=P()[pid]||{},o=me.team,c=role==="captain",l=R.status,val=R.val||1;
+  const isHost=isH(),me=P()[pid]||{},o=me.team,c=role==="captain",l=R.status,val=R.val||1,goal=R.goal===3?3:5;
   const tids=Object.keys(T()).sort((a,b)=>(T()[a].createdAt||0)-(T()[b].createdAt||0));
   const d=id=>tids.indexOf(id)===1?"p":"b";
   const isPresser=!isHost&&!!o&&presserOf(o)===pid;
   const u=isHost;
   $("lobby").hidden=true;$("game").hidden=false;
   const ready=tids.length===2&&tids.every(id=>members(id).length>=MIN_TEAM&&presserOf(id));
+  const blocked=blockedTeams();
 
   let s=R.ev;
   if(l==="lobby"){
@@ -528,7 +539,7 @@ function render(){
     p=R.talk===pid?"<b>Siz</b> aparıcı ilə danışırsınız":"Aparıcı <b>"+esc(P()[R.talk].name)+"</b> ilə danışır";
   }
   $("head").innerHTML=`<div class="coderow"><span>${isHost?"Otaq kodu":"Komanda kodu"}</span><button class="copy-code code" data-copy="${esc(isHost?room:room+o)}" type="button">${esc(isHost?room:room+o)}</button></div>`
-    +(l==="lobby"?"":`<div class="sm" style="font-size:var(--c)">Sual <b>${R.q||1}</b> • Dəyər <b>+${val}</b></div>`)
+    +(l==="lobby"?`<div class="sm" style="font-size:var(--c)">Oyun <b>${goal}</b> xallıqdır</div>`:`<div class="sm" style="font-size:var(--c)">Sual <b>${R.q||1}</b> • Dəyər <b>+${val}</b> • Hədəf <b>${goal}</b> xal</div>`)
     +`<div class="evt2">${p}</div>`;
 
   const scoreBox=idx=>{
@@ -551,6 +562,7 @@ function render(){
   paintTm();
 
   const hb=(act,text,outline,disabled,extra)=>`<button class="hb${outline?" o":""}" data-act="${act}"${disabled?" disabled":""}${extra||""}>${text}</button>`;
+  const goalRow=(act,text,dis)=>`<div class="goalrow hs">${hb("goal","3 XALLIQ",goal!==3,0,` data-t="3" aria-pressed="${goal===3}"`)}${hb("goal","5 XALLIQ",goal!==5,0,` data-t="5" aria-pressed="${goal===5}"`)}${hb(act,text,0,dis)}</div>`;
   const lkOn=["running","answered","expired"].includes(l)&&!((T()[o]||{}).lk&&T()[o].lk.q===(R.q||1));
   const f=(m,tid,opt)=>{
     opt=opt||{};
@@ -581,11 +593,14 @@ function render(){
   let hp="",mn="";
   if(isHost){
     let t='<div class="hpt">Aparıcı paneli</div>';
-    if(l==="lobby")t+=hb("begin","OYUNA BAŞLA",0,!ready);
-    if(l==="wait")t+=hb("vaxt","VAXT! - 20 SANİYƏ",0,tids.length<2||tids.every(id=>(R.fs||{})[id]))+hb("rst","DÜYMƏLƏRİ SIFIRLA",1)+hb("resv","DƏYƏRİ SIFIRLA",1);
+    if(l==="lobby")t+=goalRow("begin","OYUNA BAŞLA",!ready);
+    if(l==="wait"){
+      t+=hb("vaxt","VAXT! - 20 SANİYƏ",0,tids.length<2||tids.every(id=>(R.fs||{})[id])||blocked.length>0)+hb("rst","DÜYMƏLƏRİ SIFIRLA",1)+hb("resv","DƏYƏRİ SIFIRLA",1);
+      if(blocked.length)t+=`<div class="hs sm center">${blocked.map(id=>esc(T()[id].name)).join(", ")} komandasında yeni düyməsıxan seçilməlidir</div>`;
+    }
     if(l==="answered")t+=`<div class="hg hs">${hb("p1","+1")+hb("p2","+2")+hb("p3","+3")}</div>`+hb("wrong","QALAN VAXT RƏQİBİN",1)+hb("none","DOĞRU CAVAB YOXDUR",1)+hb("endspk","DANIŞIĞI BİTİR",1,!!R.sil);
     if(l==="expired")t+=hb("none","DOĞRU CAVAB YOXDUR",1);
-    if(l==="finished")t+=hb("newg","YENİ OYUN",0);
+    if(l==="finished")t+=goalRow("newg","YENİ OYUN",0);
     if(TK()){
       tids.filter(id=>T()[id].req).forEach(id=>{t+=hb("grant","✋ "+esc(T()[id].name)+" danışmaq istəyir",1,0,` data-t="${id}" style="grid-column:1/-1"`)});
       if(R.talk)t+=hb("endtalk","DANIŞIĞI BİTİR",1,0,' style="grid-column:1/-1"');
@@ -801,6 +816,7 @@ setInterval(()=>{
 const A={
   vaxt(){
     if(R.status!=="wait")return;
+    if(blockedTeams().length)return;
     const i=now();
     rf().transaction(e=>{
       if(e&&e.status==="wait"){
@@ -828,8 +844,8 @@ const A={
   pts(n){
     const t=R.winner;
     if(R.status==="answered"&&t){
-      const sc=(T()[t].score||0)+n;
-      const up=nextQ(sc>=5?{status:"finished",winner:t,q:R.q||1,val:1}:{val:1});
+      const sc=(T()[t].score||0)+n,goal=R.goal===3?3:5;
+      const up=nextQ(sc>=goal?{status:"finished",winner:t,q:R.q||1,val:1}:{val:1});
       up["teams/"+t+"/score"]=sc;
       rf().update(up);
     }
@@ -877,7 +893,7 @@ const A={
   newg(){
     if(R.status!=="finished")return;
     const up=nextQ({val:1,q:1,winner:null});
-    Object.keys(T()).forEach(id=>{up["teams/"+id+"/score"]=0;up["teams/"+id+"/home"]=null});
+    Object.keys(T()).forEach(id=>{up["teams/"+id+"/score"]=0;up["teams/"+id+"/home"]=null;up["teams/"+id+"/bp"]=null});
     Object.keys(P()).forEach(id=>{up["players/"+id+"/pen"]=null});
     Object.keys(T()).forEach(tid=>{
       const fo=T()[tid].founder;
@@ -891,9 +907,13 @@ const A={
   resv(){if(R.status==="wait")rf().update({q:1,val:1})},
   begin(){
     if(R.status!=="lobby")return;
-    const t={status:"wait",q:1,val:1,ev:null};
+    const t={status:"wait",q:1,val:1,ev:null,goal:R.goal===3?3:5};
     Object.keys(T()).forEach(id=>{t["teams/"+id+"/score"]=0});
     rf().update(t);
+  },
+  goal(g){
+    if(R.status!=="lobby"&&R.status!=="finished")return;
+    rf("goal").set(Number(g)===3?3:5);
   },
   rst(){
     if(R.status!=="wait")return;
@@ -906,7 +926,7 @@ const A={
   req(){const m=P()[pid];if(m&&m.cap)rf("teams/"+m.team+"/req").set(true)},
   mute(){muted=!muted;render()}
 };
-const HOSTACT=["begin","rst","endspk","vaxt","p1","p2","p3","wrong","none","newg","resv","grant","endtalk"];
+const HOSTACT=["begin","rst","endspk","vaxt","p1","p2","p3","wrong","none","newg","resv","grant","endtalk","goal"];
 
 document.addEventListener("click",ev=>{
   if(!R)return;
@@ -917,7 +937,13 @@ document.addEventListener("click",ev=>{
     if(HOSTACT.includes(ds.act)&&!isH()&&(ds.act!=="endtalk"||R.talk!==pid))return;
     A[ds.act](ds.t);
   }
-  if(ds.pick&&role==="captain"&&(R.status==="lobby"||R.status==="wait")&&!isPen(ds.pick))rf("teams/"+me.team+"/presser").set(ds.pick);
+  if(ds.pick&&role==="captain"&&(R.status==="lobby"||R.status==="wait")&&!isPen(ds.pick)){
+    const tid=me.team,old=presserOf(tid),pu={};
+    pu["teams/"+tid+"/presser"]=ds.pick;
+    /* cərimələnmiş düyməsıxan əvəz olunursa, geri qaytarılanda düymə ona qayıtsın deyə yadda saxlanılır */
+    if(old&&old!==ds.pick&&isPen(old))pu["teams/"+tid+"/bp"]=old;
+    rf().update(pu);
+  }
   if(ds.spk&&role==="captain")pickSpeaker(ds.spk);
   if(ds.bk&&role==="captain")setBackup(ds.bk);
   if(ds.like&&role==="captain"&&me.team)rf("teams/"+me.team+"/lk").set({q:R.q||1,t:now()});
@@ -928,6 +954,11 @@ document.addEventListener("click",ev=>{
     if(tid&&(R.fs||{})[tid]){
       up["fs/"+tid]=null;up["fst/"+tid]=null;up.ev=null;
       if(R.status==="expired"&&!R.startedAt)up.status="wait";
+    }
+    /* qovulmuş düyməsıxan geri qaytarılırsa, düymə avtomatik ona keçir */
+    if(tid&&(T()[tid]||{}).bp===ds.rest){
+      up["teams/"+tid+"/presser"]=ds.rest;
+      up["teams/"+tid+"/bp"]=null;
     }
     rf().update(up);
   }
@@ -1183,7 +1214,7 @@ render=function(){
   }
   if(role==="captain"&&st==="wait"){
     const tid=(P()[pid]||{}).team,pr=presserOf(tid);
-    const need=!!(pr&&isPen(pr)&&(R.fs||{})[tid]);
+    const need=!!(pr&&isPen(pr));
     const key=R.q+"|"+pr;
     if(need&&!pshown&&pkey!==key){pkey=key;showNp()}
     if((!need&&pshown)||(pshown&&(R.pz||0)>pshown+1e3))hideNp();
