@@ -128,16 +128,49 @@ authors=[{name:"Əhmədli İkram",packages:[PKG.breynfayt76]},{name:"Eyvazov Kə
 /* ---------- Statistika: sual sayı və mövzu sayı ----------
    Breyn/NHN: hər sual müəllifə +1.
    Xəmsə/Fərdi: yalnız mövzu sayılır, sual sayılmır. */
+/* ---------- Müəllifləri datadan avtomatik yığ + statistika ---------- */
 const AN=s=>s.toLocaleLowerCase("az-AZ").replace(/quluyev/g,"quliyev");
 const nameKey=n=>{let s=AN(n.trim());if(s==="kk")s="kərimli kərim";return s.split(/\s+/).filter(Boolean).sort().join(" ")};
+const linkKey=l=>String(l||"").toLowerCase().replace(/\/+$/,"");
 const STAT={};
 const gs=k=>STAT[k]||(STAT[k]={q:0,t:new Set()});
+
+/* mövcud müəlliflər açar üzrə */
+const byKey={};
+authors.forEach(a=>{byKey[nameKey(a.name)]=a});
+
+/* ad-soyad yeri fərqli olsa da eyni müəllifi tapır;
+   tək söz yazılıbsa və yalnız 1 müəllifin adında varsa ona aid edir */
+function resolveKey(raw){
+  const k=nameKey(raw);
+  if(byKey[k])return k;
+  const toks=k.split(" ");
+  const cand=Object.keys(byKey).filter(x=>{const xt=x.split(" ");return toks.every(t=>xt.includes(t))});
+  return cand.length===1?cand[0]:k;
+}
+
 (window.SUAL_DATA||[]).forEach((p,pi)=>{
   const isTopic=/xemse|xəmsə|khuamsa|ferdi|fərdi|diamonds/.test(AN(String(p.type||"")+" "+String(p.title||p.name||p.id||"")));
   Object.keys(p.tours).forEach(t=>{
     const ta=new Set();
     p.tours[t].forEach(q=>{
-      new Set(String(q.author||"").split(/,|;|\s+və\s+/).map(nameKey).filter(Boolean)).forEach(k=>{
+      const raws=String(q.author||"").split(/,|;|\s+və\s+/).map(s=>s.trim().replace(/\s+/g," ")).filter(Boolean);
+      const seen=new Set();
+      raws.forEach(raw=>{
+        const k=resolveKey(raw);
+        if(seen.has(k))return;
+        seen.add(k);
+        /* yeni müəllif — yalnız siyahıda yoxdursa yarat */
+        if(!byKey[k]){
+          const a={name:raw,packages:[]};
+          authors.push(a);
+          byKey[k]=a;
+        }
+        /* paketi əlavə et (eyni link təkrarlanmasın) */
+        const a=byKey[k];
+        if(p.title&&p.link&&!a.packages.some(x=>linkKey(x.link)===linkKey(p.link))){
+          a.packages.push({title:p.title,link:p.link});
+        }
         if(isTopic)ta.add(k);else gs(k).q++;
       });
     });
