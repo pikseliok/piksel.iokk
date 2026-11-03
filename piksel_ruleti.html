@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel - Rulet</title>
+<link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--transition:650ms cubic-bezier(.22,.8,.25,1);--pt:25px;--pi:18px;--pr:17px;--pq:18px;--g:linear-gradient(135deg,#001E6F 0%,#002E92 49%,#001E6F 100%);--pg:linear-gradient(135deg,#8E0B45 0%,#D4276F 50%,#8E0B45 100%);--pc:#FFE3EF;--sec:#001E6F}
+body.dark{--g:linear-gradient(135deg,#9DC3FF 0%,#6FA5FC 49%,#9DC3FF 100%);--pg:linear-gradient(135deg,#FFC6DE 0%,#FF8FBE 50%,#FFC6DE 100%);--pc:#2C0016;--sec:#9DC3FF}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body,html{width:100%;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.frame{animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(20px)}}
+.fi{animation:fadeIn 1.2s ease both}
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;gap:40px}
+.nav-link{color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-icon{width:24px;height:24px}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:none}
+body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.main-container{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:14px;padding-bottom:44px}
+.section-title{text-align:center;color:var(--sec);font-size:var(--pt);font-weight:700;letter-spacing:-.7px}
+.card{width:100%;border-radius:28px;padding:20px 22px;background:var(--g);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);overflow-wrap:break-word;transition:background var(--transition),color var(--transition)}
+.dark .card{color:var(--dark-ink)}
+.ct{font-size:var(--pt);font-weight:700;line-height:1.15;letter-spacing:-.7px}
+.cd{margin-top:12px;font-size:var(--pi);line-height:1.5}
+.cd:empty{display:none}
+.card-divider{width:100%;height:2px;margin-top:14px;background:currentColor;opacity:.14;border-radius:2px}
+.in{width:100%;height:50px;border-radius:50px;border:2px solid currentColor;background:rgba(255,255,255,.1);color:inherit;padding:0 20px;font-size:var(--pq);font-weight:600;outline:0;margin-top:14px}
+.in::placeholder{color:currentColor;opacity:.55}
+.col{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.btn,.pill{border:0;cursor:pointer;border-radius:50px;height:44px;padding:0 22px;font-weight:700;font-size:var(--pr);white-space:nowrap;background:var(--g);color:var(--ink);transition:transform .25s,opacity .25s;display:inline-flex;align-items:center;justify-content:center}
+.dark .btn,.dark .pill{color:var(--dark-ink)}
+.card .btn{background:rgba(255,255,255,.14);color:inherit;border:2px solid currentColor}
+.card .btn.pk{background:var(--pg);color:var(--pc);border-color:transparent}
+.btn:hover:not(.dis){transform:translateY(-2px)}
+.btn:active{transform:scale(.96)}
+.btn.dis{opacity:.4;pointer-events:none}
+.pill{height:38px;margin:0 auto;letter-spacing:1px}
+.pl{border-radius:28px;padding:12px 18px;background:var(--g);color:var(--ink);transition:transform .3s,box-shadow .3s}
+.dark .pl{color:var(--dark-ink)}
+.pl.p0{background:var(--pg);color:var(--pc)}
+.pl.act{transform:scale(1.03);box-shadow:0 0 0 3px var(--sec),0 12px 26px rgba(0,20,110,.2)}
+.pr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pr span{display:block;font-weight:600;font-size:var(--pr);max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr small{font-size:12px;opacity:.75}
+.pr strong{font-size:calc(var(--pt)*1.3);line-height:1.1}
+.hr{font-size:26px}
+.st{text-align:center;color:var(--sec);font-size:var(--pi);font-weight:600}
+#stage{position:relative;width:100%;height:clamp(300px,50vh,460px)}
+#cv{width:100%;height:100%;display:block}
+.ov{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,7,44,.4)}
+.ov .card{width:min(92vw,460px);max-height:90vh;overflow:auto;text-align:center;animation:up .5s both}
+.ov .card.late{animation-delay:1.3s}
+.q{margin:12px 0 6px;font-size:var(--pt);font-weight:700;line-height:1.2;overflow-wrap:anywhere}
+.qs{font-size:var(--pr);font-weight:600}
+.tb{height:8px;border-radius:8px;background:rgba(255,255,255,.2);overflow:hidden;margin:6px 0 4px}
+.tb i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#FF8FBE,#FF4F93)}
+.tm{font-weight:700;font-size:var(--pr)}
+#wo{position:fixed;inset:0;z-index:40;background:#fff;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;color:#001E6F;text-align:center}
+#wc{width:min(88vw,420px);display:flex;flex-direction:column;gap:12px;transition:opacity 1s}
+#wc.out{opacity:0}
+#wc h1{font-size:34px;letter-spacing:-1px}
+#wc .pl{text-align:left}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s,transform .25s}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+@media(max-width:700px){:root{--pt:19px;--pi:16px;--pr:15px;--pq:16px}.page{width:calc(100vw - 44px)}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px}.card{border-radius:22px;padding:16px}.pl{border-radius:22px;padding:10px 14px}.footer-line{font-size:13px}}
+@media(max-width:420px){:root{--pt:16px;--pi:14px;--pr:13px;--pq:13px}.page{width:calc(100vw - 36px)}.nav-links{gap:22px}.nav-link{font-size:11px}.footer-line{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="frame top-nav" aria-label="Əsas naviqasiya">
+    <div class="nav-links">
+      <a class="nav-link" href="/">Əsas Səhifə</a>
+      <a class="nav-link" href="/elaqe">Bizimlə Əlaqə</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gecə rejiminə keç">
+      <svg aria-hidden="true" class="theme-icon" viewBox="0 0 32 32">
+        <defs><mask height="32" id="biteMask" maskUnits="userSpaceOnUse" width="32" x="0" y="0"><rect fill="#fff" height="32" width="32"/><circle class="bite" cx="21" cy="11" fill="#000" r="7.5"/></mask></defs>
+        <g id="rays"></g>
+        <g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" fill="currentColor" r="9"/></g>
+      </svg>
+    </button>
+  </nav>
+  <main class="main-container" id="app"></main>
+  <section class="main-container" id="gm" hidden>
+    <button class="pill" id="cd" onclick="cpy()" title="Kodu kopyala"></button>
+    <div class="pl p0" id="p0"></div>
+    <div id="stage"><canvas id="cv"></canvas></div>
+    <div class="pl" id="p1"></div>
+    <p class="st" id="wn" hidden>⚠ Rəqib bağlantısı kəsildi. Gözlənilir...</p>
+  </section>
+</div>
+<div class="ov" id="ov" hidden><div class="card" id="oc"></div></div>
+<div id="wo"><div id="wc"></div></div>
+
+<footer>
+  <div class="footer-line">İntellektuallar üçün hər şey...</div>
+  <a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a>
+  <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a>
+</footer>
+
+<script>
+const TP = [
+  { n: "İncəsənət", e: "🎨", p: 1, l: "Müəllifi kimdir?", d: `Mona Liza (Mona Lisa)|Leonardo da Vinci/Leonardo
+Sonuncu şam yeməyi (The Last Supper)|Leonardo da Vinci
+Ulduzlu gecə (The Starry Night)|Vincent van Gogh/Van Qoq/Vinsent van Qoq/Qoq
+Günəbaxanlar (Sunflowers)|Vincent van Gogh/Van Qoq/Qoq
+Qışqırıq (The Scream)|Edvard Munch/Munk
+İnci sırğalı qız (Girl with a Pearl Earring)|Johannes Vermeer/Yohannes Vermeer
+Öpüş (The Kiss)|Gustav Klimt/Qustav Klimt
+Qernika (Guernica)|Pablo Picasso/Pikasso
+Adəmin yaradılışı (The Creation of Adam)|Michelangelo/Mikelancelo
+Yaddaşın əbədiliyi (The Persistence of Memory)|Salvador Dali
+Afina məktəbi (The School of Athens)|Raphael/Rafael Sanzio
+Veneranın doğulması (The Birth of Venus)|Sandro Botticelli/Boticelli
+Gecə keşikçiləri (The Night Watch)|Rembrandt
+Su zanbaqları (Water Lilies)|Claude Monet/Klod Mone
+Las Meninas|Diego Velazquez/Dieqo Velaskes
+Amerikan qotikası (American Gothic)|Grant Wood/Qrant Vud
+Meduzanın salı (The Raft of the Medusa)|Theodore Gericault/Jeriko
+Olimpiya (Olympia)|Edouard Manet/Mane
+Kart oynayanlar (The Card Players)|Paul Cezanne/Sezan
+Rəqs (Dance)|Henri Matisse/Anri Matiss
+Kompozisiya VIII (Composition VIII)|Wassily Kandinsky/Kandinski
+İnsan oğlu (The Son of Man)|Rene Magritte/Maqritt
+Gecə quşları (Nighthawks)|Edward Hopper
+Qara kvadrat (Black Square)|Kazimir Malevich/Malevic
+Ağ mərkəz (White Center)|Mark Rothko/Rotko
+Mavi sirk (The Blue Circus)|Marc Chagall/Mark Saqal
+Kristinanın dünyası (Christina's World)|Andrew Wyeth/Uayet
+Azadlıq xalqı idarə edir (Liberty Leading the People)|Eugene Delacroix/Delakrua
+Təəssürat, Günəş doğuşu (Impression, Sunrise)|Claude Monet/Klod Mone
+Təmirçilər|Tahir Salahov/Salahov|4` },
+  { n: "İdman", e: "🏅", l: "Hansı idman növü ilə məşğuldur?", d: `Lionel Messi|Futbol/Football
+Cristiano Ronaldo|Futbol/Football
+Mahir Emreli|Futbol/Football|4
+Tofiq Bəhramov|Futbol/Football|4
+Michael Jordan|Basketbol/Basketball
+LeBron James|Basketbol/Basketball
+Rafael Ağayev|Karate|4
+Ryo Kiyuna|Karate
+Aleksandr Karelin|Güləş/Wrestling/Güreş
+Namig Abdullayev|Güləş/Wrestling/Güreş|4
+Roger Federer|Tennis/Tenis
+Serena Williams|Tennis/Tenis
+Karch Kiraly|Voleybol/Volleyball
+Wilfredo León|Voleybol/Volleyball
+Magnus Carlsen|Şahmat/Chess/Satranç
+Şəhriyar Məmmədyarov|Şahmat/Chess/Satranç|4
+Lewis Hamilton|Formula 1/F1/Formula
+Michael Schumacher|Formula 1/F1/Formula
+Usain Bolt|Qaçış/Atletika/Running/Koşu
+Michael Phelps|Üzgüçülük/Swimming/Yüzme
+Muhammad Ali|Boks/Boxing
+Mike Tyson|Boks/Boxing
+Teddy Riner|Cüdo/Judo
+Hidayət Heydərov|Cüdo/Judo|4
+Elnur Məmmədli|Cüdo/Judo|4
+Tiger Woods|Qolf/Golf
+Babe Ruth|Beysbol/Baseball
+Sachin Tendulkar|Kriket/Cricket
+Jonah Lomu|Reqbi/Rugby/Ragbi
+Stephen Curry|Basketbol/Basketball` },
+  { n: "Tikililər", e: "🏛️", l: "Harada yerləşir?", d: `Eyfel qülləsi|Paris
+Kolizey|Roma/Rome
+Tac Mahal|Aqra/Agra
+Bürclər Xəlifə|Dubay/Dubai
+Azadlıq heykəli|Nyu-York/New York
+Ayasofya|İstanbul/Istanbul
+Piza qülləsi|Piza/Pisa
+Müqəddəs Vasili kilsəsi|Moskva/Moscow/Moskova
+Sidney Opera Teatrı|Sidney/Sydney
+Müqəddəs Ailə kilsəsi|Barselona/Barcelona
+Vestminster sarayı|London
+Partenon|Afina/Athens/Atina
+Empayr Steyt Bildinq|Nyu-York/New York
+Petronas qüllələri|Kuala-Lumpur/Kuala Lumpur
+Luvr muzeyi|Paris
+Qadağan olunmuş şəhər sarayı|Pekin/Beijing
+Xilaskar Məsih heykəli|Rio-de-Janeyro/Rio de Janeiro/Rio
+Alhambra sarayı|Qranada/Granada
+Brandenburq qapıları|Berlin
+Praqa qəsri|Praqa/Prague/Prag
+Atomium|Brüssel/Brussels
+Qolden Qeyt körpüsü|San-Fransisko/San Francisco
+Qış sarayı|Sankt-Peterburq/Saint Petersburg/St Petersburg
+Sultan Əhməd məscidi|İstanbul/Istanbul
+Qız qalası|Bakı/Baku|4
+Alov qüllələri|Bakı/Baku|4
+Şirvanşahlar sarayı|Bakı/Baku|4
+Heydər Əliyev Mərkəzi|Bakı/Baku|4
+Şəki xan sarayı|Şəki/Sheki|4
+Mömünə Xatun türbəsi|Naxçıvan/Nakhchivan|4
+Nizami Gəncəvi məqbərəsi|Gəncə/Ganja|4
+Yuxarı Gövhər Ağa məscidi|Şuşa/Shusha|4
+Şamaxı Cümə məscidi|Şamaxı/Shamakhi|4
+Allah-Allah türbəsi|Bərdə/Barda|4` },
+  { n: "Valyutalar", e: "💱", l: "Hansı ölkənin pul vahididir?", d: `Yen|Yaponiya/Japan/Japonya
+Yuan|Çin/China
+Baht|Tailand/Thailand
+Ringgit|Malayziya/Malaysia
+Rupiah|İndoneziya/Indonesia
+Dong|Vyetnam/Vietnam
+Tenge|Qazaxıstan/Kazakhstan
+Lari|Gürcüstan/Georgia
+Dram|Ermənistan/Armenia
+Funt sterlinq|Böyük Britaniya/Britaniya/United Kingdom/İngiltərə
+Zlotı|Polşa/Poland
+Forint|Macarıstan/Hungary
+Koruna|Çexiya/Czechia/Czech Republic
+Hryvnia|Ukrayna/Ukraine
+Real|Braziliya/Brazil
+Bolivar|Venesuela/Venezuela
+Rand|Cənubi Afrika/South Africa
+Naira|Nigeriya/Nigeria
+Pula|Botsvana/Botswana
+Kyat|Myanma/Myanmar
+Taka|Banqladeş/Bangladesh
+Şekel|İsrail/Israel
+Manat (AZN)|Azərbaycan/Azerbaijan|4
+Manat (TMT)|Türkmənistan/Turkmenistan
+Sol|Peru
+Quarani|Paraqvay/Paraguay
+Tögrög|Monqolustan/Mongolia
+Əfqani|Əfqanıstan/Afghanistan
+Birr|Efiopiya/Ethiopia
+Lek|Albaniya/Albania` },
+  { n: "Ədəbiyyat", e: "📚", p: 1, l: "Müəllifi kimdir?", d: `Cinayət və cəza|Dostoyevski/Dostoevsky
+Anna Karenina|Tolstoy/Lev Tolstoy
+Müharibə və sülh|Tolstoy/Lev Tolstoy
+Usta və Marqarita|Bulqakov/Bulgakov
+Ölü canlar|Qoqol/Gogol
+Yevgeni Onegin|Puşkin/Pushkin
+Hamlet|Şekspir/Shakespeare/William Shakespeare
+Romeo və Culyetta|Şekspir/Shakespeare
+Robinzon Kruzo|Defo/Daniel Defoe
+Oliver Tvist|Dikkens/Dickens/Charles Dickens
+Qürur və qərəz|Ostin/Jane Austen
+Dorian Qreyin portreti|Uayld/Oscar Wilde/Oskar Uayld
+Drakula|Stoker/Bram Stoker
+Xəzinə adası|Stivenson/Robert Louis Stevenson
+Alisa möcüzələr ölkəsində|Kerroll/Lewis Carroll
+Üzüklərin hökmdarı|Tolkin/Tolkien
+Səfillər|Hüqo/Hugo/Viktor Hüqo
+Üç muşketyor|Düma/Dumas/Aleksandr Düma
+Monte-Kristo qrafı|Düma/Dumas/Aleksandr Düma
+Madam Bovari|Flober/Flaubert
+Balaca şahzadə|Sent-Ekzüperi/Saint-Exupery
+Faust|Höte/Goethe/Göte
+Metamorfoz|Kafka/Frans Kafka
+Don Kixot|Servantes/Cervantes
+Pinokkionun macəraları|Kollodi/Collodi
+Tom Soyerin macəraları|Mark Tven/Mark Twain/Twain
+Moby Dik|Melvil/Melville
+Qoca və dəniz|Heminquey/Hemingway
+Böyük Getsbi|Fitscerald/Fitzgerald
+Bülbülü öldürmək|Harper Li/Harper Lee
+Leyli və Məcnun|Nizami Gəncəvi/Nizami/Füzuli/Fuzuli|4
+O olmasın, bu olsun|Üzeyir Hacıbəyli/Hacıbəyli|4
+Arşın mal alan|Üzeyir Hacıbəyli/Hacıbəyli|4
+Ölülər|Cəlil Məmmədquluzadə/Məmmədquluzadə|4
+Müsyö Jordan və dərviş Məstəli şah|Mirzə Fətəli Axundzadə/Axundov|4
+Sevil|Cəfər Cabbarlı/Cabbarlı|4
+Şeyx Sənan|Hüseyn Cavid/Cavid|4
+Cəmilə|Cingiz Aytmatov/Aytmatov|4
+Gün olur əsrə bərabər|Cingiz Aytmatov/Aytmatov|4` }
+];
+TP.forEach(t => t.q = t.d.split("\n").map(l => { const [q, a, w] = l.split("|"); return { q, a, w: +w || 1 }; }));
+const $ = id => document.getElementById(id), app = $("app");
+const E = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const nm = s => String(s).toLowerCase().replace(/ə/g, "e").replace(/ı/g, "i").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+function lev(a, b) { let p = [...Array(b.length + 1).keys()]; for (let i = 1; i <= a.length; i++) { let c = [i]; for (let j = 1; j <= b.length; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1)); p = c; } return p[b.length]; }
+const tol = n => n < 4 ? 0 : n <= 5 ? 1 : n <= 7 ? 2 : n <= 10 ? 3 : 4;
+let UID = 0; const ALL = [];
+TP.forEach(t => t.q.forEach(it => {
+  it.id = ++UID; const C = new Set();
+  it.a.split("/").forEach(v => { C.add(nm(v)); if (t.p) v.split(/[\s-]+/).forEach(w => { if (nm(w).length >= 4) C.add(nm(w)); }); });
+  C.delete(""); it.C = [...C]; it.C.forEach(c => ALL.push({ c, id: it.id }));
+}));
+function ok(inp, it) {
+  const x = nm(inp); if (!x) return false; let dc = 99;
+  for (const c of it.C) { const d = lev(x, c); if (d <= tol(c.length) && d < dc) dc = d; }
+  if (dc == 99) return false; if (dc == 0) return true;
+  for (const o of ALL) { if (o.id == it.id || it.C.includes(o.c)) continue; const d = lev(x, o.c); if (d <= dc && d <= tol(o.c.length)) return false; }
+  return true;
+}
+
+/* ---------- Tema ---------- */
+const themeToggle = $("themeToggle");
+for (let i = 0; i < 8; i++) $("rays").insertAdjacentHTML("beforeend", `<g transform="rotate(${i * 45} 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g>`);
+function setTheme(a) {
+  document.body.classList.toggle("dark", a);
+  try { localStorage.setItem("piksel-theme", a ? "dark" : "light"); } catch (e) {}
+  themeToggle.setAttribute("aria-label", a ? "Gündüz rejiminə keç" : "Gecə rejiminə keç");
+}
+(function () {
+  let a = null; try { a = localStorage.getItem("piksel-theme"); } catch (e) {}
+  setTheme(a ? a == "dark" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches));
+})();
+themeToggle.addEventListener("click", () => setTheme(!document.body.classList.contains("dark")));
+requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add("ready")));
+
+/* ---------- 3D Revolver ---------- */
+let rd, scn, cam, gun, drum, ham, trg, flash, fl, gs = 1, tw = [], gq = { m: "lie", z: 0, yaw: 0, t: 0, qa: null, qb: null, dy: 0 };
+const eo4 = p => 1 - Math.pow(1 - p, 4), eio = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+function tween(d, f, e, k) { tw.push({ s: performance.now(), d, f, e, k }); }
+function initGun() {
+  if (rd || typeof THREE == "undefined") return;
+  rd = new THREE.WebGLRenderer({ canvas: $("cv"), antialias: true, alpha: true });
+  rd.setPixelRatio(Math.min(devicePixelRatio, 2));
+  rd.outputEncoding = THREE.sRGBEncoding; rd.toneMapping = THREE.ACESFilmicToneMapping; rd.toneMappingExposure = 1.1;
+  scn = new THREE.Scene(); cam = new THREE.PerspectiveCamera(35, 1, .1, 100); cam.position.set(1.2, 2.2, 12); cam.lookAt(0, 0, 0);
+  const c = document.createElement("canvas"); c.width = 256; c.height = 128; const x = c.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 0, 128); g.addColorStop(0, "#cfe2ff"); g.addColorStop(.45, "#fff"); g.addColorStop(.55, "#4a5a78"); g.addColorStop(1, "#0a0f1f");
+  x.fillStyle = g; x.fillRect(0, 0, 256, 128); x.fillStyle = "#fff"; x.fillRect(30, 15, 60, 28); x.fillRect(160, 25, 50, 20); x.fillStyle = "#223"; x.fillRect(110, 50, 30, 40);
+  const tx = new THREE.CanvasTexture(c); tx.mapping = THREE.EquirectangularReflectionMapping;
+  const env = new THREE.PMREMGenerator(rd).fromEquirectangular(tx).texture;
+  const mat = (col, m, r) => new THREE.MeshStandardMaterial({ color: col, metalness: m, roughness: r, envMap: env });
+  const steel = mat(0x8a9099, 1, .25), blue = mat(0x20242b, .9, .3), wood = mat(0x6a3b1f, 0, .5), brass = mat(0xc9a23a, 1, .3), blk = mat(0x040404, 0, .9);
+  const M = (ge, ma, p, r) => { const o = new THREE.Mesh(ge, ma); if (p) o.position.set(...p); if (r) o.rotation.set(...r); return o; };
+  const Z = Math.PI / 2; gun = new THREE.Group();
+  gun.add(M(new THREE.CylinderGeometry(.14, .14, 2.3, 32), blue, [1.95, .87, 0], [0, 0, Z]));
+  gun.add(M(new THREE.BoxGeometry(2.3, .05, .12), blue, [1.95, 1.02, 0]));
+  gun.add(M(new THREE.BoxGeometry(.12, .1, .05), steel, [3.0, 1.08, 0]));
+  gun.add(M(new THREE.BoxGeometry(1.5, .2, .2), blue, [1.55, .68, 0]));
+  gun.add(M(new THREE.CylinderGeometry(.06, .06, 1.1, 16), steel, [2.3, .5, 0], [0, 0, Z]));
+  gun.add(M(new THREE.CylinderGeometry(.09, .09, .02, 20), blk, [3.105, .87, 0], [0, 0, Z]));
+  gun.add(M(new THREE.TorusGeometry(.12, .025, 8, 24), steel, [3.1, .87, 0], [0, Z, 0]));
+  const sh = new THREE.Shape(); sh.moveTo(-.95, 1.1); sh.lineTo(.85, 1.1); sh.lineTo(.85, .15); sh.lineTo(-.35, .15); sh.lineTo(-.9, .3); sh.closePath();
+  const fg = new THREE.ExtrudeGeometry(sh, { depth: .26, bevelEnabled: true, bevelThickness: .04, bevelSize: .04, bevelSegments: 3 }); fg.translate(0, 0, -.13);
+  gun.add(M(fg, blue));
+  const gp = new THREE.Shape(); gp.moveTo(-.35, .2); gp.lineTo(-1, .55); gp.lineTo(-1.75, -1.4); gp.lineTo(-1.05, -1.62); gp.closePath();
+  const gg = new THREE.ExtrudeGeometry(gp, { depth: .4, bevelEnabled: true, bevelThickness: .06, bevelSize: .06, bevelSegments: 4 }); gg.translate(0, 0, -.2);
+  gun.add(M(gg, wood));
+  gun.add(M(new THREE.TorusGeometry(.38, .035, 10, 32, Math.PI), steel, [.15, .18, 0], [0, 0, Math.PI]));
+  drum = new THREE.Group(); drum.position.set(.3, .6, 0);
+  drum.add(M(new THREE.CylinderGeometry(.46, .46, .96, 48), steel, null, [0, 0, Z]));
+  for (let i = 0; i < 6; i++) {
+    const a = i * Math.PI / 3, y = Math.cos(a) * .28, z = Math.sin(a) * .28;
+    drum.add(M(new THREE.CylinderGeometry(.1, .1, .02, 20), blk, [.49, y, z], [0, 0, Z]));
+    drum.add(M(new THREE.CylinderGeometry(.1, .1, .02, 20), brass, [-.49, y, z], [0, 0, Z]));
+    drum.add(M(new THREE.CylinderGeometry(.035, .035, .03, 12), steel, [-.5, y, z], [0, 0, Z]));
+    drum.add(M(new THREE.BoxGeometry(.9, .03, .05), blue, [0, Math.cos(a + .52) * .46, Math.sin(a + .52) * .46], [-(a + .52) + 0, 0, 0]));
+  }
+  gun.add(drum);
+  ham = new THREE.Group(); ham.position.set(-.9, 1.0, 0);
+  ham.add(M(new THREE.BoxGeometry(.16, .5, .14), steel, [0, .18, 0])); ham.add(M(new THREE.BoxGeometry(.3, .1, .16), steel, [-.12, .42, 0]));
+  ham.rotation.z = .55; gun.add(ham);
+  trg = new THREE.Group(); trg.position.set(.15, .12, 0); trg.add(M(new THREE.BoxGeometry(.08, .34, .07), steel, [-.1, -.14, 0], [0, 0, .35])); gun.add(trg);
+  const fc = document.createElement("canvas"); fc.width = fc.height = 128; const fx = fc.getContext("2d");
+  const rg = fx.createRadialGradient(64, 64, 0, 64, 64, 64); rg.addColorStop(0, "#fff"); rg.addColorStop(.25, "#ffd27a"); rg.addColorStop(.6, "rgba(255,110,30,.5)"); rg.addColorStop(1, "rgba(255,60,0,0)");
+  fx.fillStyle = rg; fx.fillRect(0, 0, 128, 128);
+  flash = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(fc), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+  flash.position.set(3.3, .87, 0); flash.scale.set(.001, .001, 1); gun.add(flash);
+  fl = new THREE.PointLight(0xffaa55, 0, 14); fl.position.set(3.5, .87, 0); gun.add(fl);
+  scn.add(gun);
+  const k = new THREE.DirectionalLight(0xffffff, 1.4); k.position.set(3, 5, 6); scn.add(k);
+  const r = new THREE.DirectionalLight(0x6fa5fc, 1); r.position.set(-5, 2, -4); scn.add(r); scn.add(new THREE.AmbientLight(0xffffff, .35));
+  resize(); requestAnimationFrame(loop);
+}
+function resize() {
+  if (!rd) return; const s = $("stage"), w = s.clientWidth, h = s.clientHeight; if (!w || !h) return;
+  rd.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+  const hh = Math.tan(17.5 * Math.PI / 180) * 12; gs = Math.min(hh, hh * w / h) / 3.5; gun.scale.setScalar(gs);
+}
+addEventListener("resize", resize);
+function loop() {
+  requestAnimationFrame(loop); if (!rd || V != "game") return;
+  const now = performance.now();
+  tw = tw.filter(w => { const p = Math.min(1, (now - w.s) / w.d); w.f(w.e ? w.e(p) : p); if (p >= 1) { w.k && w.k(); return false; } return true; });
+  if (gq.m == "lie") gun.quaternion.setFromEuler(new THREE.Euler(0, 0, gq.z));
+  else if (gq.m == "tr") gun.quaternion.copy(gq.qa).slerp(gq.qb, gq.t);
+  else gun.quaternion.setFromEuler(new THREE.Euler(0, gq.yaw, 0));
+  gun.position.y = gq.m == "stand" ? Math.sin(now / 700) * .05 : 0;
+  rd.render(scn, cam);
+}
+function gunReset() { tw = []; gq.m = "lie"; gq.z = 0; ham.rotation.z = .55; drum.rotation.x = 0; trg.rotation.z = 0; flash.scale.set(.001, .001, 1); fl.intensity = 0; cam.position.set(1.2, 2.2, 12); }
+function gunSpin(up) {
+  if (!rd) return; gunReset();
+  const F = up ? Math.PI / 2 : -Math.PI / 2, n = Math.ceil((8 * Math.PI - F) / (2 * Math.PI)), T = F + 2 * Math.PI * n;
+  tween(5000, p => gq.z = T * p, eo4, () => gq.z = F);
+}
+function gunStand(toMe) {
+  if (!rd) return; const yaw = toMe ? -Math.PI / 2 : Math.PI / 2;
+  gq.qa = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, gq.z)); gq.qb = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, yaw, 0)); gq.m = "tr"; gq.t = 0;
+  tween(1300, p => gq.t = p, eio, () => { gq.m = "stand"; gq.yaw = yaw; });
+}
+function gunTurn() {
+  if (!rd) return; const y0 = gq.yaw, d0 = drum.rotation.x;
+  tween(1500, p => { gq.yaw = y0 + 3 * Math.PI * p; drum.rotation.x = d0 + 2 * Math.PI * p; }, eio);
+}
+function gunShoot() {
+  if (!rd) return;
+  tween(90, p => { ham.rotation.z = .55 - .65 * p; trg.rotation.z = .4 * p; });
+  setTimeout(() => {
+    const d0 = drum.rotation.x; tween(120, p => drum.rotation.x = d0 + Math.PI / 3 * p);
+    tween(380, p => { const v = 1 - p; flash.scale.set(3.2 * v + .001, 3.2 * v + .001, 1); fl.intensity = 8 * v; const k = .25 * v; cam.position.set(1.2 + (Math.random() - .5) * k, 2.2 + (Math.random() - .5) * k, 12); });
+  }, 90);
+}
+
+/* ---------- Şəbəkə ---------- */
+let V = "home", ME = 0, G = newG(), O = { ph: "", sp: 0, act: 0 }, H = {}, myName = "", code = "", msg = "", END = 0, MQ = [], seen = new Set(), sq = 0, lastN = 0, lastH = 0, lastG = 0, gt;
+function newG() { return { ph: "lobby", names: ["", ""], sc: [0, 0], hp: [1, 1], r: 1, sp: 0, act: 0, n: 0 }; }
+const cid = Math.random().toString(36).slice(2, 9);
+const BR = ["wss://broker.emqx.io:8084/mqtt", "wss://broker.hivemq.com:8884/mqtt", "wss://test.mosquitto.org:8081"], TOP = () => "piksel-rulet/v1/" + code + "/";
+const AL = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const send = o => { const p = JSON.stringify(Object.assign({ c: cid, i: cid + ++sq }, o)); MQ.forEach(c => { if (c.connected) c.publish(TOP() + (ME ? "g" : "h"), p, { qos: 1 }); }); };
+const endAll = () => { MQ.forEach(c => { try { c.end(true); } catch (e) {} }); MQ = []; };
+function link(ok2, fail) {
+  if (typeof mqtt == "undefined") return fail("Bağlantı kitabxanası yüklənmədi. İnterneti yoxla.");
+  endAll(); const T = TOP(), ot = ME ? "h" : "g"; let done = 0;
+  const t = setTimeout(() => { if (!done) { done = 1; endAll(); fail("Serverə qoşulmaq alınmadı. İnterneti yoxla."); } }, 1e4);
+  BR.forEach(u => {
+    const c = mqtt.connect(u, { clientId: "pr" + cid + Math.random().toString(36).slice(2, 5), keepalive: 20, connectTimeout: 8e3, reconnectPeriod: 2e3 });
+    MQ.push(c);
+    c.on("connect", () => c.subscribe(T + ot, { qos: 1 }, e => { if (!e && !done) { done = 1; clearTimeout(t); ok2(); } }));
+    c.on("message", (tp, m) => { let d; try { d = JSON.parse(m.toString()); } catch (x) { return; } if (!d || seen.has(d.i)) return; seen.add(d.i); if (seen.size > 800) seen.clear(); hd(d); });
+    c.on("error", () => {});
+  });
+}
+const nin = v => { myName = v; if (msg) { msg = ""; const m = $("hm"); if (m) m.textContent = ""; } };
+function mkRoom() {
+  if (!myName.trim()) { msg = "Ad yazmadan otaq yarada bilməzsən."; return R(); }
+  msg = ""; V = "game"; ME = 0; lastN = 0; H = {}; O = { ph: "", sp: 0, act: 0 };
+  code = [...Array(5)].map(() => AL[Math.random() * AL.length | 0]).join("");
+  G = newG(); G.names[0] = myName.trim().slice(0, 14); R(); initGun(); resize(); apply();
+  link(() => {}, m => { G.err = m; apply(); });
+}
+function joinRoom() {
+  const c = ($("jc").value || "").trim().toUpperCase();
+  if (c.length < 5) { msg = "Kodu tam yaz."; return R(); }
+  ME = 1; code = c; lastN = 0; H = {}; O = { ph: "", sp: 0, act: 0 }; msg = "Qoşulur..."; R();
+  const to = setTimeout(() => { if (V != "game") { endAll(); msg = "Otaq tapılmadı. Kodu yoxla, otaq sahibi səhifəni açıq saxlamalıdır."; V = "join"; R(); } }, 2e4);
+  gt = () => clearTimeout(to);
+  link(() => { const hi = () => send({ t: "hi", n: myName.trim() || "Qonaq" }); hi(); const h = setInterval(() => { if (V == "game" || ME != 1) clearInterval(h); else hi(); }, 2e3); }, m => { clearTimeout(to); msg = m; V = "join"; R(); });
+}
+function hd(d) {
+  if (!d || typeof d != "object") return;
+  if (ME) {
+    if (d.t != "st") return; lastH = Date.now(); if (d.n <= lastN) return; lastN = d.n;
+    const k = JSON.stringify(d.G, (a, v) => a == "ms" || a == "n" ? 0 : v), nw = V != "game";
+    if (nw) { V = "game"; gt && gt(); R(); initGun(); resize(); }
+    if (k == H.k && !nw) return; H.k = k; G = d.G;
+    if (G.ph == "ask") END = Date.now() + G.ms;
+    apply(); return;
+  }
+  if (d.t == "hi") {
+    if (G.gid && G.gid != d.c) return; const f = G.gid == d.c; G.gid = d.c; G.names[1] = String(d.n).slice(0, 14); lastG = Date.now(); f ? pub() : sync();
+  } else if (d.c == G.gid) { lastG = Date.now(); if (d.t != "ping") host(d.t, d.x, 1); }
+}
+function pub() { if (ME) return; G.ms = G.ph == "ask" ? Math.max(0, END - Date.now()) : 0; G.n++; send({ t: "st", n: G.n, G }); }
+function sync() { pub(); apply(); }
+setInterval(() => {
+  if (V != "game") return; if (ME) send({ t: "ping" }); else if (G.gid) pub();
+  const l = ME ? lastH : lastG; $("wn").hidden = !(l && Date.now() - l > 12e3);
+}, 3e3);
+const go = (t, x) => ME ? send({ t, x }) : host(t, x, 0);
+
+/* ---------- Oyun məntiqi (ev sahibi) ---------- */
+function host(t, x, by) {
+  if (t == "pick") { if (G.ph != "pick" || G.act != by || G.opts[x] == null) return; doPick(G.opts[x]); }
+  else if (t == "ans") { if (G.ph != "ask" || G.act != by) return; doAns(String(x || "")); }
+}
+function startGame() { if (ME || !G.gid) return; G.sc = [0, 0]; G.r = 1; newRound(); }
+function newRound() {
+  G.hp = [1, 1]; G.ph = "spin"; G.up = Math.random() < .5; G.act = G.up ? 0 : 1; G.sp++; sync();
+  const s = G.sp; setTimeout(() => { if (G.sp == s && G.ph == "spin") offer(); }, 5300);
+}
+function offer() { G.opts = [0, 1, 2, 3, 4].sort(() => Math.random() - .5).slice(0, 2); G.ph = "pick"; sync(); }
+function doPick(ti) {
+  const t = TP[ti]; H.u = H.u || new Set(); let p = t.q.filter(x => !H.u.has(x));
+  if (!p.length) { t.q.forEach(x => H.u.delete(x)); p = t.q; }
+  let r = Math.random() * p.reduce((s, x) => s + x.w, 0), it = p[p.length - 1];
+  for (const x of p) { r -= x.w; if (r < 0) { it = x; break; } }
+  H.u.add(it); H.it = it; G.tp = ti; G.q = it.q; END = Date.now() + 20e3; G.ph = "ask"; sync();
+}
+function doAns(v) {
+  const r = ok(v, H.it); G.fb = { ok: r, a: H.it.a.split("/")[0], g: v.trim().slice(0, 40) }; G.ph = "fb"; sync();
+  setTimeout(after, r ? 1900 : 3200);
+}
+function after() {
+  if (G.ph != "fb") return;
+  if (G.fb.ok) { G.act = 1 - G.act; return offer(); }
+  G.hp[G.act] = 0; G.ph = "shot"; sync();
+  setTimeout(() => { G.sc[1 - G.act]++; G.ph = "rnd"; sync(); setTimeout(() => { G.r++; newRound(); }, 2400); }, 1100);
+}
+function tick() {
+  if (G.ph != "ask") return; const l = Math.max(0, END - Date.now()), b = $("bar");
+  if (b) { b.style.width = l / 200 + "%"; $("tm").textContent = Math.ceil(l / 1e3) + " san"; }
+  if (!ME && l <= 0) doAns("");
+}
+setInterval(tick, 200);
+
+/* ---------- Render ---------- */
+const NM = i => E((G.names[i] || "").trim() || (i ? "Qonaq" : "Ev sahibi"));
+const btn = (c, f, t) => `<button class="btn ${c}" onclick="${f}">${t}</button>`;
+const pc = i => `<div class="pr"><div><span>${NM(i)}${i == ME && V == "game" ? " (Sən)" : ""}</span><small>${i ? "Qonaq" : "Ev sahibi"} · qalib raund</small></div><div class="hr">${G.hp[i] ? "❤️" : "💔"}</div><strong>${G.sc[i]}</strong></div>`;
+function anim(o) {
+  if (G.sp !== o.sp) { ["p0", "p1", "stage", "cd"].forEach(i => { const e = $(i); e.classList.remove("fi"); void e.offsetWidth; e.classList.add("fi"); }); gunSpin(G.up); }
+  else if (G.ph == "pick" && o.ph == "spin") gunStand(G.act == ME);
+  else if (G.ph == "pick" && o.ph == "fb" && G.act !== o.act) gunTurn();
+  else if (G.ph == "shot" && o.ph != "shot") gunShoot();
+}
+function apply() { const o = O; O = { ph: G.ph, sp: G.sp, act: G.act }; anim(o); ui(o.ph != G.ph); }
+function ui(chg) {
+  $("p0").innerHTML = pc(0); $("p1").innerHTML = pc(1); $("cd").textContent = "Kod: " + code;
+  const act = ["pick", "ask", "fb"].includes(G.ph); $("p0").classList.toggle("act", act && G.act == 0); $("p1").classList.toggle("act", act && G.act == 1);
+  const mine = G.act == ME; let h = "", late = "";
+  if (G.err) h = `<div class="ct">Xəta</div><div class="card-divider"></div><p class="cd">${E(G.err)}</p><div class="col">${btn("pk", "location.reload()", "Yenidən cəhd et")}</div>`;
+  else if (G.ph == "lobby") h = `<div class="ct">${ME ? "Otaq sahibi başlatmağı gözləyir" : G.gid ? NM(1) + " qoşuldu" : "Dostunu gözləyirik"}</div><div class="card-divider"></div><p class="cd">${ME ? "Oyun başlayanda silah fırlanacaq." : G.gid ? "Oyunu başlat." : "Yuxarıdakı kodu kopyala və dostuna göndər. O, “Otağa qoş” seçib kodu yazacaq."}</p>${ME ? "" : `<div class="col">${btn("pk" + (G.gid ? "" : " dis"), "startGame()", "Başla")}</div>`}`;
+  else if (G.ph == "pick") { late = chg && O.ph == "pick" ? "late" : ""; h = mine ? `<div class="ct">Mövzunu seç</div><div class="card-divider"></div><div class="col">${G.opts.map((t, k) => btn("", `go('pick',${k})`, TP[t].e + " " + TP[t].n)).join("")}</div>` : `<div class="ct">${NM(G.act)} mövzu seçir</div>`; }
+  else if (G.ph == "ask") h = `<div class="tm" id="tm"></div><div class="tb"><i id="bar"></i></div><div class="cd" style="margin-top:6px">${TP[G.tp].e} ${TP[G.tp].n} · ${NM(G.act)}</div><div class="q">${E(G.q)}</div><div class="qs">${E(TP[G.tp].l)}</div>${mine ? `<input class="in" id="in" autocomplete="off" placeholder="Cavabı yaz" onkeydown="if(event.key=='Enter')go('ans',this.value)"><div class="col">${btn("pk", "go('ans',$('in').value)", "Cavab ver")}</div>` : `<p class="cd">${NM(G.act)} cavab yazır...</p>`}`;
+  else if (G.ph == "fb") h = `<div class="ct">${G.fb.ok ? "Düzdür!" : "Səhvdir"}</div><div class="card-divider"></div>` + (G.fb.ok ? "" : `<p class="cd">${NM(G.act)} cavabı: <b>${E(G.fb.g || "—")}</b></p>`) + `<p class="cd">Düzgün cavab: <b>${E(G.fb.a)}</b></p>`;
+  const ov = $("ov"), oc = $("oc"); ov.hidden = !h;
+  if (h) { if (chg || oc.dataset.ph != G.ph) { oc.className = "card " + late; oc.style.animation = "none"; void oc.offsetWidth; oc.style.animation = ""; } oc.dataset.ph = G.ph; oc.innerHTML = h; }
+  const wo = $("wo"), wc = $("wc");
+  if (G.ph == "rnd") {
+    wo.style.transition = "opacity .2s"; wo.style.opacity = 1; wc.className = "";
+    wc.innerHTML = `<h1>${mine ? "Uduzdun" : "Qazandın"}</h1><p>Raund ${G.r} bitdi</p>` + [0, 1].map(i => `<div class="pl${i ? "" : " p0"}">${pc(i)}</div>`).join("") + `<p>Növbəti: Raund ${G.r + 1}</p>`;
+  } else if (wo.style.opacity == "1") { wo.style.transition = "opacity 3s linear"; wo.style.opacity = 0; wc.className = "out"; }
+  if (G.ph == "ask") { tick(); const i = $("in"); if (i && chg) i.focus(); }
+}
+function cpy() {
+  const b = $("cd"), d = () => { b.textContent = "Kopyalandı ✓"; setTimeout(() => b.textContent = "Kod: " + code, 1400); };
+  (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(d, () => { const a = document.createElement("textarea"); a.value = code; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) {} a.remove(); d(); });
+}
+function R() {
+  $("app").hidden = V == "game"; $("gm").hidden = V != "game"; if (V == "game") return;
+  const F = i => ` frame" style="animation-delay:${i * .1}s`;
+  if (V == "home") app.innerHTML = `<h2 class="section-title${F(1)}">πksel Ruleti</h2><div class="card${F(2)}"><div class="ct">Dostunla onlayn oyna</div><div class="card-divider"></div><p class="cd">Hər kəsin 1 canı var. Sualı səhv cavablayan güllə yeyir. Mövzunu seç, düzgün cavabla və sağ qal.</p><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="nin(this.value)"><p class="cd" id="hm">${E(msg)}</p><div class="col">${btn("pk", "mkRoom()", "Otaq yarat")}${btn("", "V='join';msg='';R()", "Otağa qoş")}</div></div>`;
+  else app.innerHTML = `<h2 class="section-title${F(1)}">Otağa qoş</h2><div class="card${F(2)}"><div class="ct">Otaq kodunu yaz</div><div class="card-divider"></div><input class="in" id="jc" maxlength="5" placeholder="KOD" style="text-transform:uppercase;letter-spacing:4px;text-align:center" onkeydown="if(event.key=='Enter')joinRoom()"><input class="in" maxlength="14" placeholder="Adın" value="${E(myName)}" oninput="nin(this.value)"><p class="cd" id="hm" style="text-align:center">${E(msg)}</p><div class="col">${btn("pk", "joinRoom()", "Qoşul")}${btn("", "V='home';msg='';R()", "Geri")}</div></div>`;
+}
+R();
+</script>
+<script src="/footer.js"></script>
+</body>
+</html>
+ 
