@@ -303,8 +303,12 @@ document.addEventListener("pointermove",e=>{
 /* ---------- Quraşdırma addımları ---------- */
 async function step(id){
   const cur=document.querySelector(".step.active");
-  if(cur){await cur.animate([{opacity:1,transform:"none"},{opacity:0,transform:"translateY(-16px)"}],{duration:260,easing:"ease",fill:"forwards"}).finished;cur.classList.remove("active")}
-  const nx=$(id);nx.classList.add("active");
+  if(cur){
+    try{await cur.animate([{opacity:1,transform:"none"},{opacity:0,transform:"translateY(-16px)"}],{duration:260,easing:"ease",fill:"forwards"}).finished}catch(e){}
+    cur.getAnimations().forEach(a=>a.cancel());
+    cur.classList.remove("active");
+  }
+  const nx=$(id);nx.getAnimations().forEach(a=>a.cancel());nx.classList.add("active");
   nx.animate([{opacity:0,transform:"translateY(20px)"},{opacity:1,transform:"none"}],{duration:380,easing:"ease-out"});
 }
 ["cnt","qn"].forEach(id=>{
