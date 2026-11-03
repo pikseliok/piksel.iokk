@@ -84,11 +84,6 @@ body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,
 .tb{height:8px;border-radius:8px;background:rgba(255,255,255,.2);overflow:hidden;margin:6px 0 4px}
 .tb i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#FF8FBE,#FF4F93)}
 .tm{font-weight:700;font-size:var(--pr)}
-#wo{position:fixed;inset:0;z-index:40;background:#fff;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;color:#001E6F;text-align:center}
-#wc{width:min(88vw,420px);display:flex;flex-direction:column;gap:12px;transition:opacity 1s}
-#wc.out{opacity:0}
-#wc h1{font-size:34px;letter-spacing:-1px}
-#wc .pl{text-align:left}
 footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
 .dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
@@ -115,7 +110,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 
   </nav>
   <main class="main-container" id="app"></main>
   <section class="main-container" id="gm" hidden>
-    <button class="pill" id="cd" onclick="cpy()" title="Kodu kopyala"></button>
+    <button class="pill" id="cd" onclick="cpy(this)" title="Kodu kopyala"></button>
     <div class="pl p0" id="p0"></div>
     <div id="stage"><canvas id="cv"></canvas></div>
     <div class="pl" id="p1"></div>
@@ -123,7 +118,6 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 
   </section>
 </div>
 <div class="ov" id="ov" hidden><div class="card" id="oc"></div></div>
-<div id="wo"><div id="wc"></div></div>
 
 <footer>
   <div class="footer-line">İntellektuallar üçün hər şey...</div>
@@ -491,6 +485,7 @@ const go = (t, x) => ME ? send({ t, x }) : host(t, x, 0);
 /* ---------- Oyun məntiqi (ev sahibi) ---------- */
 function host(t, x, by) {
   if (t == "pick") { if (G.ph != "pick" || G.act != by || G.opts[x] == null) return; doPick(G.opts[x]); }
+  else if (t == "next") { if (G.ph != "rnd") return; G.r++; newRound(); }
   else if (t == "ans") { if (G.ph != "ask" || G.act != by) return; doAns(String(x || "")); }
 }
 function startGame() { if (ME || !G.gid) return; G.sc = [0, 0]; G.r = 1; newRound(); }
@@ -514,7 +509,7 @@ function after() {
   if (G.ph != "fb") return;
   if (G.fb.ok) { G.act = 1 - G.act; return offer(); }
   G.hp[G.act] = 0; G.ph = "shot"; sync();
-  setTimeout(() => { G.sc[1 - G.act]++; G.ph = "rnd"; sync(); setTimeout(() => { G.r++; newRound(); }, 2400); }, 1100);
+  setTimeout(() => { G.sc[1 - G.act]++; G.ph = "rnd"; sync(); }, 1100);
 }
 function tick() {
   if (G.ph != "ask") return; const l = Math.max(0, END - Date.now()), b = $("bar");
@@ -526,7 +521,7 @@ setInterval(tick, 200);
 /* ---------- Render ---------- */
 const NM = i => E((G.names[i] || "").trim() || (i ? "Qonaq" : "Ev sahibi"));
 const btn = (c, f, t) => `<button class="btn ${c}" onclick="${f}">${t}</button>`;
-const pc = i => `<div class="pr"><div><span>${NM(i)}${i == ME && V == "game" ? " (Sən)" : ""}</span><small>${i ? "Qonaq" : "Ev sahibi"} · qalib raund</small></div><div class="hr">${G.hp[i] ? "❤️" : "💔"}</div><strong>${G.sc[i]}</strong></div>`;
+const pc = i => `<div class="pr"><div><span>${NM(i)}${i == ME && V == "game" ? " (Sən)" : ""}</span><small>${i ? "Qonaq" : "Ev sahibi"} · qalib raund</small></div><strong>${G.sc[i]}</strong></div>`;
 function anim(o) {
   if (G.sp !== o.sp) { ["p0", "p1", "stage", "cd"].forEach(i => { const e = $(i); e.classList.remove("fi"); void e.offsetWidth; e.classList.add("fi"); }); gunSpin(G.up); }
   else if (G.ph == "pick" && o.ph == "spin") gunStand(G.act == ME);
@@ -539,21 +534,17 @@ function ui(chg) {
   const act = ["pick", "ask", "fb"].includes(G.ph); $("p0").classList.toggle("act", act && G.act == 0); $("p1").classList.toggle("act", act && G.act == 1);
   const mine = G.act == ME; let h = "", late = "";
   if (G.err) h = `<div class="ct">Xəta</div><div class="card-divider"></div><p class="cd">${E(G.err)}</p><div class="col">${btn("pk", "location.reload()", "Yenidən cəhd et")}</div>`;
-  else if (G.ph == "lobby") h = `<div class="ct">${ME ? "Otaq sahibi başlatmağı gözləyir" : G.gid ? NM(1) + " qoşuldu" : "Dostunu gözləyirik"}</div><div class="card-divider"></div><p class="cd">${ME ? "Oyun başlayanda silah fırlanacaq." : G.gid ? "Oyunu başlat." : "Yuxarıdakı kodu kopyala və dostuna göndər. O, “Otağa qoş” seçib kodu yazacaq."}</p>${ME ? "" : `<div class="col">${btn("pk" + (G.gid ? "" : " dis"), "startGame()", "Başla")}</div>`}`;
-  else if (G.ph == "pick") { late = chg && O.ph == "pick" ? "late" : ""; h = mine ? `<div class="ct">Mövzunu seç</div><div class="card-divider"></div><div class="col">${G.opts.map((t, k) => btn("", `go('pick',${k})`, TP[t].e + " " + TP[t].n)).join("")}</div>` : `<div class="ct">${NM(G.act)} mövzu seçir</div>`; }
-  else if (G.ph == "ask") h = `<div class="tm" id="tm"></div><div class="tb"><i id="bar"></i></div><div class="cd" style="margin-top:6px">${TP[G.tp].e} ${TP[G.tp].n} · ${NM(G.act)}</div><div class="q">${E(G.q)}</div><div class="qs">${E(TP[G.tp].l)}</div>${mine ? `<input class="in" id="in" autocomplete="off" placeholder="Cavabı yaz" onkeydown="if(event.key=='Enter')go('ans',this.value)"><div class="col">${btn("pk", "go('ans',$('in').value)", "Cavab ver")}</div>` : `<p class="cd">${NM(G.act)} cavab yazır...</p>`}`;
+  else if (G.ph == "lobby") h = `<div class="ct">${ME ? "Otaq sahibi başlatmağı gözləyir" : G.gid ? NM(1) + " qoşuldu" : "Dostunu gözləyirik"}</div><div class="card-divider"></div><p class="cd">${ME ? "Oyun başlayanda silah fırlanacaq." : G.gid ? "Oyunu başlat." : "Koda toxun, kopyala və dostuna göndər. O, “Otağa qoş” seçib kodu yazacaq."}</p><div class="col">${btn("", "cpy(this)", "Kod: " + code)}</div>${ME ? "" : `<div class="col">${btn("pk" + (G.gid ? "" : " dis"), "startGame()", "Başla")}</div>`}`;
+  else if (G.ph == "pick") { late = chg && O.ph == "pick" ? "late" : ""; h = mine ? `<div class="ct">Mövzunu seç</div><div class="card-divider"></div><div class="col">${G.opts.map((t, k) => btn("", `go('pick',${k})`, TP[t].n)).join("")}</div>` : `<div class="ct">${NM(G.act)} mövzu seçir</div>`; }
+  else if (G.ph == "rnd") h = `<div class="ct">${mine ? "Uduzdun" : "Qazandın"}</div><div class="card-divider"></div><p class="cd">Raund ${G.r} bitdi. Hesab ${G.sc[0]} : ${G.sc[1]}</p><div class="col">${btn("pk", "go('next')", "Yeni raund")}</div>`;
+  else if (G.ph == "ask") h = `<div class="tm" id="tm"></div><div class="tb"><i id="bar"></i></div><div class="cd" style="margin-top:6px">${TP[G.tp].n} · ${NM(G.act)}</div><div class="q">${E(G.q)}</div><div class="qs">${E(TP[G.tp].l)}</div>${mine ? `<input class="in" id="in" autocomplete="off" placeholder="Cavabı yaz" onkeydown="if(event.key=='Enter')go('ans',this.value)"><div class="col">${btn("pk", "go('ans',$('in').value)", "Cavab ver")}</div>` : `<p class="cd">${NM(G.act)} cavab yazır...</p>`}`;
   else if (G.ph == "fb") h = `<div class="ct">${G.fb.ok ? "Düzdür!" : "Səhvdir"}</div><div class="card-divider"></div>` + (G.fb.ok ? "" : `<p class="cd">${NM(G.act)} cavabı: <b>${E(G.fb.g || "—")}</b></p>`) + `<p class="cd">Düzgün cavab: <b>${E(G.fb.a)}</b></p>`;
   const ov = $("ov"), oc = $("oc"); ov.hidden = !h;
   if (h) { if (chg || oc.dataset.ph != G.ph) { oc.className = "card " + late; oc.style.animation = "none"; void oc.offsetWidth; oc.style.animation = ""; } oc.dataset.ph = G.ph; oc.innerHTML = h; }
-  const wo = $("wo"), wc = $("wc");
-  if (G.ph == "rnd") {
-    wo.style.transition = "opacity .2s"; wo.style.opacity = 1; wc.className = "";
-    wc.innerHTML = `<h1>${mine ? "Uduzdun" : "Qazandın"}</h1><p>Raund ${G.r} bitdi</p>` + [0, 1].map(i => `<div class="pl${i ? "" : " p0"}">${pc(i)}</div>`).join("") + `<p>Növbəti: Raund ${G.r + 1}</p>`;
-  } else if (wo.style.opacity == "1") { wo.style.transition = "opacity 3s linear"; wo.style.opacity = 0; wc.className = "out"; }
   if (G.ph == "ask") { tick(); const i = $("in"); if (i && chg) i.focus(); }
 }
-function cpy() {
-  const b = $("cd"), d = () => { b.textContent = "Kopyalandı ✓"; setTimeout(() => b.textContent = "Kod: " + code, 1400); };
+function cpy(b) {
+  const o = b.textContent, d = () => { b.textContent = "Kopyalandı ✓"; setTimeout(() => b.textContent = "Kod: " + code, 1400); };
   (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(d, () => { const a = document.createElement("textarea"); a.value = code; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) {} a.remove(); d(); });
 }
 function R() {
@@ -567,4 +558,3 @@ R();
 <script src="/footer.js"></script>
 </body>
 </html>
- 
