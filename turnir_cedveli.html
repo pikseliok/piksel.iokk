@@ -20,6 +20,7 @@ body{
 body.dark{--page:#00072C; --c1:#9DC3FF; --c2:#6FA5FC; --fg:#00072C; --accent:#9DC3FF; --ok:#066b3a; --no:#a3122a; --glow:rgba(255,255,255,.40)}
 *{box-sizing:border-box;margin:0;padding:0}
 a,button{-webkit-tap-highlight-color:transparent}
+a,button,input,div,span{outline:none}
 html{scroll-behavior:smooth}
 body{min-height:100vh;background:var(--page);color:var(--fg);font-family:"Poppins",sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
 button,a,input,textarea{font:inherit}
@@ -33,7 +34,7 @@ a{color:inherit;text-decoration:none}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
-/* Naviqasiya (index ilə eyni) */
+/* Naviqasiya */
 .top-nav{height:50px;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--grad);box-shadow:0 10px 28px rgba(0,20,100,.08)}
 .nav-links{display:flex;align-items:center;gap:40px;height:100%}
 .nav-link{position:relative;font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
@@ -51,7 +52,7 @@ body.dark .core{transform:scale(1)}
 body.dark .bite{transform:translate(0,0)}
 body.ready .core,body.ready .bite{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 
-/* Footer (index ilə eyni) */
+/* Footer */
 footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
 .footer-line{font-size:15px;line-height:1.4;font-weight:500}
 .footer-link{transition:opacity .25s ease,transform .25s ease}
@@ -59,21 +60,63 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .nav-link:focus-visible,.theme-toggle:focus-visible,.footer-link:focus-visible{outline:3px solid currentColor;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* Səhifə */
+/* Səhifə başlığı */
 .section-title{text-align:center;color:var(--accent);font-size:24px;line-height:1;font-weight:700;letter-spacing:-.7px;margin:24px 0 14px}
-.card{border-radius:28px;padding:22px 24px;background:var(--grad);color:var(--fg);display:grid;gap:12px;width:min(95vw,820px);margin:0 auto}
-.card label{font-size:13px;font-weight:500}
-.card input,.card textarea{width:100%;border-radius:16px;border:0;padding:10px 14px;font-size:14px;font-weight:500;background:var(--fg);color:var(--c1);outline:0}
-.card textarea{height:180px;resize:vertical}
-.btn{height:44px;border-radius:40px;padding:0 24px;border:2px solid var(--c1);background:var(--grad);color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease}
-.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.95)}
-.btn.o{background:transparent;color:var(--accent);border-color:var(--accent)}
-.btn.go{background:var(--fg);color:var(--c1);border-color:var(--fg)}
-.btn.ic{width:44px;padding:0;display:grid;place-items:center}
-.btn.ic svg{width:22px;height:22px}
+
+/* ŞIK KART */
+.card{
+  position:relative;overflow:hidden;
+  width:min(95vw,820px);margin:0 auto;
+  border-radius:32px;padding:30px 28px 26px;
+  background:
+    radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--fg) 16%,transparent),transparent 55%),
+    var(--grad);
+  color:var(--fg);
+  border:1px solid color-mix(in srgb,var(--fg) 22%,transparent);
+  box-shadow:0 24px 54px rgba(0,20,110,.24),0 4px 12px rgba(0,20,110,.10),inset 0 1px 0 color-mix(in srgb,var(--fg) 28%,transparent);
+}
+.card::after{content:"";position:absolute;left:12%;right:12%;top:0;height:3px;border-radius:0 0 6px 6px;background:linear-gradient(90deg,transparent,var(--fg),transparent);opacity:.6;pointer-events:none}
+.card>*{position:relative;z-index:1}
+.card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(ellipse 220px 160px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%)}
+@media (hover:hover){.card:hover::before{opacity:1}}
+.step{display:none}
+.step.active{display:block}
+.badge{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.badge i{font-style:normal;font-size:12px;font-weight:700;letter-spacing:.4px;padding:4px 12px;border-radius:40px;background:color-mix(in srgb,var(--fg) 18%,transparent);border:1px solid color-mix(in srgb,var(--fg) 30%,transparent)}
+.card h2{font-size:21px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-align:center;margin-bottom:18px}
+.fields{display:grid;gap:16px;max-width:360px;margin:0 auto}
+.field{display:grid;gap:7px;text-align:center}
+.field label{font-size:13px;font-weight:500;opacity:.9}
+
+.in{font-weight:500;font-size:16px;color:var(--c1);background:var(--fg);border:2px solid var(--fg);border-radius:40px;padding:0 18px;height:46px;outline:0;width:100%;text-align:center;transition:box-shadow .25s ease,transform .25s ease;-webkit-user-select:text;user-select:text}
+.in::placeholder{color:var(--c1);opacity:.5}
+.in:focus{box-shadow:0 0 0 4px color-mix(in srgb,var(--fg) 35%,transparent)}
+.in.bad{box-shadow:0 0 0 3px #ff5d6c}
+
+/* Komanda xanaları (püşk atma ilə eyni) */
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.slot{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--fg) 14%,transparent);border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);border-radius:40px;padding:6px 8px;transition:border-color .25s ease,background .25s ease}
+.slot:focus-within{border-color:var(--fg);background:color-mix(in srgb,var(--fg) 22%,transparent)}
+.slot b{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--c1);font-size:14px}
+.slot .in{text-align:left;height:36px;font-size:15px;padding:0 14px}
+
+.actions{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.btn{height:46px;min-width:130px;padding:0 26px;border-radius:40px;cursor:pointer;font-size:15px;font-weight:500;background:var(--fg);color:var(--c1);border:2px solid var(--fg);transition:transform .25s ease,opacity .25s ease}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn:hover{transform:scale(1.03)}
+.btn:active{transform:scale(.97)}
+
+/* Oyun ekranı düymələri */
+.gbtn{height:44px;border-radius:40px;padding:0 24px;border:2px solid var(--c1);background:var(--grad);color:var(--fg);font-size:14px;font-weight:500;cursor:pointer;transition:transform .25s ease;box-shadow:0 10px 25px rgba(0,20,110,.12)}
+.gbtn:hover{transform:translateY(-2px)}.gbtn:active{transform:scale(.95)}
+.gbtn.o{background:transparent;color:var(--accent);border-color:var(--accent);box-shadow:none}
+.gbtn.ic{width:44px;padding:0;display:grid;place-items:center}
+.gbtn.ic svg{width:22px;height:22px}
 #game{display:none}
 .tools{display:flex;gap:10px;justify-content:center;margin:0 0 14px}
 
+/* Cədvəl */
 .grid{--mw:calc(var(--q,12)*var(--cw));display:grid;grid-template-columns:var(--lw) minmax(0,1fr) var(--rw);align-items:start}
 .hd{display:flex;height:34px;align-items:center;font-size:14px;font-weight:700;color:var(--accent)}
 .col-l .hd{padding-left:var(--lp)}.col-l .hd span:first-child{width:var(--yw)}
@@ -104,7 +147,6 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 .sym{font-size:28px;font-weight:700;cursor:pointer;user-select:none;width:100%;text-align:center}
 .sym.p{color:var(--ok)}.sym.m{color:var(--no)}
 
-/* Qalın, dizayna uyğun sürüşdürmə çubuğu */
 .mid{touch-action:manipulation;scroll-snap-type:x proximity;overflow-x:auto;scrollbar-width:auto;scrollbar-color:var(--accent) color-mix(in srgb,var(--accent) 15%,transparent)}
 .mid::-webkit-scrollbar{height:18px}
 .mid::-webkit-scrollbar-track{background:color-mix(in srgb,var(--accent) 15%,transparent);border-radius:20px}
@@ -118,8 +160,11 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
   .nav-links{gap:28px}.nav-link{font-size:13px}
   .theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}
   .section-title{font-size:17px}
+  .card{border-radius:26px;padding:24px 16px 20px}
+  .card h2{font-size:18px}
   body{--cw:64px;--rw:96px;--xw:36px;--tw:60px;--yw:24px;--lp:8px;--nf:13px;--nws:normal}
   .wide{width:calc(100vw - 16px)}
+  .card{width:calc(100vw - 32px)}
   .hd{font-size:11px}
   .xal,.rt{font-size:14px}
   .opt{width:28px;height:28px;font-size:15px}
@@ -171,19 +216,34 @@ footer{background:var(--grad);color:var(--fg);min-height:110px;padding:20px;disp
 <main class="wide">
   <h1 class="section-title rise" style="--d:.1s">Turnir cədvəli</h1>
 
-  <section id="setup" class="card frame" style="--i:1">
-    <div class="rise"><label for="cname">Yarışın adı</label><input id="cname" placeholder="Məs: πksel Kuboku"></div>
-    <div class="rise"><label for="qn">Sualların sayı</label><input id="qn" type="number" min="1" max="60" value="12"></div>
-    <div class="rise"><label for="tn">Komandalar</label><textarea id="tn" placeholder="(Hər sətirdə bir komanda)&#10;Komanda 1&#10;Komanda 2&#10;Komanda 3&#10;..."></textarea></div>
-    <button class="btn go rise" id="go" type="button">Başla</button>
+  <section id="setup" class="frame" style="--i:1">
+    <!-- 1-ci addım -->
+    <div id="st1" class="card step active">
+      <div class="badge"><i>1 / 2</i></div>
+      <h2>Yarışın məlumatları</h2>
+      <div class="fields">
+        <div class="field"><label for="cname">Yarışın adı</label><input class="in" id="cname" maxlength="60" autocomplete="off" placeholder="Məs: πksel Kuboku"></div>
+        <div class="field"><label for="qn">Sualların sayı</label><input class="in" id="qn" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" value="12" placeholder="məs. 12"></div>
+        <div class="field"><label for="cnt">Komanda sayı</label><input class="in" id="cnt" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="məs. 8"></div>
+      </div>
+      <div class="actions"><button class="btn" id="cNext" type="button">Davam</button></div>
+    </div>
+
+    <!-- 2-ci addım -->
+    <div id="st2" class="card step">
+      <div class="badge"><i>2 / 2</i></div>
+      <h2>Komanda adları</h2>
+      <div class="grid2" id="nameGrid"></div>
+      <div class="actions"><button class="btn ghost" id="nBack" type="button">Geri</button><button class="btn" id="go" type="button">Başla</button></div>
+    </div>
   </section>
 
   <section id="game">
     <div class="tools frame" style="--i:1">
-      <button class="btn ic" id="poster" type="button" aria-label="Posteri endir" title="Posteri endir">
+      <button class="gbtn ic" id="poster" type="button" aria-label="Posteri endir" title="Posteri endir">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M12 15l-4-4M12 15l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
       </button>
-      <button class="btn o" id="back" type="button">Yeni cədvəl</button>
+      <button class="gbtn o" id="back" type="button">Yeni cədvəl</button>
     </div>
     <div class="grid frame" style="--i:2" id="grid">
       <div class="col-l"><div class="hd"><span>Yer</span><span>Komanda adı</span></div><div class="rows" id="rl"></div></div>
@@ -208,6 +268,7 @@ function loadLogo(){
   return tryLoad(LOGO).then(im=>im||tryLoad(LOGO+"?cors=1"));
 }
 const H=56,G=10;
+const shake=el=>el.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],300);
 
 /* ---------- Gün / Ay ---------- */
 const themeToggle=$("themeToggle"),rays=[...document.querySelectorAll(".ray")];
@@ -232,6 +293,41 @@ function setTheme(dark,animate){
 })();
 themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),true));
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready")));
+
+/* ---------- Kartlarda siçan işığı ---------- */
+document.addEventListener("pointermove",e=>{
+  const n=e.target.closest&&e.target.closest(".card");if(!n)return;
+  const t=n.getBoundingClientRect();n.style.setProperty("--mx",e.clientX-t.left+"px");n.style.setProperty("--my",e.clientY-t.top+"px");
+});
+
+/* ---------- Quraşdırma addımları ---------- */
+async function step(id){
+  const cur=document.querySelector(".step.active");
+  if(cur){await cur.animate([{opacity:1,transform:"none"},{opacity:0,transform:"translateY(-16px)"}],{duration:260,easing:"ease",fill:"forwards"}).finished;cur.classList.remove("active")}
+  const nx=$(id);nx.classList.add("active");
+  nx.animate([{opacity:0,transform:"translateY(20px)"},{opacity:1,transform:"none"}],{duration:380,easing:"ease-out"});
+}
+["cnt","qn"].forEach(id=>{
+  $(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"").slice(0,2);e.target.classList.remove("bad")});
+});
+$("cname").addEventListener("keydown",e=>{if(e.key==="Enter")$("qn").focus()});
+$("qn").addEventListener("keydown",e=>{if(e.key==="Enter")$("cnt").focus()});
+$("cnt").addEventListener("keydown",e=>{if(e.key==="Enter")$("cNext").click()});
+$("nBack").onclick=()=>step("st1");
+
+let typed=[];
+$("cNext").onclick=async()=>{
+  const q=parseInt($("qn").value,10),n=parseInt($("cnt").value,10);
+  let bad=false;
+  if(!(q>=1&&q<=60)){shake($("qn"));$("qn").classList.add("bad");bad=true}
+  if(!(n>=2&&n<=40)){shake($("cnt"));$("cnt").classList.add("bad");bad=true}
+  if(bad)return;
+  typed=[...document.querySelectorAll("#nameGrid input")].map(x=>x.value);
+  $("nameGrid").innerHTML=Array.from({length:n},(_,i)=>`<div class="slot"><b>${i+1}</b><input class="in" maxlength="40" autocomplete="off" placeholder="Komanda adı"></div>`).join("");
+  const ins=[...document.querySelectorAll("#nameGrid input")];
+  ins.forEach((x,i)=>{if(typed[i])x.value=typed[i];x.onkeydown=e=>{if(e.key==="Enter")(ins[i+1]||$("go")).focus()};x.oninput=()=>x.classList.remove("bad")});
+  await step("st2");ins[0].focus();
+};
 
 /* ---------- Reytinq ---------- */
 let T=[],Q=12,marks=[],edit=new Set(),order=[],RL=[],RM=[],RR=[],cname="",timer=null;
@@ -264,10 +360,12 @@ function layout(){
 }
 mq.addEventListener("change",layout);
 function start(){
+  const ins=[...document.querySelectorAll("#nameGrid input")];let bad=null;
+  ins.forEach(x=>{const e=!x.value.trim();x.classList.toggle("bad",e);if(e){shake(x);bad=bad||x}});
+  if(bad){bad.focus();return}
   cname=$("cname").value.trim();
-  Q=Math.max(1,Math.min(60,parseInt($("qn").value)||12));
-  T=$("tn").value.split("\n").map(s=>s.trim()).filter(Boolean);
-  if(T.length<2){alert("Ən azı 2 komanda daxil edin.");return}
+  Q=Math.max(1,Math.min(60,parseInt($("qn").value,10)||12));
+  T=ins.map(x=>x.value.trim());
   marks=T.map(()=>Array(Q).fill(null));edit.clear();clearTimeout(timer);
   layout();
   $("hm").innerHTML=Array.from({length:Q},(_,q)=>`<div class="hc">${q+1}</div>`).join("");
@@ -315,7 +413,6 @@ function questionDone(q){return marks.every(m=>m[q]!==null)}
 function changed(t,q){
   drawCell(t,q);numbers();
   if(questionDone(q)){
-    /* 1 saniyə xallar yenilənir, sonra yavaş-yavaş yer dəyişmə */
     clearTimeout(timer);
     RR.forEach(e=>{e.classList.remove("pulse");void e.offsetWidth;e.classList.add("pulse")});
     timer=setTimeout(()=>{RR.forEach(e=>e.classList.remove("pulse"));order=rank();place(true)},1000);
@@ -346,7 +443,12 @@ grid.addEventListener("pointermove",e=>{
 });
 grid.addEventListener("pointerleave",clearHot);
 $("go").onclick=start;
-$("back").onclick=()=>{if(confirm("Bütün məlumatlar silinəcək. Davam edək?")){clearTimeout(timer);$("game").style.display="none";$("setup").style.display="grid"}};
+$("back").onclick=()=>{
+  if(confirm("Bütün məlumatlar silinəcək. Davam edək?")){
+    clearTimeout(timer);$("game").style.display="none";$("setup").style.display="block";
+    document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));$("st1").classList.add("active");
+  }
+};
 
 /* ---------- Poster ---------- */
 function fit(ctx,txt,weight,size,maxW,min=14){
