@@ -11,10 +11,10 @@
   var SEARCH = '/sual_axtarisi', CONTACT = '/elaqe';
 
   var css = '\
-@font-face{font-family:"Object Sans";font-style:normal;font-weight:300 400;font-display:swap;src:local("Object Sans Regular"),local("ObjectSans-Regular"),url(/fonts/ObjectSans-Regular.woff2) format("woff2"),url(/fonts/ObjectSans-Regular.otf) format("opentype")}\
-@font-face{font-family:"Object Sans";font-style:normal;font-weight:500;font-display:swap;src:local("Object Sans Medium"),local("ObjectSans-Medium"),url(/fonts/ObjectSans-Medium.woff2) format("woff2"),url(/fonts/ObjectSans-Medium.otf) format("opentype")}\
-@font-face{font-family:"Object Sans";font-style:normal;font-weight:600 800;font-display:swap;src:local("Object Sans Bold"),local("ObjectSans-Bold"),url(/fonts/ObjectSans-Bold.woff2) format("woff2"),url(/fonts/ObjectSans-Bold.otf) format("opentype")}\
-@font-face{font-family:"Object Sans";font-style:italic;font-weight:300 500;font-display:swap;src:local("Object Sans Slanted"),local("ObjectSans-Slanted"),url(/fonts/ObjectSans-Slanted.woff2) format("woff2"),url(/fonts/ObjectSans-Slanted.otf) format("opentype")}\
+@font-face{font-family:"Object Sans";font-style:normal;font-weight:300 500;font-display:swap;src:url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.woff2) format("woff2"),url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.woff) format("woff"),url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.ttf) format("truetype")}\
+@font-face{font-family:"Object Sans";font-style:italic;font-weight:300 500;font-display:swap;src:url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.woff2) format("woff2"),url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.woff) format("woff"),url(https://db.onlinewebfonts.com/t/2a1cc239b55dc1e27d998d3c2b77f8da.ttf) format("truetype")}\
+@font-face{font-family:"Object Sans";font-style:normal;font-weight:600 800;font-display:swap;src:url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.woff2) format("woff2"),url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.woff) format("woff"),url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.ttf) format("truetype")}\
+@font-face{font-family:"Object Sans";font-style:italic;font-weight:600 800;font-display:swap;src:url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.woff2) format("woff2"),url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.woff) format("woff"),url(https://db.onlinewebfonts.com/t/2c92bbf252044dd4594cb48e25430c22.ttf) format("truetype")}\
 .nb-wrap{position:relative;z-index:60;width:100%;font-family:"Object Sans",Poppins,sans-serif;--k:0}\
 .nb{position:relative;z-index:2;height:52px;border-radius:40px;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);display:flex;align-items:center;justify-content:center}\
 .nb-links{display:flex;align-items:center;gap:8px}\
