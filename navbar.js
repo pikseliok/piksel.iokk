@@ -11,39 +11,46 @@
   var SEARCH = '/sual_axtarisi', CONTACT = '/elaqe';
 
   var css = '\
-.nb-wrap{position:relative;z-index:60;width:100%;font-family:Poppins,sans-serif;--k:0}\
-.nb{position:relative;z-index:2;height:54px;border-radius:40px;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);display:flex;align-items:center;justify-content:center}\
+@font-face{font-family:"Object Sans";font-style:normal;font-weight:300 400;font-display:swap;src:local("Object Sans Regular"),local("ObjectSans-Regular"),url(/fonts/ObjectSans-Regular.woff2) format("woff2"),url(/fonts/ObjectSans-Regular.otf) format("opentype")}\
+@font-face{font-family:"Object Sans";font-style:normal;font-weight:500;font-display:swap;src:local("Object Sans Medium"),local("ObjectSans-Medium"),url(/fonts/ObjectSans-Medium.woff2) format("woff2"),url(/fonts/ObjectSans-Medium.otf) format("opentype")}\
+@font-face{font-family:"Object Sans";font-style:normal;font-weight:600 800;font-display:swap;src:local("Object Sans Bold"),local("ObjectSans-Bold"),url(/fonts/ObjectSans-Bold.woff2) format("woff2"),url(/fonts/ObjectSans-Bold.otf) format("opentype")}\
+@font-face{font-family:"Object Sans";font-style:italic;font-weight:300 500;font-display:swap;src:local("Object Sans Slanted"),local("ObjectSans-Slanted"),url(/fonts/ObjectSans-Slanted.woff2) format("woff2"),url(/fonts/ObjectSans-Slanted.otf) format("opentype")}\
+.nb-wrap{position:relative;z-index:60;width:100%;font-family:"Object Sans",Poppins,sans-serif;--k:0}\
+.nb{position:relative;z-index:2;height:52px;border-radius:40px;background:var(--grad);color:var(--fg);box-shadow:0 10px 28px rgba(0,20,100,.08);display:flex;align-items:center;justify-content:center}\
 .nb-links{display:flex;align-items:center;gap:8px}\
-.nb-i{width:150px;height:40px;border-radius:30px;border:2px solid transparent;display:flex;align-items:center;justify-content:center;gap:7px;font:500 15px Poppins,sans-serif;color:inherit;background:none;cursor:pointer;text-decoration:none;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .25s,border-color .25s,transform .25s}\
-.nb-i:hover,.nb-i.on,.nb-i.sel{background:color-mix(in srgb,var(--fg) 16%,transparent);border-color:color-mix(in srgb,var(--fg) 34%,transparent)}\
+.nb-i{width:150px;height:40px;border-radius:30px;border:2px solid transparent;display:flex;align-items:center;justify-content:center;gap:7px;font:500 15px "Object Sans",Poppins,sans-serif;color:inherit;background:none;cursor:pointer;text-decoration:none;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .25s,border-color .25s,transform .25s}\
+.nb-i.on,.nb-i.sel{background:color-mix(in srgb,var(--fg) 16%,transparent);border-color:color-mix(in srgb,var(--fg) 34%,transparent)}\
 .nb-i:active{transform:scale(.96)}\
 .nb-i:focus-visible,.nb-c:focus-visible{outline:3px solid currentColor;outline-offset:3px}\
 .nb-i svg{width:17px;height:17px;flex:none}\
 .nb-g svg{transition:transform .3s}.nb-g.sel svg{transform:rotate(180deg)}\
-.nb-i:hover .nb-s{animation:nbSw .6s cubic-bezier(.4,0,.2,1)}\
 @keyframes nbSw{35%{transform:scale(.8) rotate(-18deg)}70%{transform:scale(1.15) rotate(8deg)}}\
 .nb-c{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--accent);background:var(--page);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .3s,background .65s,color .65s}\
-.nb-c:hover{transform:translateY(-50%) scale(1.08)}.nb-c:active{transform:translateY(-50%) scale(.95)}\
+.nb-c:active{transform:translateY(-50%) scale(.95)}\
 .nb-l0{left:8px}.nb-r{right:8px}.nb-m{display:none}\
-.nb-m i{position:absolute;left:9px;right:9px;height:2px;border-radius:2px;background:currentColor;transition:transform .4s cubic-bezier(.5,0,.2,1),opacity .25s,left .3s}\
+.nb-m i{position:absolute;left:9px;right:9px;height:2px;border-radius:2px;background:currentColor;transition:transform .4s cubic-bezier(.5,0,.2,1),opacity .25s}\
 .nb-m i:nth-child(1){top:12px}.nb-m i:nth-child(2){top:18px}.nb-m i:nth-child(3){top:24px}\
-.nb-m:hover i:nth-child(2){left:14px}\
 .nb-m.x{transform:translateY(-50%) rotate(180deg)}\
 .nb-m.x i:nth-child(1){transform:translateY(6px) rotate(45deg)}.nb-m.x i:nth-child(2){opacity:0;transform:scaleX(0)}.nb-m.x i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}\
-.nb-p{position:absolute;left:0;right:0;top:27px;z-index:1;padding:40px 18px 20px;border-radius:0 0 28px 28px;background:var(--grad);color:var(--fg);clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}\
+@media (hover:hover){.nb-i:hover{background:color-mix(in srgb,var(--fg) 16%,transparent);border-color:color-mix(in srgb,var(--fg) 34%,transparent)}.nb-i:hover .nb-s{animation:nbSw .6s cubic-bezier(.4,0,.2,1)}.nb-c:hover{transform:translateY(-50%) scale(1.12)}.nb-m.x:hover{transform:translateY(-50%) rotate(180deg) scale(1.12)}}\
+.nb-p{position:absolute;left:0;right:0;top:26px;z-index:1;padding:40px 18px 20px;border-radius:0 0 28px 28px;background:var(--grad);color:var(--fg);clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}\
 .nb-p.open{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .45s cubic-bezier(.2,.8,.2,1),visibility 0s}\
 .nb-ls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}\
 .nb-ls .nb-i{width:220px;height:46px;animation:nbIn .4s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--k) * .06s)}\
 @keyframes nbIn{from{opacity:0;transform:translateY(-14px)}}\
-.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}body.dark .ray{opacity:0}\
+@keyframes nbTop{from{opacity:0;transform:translateY(-44px)}}\
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}\
+.rays{transform-origin:16px 16px}\
+body.dark .rays{opacity:0;transform:rotate(45deg) scale(.6)}\
+body.ready .rays{transition:opacity .5s ease,transform .6s cubic-bezier(.4,0,.2,1)}\
 .core{transform:scale(.68);transform-origin:16px 16px}.bite{transform:translate(14px,-14px)}body.dark .core{transform:scale(1)}body.dark .bite{transform:translate(0,0)}\
 body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}\
 @media (min-width:701px) and (max-width:1023px){.nb-links{gap:2px}.nb-i{width:108px;font-size:13px;gap:5px}.nb-ls .nb-i{width:200px;font-size:14px}}\
-@media (max-width:700px){.nb{height:46px}.nb-c{width:34px;height:34px}.nb-l0{left:6px}.nb-r{right:6px}.nb-links .nb-i:not(.nb-h){display:none}.nb-links .nb-h{width:auto;padding:0 18px}.nb-ct{display:none}.nb-m{display:grid}.nb-m i{left:8px;right:8px}.nb-m i:nth-child(1){top:10px}.nb-m i:nth-child(2){top:16px}.nb-m i:nth-child(3){top:22px}.nb-m.x i:nth-child(1){transform:translateY(6px) rotate(45deg)}.nb-m.x i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}.nb-p{top:23px;padding:36px 14px 16px}.nb-ls{flex-direction:column;gap:8px}.nb-ls .nb-i{width:100%;height:44px;font-size:15px}}';
+@media (max-width:700px){.nb-wrap.frame{animation-name:nbTop}.nb{height:44px}.nb-c{width:34px;height:34px}.nb-l0{left:6px}.nb-r{right:6px}.nb-links .nb-i:not(.nb-h){display:none}.nb-links .nb-h,.nb-links .nb-h.on,.nb-links .nb-h:hover{width:auto;padding:0 18px;background:none;border-color:transparent;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}.nb-ct{display:none}.nb-m{display:grid}.nb-m i{left:8px;right:8px}.nb-m i:nth-child(1){top:10px}.nb-m i:nth-child(2){top:16px}.nb-m i:nth-child(3){top:22px}.nb-m.x i:nth-child(1){transform:translateY(6px) rotate(45deg)}.nb-m.x i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}.nb-p{top:22px;padding:36px 14px 16px}.nb-ls{flex-direction:column;gap:8px}.nb-ls .nb-i{width:100%;height:44px;font-size:15px}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   var rays = ''; for (var a = 0; a < 360; a += 45) rays += '<line class="ray" x1="16" x2="16" y1="3.5" y2="6.5" transform="rotate(' + a + ' 16 16)"/>';
-  var THEME = '<svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" id="themeIcon"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle cx="21" cy="11" r="7.5" fill="#000" class="bite"/></mask></defs><g>' + rays + '</g><g mask="url(#biteMask)"><circle cx="16" cy="16" r="9" fill="currentColor" class="core"/></g></svg>';
+  var THEME = '<svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" id="themeIcon"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle cx="21" cy="11" r="7.5" fill="#000" class="bite"/></mask></defs><g class="rays">' + rays + '</g><g mask="url(#biteMask)"><circle cx="16" cy="16" r="9" fill="currentColor" class="core"/></g></svg>';
   var HEAD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19v1a2 2 0 0 1-2 2h-3"/><circle cx="12.5" cy="22" r=".8" fill="currentColor"/></svg>';
   var SRCH = '<svg class="nb-s" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
   var CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
@@ -102,7 +109,7 @@ body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,
     a.onfinish = function () { location.href = S.href; };
   });
 
-  function applyTheme(d, anim) {
+  function applyTheme(d) {
     document.body.classList.toggle('dark', d);
     try { localStorage.setItem('piksel-theme', d ? 'dark' : 'light'); } catch (x) {}
     T.setAttribute('aria-label', d ? 'Gündüz rejiminə keç' : 'Gecə rejiminə keç');
