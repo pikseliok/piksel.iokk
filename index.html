@@ -261,7 +261,13 @@ run();setTimeout(function(){mo.disconnect()},20000)})();
 </script>
 <script src="/gravity.js"></script>
 <script src="/footer.js"></script>
-<script src="/suallar-data.js"></script>
+<script>
+/* suallar-data.js-i bir neçə mümkün yolda axtarır və home.js-dən əvvəl yükləyir */
+(function(){var c=["/suallar-data.js","suallar-data.js","/suallar_data.js","/data/suallar-data.js","/js/suallar-data.js","/assets/suallar-data.js","/Suallar-data.js"],ok=null,tried=[];
+for(var i=0;i<c.length&&!ok;i++){try{var x=new XMLHttpRequest();x.open("GET",c[i],false);x.send();tried.push(c[i]+" → "+x.status);if(x.status===200&&!/^\s*</.test(x.responseText))ok=c[i]}catch(e){tried.push(c[i]+" → xəta")}}
+if(ok){document.write('<script src="'+ok+'"><\/script>')}
+else{var d=document.createElement("div");d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;padding:10px 12px;border-radius:12px;background:#b00020;color:#fff;font:12px/1.4 sans-serif;white-space:pre-wrap";d.textContent="suallar-data.js tapılmadı. Yoxlanılan yollar:\n"+tried.join("\n")+"\n(bağlamaq üçün toxunun)";d.onclick=function(){d.remove()};document.body.appendChild(d)}})();
+</script>
 <script src="/home.js"></script>
 </body>
 </html>
