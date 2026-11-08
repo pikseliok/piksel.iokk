@@ -202,10 +202,18 @@ document.addEventListener('pointermove',e=>{const n=e.target.closest&&e.target.c
 let names=[],st={};
 async function go(id){
  const cur=document.querySelector('.screen.active');
- if(cur){await cur.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-20px)'}],{duration:350,easing:'ease',fill:'forwards'}).finished;cur.classList.remove('active')}
- const nx=$('#'+id);nx.classList.add('active');
+ if(cur){
+  const out=cur.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-20px)'}],{duration:350,easing:'ease',fill:'forwards'});
+  await out.finished;
+  cur.classList.remove('active');
+  out.cancel(); // əsas düzəliş: qalıcı opacity:0 təsirini silir
+ }
+ const nx=$('#'+id);
+ nx.getAnimations().forEach(a=>a.cancel()); // ehtiyat üçün köhnə animasiyaları təmizləyir
+ nx.classList.add('active');
  nx.animate([{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{duration:450,easing:'ease-out'});
  scrollTo({top:0,behavior:'smooth'});
+}
 }
 $('#nBack').onclick=()=>go('s-count');
 $('#restart').onclick=()=>go('s-count');
