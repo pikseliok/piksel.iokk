@@ -219,7 +219,7 @@ async function go(id){
  nx.animate([{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{duration:450,easing:'ease-out'});
  scrollTo({top:0,behavior:'smooth'});
 }
-}
+
 $('#nBack').onclick=()=>go('s-count');
 $('#restart').onclick=()=>go('s-count');
 $('#cnt').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2);e.target.classList.remove('bad')});
