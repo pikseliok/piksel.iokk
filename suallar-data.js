@@ -3040,3 +3040,142 @@ V("<i>(Aparıcı üçün qeyd: Sonuncu sual olduğu vurğu edilsin.)</i><br>Bir 
 }});
 })();
 
+/* ===== 17) Xəzər Kuboku ===== */
+(function(){
+const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
+SUAL_DATA.push({
+title:"Xəzər Kuboku",type:"nhn",date:"2026-10-25",link:"/xezer_kuboku",
+tours:{
+/* ===== 1) Qrup oyunları — I Döyüş ===== */
+1:[
+V("George Martinin evlilik ildönümündə ona Game of Thrones serialında istifadə olunmuş bir neçə BUNUN maketi hədiyyə olundu? Nəyin?","Əjdaha yumurtası","Sözügedən serialda da əjdaha yumurtalarından istifadə olunmuşdu.","","Heydərli Hüseyn"),
+V("Borussia Dortmund futbol klubu Sabah ilə oyunöncəsi Bakıda bir post paylaşaraq, qeyd edib ki, “Stadionun adı olimpiya stadionudur, amma …” cümləni tamamlayın.","Burada heç vaxt olimpiya oyunları keçirilməyib.","","","Heydərli Hüseyn"),
+V("“Anna Karenina” əsərində Levin qatara minərkən konduktorun atalar sözünə zidd gedərək onu BUNA GÖRƏ vaqondan çıxarmaq istədiyini deyir. O isə bunun bağışladığı təsiri azaltmaq üçün dərhal ağıllı cümlələr qurmağa başladığını deyir. Siz isə atalar sözünü tam olaraq yazın.","İnsanı geyiminə görə qarşılayıb ağlına görə yola salarlar.","","","Cəfərzadə Səidə"),
+V("24.10.26 tarixi əsrimizin son belə tarixi idi. Necə?","Pifaqor ədədlərindən ibarət","","","Heydərli Hüseyn"),
+V("Beşiktaş 2017-ci ildə çempion olub 3-cü ulduzu taxdıqdan sonra, belə bir şüarla bunu qeyd etmişdi: BU ulduz bütün ulduzlara bədəldir. Söhbət hansı ulduzdan gedir?","Beşiktaş logosundakı ulduz","","","Heydərli Hüseyn",{"criteria":"Türk bayrağındakı ulduzdan"})
+],
+/* ===== 2) Qrup oyunları — II Döyüş ===== */
+2:[
+V("Müasir Marafon qaçışının dəqiq məsafəsi olan 42 km 195 metr göstəricisi Yunanıstan coğrafiyası ilə əlaqəli deyil, 1908-ci ildə Britaniya Kral ailəsinin bir şıltaqlığı ilə müəyyən olunub. Bəs kraliça start xəttinin məhz harada olmasını tələb etmişdi?","Sarayın pəncərəsinin / eyvanının qarşısında","","","Nəhmətli Humay"),
+V("1890-cı illərdə amerikalı ixtiraçı Cesse Reno tərəfindən icad edilən bu qurğunun ilkin məqsədi “Koni Aylend” parkında insanlara həyəcan yaşatmaq və onları əyləndirmək idi. Bu gün isə biz bu mexanizmə ticarət mərkəzlərində, metro stansiyalarında və aeroportlarda tez-tez rast gəlirik. Söhbətin nədən getdiyini əcnəbi mənşəli sözlə deyin.","Eskolator","","","Nəhmətli Humay"),
+V("Qədim yunanlar parça istehsalı çox baha olduğundan ziyafət zamanı əllərini silmək üçün bunun yumşaq hissəsindən istifadə edirdilər. Nəyin?","Apomaqdalie çörəyi","","","Məmmədli Uğur",{"criteria":"Çörək"}),
+V("Viktoriya dövrü İngiltərəsi onları İshaqın oğulları adlandırır, onun varisi kimi qələmə verirdilər. Kimləri?","Saksonları","","","Şükürov Tərlan"),
+V("Bir İtalyan atalar sözündə deyilir: Apreldə çiçək açır, may isə BUNU EDİR. Nəyi?","Onlara rəng verir.","","","Heydərli Hüseyn")
+],
+/* ===== 3) Qrup oyunları — III Döyüş ===== */
+3:[
+V("Onun sol tərəfi sağ tərəfdən təxminən 24 santimetr daha enlidir. Bu, istehsal qüsuru deyil, sadəcə istifadə zamanı dönmə qüvvəsini kompensasiya etmək üçün bu formadadır. Söhbət nədən gedir?","QONDOLA","","","Heydərli Hüseyn"),
+V("Salvador Dalinin bir əsərində adi telefonun dəstəyi ONUN formasındadır. Ümid edirik ki, masada iyun-iyul aylarında doğulanlar var və bu sualı rahatlıqla tapacaqlar.","Xərçəng","","","Heydərli Hüseyn"),
+V("“Anatole” sözü yunan dilindən tərcümədə “yüksələn”, “yüksəliş” deməkdir. Bəs indi türklər sözü hansı formada işlədir?","Anadolu","","","Heydərli Hüseyn"),
+V("2025-ci ilin avqustunda Wendy şirkəti sosial media profilində logosundakı öz məşhur qırmızısaçlı qızı dəyişdirib qara hörüklər və qara geyim ilə təchiz etmişdi. Bəs bu dəyişiklik nəyə həsr olunmuşdu?","Wednesday serialına","","","Heydərli Hüseyn"),
+V("İkinci Dünya Müharibəsi dövründə ABŞ ordusunun əsas qida rasionunu təşkil edən və aqressiv reklamı ilə tanınan, reklam kampaniyalarında adı tez-tez təkrarlanan ucuz konservləşdirilmiş ət brendinin adı bu gün hansı müasir internet anlayışını ifadə etmək üçün işlədilir?","Spam","","","Nəhmətli Humay")
+],
+/* ===== 4) Qrup oyunları — IV Döyüş ===== */
+4:[
+V("Nyuton 19 yaşı olanda günahlarının siyahısını hazırlamışdı. Maraqlıdır ki, onlardan biri kilsədə BUNU ETMƏSİ idi. Nəyi etmək?","Alma yemək","","","Heydərli Hüseyn"),
+V("Belarus prezidenti Aleksandr Lukaşenko Belarusiyada mitinqlər zamanı alqışlamağı qadağan etmişdi. Hətta tək qolu olan bir şəxs alqışlama səbəbi ilə həbs olunmuşdu. 2020-ci ildə Covid-19 pandemiyası zamanı siyasətçilərin insan həyatı üzərində rolunun həkimlərdən daha çox olduğunu göstərmişdi. Bəs bu 2 hadisə Lukaşenkoya nə qazandırmışdı?","İqnobel mükafatı","","","Heydərli Hüseyn"),
+V("Uşaq yaşlarında qazanılan şöhrətin daha sonra gətirdiyi problemləri ifadə etmək üçün ONUN adından istifadə olunur, çünki O, ötən əsrin sonlarında öz məşhurluğunu qazanmasına baxmayaraq, böyüyəndə narkotik aludəçiliyi, stres və ailə problemləri ilə gündəmə gəlmişdi.","Makaley Kalkin","","","Nəhmətli Turqut"),
+V("Statistikaya görə, hər 8 amerikalıdan biri həyatının müəyyən bir dövründə burada işləyib. Harada?","McDonald’s","","","Hüseynova Gümüş"),
+V("Rio de Janeiro bir zamanlar Portuqaliyanın paytaxtı olub. Bu isə tarixdə yeganə belə hal idi. Necə?","Başqa ölkənin şəhərinin paytaxt olması","","","Heydərli Hüseyn")
+],
+/* ===== 5) Qrup oyunları — V Döyüş ===== */
+5:[
+V("Liverpool klubundan Arne Slotun gedişindən sonra kluba yeni baş məşqçi kimi Andoni Iraolanın təyin olunması haqqında olan bir yumoristik postun başlığı “Arne Slotu da BU əvəz etdi” şəklindədir. Söhbətin nədən getdiyini deyin.","Süni intellekt (AI)","İnsiallarına görə","","Heydərli Hüseyn"),
+V("Qafqaz dağlarında xarici kəşfiyyatın fitnə-fəsadlarından danışan “Əvəz-əvəzə” filmi Azərbaycanın ilk BELƏ filmi sayılır. Necə?","Detektiv","","","Heydərli Hüseyn"),
+V("Azərbaycan dilində panqrammaya nümunə kimi, bu cümləni göstərmək olar: “Zəfər, jaketini də papağını da götür, bu axşam hava çox soyuq olacaq”. Panqrammanın nə olduğunu izah edin.","Bir cümlə daxilində əlifbadakı bütün hərflərin işlənməsi","","","Heydərli Hüseyn"),
+V("Uinston Çörçil 1946-cı ildəki məşhur çıxışında bu obyekti coğrafi olaraq Baltik dənizindəki Ştettin şəhərindən Adriatik dənizindəki Triest şəhərinə qədər uzadır. Maraqlıdır ki, bu obyekt həm bir teatr terminidir, həm də metallurgiya ilə bağlıdır. Siz isə bu obyekti iki sözlə deyin.","Dəmir pərdə","","","Nəhmətli Humay"),
+V("Bu şəhər bir vaxtlar iki qitəni birləşdirən ən vacib ticarət nöqtəsi idi. Onun adı tarix boyu dəyişib. Bu gün isə turizm mərkəzidir. Hansı şəhər?","İstanbul","","","Babaşova Arzum")
+],
+/* ===== 6) Qrup oyunları — VI Döyüş ===== */
+6:[
+V("Bir internet zarafatına görə, BU simvol əslində qaçan bir adamı təsvir edir, lakin biz ona yuxarıdan baxırıq. Müasir texnologiyada BU simvol yüklənməni bildirir. BU nədir?","Loading simvolu","","","Babaşova Arzum"),
+V("1943-cü ildə Pentaqon binasının tikintisi zamanı layihədə nəzərdə tutulan sanitar qovşaqların sayı real ehtiyacdan iki dəfə çox idi. Layihədəki bu “israfçılığın” səbəbini tapın.","Seqreqasiya (və ya İrqi ayrı-seçkilik)","","","Hüseynova Gümüş"),
+V("1959-cu ildə “Volvo” şirkəti avtomobillərdə üçnöqtəli təhlükəsizlik kəmərini icad edərək patentləşdirdi. Lakin şirkət milyardlarla dollar gəlirdən imtina edərək patenti bütün rəqiblərinə pulsuz təqdim etdi. “Volvo” rəhbərliyinin bu addımı atmaqda məqsədi nə idi?","Sürücü və sərnişinlərin təhlükəsizliyi","","","Nəhmətli Humay"),
+V("Latın atalar sözündə belə deyilir: Kiçik borc borclu edir. Bəs böyük borc?","Düşmən","","","Heydərli Hüseyn"),
+V("Tomas Edison deyirdi ki, “Mən heç vaxt uğursuzluqla üzləşməmişəm. Sadəcə işləməyən 10 min İKS-im olub”. İKS nədir?","Yol, üsul, metod (way)","","","Babaşova Arzum")
+],
+/* ===== 7) Qrup oyunları — VII Döyüş ===== */
+7:[
+V("Gadsby kitabında e hərfi heç istifadə olunmayıb. Təbii ki, belə bir kitab yazmaq çətindir. Bəs oxucuların fikrincə bu kitabla bağlı daha çox çətinlik çəkən kimlərdir?","Tərcüməçilər","","","Şükürov Tərlan"),
+V("Peruda çiçəkləri ağ və mavi rəngdə olan bir bitki növü aşkar edilib. Bəs ona C. Amerikanın hansı ulduzunun adı verilib?","Lionel Messi","","","Heydərli Hüseyn"),
+V("Bir rəssamın əsərlərində sarı rəngdən çox istifadə etməsi bəzən onun emosional vəziyyəti ilə izah edilir. Lakin alternativ nəzəriyyə qəbul etdiyi dərmanın görməsinə təsir etməsini önə çəkir. Bu rəssam kimdir?","Vinsent van Qoq","","","Osmanova Şəbnəm"),
+V("Filipp Biq 1885-1910-cu illərdə Londonda baş vermiş əksər cinayətlərin üstünü açıb. Bəs O hansı personajın prototipi hesab olunur?","Sherlock Holmes","","","Heydərli Hüseyn"),
+V("Uolt Disney yaradacağı ikonik obrazına ilk olaraq “Mortimer” adını vermək istəyirdi. Lakin həyat yoldaşı Lillian bu adın çox ciddi səsləndiyini bildirərək ona daha şən bir ad verməyi təklif etdi. İndi bütün dünyanın tanıdığı bu personajın adını tapın.","Mikki Maus","","","Nəhmətli Humay")
+],
+/* ===== 8) Qrup oyunları — VIII Döyüş ===== */
+8:[
+V("İkinci Dünya Müharibəsi illərində və NASA-nın ilk dövründə mürəkkəb riyazi hesablamaları və trayektoriyaları aparmaq üçün xüsusilə qadınlar işə götürülürdü. Qəribədir ki, həmin dövrdə onların ştat cədvəlindəki rəsmi vəzifə adı məhz BU idi. XX əsrin ortalarından etibarən isə bu insanları eyni adı daşıyan elektron cihazlar əvəz etdi. BU-nun nə olduğunu deyin.","Kompüter","","","Nəhmətli Humay"),
+V("1953-cü ildə nəşr olunan məşhur distopik romanın müəllifi onu evdə yox, bir universitet binasının zirzəmisində, hər yarım saat üçün 10 sent ödəyərək kirayələdiyi yazı makinasında yazıb. Romanın mövzusu isə məhz BUNUN yandırılması idi. Müəllifin romanı harada yazdığını deyin. İroniya burada idi.","Kitabxanada","Ray Bredberi “451° Fahrenheit”i Los-Anceles Universitetinin Pauell kitabxanasında yazıb. Kitabların yandırılması haqqında roman kitabxanada yaranıb.","","Osmanova Şəbnəm",{"criteria":"Universitet kitabxanası (UCLA)"}),
+V("Mayın sonlarında Eyfel qülləsi yayda təxminən 15 sm hündürləşir. Bunun səbəbini deyin.","Metalın istidən genişlənməsi","","","Osmanova Şəbnəm"),
+V("“Gümüşgöl əfsanəsi” filmindən yumoristik sualı cavablayın. “Siçanın ömrü nə qədərdir?”","Pişik onu tutana qədər","","","Şükürov Tərlan"),
+V("3 sentyabr 1967-ci ildə İsveçdə hər kəs bir günə uyğunlaşdı. Ölkənin böyük qismində səhər saatlarında yollarda nəqliyyat dayandırıldı. Sonra bütün ölkədə nəqliyyatın hərəkət tərzi dəyişdirildi və bu gün “Dagen H” adlanır. Nə dəyişdi?","Yol hərəkəti soldan sağa keçdi.","“H” hərfi “högertrafik” (sağ hərəkət) sözündəndir. Ölkə qonşuları ilə uyğunlaşmaq üçün bu qərarı verib.","","Osmanova Şəbnəm",{"criteria":"Sürücülər sol tərəfdən sağ tərəfə keçdi."})
+],
+/* ===== 9) Qrup oyunları — IX Döyüş ===== */
+9:[
+V("1902-ci ildə ABŞ prezidenti ov zamanı ağaca bağlanmış ayını vurmaqdan imtina edir. Bu hadisədən ilhamlanan oyuncaq istehsalçısı yumşaq ayıya prezidentin adını verir. Bu oyuncaq bu gün hansı adla tanınır?","Teddy bear (Tedi ayı)","Prezident Teodor Ruzveltin ləqəbi “Teddy” idi.","","Osmanova Şəbnəm"),
+V("1930-cu ildə Oksfordda yaşayan 11 yaşlı qız yeni kəşf olunmuş göy cisminə qədim mifologiyadan bir ad təklif etdi. Təklifi astronomlar tərəfindən qəbul edildi. Həmin ad sonradan məşhur cizgi film itinə də verildi. Bu adı deyin.","Pluton","Qızın adı Venesiya Berni idi. Pluton Roma mifologiyasında yeraltı aləmin tanrısıdır.","","Osmanova Şəbnəm"),
+V("Rəvayətə görə, XII əsrdə hersoq V Leopold döyüşdən sonra ağ geyiminin qan içində qaldığını, lakin kəmərinin altında qalan hissənin ağ olduğunu görüb. Bəs bu vəziyyət nəyin yaranmasına ilham olub?","Avstriya bayrağı","","","Heydərli Hüseyn"),
+V("“Şoushenkdən qaçış” filmində Endi Düfreyn həbsxanadan qaçmaq üçün istifadə etdiyi kiçik gips çəkicini İncilin məhz hansı simvolik fəslinin içini oyaraq gizlətmişdi?","Çıxış / Exodus fəslinin","","","Nəhmətli Humay"),
+V("İlk BELƏ ev heyvanı “COPY CAT” adlandırılmışdı. BELƏ, yəni necə?","Klonlanmış","","","Heydərli Hüseyn")
+],
+/* ===== 10) Yarımfinal — I Döyüş ===== */
+10:[
+V("İngilis dramaturqu Ben Conson Vestminster abbatlığında dəfn olunub. Maraqlıdır ki, o yer çatışmazlığı səbəbindən BELƏ dəfn edilib. Necə?","Ayaq üstə","","","Heydərli Hüseyn"),
+V("Maestro Niyazi İstanbulda orkestr ilə məşq edəndə türk solistlər içəri daxil olub soruşublar ki, “maestro, bəs bizimlə nə zaman məşq edəcəksiniz?” Maestro isə “sizinlə axırda məşq edəcəyəm” deyib. Solistlər Maestronun onlara qəzəbləndiyini düşünüblər. Bəs buna səbəb nə idi?","Axır sözünü tövlə mənasında başa düşüblər.","","","Heydərli Hüseyn"),
+V("Qırmızı stepler - hansısa bir əsər sayəsində bir məhsulun satışının artmasına və ya bir sahənin inkişafının baş verməsi halına deyilir. Məsələn, “Captain Tsubasa” animesi Yaponiyada futbola marağı artırmışdı, “Frozen” animasiyası Norveçə turizmi 34% artırmışdı. Bəs “Queen’s Gambit” serialı hansı saytı populyarlaşdırmışdı?","chess.com","","","Heydərli Hüseyn"),
+V("Amerikalı diarist George Templeton Strong 1867-ci ildə Nyu-Yorkun Şərq çayında insanların üzərində gəzdiyi buzun qəfil parçalanmasını təsvir edib. Siz isə həmin təsvirdə kraliça Elizabeth Stuartın hansı oğlunun adının çəkildiyini deyin.","Şahzadə Rupert (Rupert Damlası məsələsi)","","","Heydərli Hüseyn"),
+V("İkinci Dünya müharibəsi zamanı ingilis kəşfiyyatı alman həbs düşərgələrindəki əsirlərə qaçış xəritələrini bu oyunun içində gizlədərək göndərirdi. Hansı oyunun?","Monopoliya","","","Məmmədli Uğur"),
+V("Osmanlı imperiyasında devşirmə sistemi üçün namizədlər gələcəkdə bacarıqlı olacaqları ehtimalı nəzərə alınaraq, xarici görünüşlərinə görə seçilirdi. Turnacıbaşıların həyata keçirdiyi bu olduqca isabətli seçim prosesinin bu gün dilimizdə hansı deyimin yaranmasına səbəb oldu? Deyimi 3 sözlə yazın.","Durnanı gözündən vurmaq","","","Babaşova Arzum"),
+V("Antik Romada heykəltaraşlar bəzən heykəldəki çatları balmumu ilə doldurardılar. Düzgün, qüsursuz iş görən ustalar əsərlərinə “sine cera” yazardılar, bu da “balmumsuz”, “saxta deyil” mənasına gəlirdi. Siz isə müasir ingilis dilindəki hansı sözün etimologiyasında bu fakta rast gələ biləcəyimizi yazın.","Sincere","","","Heydərli Hüseyn"),
+V("Dünya çempionatı üçün bütün millilər 26 nəfərdən ibarət futbolçu siyahısı göndərməlidir. DÇ 26-da Portuqaliya millisi istisna olaraq əlavə 1 nəfərin də adını siyahıya yazmışdı. Kimin?","Diogo Jota","","","Şükürov Tərlan"),
+V("Bir filmdə deyilir: 2 cür pis insan var: pis əməllər edənlər və BUNU edənlər. Onların nə etdiyini deyin.","Pislik edənləri görüb reaksiya bildirməyənlər / buna qarşı nəsə etməyənlər / durdurmağa çalışmayanlar","","","Cəfərzadə Səidə")
+],
+/* ===== 11) Yarımfinal — II Döyüş ===== */
+11:[
+V("Argentina prezidenti Javier Mileinin fikrincə işə yarayan tək sol hansıdır?","Messinin sol ayağı","","","Şükürov Tərlan"),
+V("1990-cı illərdə yaradılan bir texnologiyanın adı X əsrdə yaşamış Danimarka kralının ləqəbindən götürülüb. Tarixdə Danimarka və Norveçi birləşdirən bu kralın ləqəbi texnologiyanın funksiyası ilə uyğunlaşdırılmışdı. Kralın ləqəbini deyin.","Bluetooth","","","Osmanova Şəbnəm"),
+V("Əsasən tələbələr üçün sağlam qidalar istehsal edən brendlərdən biri “distant O” adını daşıyır. O ilə əvəzlənəni deyin.","Ana","","","Nəhmətli Turqut"),
+V("200 il öncəyə qədər İngiltərə teatrlarında effekt əvəzinə gerçək alov yandırılırdı. İronikdir ki, o dövrün teatrlarında BU olmurdu. Nə?","Fire Exit","","","Nəhmətli Turqut"),
+V("“Paris 2024”də basketbolçuların boynundakı “Q-Collar” cihazı daxili təzyiqi artıraraq beyni zərbədən qoruyur. Bu texnologiya beyni saniyədə 20 dəfə zərbə alsa da zədələnməyən bir canlının orqan quruluşundan götürülüb. Söhbət hansı canlıdan gedir?","Ağacdələn","","","Babaşova Arzum"),
+V("Bir reklam kampaniyasında eynək taxmış bir Osminoq təsvir olunub. Reklamın sloqanında isə “İndi siz eyni anda BUNU EDƏ BİLƏRSİNİZ” deyilir. BUNU ETMƏKlə əvəz olunanı 3 sözlə yazın.","Səkkiz kitab oxumaq","","","Babaşova Arzum"),
+V("Orta Çağda ən ölümcül silahlardan biri şəraba qatılan zəhər hesab olunurdu. O dönəmdə heç bir dəvətli qonaq getdiyi yerdə şərabı tək başına içməyə cəsarət edə bilməzdi. Bununla da, məşhur qədəh toqquşdurmaq ənənəsi yarandı. Siz isə bunun məntiqini izah edin.","Toqquşduranda şərablar sıçrayıb bir-birinə qarışır.","","","Heydərli Hüseyn"),
+V("Rəsul Rza dostu Mikayıl Müşfiqin faciəvi taleyini qələmə alır. Şair həmin dövrdə bəzi insanların xəyanət yolu tutmasını, günahsızların fəlakətinə yol açan BUNLARI namərd şilləsinə bənzədir. Nələri?","İmza","","","Babaşova Arzum"),
+V("İstənilən yerdən qaça bilməsinə görə, Ken Allenə “Tüklü O” ləqəbi verilmişdi. Macarıstanda doğulan ONUN kim olduğunu deyin.","Harri Hudini","","","Nəhmətli Turqut")
+],
+/* ===== 12) Üçüncülük oyunu —  ===== */
+12:[
+V("Bill Gates bir müsahibəsində demişdi: “Mən çətin tapşırıqları həmişə BELƏ insanlara verirəm, çünki onlar onu həll etmək üçün ən asan yolu tapacaqlar”. BELƏ ilə əvəz olunmuş sözü yazın.","Tənbəl","","","Babaşova Arzum"),
+V("Bir ingilisdilli internet istifadəçisi BUNU “Həyatımızın altı qəddar saatı” kimi izah edir. Nəyi?","Məktəb","Six cruel hours of our lives","","Nəhmətli Turqut"),
+V("Bir dəfə aktyor Adolf Menyasu Nyu-Yorkun bir dərzisindən bir cüt şalvar sifariş edir. Dərzi şalvarı 1 aya hazır edir. Menyasu buna qarşılıq “Allah bütün dünyanı yaratmağa cəmi 1 həftə sərf edib, sən isə 1 aya bir şalvarı güclə tikirsən” deyir. Bəs, dərzi nə cavab verir?","Bir dünyaya bax, bir də şalvara. Hansında qüsur daha azdır?","","","Nəhmətli Turqut"),
+V("1923-cü ildə Nyu-Yorkda keçirilən at yarışında qalib gələn Frank Hayes, finiş xəttini keçəndə digər bütün iştirakçılardan fərqlənirdi və həm də bunu bacaran ilk jokey olmuşdur. Onun əsas fərqi nə idi?","O, ölü idi","","","Məmmədli Uğur"),
+V("Dəqiq oxçuluq atışı üzrə dünya rekordunun sahibi Matt Stutzman haqqında ən təəccüblü fakt odur ki, onun ONLARI yoxdur. ONLARI bir sözlə cavab kartınıza yazın.","Qolları","","","Hüseynova Gümüş"),
+V("“Game of Thrones” serialında Talisa obrazını canlandıran aktrisa real həyatda öz adını nənəsindən alıb. Bəs onun babası kim olub?","Çarli Çaplin","","","Heydərli Hüseyn"),
+V("Bir il öncə O, İngiltərə kraliçasından daha varlı olmağı bacardı. Maraqlıdır ki, O, yazı yazaraq bunu etmiş ilk şəxsdir. Söhbət kimdən gedir?","Rowling","","","Heydərli Hüseyn"),
+V("“Benjamin Buttonun qəribə hekayəsi” (“The Curious Case of Benjamin Button”) filmi ekranlara çıxdıqdan sonra Denni Boyl “Solomon Grundy” filmini çəkməkdən imtina etdi. Bəs buna səbəb nə idi?","Ssenariləri çox oxşar idi.","","","Heydərli Hüseyn"),
+V("Stokholm sindromunda girov götürülən şəxsdə aqressora qarşı simpatiya yarandığını bilirik. Bəs London sindromunu bu sindromdan fərqləndirən cəhət nədir?","Qurban aqressiv, davakar davranışlar edir.","","","Cəfərzadə Səidə")
+],
+/* ===== 13) Final — I Döyüş ===== */
+13:[
+V("Türkmənistanın ilk prezidenti Saparmurat Niyazov həftənin günlərinin adlarını dəyişmişdi. Bəs O hansı günü “Dinçgün” adlandırmışdı?","Bazar","","","Heydərli Hüseyn"),
+V("E. Şmit “Müsyo İbrahim və “Quran”dakı çiçəklər” kitabında yazır: Əgər bir insana O həyatı başa sala bilməyibsə, kitablar heç vaxt başa sala bilməz. O, yəni kim?","Tanrı","","","Nəhmətli Turqut",{"criteria":"Allah"}),
+V("McDonald’s Halloween üçün öz məşhur souslarından istifadə edərək bunu yaratdı. Nəyi?","Makyaj seti","","","Heydərli Hüseyn"),
+V("“Heinz” brendinin Helluin bayramı üçün satışa çıxardığı ketçup bir xüsusiyyəti ilə fərqlənirdi. Hansı?","Qara rəngdə idi.","","","Nəhmətli Turqut"),
+V("Tarixçilər qeyd edir ki, İntibah dövrü rəssamı Andrea del Sartonun çəkdiyi məşhur rəsmdə təsvir olunan qadın əslində xristianlıqdakı müqəddəs bir şəxsiyyətdir. Lakin 1940-cı illərdə gənc bir türk yazıçısı bu rəsmə baxarkən, havanın soyuqluğunu nəzərə alaraq, həmin müqəddəs fiquru soyuqdan qorumuşdu. Nəticədə ortaya çıxan obraz?","Kürk mantolu madonna","","","Babaşova Arzum"),
+V("ABŞ prezidentlərinin rəsmi iqamətgahı ilkin olaraq öz xarakterik rəngi ilə seçilmirdi. 1814-cü ildə baş verən hansı hadisənin izlərini gizlətmək üçün binanın fasadı kütləvi şəkildə boyandı və o, indiki adını aldı?","Yanğın / Binanın yandırılması","","","Nəhmətli Humay"),
+V("Kanadanın Çörçill şəhər sakinləri avtomobillərinin və evlərinin qapılarını heç vaxt kilidləmirlər. Sakinlərin bu addımı atmaqda əsas məqsədi nədir?","Piyadaların küçədə ağ ayı hücumundan qorunması üçün (Ağ ayı təhlükəsi)","","","Nəhmətli Humay"),
+V("Bəzi mənbələrə görə, Picassonun belə bir ifadəsi var: Yaxşı rəssamlar surət çıxarır (kopiyalayır), dahilər isə BUNU EDİR. Nə edir?","Oğurlayır","","","Heydərli Hüseyn"),
+V("İngilis yazıçısı Tomas Hardi Dorsetdə dəfn olunmaq istəyirdi. Bu tam olaraq baş tutmasa da, qismən baş tutdu. Bunu necə etdilər?","Təkcə ürəyini orada basdırdılar.","","","Heydərli Hüseyn")
+],
+/* ===== 14) Final — II Döyüş ===== */
+14:[
+V("Türk dilində istifadə olunan “kolonya” sözü Almaniyanın hansı şəhərinin adı ilə bağlıdır?","Köln","","","Heydərli Hüseyn"),
+V("Bir robotun küçədə musiqi aləti ilə ifa etdiyi bir karikaturaya baxıb demək olar ki, süni intellekt onların da işini əlindən alıb. Kimlərin?","İşsizlərin","","","Heydərli Hüseyn"),
+V("Bir əsərdə Prezidentin kabinetində döşəməyə salınan xalçanın üzərində Amerika qartalı sol ayağında zeytun budağı, sağ ayağındasa bir topa ox tutub. Dinc vaxtlarda qartal zeytun budağına baxırdı. Müharibə vaxtı isə sirli şəkildə oxlara tərəf dönürdü. Bu necə baş verirdi?","Sadəcə zirzəmidə əlavə bir xalça da var idi. Gecə vaxtı isə dəyişdirilirdi.","","","Cəfərzadə Səidə"),
+V("Son dönəmlərdə Sloveniyanın milli domenində yüksək bir artış müşahidə olunur. Bunun səbəbini izah edin.","Super intellekt məsələsinə görə insanlar .si domeninə kütləvi şəkildə müraciət edirlər.","","","Heydərli Hüseyn"),
+V("Son dünya çempionatında ABŞ-də baş verən bir hadisəyə görə bir zarafatda deyilir ki, FIFA-nın yeni qaydaları və etiraz sistemləri sayəsində meydandan qovulan futbolçu cəzadan BUNUN sayəsində qurtula bilər. Hal-hazırda olduğumuz ərəfəni də nəzərə alaraq BUNUN nə olduğunu deyin.","Green Card","","","Heydərli Hüseyn"),
+V("Bir əsərdə Parisdə yaşayan obraz atasının Marseldə özünü qatarın altına ataraq öldürdüyünü öyrənir. Bunu çaşqınlıqla qarşılayan personajı ən çox təəccübləndirən nə olmuşdu?","Atasının özünü qatarın altına atmaq üçün bu qədər uzağa getməsi","","","Nəhmətli Turqut"),
+V("Oranqutan Ken Allen, saxlanıldığı yerin divarlarını hər dəfə bir dırmanıb çölə çıxmağı bacarırdı. Zoopark rəhbərliyi onun hərəkətlərini simulyasiya edib daha etibarlı sədd çəkmək üçün ONLARI işə cəlb etmişdi. Kimləri?","Alpinistlər","","","Heydərli Hüseyn"),
+V("Bernard Şou qeyd edirdi ki, BU insana özünü hər kəsdən üstün hiss etməyə imkan verən bir yoldur. BU zaman insan fiziki olaraq hər kəsdən yüksəkdə dayanır. BU nədir?","Səhnə","","","Babaşova Arzum")
+],
+}});
+})();
