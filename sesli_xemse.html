@@ -107,7 +107,7 @@ footer{width:100%;background:linear-gradient(100deg,var(--deep),var(--bright) 50
 <section class="card frame" id="lobby" style="--i:1"><div class="rise big">"Xəmsə"<br>Səsli otaq</div>
 <button class="rise pill" data-m="host">APARICI</button><button class="rise pill" data-m="cap">KAPİTAN</button><button class="rise pill" data-m="pl">OYUNÇU</button>
 <div id="form" hidden><input id="fRoom" placeholder="Otaq kodu" hidden autocapitalize="characters"><input id="fTeam" placeholder="Komanda adı" hidden maxlength="30"><input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden autocapitalize="characters"><input id="fName" placeholder="Adın" maxlength="25"><button class="pbtn" id="go" style="margin-top:14px">Daxil ol</button></div>
-<div class="rise info">Aparıcı otaq yaradıb kodu kapitanlara verir (2–4 komanda).<br>Kapitan komanda kodunu oyunçularına verir (1–5 nəfər).</div></section>
+<div class="rise info">Aparıcı otaq yaradıb kodu kapitanlara verir .<br>Kapitan komanda kodunu oyunçularına verir (1–5 nəfər).</div></section>
 <div id="game" hidden><h1>"Xəmsə" Səsli otaq</h1><section class="card" id="head"></section><div id="arena"></div><div id="ctl"></div><div id="teams"></div>
 <div id="dock"><div class="mixrow"><button class="pbtn sq" type="button" data-rx="👍">👍</button><button class="pbtn sq" type="button" data-rx="👏">👏</button><button class="pbtn sq" type="button" aria-label="Mikrofon" id="bm2"></button><button class="pbtn sq" type="button" data-rx="❤️">❤️</button><button class="pbtn sq" type="button" data-rx="🦉">🦉</button></div>
 <div id="vbs"></div><div id="talkbox"></div></div><div class="note" id="net"></div></div>
@@ -120,7 +120,7 @@ const db=firebase.database(),$=e=>document.getElementById(e),
 esc=e=>String(e??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]),
 AL="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>Array.from({length:n},()=>AL[Math.random()*AL.length|0]).join(""),
 norm=e=>String(e||"").toUpperCase().replace(/[^A-Z0-9]/g,""),
-RN=["BƏLLİ","ŞƏRTLİ","SİRLİ","FƏRDİ","XƏMSƏ"],TOP=[5,5,5,1],QN=[5,5,5,1],
+RN=["BƏLLİ","ŞƏRTLİ","SİRLİ","FƏRDİ","XƏMSƏ"],TOP=[5,5,5,1],QN=[5,5,5,5],
 GR=["linear-gradient(135deg,#4F76D7,#2454D1 55%,#003DBF)","linear-gradient(135deg,#FF43D3,#F119C8 55%,#EA3BD8)","linear-gradient(135deg,#2FD07F,#0BB55F 55%,#058F47)","linear-gradient(135deg,#FF8C52,#E8692A 55%,#C9511A)"],TS=firebase.database.ServerValue.TIMESTAMP;
 let pid=null;try{pid=sessionStorage.getItem("pxr")}catch(e){}if(!pid){pid="p"+rnd(8);try{sessionStorage.setItem("pxr",pid)}catch(e){}}
 let mode="host",room,role,R,sel=null,exp={},muted=false,tvol=.5,mvol=.5,sfx=1,off=0,pk="",busy=0,noP=0,micA=0,micFail=0,rejoined=false,sigOn=0,presOn=0,cb=0,rcT=0,dg=null,rxOn=0,lastAct=Date.now(),idle=0,stream=null,ctx=null,ac=null,entered=0,wl=null,L={},skip={},ICE=[{urls:"stun:stun.l.google.com:19302"}],relayOk=false;
