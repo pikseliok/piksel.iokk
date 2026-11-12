@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="az"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>πksel - Xəmsə səsli otaq</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+:root{--bg:#9DC3FF;--deep:#001E6F;--bright:#002E92;--ink:#9DC3FF;--g:linear-gradient(135deg,var(--deep),var(--bright) 50%,var(--deep));--blue:linear-gradient(135deg,#4E73D7,#1E4DC7);--pink:linear-gradient(135deg,#FF43D3,#F119C8);--green:linear-gradient(135deg,#0FCB6E,#049A52);--orange:linear-gradient(135deg,#D2603C,#FF6A14);--red:#ff3b30}
+@media(prefers-color-scheme:dark){:root{--bg:#00072C;--ink:#00072C;--g:linear-gradient(135deg,#9DC3FF,#6FA5FC 50%,#9DC3FF);--deep:#9DC3FF}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:var(--bg);color:var(--deep);font-family:Poppins,sans-serif;font-size:14px;padding:12px 0 40px}
+.page{width:min(95vw,860px);margin:0 auto}
+@keyframes up{from{opacity:0;transform:translateY(26px)}}
+.fi{animation:up .6s cubic-bezier(.18,.8,.24,1) backwards}
+.card{background:var(--g);color:var(--ink);border-radius:26px;padding:16px 18px;margin-top:12px}
+h1{text-align:center;font-size:22px;margin:14px 0 4px}
+button,input{font:inherit}
+input{width:100%;border:0;border-radius:20px;padding:10px 16px;margin-top:10px;background:var(--ink);color:var(--ink);filter:none;outline:0}
+.dk input,input{background:#fff3;color:inherit;border:2px solid currentColor}
+input::placeholder{color:inherit;opacity:.6}
+.b{display:block;width:100%;border:0;border-radius:999px;padding:10px;margin-top:10px;background:var(--ink);color:var(--deep);font-weight:800;cursor:pointer;transition:transform .2s}
+.b:hover{transform:translateY(-2px)}.b:active{transform:scale(.97)}.b:disabled{opacity:.4;cursor:default}
+.b.o{background:none;color:inherit;border:2px solid currentColor}
+.c{text-align:center}.sm{font-size:12px;opacity:.85;margin-top:4px}
+.code{border:0;background:none;color:inherit;font-weight:800;letter-spacing:2px;cursor:pointer;font-size:16px}
+.ev{font-weight:700;margin-top:8px;text-align:center;font-size:15px}
+.hp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.tops{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.tp{border:2px solid currentColor;border-radius:16px;padding:6px 2px;text-align:center;font-weight:700;opacity:.6;font-size:12px}
+.tp.on{opacity:1;background:var(--ink);color:var(--deep)}.tp b{display:block;font-size:16px}
+.tgrid{display:grid;gap:12px;margin-top:12px}
+.tgrid.h{grid-template-columns:1fr 1fr}
+@media(max-width:560px){.tgrid.h{grid-template-columns:1fr}}
+.team{border-radius:24px;color:#f5f7fa;overflow:hidden;animation:up .6s backwards}
+.team.blue{background:var(--blue)}.team.pink{background:var(--pink)}.team.green{background:var(--green)}.team.orange{background:var(--orange)}
+.th{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;font-weight:800}
+.th .s{font-size:24px}
+.tb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.22,.8,.25,1)}
+.team.open .tb{grid-template-rows:1fr}
+.tb>div{overflow:hidden}.in{padding:0 14px 14px}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+.slot{border:2px dashed #fffb;border-radius:14px;min-height:50px;padding:4px;text-align:center;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.slot.cur{border-style:solid;background:#fff3}.slot.f{background:#fff2;border-style:solid}
+.slot .x{position:absolute;top:1px;right:3px;background:none;border:0;color:#fff;cursor:pointer;font-weight:800}
+.mem{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#fff2;border-radius:999px;padding:6px 12px;margin-top:6px;font-weight:600;cursor:default}
+.mem.sel{outline:2px solid #fff}.mem[draggable=true]{cursor:grab}
+.mem small{opacity:.9;font-weight:500;font-size:11px;text-align:right}
+.q{margin-top:12px}.qr{display:flex;gap:10px;align-items:center;border-radius:999px;padding:8px 16px;margin-top:6px;color:#f5f7fa;font-weight:700;animation:up .4s backwards}
+.qr.w{opacity:.45;text-decoration:line-through}.qr b{font-size:18px}
+.buzz{width:100%;min-height:110px;border:0;border-radius:28px;font-size:36px;font-weight:800;color:#fff;margin-top:12px;cursor:pointer}
+.buzz:disabled{opacity:.45}
+.mix{display:flex;gap:8px;margin-top:12px}.mix .b{margin:0}
+.msg{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:var(--deep);color:var(--ink);padding:10px 18px;border-radius:999px;font-weight:700;z-index:50;animation:up .3s}
+</style></head><body><div class="page">
+<h1>πksel · Xəmsə səsli otaq</h1>
+<section class="card fi" id="lobby" style="max-width:520px;margin:14px auto">
+<button class="b" data-m="host">APARICI</button><button class="b" data-m="cap">KAPİTAN</button><button class="b" data-m="pl">OYUNÇU</button>
+<div id="form" hidden>
+<input id="fRoom" placeholder="Otaq kodu (aparıcıdan al)" hidden autocapitalize="characters">
+<input id="fTeam" placeholder="Komanda adı" hidden maxlength="30">
+<input id="fCode" placeholder="Komanda kodu (kapitandan al)" hidden autocapitalize="characters">
+<input id="fName" placeholder="Adın" maxlength="25">
+<button class="b o" id="go">Daxil ol</button></div>
+<p class="sm c" style="margin-top:14px">Otaqda 2–4 komanda, hər komandada 2–5 oyunçu.</p></section>
+<div id="game" hidden>
+<section class="card c fi" id="head"></section>
+<section class="card fi" id="hostp" hidden></section>
+<div id="tops"></div><div id="field"></div><div id="teams" class="tgrid"></div>
+<div class="mix"><button class="b o" id="bMute">🎤 Mikrofon</button></div>
+<div class="sm c" id="net"></div></div></div>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyBmo0VWzQ-K4s_yvt89ZMLqKWJx4cJBLUk",authDomain:"piksel-sesli-breyn-rinq.firebaseapp.com",databaseURL:"https://piksel-sesli-breyn-rinq-default-rtdb.firebaseio.com",projectId:"piksel-sesli-breyn-rinq"});
+const db=firebase.database(),$=e=>document.getElementById(e),esc=e=>String(e??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]),
+AL="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>Array.from({length:n},()=>AL[Math.floor(Math.random()*AL.length)]).join(""),
+norm=e=>String(e||"").toUpperCase().replace(/[^A-Z0-9]/g,""),COL=["blue","pink","green","orange"],MAXP=5,NT=5;
+let pid=null;try{pid=sessionStorage.getItem("xr-pid")}catch(e){}
+if(!pid){pid="p"+rnd(8);try{sessionStorage.setItem("xr-pid",pid)}catch(e){}}
+let mode="host",room=null,role=null,R=null,opened={},sel=null,muted=false,stream=null,busy=0,sig=0,drag=null;
+const rf=p=>db.ref("xr/"+room+(p?"/"+p:"")),T=()=>R.teams||{},P=()=>R.players||{},isH=()=>role==="host",
+tids=()=>Object.keys(T()).sort((a,b)=>T()[a].c-T()[b].c),mem=t=>Object.entries(P()).filter(([,p])=>p.team===t).map(([id,p])=>({id,...p})).sort((a,b)=>(b.cap?1:0)-(a.cap?1:0)||a.j-b.j),
+val=()=>100*(R.topic||1),cur=()=>R.topic||0;
+function toast(m){const d=document.createElement("div");d.className="msg";d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+function setMode(m){mode=m;document.querySelectorAll("[data-m]").forEach(b=>b.style.outline=b.dataset.m===m&&m!=="host"?"3px solid":"");
+$("form").hidden=m==="host";$("fRoom").hidden=$("fTeam").hidden=m!=="cap";$("fCode").hidden=m!=="pl";$("go").textContent=m==="cap"?"Komandanı yarat":"Komandaya qoş"}
+document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==="host")start()});$("go").onclick=start;
+async function start(){if(busy)return;busy=1;try{
+if(mode==="host"){let c=null;for(let i=0;i<10;i++){const t=rnd(5);if(!(await db.ref("xr/"+t).once("value")).exists()){c=t;break}}
+if(!c)return toast("Kod yaradıla bilmədi");await db.ref("xr/"+c).set({status:"lobby",host:pid,topic:0,at:Date.now()});room=c;role="host"}
+else if(mode==="cap"){const r=norm($("fRoom").value),tn=$("fTeam").value.trim(),pn=$("fName").value.trim();
+if(r.length<4||!tn||!pn)return toast("Otaq kodu, komanda adı və adını yaz");
+const d=(await db.ref("xr/"+r).once("value")).val();if(!d)return toast("Belə otaq yoxdur");
+if(d.status!=="lobby")return toast("Oyun artıq başlayıb");
+const ts=d.teams||{};if(Object.keys(ts).length>=4)return toast("Otaqda artıq 4 komanda var");
+if(Object.values(ts).some(x=>x.name.toLowerCase()===tn.toLowerCase()))return toast("Bu komanda adı var");
+let id;do{id=rnd(4)}while(ts[id]);const used=Object.values(ts).map(x=>x.col),col=COL.find(c=>!used.includes(c));
+await db.ref("xr/"+r+"/teams/"+id).set({name:tn,captain:pid,col,score:0,c:Date.now()});
+await db.ref("xr/"+r+"/players/"+pid).set({name:pn,team:id,cap:true,j:Date.now(),pts:0});room=r;role="captain"}
+else{const c=norm($("fCode").value),pn=$("fName").value.trim();if(c.length<8||!pn)return toast("Komanda kodunu və adını yaz");
+const r=c.slice(0,-4),tid=c.slice(-4),d=(await db.ref("xr/"+r).once("value")).val();
+if(!d||!d.teams||!d.teams[tid])return toast("Komanda kodu yanlışdır");if(d.status!=="lobby")return toast("Oyun artıq başlayıb");
+let full=0;const res=await db.ref("xr/"+r+"/players").transaction(cur=>{cur=cur||{};if(cur[pid])return cur;
+if(Object.values(cur).filter(x=>x.team===tid).length>=MAXP){full=1;return}cur[pid]={name:pn,team:tid,cap:false,j:Date.now(),pts:0};return cur});
+if(!res.committed)return toast(full?"Komanda doludur (maks. 5)":"Qoşulmaq alınmadı");room=r;role="player"}
+listen()}catch(e){toast("Xəta: "+e.message)}finally{setTimeout(()=>busy=0,400)}}
+function listen(){rf().on("value",s=>{const v=s.val();if(!v){alert("Otaq bağlandı");location.reload();return}
+if(!isH()&&!(v.players&&v.players[pid])){location.reload();return}R=v;render()})}
+/* ---- oyun məntiqi ---- */
+const plays=(t,p,ex)=>{const s=(T()[t]||{}).slots||{};return Object.entries(s).filter(([n,x])=>x===p&&Number(n)!==ex).length};
+function canPlace(t,p){const m=mem(t),n=cur(),cap=Math.ceil(NT/m.length);
+if(plays(t,p,n)>=cap)return "Bu oyunçu artıq maksimum dəfə oynayıb";
+const left=NT-n,un=m.filter(x=>x.id!==p&&!plays(t,x.id,n)).length;
+if(un>left)return "Hələ oynamayan oyunçular qalıb, onları göndər";return ""}
+function place(p){if(R.status!=="pick"||role!=="captain")return;const t=P()[pid].team,e=canPlace(t,p);if(e)return toast(e);rf("teams/"+t+"/slots/"+cur()).set(p);sel=null}
+const A={
+begin(){const ts=tids();if(ts.length<2||ts.some(t=>mem(t).length<2))return toast("Hər komandada ən azı 2 oyunçu olmalıdır (min 2 komanda)");rf().update({status:"topics",topic:0})},
+ann(){rf().update({status:"announced",ev:"Mövzular elan olundu"})},
+topic(){const n=cur()+1;const u={status:"pick",topic:n,queue:null,wrong:null,ev:n+"-ci mövzu üçün oyunçuları seçin"};tids().forEach(t=>u["teams/"+t+"/slots/"+n]=null);rf().update(u)},
+go(){if(tids().some(t=>!(T()[t].slots||{})[cur()]))return toast("Bütün komandalar oyunçu göndərməlidir");rf().update({status:"play",ev:"Oyun gedir"})},
+rst(){rf().update({queue:null,wrong:null})},
+rem(){const a=ans();if(a)rf("wrong/"+a).set(true)},
+none(){nextT("Doğru cavab yoxdur")},
+plus(){pts(1)},minus(){pts(-1)}};
+const qlist=()=>(R.queue||[]).filter(x=>P()[x]),ans=()=>qlist().find(x=>!(R.wrong||{})[x])||null;
+function pts(sg){const a=ans();if(!a)return;const t=P()[a].team,d=sg*val(),u={};
+u["teams/"+t+"/score"]=(T()[t].score||0)+d;u["players/"+a+"/pts"]=(P()[a].pts||0)+d;
+const l=Object.values(P()[a].log||{});const run=(P()[a].pts||0)+d;
+rf("players/"+a+"/log").push(run).then(()=>{});
+if(sg>0){rf().update(u).then(()=>nextT(P()[a].name+" +"+d));}
+else{u["wrong/"+a]=true;rf().update(u)}}
+function nextT(ev){const n=cur();rf().update({queue:null,wrong:null,ev:ev,status:n>=NT?"done":"announced"})}
+function hear(id){if(id===pid)return false;if(id===R.host)return true;
+const f=R.status==="play"?tids().map(t=>(T()[t].slots||{})[cur()]):[];const onF=x=>f.includes(x);
+if(isH())return R.status!=="play"||onF(id)||true&&onF(id);
+if(onF(pid))return false;const a=P()[pid],b=P()[id];return !!a&&!!b&&a.team===b.team&&!onF(id)}
+/* ---- ekran ---- */
+function memHTML(t,own,f){const cap=own&&role==="captain"&&R.status==="pick",g=(T()[t].slots||{});
+return mem(t).map(m=>{const lg=Object.values(m.log||{});const played=Object.values(g).includes(m.id);
+return `<div class="mem${sel===m.id?" sel":""}" ${cap?`draggable="true" data-d="${m.id}" data-pk="${m.id}"`:""}><span>${esc(m.name)}${m.cap?" (K)":""}${f&&f.includes(m.id)?" 🎮":""}</span><small>${lg.length?lg.join(" → "):(m.pts?m.pts:"")}</small></div>`}).join("")}
+function slotsHTML(t,own){const g=T()[t].slots||{},c=own&&role==="captain"&&R.status==="pick";
+return `<div class="slots">`+[1,2,3,4,5].map(n=>{const p=g[n]&&P()[g[n]];
+return `<div class="slot${n===cur()?" cur":""}${p?" f":""}"${c&&n===cur()?` data-slot="${n}"`:""}>${n}${p?`<br>${esc(p.name)}${c&&n===cur()?`<button class="x" data-clr="${n}">✕</button>`:""}`:""}</div>`}).join("")+`</div>`}
+function render(){const me=P()[pid]||{},o=me.team,ts=tids(),l=R.status;if(!isH()&&me.cap)role="captain";
+$("lobby").hidden=true;$("game").hidden=false;
+const code=isH()?room:room+o,fld=ts.map(t=>(T()[t].slots||{})[cur()]).filter(Boolean);
+const st={lobby:"Komandaların qoşulması gözlənilir...",topics:"Aparıcı mövzuları elan edəcək",announced:cur()?"Növbəti mövzunu aparıcı elan edir":"Mövzular elan olunur",pick:"Kapitanlar oyunçu seçir",play:"Oyun gedir",done:"Bəlli raund bitdi"}[l];
+$("head").innerHTML=`<div>${isH()?"Otaq kodu":"Komanda kodu"} <button class="code" data-copy="${esc(code)}">${esc(code)}</button></div><div class="ev">${esc(R.ev||st)}</div>`;
+if(l==="lobby"&&ts.length<2)$("head").querySelector(".ev").textContent=st;
+let hp="";if(isH()){const b=(a,t,d)=>`<button class="b" data-act="${a}"${d?" disabled":""}>${t}</button>`;hp=`<div class="c" style="font-weight:800;margin-bottom:6px">Aparıcı paneli</div><div class="hp">`;
+if(l==="lobby")hp+=b("begin","OYUNA BAŞLA");
+if(l==="topics")hp+=b("ann","MÖVZULARI ELAN ET");
+if(l==="announced")hp+=b("topic",(cur()+1)+"-Cİ MÖVZU OYNANSIN");
+if(l==="pick")hp+=b("go","OYUN BAŞLASIN",ts.some(t=>!(T()[t].slots||{})[cur()]));
+if(l==="play")hp+=b("plus","+ "+val())+b("minus","− "+val())+b("rem","QALAN VAXT RƏQİBİN")+b("none","DOĞRU CAVAB YOXDUR")+b("rst","DÜYMƏLƏRİ SIFIRLA");
+hp+="</div>"}
+$("hostp").hidden=!hp;$("hostp").innerHTML=hp;
+/* mövzu dəyərləri həmişə görünür (aparıcı) */
+$("tops").innerHTML=l==="lobby"||l==="topics"?"":`<div class="tops">${[1,2,3,4,5].map(n=>`<div class="tp${n===cur()?" on":""}">${n}-ci mövzu<b>${n*100}</b></div>`).join("")}</div>`;
+/* sıra + düymə */
+let fh="";const ql=qlist();
+if(l==="play"){fh+=`<div class="card q"><div class="c" style="font-weight:800">Düyməni basanlar (sıra) · dəyər +${val()}</div>`+(ql.length?ql.map((x,i)=>{const p=P()[x];return `<div class="qr ${(T()[p.team]||{}).col}${(R.wrong||{})[x]?" w":""}"><b>${i+1}.</b><span>${esc(T()[p.team].name)}: ${esc(p.name)}</span></div>`}).join(""):`<div class="sm c">Hələ heç kim basmayıb</div>`)+`</div>`;
+if(fld.includes(pid)){const m=T()[o];fh+=`<button class="buzz ${m.col}" data-act="buzz"${ql.includes(pid)?" disabled":""}>${ql.includes(pid)?(ql.indexOf(pid)+1)+"-ci basdınız":"BAS! (Space)"}</button>`}}
+if(l==="done"){const all=Object.entries(P()).map(([id,p])=>({id,...p})).sort((a,b)=>(b.pts||0)-(a.pts||0))[0];fh+=`<div class="card c"><b>Ən məhsuldar oyunçu:</b> ${all?esc(all.name)+" ("+(all.pts||0)+")":"—"}</div>`}
+$("field").innerHTML=fh;
+/* komandalar */
+const order=isH()?ts:[o,...ts.filter(t=>t!==o)];
+if(!isH()&&opened[o]===undefined)opened[o]=true;
+$("teams").className="tgrid"+(isH()?" h":"");
+const th=order.map(t=>{const tm=T()[t],own=t===o;return `<div class="team ${tm.col}${opened[t]?" open":""}" data-team="${t}"><div class="th" data-tog="${t}"><span>${esc(tm.name)}${own?" (sənin)":""}</span><span class="s">${tm.score||0}</span></div><div class="tb"><div><div class="in">${slotsHTML(t,own)}${memHTML(t,own,fld)}</div></div></div></div>`}).join("");
+const te=$("teams");if(te._h!==th){const had=te._h;te.innerHTML=th;te._h=th}
+document.querySelectorAll(".team").forEach(e=>e.style.animation="none");
+if(!window._in){window._in=1;document.querySelectorAll(".team").forEach((e,i)=>{e.style.animation="";e.style.animationDelay=i*.1+"s"})}
+if(stream)stream.getAudioTracks().forEach(x=>x.enabled=!muted);
+reconcile();applyMute();if(!window._mic){window._mic=1;getMic()}
+if(!sig){sig=1;db.ref("sig/"+room+"/"+pid).on("child_added",s=>{const v=s.val();s.ref.remove();if(v)sigIn(v.from,JSON.parse(v.d))})}}
+document.addEventListener("click",async e=>{const c=e.target.closest("[data-copy]");if(c){try{await navigator.clipboard.writeText(c.dataset.copy);toast("Kopyalandı")}catch(x){}return}
+if(!R)return;const tg=e.target.closest("[data-tog]");if(tg){const t=tg.dataset.tog;opened[t]=!opened[t];tg.closest(".team").classList.toggle("open",opened[t]);return}
+const a=e.target.closest("[data-act]");if(a&&a.dataset.act!=="buzz"&&isH()&&A[a.dataset.act])A[a.dataset.act]();
+const pk=e.target.closest("[data-pk]");if(pk&&role==="captain"&&R.status==="pick"){sel=sel===pk.dataset.pk?null:pk.dataset.pk;pk.classList.toggle("sel",!!sel);return}
+const sl=e.target.closest("[data-slot]");if(sl&&sel&&!e.target.closest("[data-clr]"))place(sel);
+const cl=e.target.closest("[data-clr]");if(cl&&role==="captain"){rf("teams/"+P()[pid].team+"/slots/"+cl.dataset.clr).set(null)}});
+document.addEventListener("dragstart",e=>{const d=e.target.closest("[data-d]");if(d)drag=d.dataset.d});
+document.addEventListener("dragover",e=>{if(e.target.closest("[data-slot]"))e.preventDefault()});
+document.addEventListener("drop",e=>{const s=e.target.closest("[data-slot]");if(s&&drag){e.preventDefault();place(drag);drag=null}});
+/* düymə: klik və Space */
+function buzz(){if(!R||R.status!=="play"||!(P()[pid]))return;const ok=tids().map(t=>(T()[t].slots||{})[cur()]).includes(pid);if(!ok)return;
+rf("queue").transaction(q=>{q=q||[];if(!q.includes(pid))q.push(pid);return q})}
+document.addEventListener("pointerdown",e=>{if(e.target.closest('[data-act="buzz"]'))buzz()});
+document.addEventListener("keydown",e=>{if(e.code==="Space"&&R&&!isH()&&!/INPUT/.test(document.activeElement.tagName)){e.preventDefault();if(!e.repeat)buzz()}});
+$("bMute").onclick=()=>{muted=!muted;$("bMute").textContent=muted?"🔇 Mikrofon söndürülüb":"🎤 Mikrofon";if(stream)stream.getAudioTracks().forEach(x=>x.enabled=!muted)};
+/* ---- səs (WebRTC) ---- */
+let ICE=[{urls:"stun:stun.l.google.com:19302"}];
+const iceReady=fetch("https://piksel-nhn.pikseliok.workers.dev/turn").then(r=>r.json()).then(j=>{if(j.iceServers)ICE=ICE.concat(j.iceServers)}).catch(()=>{});
+const pcs={},auds={},pend=[];
+function applyMute(){for(const id in auds)auds[id].muted=!hear(id)}
+const sg=(to,d)=>db.ref("sig/"+room+"/"+to).push({from:pid,d:JSON.stringify(d)});
+function mkpc(peer){const pc=new RTCPeerConnection({iceServers:ICE});pc._q=[];stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+pc.onicecandidate=e=>{if(e.candidate)sg(peer,{ice:e.candidate})};
+pc.ontrack=e=>{if(auds[peer])auds[peer].remove();const au=document.createElement("audio");au.srcObject=e.streams[0];au.autoplay=true;au.playsInline=true;au.muted=true;document.body.appendChild(au);auds[peer]=au;au.play().catch(()=>{});applyMute()};
+pcs[peer]=pc;return pc}
+function drop(id){if(pcs[id]){pcs[id].close();delete pcs[id]}if(auds[id]){auds[id].remove();delete auds[id]}}
+async function reconcile(){if(!stream||!R)return;const ids=Object.keys(P()).concat(R.host).filter(x=>x&&x!==pid);
+Object.keys(pcs).forEach(id=>{if(!ids.includes(id))drop(id)});
+for(const id of ids)if(!pcs[id]&&pid<id){const pc=mkpc(id);try{await pc.setLocalDescription(await pc.createOffer());sg(id,{sdp:pc.localDescription})}catch(x){}}}
+function sigIn(f,d){if(stream)onSig(f,d);else pend.push([f,d])}
+async function onSig(from,d){if(!R)return;if(d.sdp&&d.sdp.type==="offer"&&pcs[from]&&pcs[from].remoteDescription)drop(from);
+const pc=pcs[from]||mkpc(from);try{if(d.sdp){await pc.setRemoteDescription(d.sdp);for(const c of pc._q.splice(0))await pc.addIceCandidate(c);
+if(d.sdp.type==="offer"){await pc.setLocalDescription(await pc.createAnswer());sg(from,{sdp:pc.localDescription})}}
+else if(d.ice){if(pc.remoteDescription)await pc.addIceCandidate(d.ice);else pc._q.push(d.ice)}}catch(x){}}
+async function getMic(){try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
+catch(e){toast("Mikrofon icazəsi lazımdır");window._mic=0;return}
+await Promise.race([iceReady,new Promise(r=>setTimeout(r,3e3))]);await reconcile();pend.splice(0).forEach(([f,d])=>onSig(f,d))}
+setInterval(()=>{if(!R)return;Object.keys(pcs).forEach(id=>{const s=pcs[id].connectionState;if(s==="failed"||s==="closed")drop(id)});applyMute();reconcile();
+$("net").textContent="Mikrofon: "+(stream?"var":"yoxdur")+" | Səs əlaqələri: "+Object.values(pcs).filter(p=>p.connectionState==="connected").length});
+document.addEventListener("pointerdown",()=>{for(const id in auds)auds[id].play().catch(()=>{})},{passive:true});
+</script></body></html>
