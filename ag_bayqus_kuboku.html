@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="az">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9DC3FF">
+<title>πksel - Ağ Bayquş Kuboku</title>
+<link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="icon" type="image/png">
+<link href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png" rel="apple-touch-icon">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<style>
+:root{--bg:#9DC3FF;--ink:#9DC3FF;--deep:#001E6F;--bright:#002E92;--dark-bg:#00072C;--dark-ink:#00072C;--dark-light:#9DC3FF;--dark-bright:#6FA5FC;--mode-bg-light:linear-gradient(135deg,#9DC3FF 0%,#8DB8F5 50%,#9DC3FF 100%);--mode-bg-dark:linear-gradient(135deg,#00072C 0%,#001044 50%,#00072C 100%);--transition:650ms cubic-bezier(.22,.8,.25,1);--glow:rgba(0,8,45,.30);--pt:25px;--pi:18px;--pr:17px;--pq:18px}
+body.dark{--glow:rgba(255,255,255,.40)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif;-webkit-tap-highlight-color:transparent}
+a,button{-webkit-touch-callout:none}
+html{scroll-behavior:smooth}
+body,html{width:100%;height:auto;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+body.dark{background:var(--dark-bg);color:var(--dark-ink)}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 0}
+.frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+@keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
+.glow{position:relative;overflow:hidden}
+.glow>*{position:relative;z-index:1}
+.glow::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s ease;background:radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--glow),transparent 72%),radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--glow),transparent 72%)}
+@media (hover:hover){.glow:hover::before{opacity:1}}
+.top-nav{height:50px;width:100%;border-radius:40px;padding:0 52px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);box-shadow:0 10px 28px rgba(0,20,100,.08)}
+.dark .top-nav{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%)}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:40px;height:100%}
+.nav-link{position:relative;color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:transform .25s ease}
+.dark .nav-link{color:var(--dark-ink)}
+.nav-link:hover{transform:translateY(-1px)}
+.nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:currentColor;opacity:.9}
+.theme-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;overflow:hidden;cursor:pointer;display:grid;place-items:center;color:var(--deep);background:rgba(157,195,255,.98);transition:transform .3s ease,background var(--transition),color var(--transition)}
+.dark .theme-toggle{background:var(--dark-bg);color:var(--dark-light)}
+.theme-toggle:hover{transform:translateY(-50%) scale(1.08)}
+.theme-toggle:active{transform:translateY(-50%) scale(.95)}
+.theme-icon{width:24px;height:24px;display:block}
+.ray{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body.dark .ray{opacity:0}
+.core{transform:scale(.68);transform-origin:16px 16px}
+.bite{transform:translate(14px,-14px)}
+body.dark .core{transform:scale(1)}
+body.dark .bite{transform:translate(0,0)}
+body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.main-container{width:100%;display:flex;flex-direction:column;gap:14px;position:relative;margin-top:14px;padding-bottom:44px}
+.blur-content{display:flex;flex-direction:column;gap:14px;transition:filter .5s cubic-bezier(.25,1,.5,1);will-change:filter}
+body.img-zoomed .blur-content{filter:blur(8px);pointer-events:none}
+.info-card,.q-card,.tours-card{width:100%;border-radius:28px;padding:20px 22px;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 49%,var(--deep) 100%);color:var(--ink);box-shadow:0 10px 25px rgba(0,20,110,.09);word-wrap:break-word;overflow-wrap:break-word;transition:background var(--transition),color var(--transition)}
+.dark .info-card,.dark .q-card,.dark .tours-card{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 49%,var(--dark-light) 100%);color:var(--dark-ink)}
+.game-title{font-size:var(--pt);font-weight:700;line-height:1.15;letter-spacing:-.7px;margin-bottom:14px}
+.info-row{font-size:var(--pi);line-height:1.5;margin-bottom:6px;font-weight:400}
+.info-row:last-child{margin-bottom:0}
+.info-label{font-weight:700}
+.info-val{font-weight:400}
+.tour-buttons{display:flex;flex-direction:column;gap:8px}
+.tour-btn{width:100%;background:rgba(255,255,255,.14);color:var(--ink);border:1px solid rgba(255,255,255,.22);padding:11px 16px;border-radius:16px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:left;transition:background .35s ease,color .35s ease,border .35s ease,transform .25s ease,box-shadow .25s ease}
+.dark .tour-btn{color:var(--dark-ink);border:1px solid rgba(0,7,44,.16);background:rgba(0,7,44,.1)}
+.tour-btn.active{background:var(--mode-bg-light);color:var(--deep);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(0,30,111,.08),0 5px 14px rgba(0,20,100,.08)}
+.dark .tour-btn.active{background:var(--mode-bg-dark);color:var(--dark-light);border-color:rgba(157,195,255,.12);box-shadow:inset 0 0 0 1px rgba(157,195,255,.08),0 5px 14px rgba(0,0,0,.16)}
+.global-toggle-btn:active,.tour-btn:active{transform:scale(.96);transition-duration:.3s}
+.global-toggle-btn{width:100%;background:linear-gradient(135deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);border:none;padding:12px 16px;border-radius:20px;font-size:var(--pr);font-weight:700;cursor:pointer;text-align:center;box-shadow:0 10px 22px rgba(0,20,110,.1);transition:background var(--transition),color var(--transition),transform .25s ease,box-shadow .25s ease}
+.dark .global-toggle-btn{background:linear-gradient(135deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.global-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,20,110,.16)}
+.questions-container{display:flex;flex-direction:column;gap:14px}
+.q-text{font-size:var(--pq);font-weight:400;line-height:1.55;cursor:pointer}
+.q-text b{font-weight:700}
+.mat-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-top:10px}
+.mat-after{margin-top:12px}
+.req-img-wrapper{position:relative;display:inline-block;max-width:100%;margin-top:6px;vertical-align:top}
+.req-img{display:block;width:auto;height:auto;max-height:40px;max-width:100%;border-radius:8px;cursor:pointer;transform-origin:center center;will-change:transform;position:relative;z-index:1}
+.req-img.extra{max-height:none;width:100%;max-width:240px;border-radius:12px}
+.ans-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s cubic-bezier(0,1,0,1),opacity .25s ease,margin-top .25s ease;margin-top:0;border-top:1px solid rgba(255,255,255,.22)}
+.dark .ans-panel{border-top:1px solid rgba(0,7,44,.18)}
+.q-card.active .ans-panel{max-height:3000px;opacity:1;margin-top:14px;padding-top:12px}
+.ans-row{font-size:var(--pq);font-weight:400;line-height:1.55;margin-bottom:8px}
+.ans-row:last-child{margin-bottom:0}
+.ans-label{font-weight:700}
+.ans-row a{text-decoration:underline;word-break:break-all}
+.author-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.act-group{flex:0 0 auto;display:flex;align-items:flex-start;gap:8px}
+.like-wrap{display:flex;flex-direction:column;align-items:center}
+.copy-btn,.like-btn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.16);color:var(--ink);transition:background .25s ease,color .25s ease,transform .2s ease}
+.dark .copy-btn,.dark .like-btn{background:rgba(0,7,44,.12);color:var(--dark-ink)}
+.copy-btn:hover,.like-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.28)}
+.dark .copy-btn:hover,.dark .like-btn:hover{background:rgba(0,7,44,.2)}
+.copy-btn:active,.like-btn:active{transform:scale(.9);transition-duration:.3s}
+.copy-btn.copied{background:var(--mode-bg-light);color:var(--deep)}
+.dark .copy-btn.copied{background:var(--mode-bg-dark);color:var(--dark-light)}
+.copy-icon{width:16px;height:16px;display:block}
+.copy-icon .check-path{display:none}
+.copy-btn.copied .copy-icon .clip-path{display:none}
+.copy-btn.copied .copy-icon .check-path{display:block}
+.like-icon{width:18px;height:18px;display:block;overflow:visible}
+.like-icon .outline{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.like-icon .fill{fill:currentColor;transform:scale(0);transform-origin:12px 12.5px;transition:transform .3s ease-in}
+.like-btn.liked .fill{transform:scale(1);transition:transform .42s cubic-bezier(.34,1.56,.64,1)}
+.like-count{display:block;text-align:center;font-size:12px;font-weight:700;line-height:1;margin-top:4px;min-width:20px}
+footer{width:100%;background:linear-gradient(100deg,var(--deep) 0,var(--bright) 50%,var(--deep) 100%);color:var(--ink);min-height:110px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:background var(--transition),color var(--transition)}
+.dark footer{background:linear-gradient(164deg,var(--dark-light) 0,var(--dark-bright) 50%,var(--dark-light) 100%);color:var(--dark-ink)}
+.footer-line{font-size:15px;line-height:1.4;font-weight:500}
+.footer-link{transition:opacity .25s ease,transform .25s ease}
+.footer-link:hover{opacity:.72;transform:translateY(-1px)}
+.copy-btn:focus-visible,.footer-link:focus-visible,.like-btn:focus-visible,.nav-link:focus-visible,.q-text:focus-visible,.theme-toggle:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*,::after,::before{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+@media (max-width:700px){:root{--pt:19px;--pi:16px;--pr:15px;--pq:16px}.page{width:calc(100vw - 44px);padding-top:11px}.top-nav{height:46px;padding:0 46px}.nav-links{gap:28px}.nav-link{font-size:13px}.theme-toggle{width:34px;height:34px;right:6px}.theme-icon{width:21px;height:21px}.blur-content,.main-container,.questions-container{gap:10px}.main-container{margin-top:12px}.info-card,.q-card,.tours-card{border-radius:22px;padding:16px}footer{min-height:96px;padding:16px 12px;gap:5px}.footer-line{font-size:13px}}
+@media (max-width:420px){:root{--pt:16px;--pi:14px;--pr:13px;--pq:13px}.page{width:calc(100vw - 36px)}.nav-links{gap:22px}.nav-link{font-size:11px}.top-nav{height:42px;padding:0 42px}.theme-toggle{width:32px;height:32px;right:5px}.theme-icon{width:20px;height:20px}.info-card,.q-card,.tours-card{padding:14px}footer{min-height:88px}.footer-line{font-size:11px}}
+</style>
+<div class="page">
+<nav aria-label="Əsas naviqasiya" class="frame top-nav" style="--i:0">
+<div class="rise nav-links"><a class="nav-link" href="/">Əsas Səhifə</a> <a class="active nav-link" href="paketler">Sual Paketləri</a></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Gecə rejiminə keç" type="button"><svg aria-hidden="true" class="rise theme-icon" id="themeIcon" viewBox="0 0 32 32"><defs><mask height="32" id="biteMask" maskUnits="userSpaceOnUse" width="32" x="0" y="0"><rect fill="#fff" height="32" width="32"/><circle class="bite" cx="21" cy="11" fill="#000" r="7.5"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" x2="16" y1="3.5" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" fill="currentColor" r="9"/></g></svg></button>
+</nav>
+<div class="main-container" id="mainContainer"><div class="blur-content">
+<div class="frame glow info-card" style="--i:1">
+<div class="rise game-title">"Ağ Bayquş" kuboku</div>
+<div class="rise info-row"><span class="info-label">Təşkilatçı:</span> <span class="info-val">Carpe Diem komandası</span></div>
+<div class="rise info-row"><span class="info-label">Redaktor:</span> <span class="info-val">Telman Həsənov</span></div>
+<div class="rise info-row"><span class="info-label">Müəllif(lər):</span> <span class="info-val">Telman Həsənov, Qoşqar Əliyev, Fərhad Əlizadə, Əlişirin Süleymanov</span></div>
+<div class="rise info-row"><span class="info-label">Oynadığı tarix:</span> <span class="info-val">24.05.2025</span></div>
+<div class="rise info-row"><span class="info-label">Əlavə olunduğu tarix:</span> <span class="info-val">18.11.2026</span></div>
+</div>
+<div class="frame glow tours-card" style="--i:2"><div class="rise tour-buttons"><button class="active tour-btn" onclick="loadTour(1)">I tur</button> <button class="tour-btn" onclick="loadTour(2)">II tur</button> <button class="tour-btn" onclick="loadTour(3)">III tur</button></div></div>
+<button class="frame glow global-toggle-btn" onclick="toggleAllAnswers()" id="globalToggleBtn" style="--i:3">Bütün cavabları göstər</button>
+<div class="questions-container" id="questionsContainer"></div>
+</div></div></div>
+<footer><div class="footer-line">Unikal İntellektual Oyunlar Platforması</div><a class="footer-line footer-link" href="https://www.instagram.com/piksel.iok" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a> <a class="footer-line footer-link" href="https://www.instagram.com/onurelzh" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a></footer>
+<script>document.addEventListener("contextmenu",function(e){e.preventDefault()}),document.addEventListener("keydown",function(e){if(123===e.keyCode||e.ctrlKey&&e.shiftKey&&73===e.keyCode||e.ctrlKey&&e.shiftKey&&74===e.keyCode||e.ctrlKey&&85===e.keyCode||e.ctrlKey&&83===e.keyCode)return e.preventDefault(),!1})</script>
+<script>
+const PKG_ID="ag_bayqus_kuboku";
+const U=(c,t)=>`https://i.ibb.co/${c}/Ekran-kli-2026-11-18-${t}.png`;
+const im=u=>`<span class="req-img-wrapper"><img src="${u}" class="req-img" alt="" onclick="toggleZoom(this,event)"></span>`;
+const TH="Telman Həsənov",QE="Qoşqar Əliyev",FE="Fərhad Əlizadə",ES="Əlişirin Süleymanov";
+const Q=(id,question,answer,criteria,comment,author,reqImg,extraImage)=>({id,question,answer,criteria,comment,author,reqImg,extraImage});
+const pairs=[["Çiçək, işılda və işıqla","Flower, gleam and glow"],["Güclərinizin parlamasına icazə verin","Let your powers shine"],["Saatı tərsinə çevir","Make the clock reverse"],["Bir zamanlar mənim olanı geri gətir","Bring back what once was mine"]];
+const H21=pairs.map(p=>`<div style="font-weight:700">${p[0]}</div><div style="font-size:calc(var(--pq) - 2px);font-style:italic;font-weight:400">${p[1]}</div>`).join('<div style="height:1.2em"></div>');
+const toursData={
+1:[
+Q(1,`<i>(Aparıcı üçün qeyd: Sual nömrəsi vurğulansın. Diqqət sual 1)</i><br>Fotoda gördüyünüz küp Baloniya Universitetinin arxeoloqlarının Türkiyənin qədim Karkamış şəhərində apardığı araşdırmalar nəticəsində tapılmışdır. Universitet alimlərinin gəldiyi qənaətə görə X artıq 3700 ildir ki, mövcuddur. X-i iki sözlə cavab kartlarınıza yazın.`,"İlk emoji","İlk smaylik","Fotoya diqqət etsəniz küpün üzərində gülən üz görə bilərsiniz. Baloniya Universitetinin alimlərinin gəldiyi qənaətə görə ilk emoji artıq 3700 ildir ki, mövcuddur.",ES,U("G4RV1t6h","183831")),
+Q(2,`Bir mənbədə dənizçilərin uzun səfərlər boyu gəmi yırğalanması səbəbindən BUNA vərdiş etdikləri üçün sahilə çıxarkən ictimai yerlərdə qınanmalarından danışılır. Paylama materialındakı əsərin adında da BUNA rast gəlinir. BU ilə əvəz edilən üç sözü yazın.`,"Masaya dirsək qoymaq","Mənaya uyğun cavablar","Rekvizitdə gördüyünüz Henri Matissenin “Oxucu dirsəyini masaya qoyur” əsəridir. Dənizçilərdə dənizdə olarkən masaları aşmasın deyə dirsəklərini masaya qoyurdular. İctimai yerlərdə xüsusən yemək masası arxasında bu davranış etik hesab olunmur.",FE,U("tw8749Jp","183846")),
+Q(3,`<i>(Aparıcı üçün qeyd: Yarışdan sonra komandalar arasında dostluq əlaqələrinin daha da inkişaf edəcəyinə inanırıq çünki intellektual oyunlar yalnız beyinlərin mübarizəsidir.)</i><br>Gördüyünüz başını aşağı salmış döyüşçü şəkli 45 il əvvələ aid bir kitabdandır. Sizdən gizlədilmiş hissədə nəyin olduğunu iki sözlə cavab kartlarınıza yazın.`,"Olimpiya simvolları","Mənaya uyğun cavablar","Şəkildə Dorian Palunun təsvir etdiyi antik döyüşçünün yerə düşmüş qılıncını götürə bilmədiyini görürük çünki əli qandallanıb. Və qandalları Olimpiya simvolları əvəz edib. Müəllif xatırlatmaq istəyirdi ki, antik dövrdə Olimpiya oyunları zamanı müharibələr dayandırılırdı.",TH,U("XxsRYLMQ","183903"),U("0ptyrm5f","183910")),
+Q(4,`Rekvizitdəki britaniyalı musiqiçi Merien Feytful-dur. Sizsə onunla bağlı vikipediya məqaləsində hansı göstəricinin təzadlı olaraq 3-ə bərabər olduğunu yazın.`,"Ərlərinin sayı","Mənaya uyğun cavablar","İngilis dilində faithful - sadiq, sədaqətli deməkdir. Soyadının belə olmasına baxmayaraq Merien düz 3 dəfə ailə həyatı qurmuşdu.",FE,U("VW5YVj4k","183920")),
+Q(5,`Fotoda İsrail idmançısı Linoy Aşramı görürsünüz. Fotoya baxan sual müəllifi zarafatla, idmançının X-ə qatılmasını təklif edir. X-i iki sözlə cavab kartlarınıza yazın.`,"Paralimpiya oyunları","Yalnız dəqiq cavablar","Fotoda gimnastın akrobatik hərəkəti nəticəsində başının fotoya düşməməsi diqqəti çəkir. Fotoya baxan sual müəllifi zarafatla idmançının Paralimpiya oyunlarına qoşulmasını təklif edir.",TH,U("Y4yvQ0w1","183928")),
+Q(6,`Qarabağ – Budo Qlimt oyununda Patrik Andradenin qapı xətti üzərindən topu çıxarandan sonra şərhçi Patriki Qarabağın X-i adlandırmışdır. X-in həm də Azərbaycan folklorunda məşhur bir ifadə olduğunu bilərək dəqiqliklə cavab kartlarınıza yazın.`,"Ölməz altı qoşa","Yalnız dəqiq cavablar","Qarabağ – Budo Qlimt oyununda şərhçi Patriki Qarabağın “Ölməz altı qoşası” adlandırmışdır. Ölməz altı qoşa həmçinin Azərbaycan folklorunda məşhur bir ifadədir.",TH,U("sY1c2VL","183940")),
+Q(7,`Qarşınızda gördüyünüz foto onlara verilən medalın mərkəzi detalıdır. Onlar haqqında danışan sual müəllifi rejissor Danila Kozlovskinin baş rolda olduğu 2021-ci ilə aid bir filmdə xatırlayır. Onların kim olduğunu biri xüsusi isim olan 2 sözlə yazın.`,"Çernobıl ləğvediciləri","","Alfa (α) və beta (β) hissəcikləri və qamma (γ) şüaları sizi Çernobıla çıxarmalı idi. Çernobıl qəzasının nəticələrini hadisə yerində həll etməyə çağırılan mülki və hərbi personal isə məhz bu adı daşıyırdı. 2-ci hissədə isə söhbət Çernobıl 1986 filmindən gedirdi.",QE,U("tMWh1NQw","183949")),
+Q(8,`Finlandiya hökuməti yeni doğulmuş uşaqlara içərisində müxtəlif ləvazimatlar olan bu qutunu hədiyyə kimi göndərir. Qutunun içərisində paltar, uşaq bezi, oyuncaq və s. uşaq üçün lazımlı əşyalar olur. Bundan əlavə qutunun ailəyə daha bir köməkliyi dəyir. Siz bu köməkliyin nədən ibarət olduğunu cavab kartlarınıza yazın.`,"Qutudan beşik əvəzi istifadə edilir","Mənaya uyğun cavablar","",ES,U("jkzN13P6","184001")),
+Q(9,`Qarşınızdakı rekvizit NASA-nın 2024-cü ilin sonlarında şəklini çəkdiyi NGC2264 adlı ulduz küməsidir. Şəklin orijinal variantında X yoxdur və şəkilə sonradan əlavə olunub. X ilə əvəz olunan sözü bir dəqiqə ərzində cavab kartlarınıza yazın.`,"Yaşıl rəng","","2024-cü ilin sonlarında deyilməsi sizi cavaba çıxara bilərdi. Yeni ilin simvolu olan şam ağacına bənzətmək üçün NASA orijinal fotoya sonradan yaşıl rəng əlavə etmişdi.",ES,U("tMsRhSJj","184009")),
+Q(10,`Azərbaycanlı futbol şərhçisi nə qədər qəribə səslənsə də, təklif edir ki, şəkildə gördüyünüz binanın daxilində olan eksponatlar arasına Aspmyra stadionunda olan X-i də əlavə etmək lazımdır. X-i biri xüsusi olan iki sözlə cavab kartlarınıza yazın.`,"Toralın qolu","Yalnız dəqiq cavablar","Fotoda Azərbaycan Milli İncəsənət Muzeyini görə bilərsiniz. Qarabağ – Budo Qlimt oyununda şərhçi Toral Bayramovun möhtəşəm qolunu Azərbaycan Milli İncəsənət Muzeyinə qoyulacaq yeni eksponat adlandırmışdır.",TH,U("V0XzRCZ8","184020")),
+Q(11,`Gördüyünüz şəkil Zimbabvedə uşaq doğumu zamanı çəkilib və sual müəllifi tərəfindən fotoya kiçik dəyişikliklər olunub. BMT tərəfindən verilən açıqlamada deyilir ki, X-ə görə Zimbabvedə hər gün ən az səkkiz qadın ölür. X-i bir neçə sözlə cavab kartlarınıza yazın.`,"Doğum zamanı səs vergisi","Mənaya uyğun cavablar","Zimbabvedə doğum vaxtı qadınların ağrıdan çıxardıqları səs üçün vergi qoyulur. İllik gəlirləri 150 dollar olan və xəstəxana xərcləri üçün 50 dollar xərcləyən hamilə qadınlara doğuş zamanı çıxardıqları hər səs üçün 5 dollar vergi istənilir.",TH,U("8LHdRnt6","184030")),
+Q(12,`Gördüyünüz foto Rusiya İmperiyasının daxili işlər nazirinin islahatlarını təcəssüm etdirir. İslahatların bir hissəsi olan edam prosesində, insanların boynuna keçirilmiş ipə X deyilirdi. X-i biri xüsusi olan iki sözlə cavab kartlarınıza yazın.`,"Stolıpin qalstuku","Yalnız dəqiq cavablar","Rusiya İmperiyasının daxili işlər naziri Stolıpinin fəaliyyəti, Stolıpin islahatları adı ilə də tarixə düşmüşdü. Məhz buna görə \"Stolıpin qalstuku\" ifadəsi yaranmışdı.",TH,U("yFcv24bm","184040")),
+Q(13,`İngilis yazıçısı Robert Brauninq yazır ki, X və Y eynidir. Hər iki halda xalq çalınan havaya oynamaq məcburiyyətində qalır. X və Y ilə əvəz olunanın yunan və latın mənşəli olduğunu bilərək cavab kartlarınıza yazın.`,"Diktatura və Demokratiya","İstənilən ardıcıllıq ilə yazılmış cavablar","İngilis yazıçısı Robert Brauninq yazır ki, Diktatura və Demokratiya eynidir. Diktaturanın hökm sürdüyü dövlətlərdə xalq diktatorun çaldığı havaya, demokratik dövlətlərdə isə xalq millət vəkillərinin çaldığı havaya oynayır.",TH,U("q3QJdq6r","184103")),
+Q(14,`Qarşınızda gördüyünüz Sprotinq Lissabon klubunun gənc ulduzu Viktor Gyokeresdir. Ondan qol sevincinin səbəbini soruşduqda "Mən maska taxana qədər heç kəs məni vecinə almadı" cümləsini işlətmişdi. Siz isə bəzi dəyişikliklər edilmiş sitatın kimə aid olduğunu cavab kartlarınıza yazın.`,"Bane","","Cümlənin orijinalında \"Mən maska taxana qədər mənim kim olduğum heç kəsin vecinə deyildi\" deyilirdi. Banenin maskası ilə Gyökereşin qol sevincinin oxşarlığı da sizi cavaba çıxara bilərdi.",QE,U("jkJddTwY","184118"))
+],
+2:[
+Q(1,`Sual qısadır. Rekvizitdə suni intellekt tərəfindən hansı Bibliya personajının təsvir olunduğunu tapın.`,"Davud Peyğəmbər","","Rekvizitə diqqətlə baxsanız oğlanın əlində bir daş tutduğunu görə bilərsiniz. Bibliyada keçən bir hekayədə Davud peyğəmbər rəqibi Goliatdan kiçik olsa da, onu bir daş vasitəsi ilə məğlub edir. Sualın qısa olması da sizə ipucu ola bilərdi.",ES,U("DfhzKXwW","184125")),
+Q(2,`<b>Dublet</b><br>1) Sual müəllifi düşünür ki, Qustav Dore tərəfindən çəkilmiş bu rəsmdəki iki şəxsi buraxılmış iki söz adlandırmaq olar. Buraxılmış iki sözü tapın.<br>${im(U("TBm33gwX","184132"))}<br>2) Rekvizitdə azərbaycanlı rəssam Sakit Məmmədov tərəfindən çəkilmiş X adlı rəsm əsərini görürsünüz. X ilə əvəz olunan iki sözü tapın.<br>${im(U("CpBny2YS","184139"))}`,"1) Cənnətdən qovulanlar<br>2) Dünyadan qovulanlar","1) Dünyaya göndərilənlər","",ES),
+Q(3,`Qarşınızdakı rekvizitdə Amerikalı rəssam Norman Rockvellin avtoportretini görürsünüz. Əvvəlki cümlədə sizdən bir söz gizlədilmişdir. Gizlənilən sözün nə olduğunu bildinizsə cavab kartlarınıza yazın.`,"Üçlü","Üçqat","Diqqət etsəniz rəssam portreti 3 dəfə çəkmişdir. Sualın üçüncü olması da sizi cavaba çıxara bilərdi.",ES,U("qFc54wVB","184233")),
+Q(4,`Gördüyünüz rekvizitdə mükafatın adında bir şəxsin adı sizdən gizlədilib. Bu ad haqqında olan məqalədə "doktor" ləqəbinə də rast gələ bilərik. Söhbətin kimdən getdiyini bildinizsə, sizdən gizlədilmiş adı cavab kartlarınıza yazın.`,"Sokrates","","Rekvizit sizi 2022-ci ildən etibarən Ballon Dor mükafatı ilə birlikdə verilən Socrates mükafatına çıxarmalı idi. 2-ci hissədə isə söhbət məşhur braziliyalı futbolçu Socratesdən gedirdi.",QE,U("wNSFgHSj","184245")),
+Q(5,`Rekvizit 1932-ci ildə Xəzər dənizində məxfi məqsədlərlə tikilmiş Dağdizel zavodunun 8-ci sexini görürsünüz. Bəs bu sexi Dağıstanın nəyi adlandırırlar?`,"Fort Boyard","","Foto bir çoxumuza şou-proqramdan tanış olan, Atlantik okeanı sahillərində yerləşən Fort Boyard qalasını xatırladır və məhz bu sexi Dağıstanın Fort Boyardı adlandırırlar.",ES,U("QFKpPMwf","184252")),
+Q(6,`Gördüyünüz foto Naxçıvan Xan Sarayında çəkilmişdi. Sual müəllifi bələdçini dinlədikdən sonra zarafatla bu dəfə X qalmadı deyir və BU filmi xatırlayır. Söhbətin hansı filmdən getdiyini bildinizsə, bir dəqiqə ərzində cavab kartlarınıza yazın.`,"Fight Club","Döyüş klubu","Sual müəllifi Xan Sarayında olarkən bələdçi otaqda olan stullara diqqət çəkmiş və burada olan söhbətlərin burada qaldığını göstərmək üçün stullarda bu cür klidə bənzər dizayna sahib olduğunu vurğulamışdı.",TH,U("DPVVrx0R","184304")),
+{id:7,handout:H21,question:`Rekvizitdə Rapunzelin oxuduğu mahnıdan bir parça görürsünüz. O mahnını oxuyaraq zədələri sağalda bilirdi. Ancaq bir versiyaya görə ögey anası onun məhz BU xüsusiyyəti sayəsində cavan qala bilmişdi. Söhbətin hansı xüsusiyyətdən getdiyini cavab kartlarınıza yazın.`,answer:"Zamanı geri çevirmə",criteria:"Yalnız dəqiq cavablar",comment:"Mahnının sözlərinə fikir versəniz hər şey aydın olur. Rapunzel yaraları sağaltmır, əslində zamanı geri çevirərək zədəli yeri əvvəlki vəziyyətinə qaytarır. Ögey anası da buna görə illərdir cavan qalmışdı.",author:FE},
+Q(8,`Rekvizitdə Juan Mironun "Aya hürən it" adlı əsərini görürsünüz. 2021-ci ildə İlon Musk əsərin adı ilə BUNU EDƏRƏK tvit atmış və kriptobirjada ciddi dalğalanma yaratmışdı. BUNU ETMƏK-lə əvəzlənəni bildinizsə, tam əksini edən fransızı yazın.`,"Jorj Perek","Yalnız dəqiq cavablar","Elon Musk əsərin orijinalda adı olan \"Dog barking at the moon\"-a E əlavə edərək paylaşmış və DOGE coinin birja dəyərinin fantastik yüksəlməsinə səbəbiyyət vermişdi. Jorj Perek \"Qeybolma\" (A void) adlı əsəri ilə məşhurdur, hansında ki E hərfindən istifadə edilməyib.",FE,U("YB67GTcK","184404")),
+Q(9,`Gördüyünüz foto Mersedes markasının bir reklamından kadrdır. Reklamda Mersedesi idarə edən şəxs oğlanı vurur. Lakin maraqlıdır ki, bundan sonra "Mersedes təhlükələri əvvəlcədən hiss edir" şüarı ekranda görünür. Bəs bu reklamda yerdə yatan oğlan kimdir?`,"Adolf Hitler","Yalnız dəqiq cavablar","Rekvizitdə təsvir olunan fotoya diqqət etsəniz yerdə yatan şəxsin Svastika formasında öldüyünü görə bilərsiniz. Mersedes öz reklamında təhlükələri əvvəlcədən hiss edir şüarı ilə ikinci dünya müharibəsinə eyham vurmuşdu.",ES,U("BHWMs2nw","184425")),
+Q(10,`İkinci dünya müharibəsi dövründə nasist düşərgələrində məhkumları fərqləndirmək üçün onların yaxasına müxtəlif rəngli üçbucaqlar yerləşdirilirdi. Misal üçün rekvizitdə gördüyünüz bənövşəyi rəng yehova şahidlərini simvolizə edir, əgər qırmızı rəng olsa, deməli bu siyasi məhkumdur. Qara üçbucaq romanları bildirirdi və s. Bundan əlavə bəzi qrup məhkumlar var idi ki, onların ikinci bir üçbucağı daha var idi. Kimlər ikinci üçbucaqla fərqləndirilirdi və bu üçbucaqlar nəyi simvolizə edirdi?`,"Yəhudilər və Davud ulduzu","Yalnız dəqiq cavablar","Bunlar yəhudi idi, ikinci üçbucaq digərinin üstündən düz şəkildə tikilirdi, bununla da Davudun ulduzu əmələ gəlirdi.",ES,U("NgxNtRVH","184446"),U("B5q0LdgP","184451")),
+Q(11,`Qarşınızdakı rekvizitdə hansı paytaxt şəhərinin gerbi təsvir olunub?`,"Montevideo","Yalnız dəqiq cavablar","Montevideo sözü İspan dilində “Dağı görürəm” kimi tərcümə olunur.",ES,U("6JWfP8TM","184520")),
+Q(12,`Rekvizitdə Rembrandtın "Belşazarın ziyafəti" tablosunu görürsünüz. Rəsmdəki diqqət çəkən məqamlardan biri buraxılmış iki sözdür. Ötən əsrin 80-ci illərinə aid bir mənbədə başlığı buraxılmış iki söz adlanır. Buraxılmış iki sözü III növ təyini söz birləşməsi ilə tapın.`,"Tanrının əli","Yalnız dəqiq cavablar","Rekvizitə diqqət etsəniz arxa fonda əl görə bilərsiniz. İkinci hissədə isə söhbət əfsanəvi Maradonanın dünya çempionatında əli ilə vurduğu qoldan gedirdi.",ES,U("vxKw5Bwv","184749")),
+Q(13,`<b>Diqqət DUPLET!</b><br>1) Gördüyünüz rekvizitdə X təsvir olunub. X 1969-cu ilə aid bir Azərbaycan filmində də xatırlanır. X-i bir neçə sözlə cavab kartlarınıza yazın.<br>2) Gördüyünüz foto 2018-ci ildə Rusiyada keçirilmiş DÇ finalından sonra Fransada çəkilib. Milli.az xəbər portalı tərəfindən bu foto Y başlığı altında dərc olunub. Y 1969-cu ilə aid bir Azərbaycan filmində də xatırlanır. Y-i bir neçə sözlə yazın.`,"1) Baden Badenin mavi gecələri<br>2) Fransız xalqı kef edir","","Baden-Baden Almaniyanın cənub-qərbində Fransa ilə sərhəddə yerləşən kurort şəhərciyidir. Baden Badenin mavi gecələri ifadəsi Şərikli çörək filmindən hər birinizə tanışdır. Dupletin ikinci hissəsində isə Fransız xalqı kef edir adı paylaşılıb. Hər iki ifadə 1969-cu ildə ekranlaşdırılan Şərikli çörək filmindən sizə tanışdır.",`${ES}, ${TH}`,U("ymXckzXf","184800"),U("FkN2PZLN","184808")),
+Q(14,`Gördüyünüz bu foto psixoloqun 5 yaşlı pasiyenti tərəfindən çəkilib və fotoda 5 yaşlı uşaq ailəsini təsvir edib. Psixoloq fotoya baxan kimi sərt şəkildə uşağın valideynlərinə onun fikirlərinə niyə hörmət etmədiklərini soruşub. Psixoloqun niyə belə qənaətə gəldiyini iki və ya daha artıq sözlə cavab kartlarınıza yazın.`,"Uşaq qulaqsız təsvir olunub","Mənaya uyğun cavablar","Psixoloq fotoya baxan kimi sərt şəkildə uşağın valideynlərinə onun fikirlərinə niyə hörmət etmədiklərini soruşmuşdu. Fotoya diqqət etsəniz uşaq hər iki valideynin qulağını təsvir edib, lakin öz qulağını çəkməyib. Fotoya baxan psixoloq valideynlərin uşağın dediklərinə qulaq asmadıqlarını öyrənmişdi.",TH,U("ccQttFTx","184816"))
+],
+3:[
+Q(1,`Solda siz Trinity kollecində işləyən Daniel Skinneri, sağda isə İtirilmiş Cənnət əsərinə ön söz şeiri yazmış Andrew Marveli görürsünüz. Rekvizitdə iki ad arasında 54 mm məsafə vardır. Şəklin X adlandırıldığını bilərək X ilə əvəz olunanı biri xüsusi isim olan 2 sözü yazın.`,"Miltonun gözləri","Yalnız dəqiq cavablar","Con Milton 1652-ci ildə görmə qabiliyyətini itirdikdən sonra daim köməyə ehtiyacı olurdu. Daniel Skinner və Andrew Marvelin bu barədə Miltona kömək etdiyi düşünülür. İnsan gözləri arasındakı standart məsafə 54 mm-dir.",QE,U("BVJYqBv0","184822")),
+Q(2,`Qarşınızda "X" sözünü gizlətdiyimiz uşaq kitabının üz qabığı var. 27 may 2018-ci il tarixində İKS buraxdığı səhvdən sonra sosial şəbəkələrdə yüzdən çox təhdid aldı. X ilə əvəz olunan sözü yazın.`,"Karius","Yalnız dəqiq cavablar","Kitab dişlərinizi fırçalamaq ehtiyacını təbliğ edir. Carius və Baktus personajlarının adları müvafiq olaraq \"kariyes\" və \"bakteriya\" terminlərindən götürülüb. 26 may 2018-ci ildə Çempionlar Liqasının finalında \"Real Madrid\"ə qarşı keçirilən oyunda \"Liverpul\"un qapıçısı Loris Karius iki ciddi səhvə yol verdi, bundan sonra o və ailəsi ciddi təhdidlərə məruz qaldı.",QE,U("sd8zzrwH","184828")),
+Q(3,`Gördüyünüz fotoda X təsvir olunub. X eyni zamanda 1961-ci ildə yayımlanan Amerikan ədəbiyyatına aid hekayələr toplusudur. X ilə əvəz olunan iki sözü yazın.`,"Klimancaronun qarları","Yalnız dəqiq cavablar","Rekvizitdə təsvir olunan Klimancaro dağıdır. Ernest Heminquey tərəfindən Afrika mövzusunda yazılmış əsər Klimancaronun qarları adlanır.",ES,U("G4XGXFSd","184833")),
+Q(4,`Sizə təqdim olunmuş rekvizitdə gördüyünüz şəxs Amerikalı cinayətkar Çarlz Mansondur. Mansonu bir çox bənzərliyinə görə Y adlandırmaq olar. 1986-cı ilə aid filmi izləyən sual müəllifi Alan Rikmanı görərkən zarafatla sanki Y-ə şahid olduğunu deyir. Y ilə əvəz olunan eyni hərflə başlayan iki sözü yazın.`,"Rasputinin Reinkarnasiyası","Yalnız dəqiq cavablar","Çarlz Manson həm xarici görünüşünə həm də qaranlıq nüfuzuna görə Rasputinə bənzəyir. 1986-cı ildə çəkilmiş filmdə Alan Rickman Rasputin rolunu canlandırırdı.",QE,U("wrg8fRtZ","184839")),
+Q(5,`Bütün oyunları sərxoş halda izləyən bir azərkeş zarafatla futbol üzrə Azərbaycan milli komandasının yeni sponsoru pivə olduqdan sonra oyunçuların daha pis oynayacağını deyir. Əvvəlki cümlədə bir söz buraxılıb. Buraxılmış sözü cavab kartlarınıza yazın.`,"Alkoqolsuz","Mənaya uyğun cavablar","Bütün oyunları sərxoş halda izləməsi sizi cavaba çıxara bilərdi. Azərkeş zarafatla yeni sponsor alkoqolsuz pivə olduqdan sonra oyunçuların daha pis oynayacağını demişdi.",TH,U("B2N7f3yN","184845")),
+Q(6,`Qarşınızda Yuki Matsuzavanın qlobal istiləşmə zamanı uşaqları sevindirmək üçün hazırladığı xüsusi çantanı görürsünüz. Çanta X-i daşımaq üçün nəzərdə tutulub və xüsusi termal örtüklə qorunur. X həmçinin Norveçli yazıçı Co Nesbonun əsərinin adıdır. X ilə əvəz olunan sözləri yazın.`,"Qar adamı","Yalnız dəqiq cavablar","Qlobal istiləşmə səbəbindən qar daha az yağır və xüsusi örtüklə qorunmuş bu çanta qar adamını daha uzun müddət saxlamağa kömək edir. İkinci hissədə isə söhbət Snowman əsərindən gedirdi.",QE,U("Wpf9fQPR","184854")),
+Q(7,`ABŞ-də yayımlanan bir televiziya serialı ona etiraz olaraq belə bir səhnə canlandırmışdılar. Lakin o etirazı qəbul etməmiş və demişdi ki, sadəcə ölçüləri yox, həm də qaldırma qüvvəsini nəzərə almaq lazımdır. Əvvəlki cümlələrin hər birində buraxılmış hərflər var. Hərfləri bərpa edərək sözü orijinalda yazın.`,"Cameron","Yalnız dəqiq cavablar","Bildiyimiz kimi Titanik filminin rejissoru James Camerondur. ABŞ-də yayımlanan bir televiziya serialı Camerona etiraz edib belə bir səhnə canlandırmışdır. Cameron isə cavabında sadəcə ölçüləri yox, həm də qaldırma qüvvəsini nəzərə almaq lazımdır demişdi.",ES,U("DgVGh6CM","184903")),
+Q(8,`Rekvizitdə gördüyünüz söz macar dilindən tərcümədə X mənasını verir. Delilanın Şimşona xəyanəti barədə olan məqalədə də X xatırlanır. X ilə əvəz olunan sözü yazın.`,"Qayçı","Yalnız dəqiq cavablar","Ollo sözü vizual olaraq qayçıya bənzəyir. İkinci hissədə isə Delilanın Şimşonun gücünün saçlarından gəldiyini öyrəndikdən sonra onun saçlarını kəsməsindən gedirdi.",QE,U("VWCxcr79","184909")),
+Q(9,`Qarşınızda Google tərəfindən 2014-cü ildə Qara Tarix Ayının ilk günü onun şərəfinə hazırlanmış doodle görürsünüz. Onun haqqında çəkilən filmlərdən biri "Musa adlı qadın" adlanır. Söhbətin kimdən getdiyini bildinizsə 1 dəqiqə ərzində cavab kartlarınıza yazın.`,"Harriet Tubman","Yalnız dəqiq cavablar","Qara Tarix Ayı, qaradərililərin verdiyi töhfələrin və qazandıqları uğurların öyrənildiyi bir zamandır. Harriet Tubman kölələri xilas etdiyi üçün Musa ləqəbi almışdı.",QE,U("XkKW68vb","184915")),
+Q(10,`Azərbaycanlı rəssam Sakit Məmmədov çəkdiyi "Cıdır düzü" rəsmini Böyük Britaniyanın kraliçası II Elizabetə hədiyyə etmişdi. Rəssam qeyd edir ki, Kraliça rəsmə biraz tamaşa etdikdən sonra rəsmdə X-in təsvir olunduğunu bildirmiş, lakin rəssam bunun əslində Y olduğunu qeyd edərək düzəliş etmişdir. X-i qalın, Y-i incə saitli bir sözlə cavab kartınıza yazın.`,"X - Polo, Y - Çövkən","Yalnız dəqiq cavablar","",ES,U("dnd7mbk","184924")),
+Q(11,`Mersedes firmasının ağıllı işıq sistemini tanıtdığı reklam afişasını görürsünüz. Bu reklamda hansı soyadın xatırlandığını tapın.`,"Rentgen","Yalnız dəqiq cavablar","",ES,U("prfF7pG6","184930")),
+Q(12,`Rekvizitdə TF2 oyununda olan personaj Medicin cosplayini görürsünüz. Bir fan nəzəriyyəsinə görə personaj əslində BU həkimin imitasiyasıdır. Söhbətin hansı həkimdən getdiyini bildinizsə cavab kartlarınıza yazın.`,"Josef Mengele","Yalnız dəqiq cavablar","Hər ikisi qeyri-etik üsullarla sanki xəstələrin üzərində təcrübə aparırmış kimi əməliyyat edirdi. Həmçinin ağ göyərçin Mengelenin sevimli quşu idi.",FE,U("DDX5vHbH","184938")),
+Q(13,`Gördüyünüz rekvizitin götürüldüyü mənbədə hansı soyadın xatırlandığını yazın.`,"Şrödinger","Şredinger","Fotoya diqqət etsəniz şəkildə bir şkafın içindəki boşqabların gözlənilməz şəkildə düşmək üzrə olduğu görünür. Şkafın qapısı bağlıdır və onu açan şəxs üçün boşqabların düşüb-düşməyəcəyi naməlumdur. Şkaf açılana qədər boşqablar həm salamatdır, həm də qırılıb – çünki nəticə məlum deyil. Yəni Şrödingerin boşqabları kimi davranır.",ES,U("qLL73Fj4","184945")),
+Q(14,`<i>(Sonuncu sual.)</i><br>Qarşınızdakı rekvizit Alman bir heykəltəraş tərəfindən hazırlanıb. Əsər avtomobil idarə edərkən mesaj yazmağın təhlükəli olduğunu vurğulamaq üçün hazırlanıb. Siz əsərin adını iki sözlə yazmağa çalışın.`,"Son emoji","","",ES,U("Y7nLYsWq","184955"))
+]};
+let currentTour=1,allExpanded=!1,activeZoomedImg=null,activeClone=null,firstRender=!0;
+const themeToggle=document.getElementById("themeToggle"),rays=[...document.querySelectorAll(".ray")];
+function animateRays(n){rays.forEach(a=>{a.getAnimations().forEach(a=>a.cancel());const i=a.animate(n?[{transform:"translateY(0)",opacity:1},{transform:"translateY(-14px)",opacity:0}]:[{transform:"translateY(11px)",opacity:0},{transform:"translateY(0)",opacity:1}],{duration:n?520:620,delay:n?0:180,easing:"cubic-bezier(.4,0,.2,1)",fill:"both"});i.onfinish=()=>i.cancel()})}
+function setTheme(a,i){document.body.classList.toggle("dark",a);try{localStorage.setItem("piksel-theme",a?"dark":"light")}catch(a){}themeToggle.setAttribute("aria-label",a?"Gündüz rejiminə keç":"Gecə rejiminə keç"),i&&animateRays(a)}
+function initTheme(){let a=null;try{a=localStorage.getItem("piksel-theme")}catch(a){}return"dark"===a?setTheme(!0,!1):"light"===a?setTheme(!1,!1):void setTheme(!(!window.matchMedia||!window.matchMedia("(prefers-color-scheme: dark)").matches),!1)}
+function getDeviceId(){let i="";try{i=localStorage.getItem("piksel-dev")||"",i||(i=window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now(),localStorage.setItem("piksel-dev",i))}catch(a){i=i||"dev"+Math.random().toString(36).slice(2)+Date.now()}return i.replace(/[.#$\[\]\/]/g,"_")}
+themeToggle.addEventListener("click",()=>setTheme(!document.body.classList.contains("dark"),!0)),initTheme(),requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("ready"))),document.addEventListener("pointermove",a=>{const i=a.target.closest(".glow");var n;i&&(n=i.getBoundingClientRect(),i.style.setProperty("--mx",a.clientX-n.left+"px"),i.style.setProperty("--my",a.clientY-n.top+"px"))});
+const DEV=getDeviceId();let likeCounts={},myLikes={},countsRef=null,myRef=null;const likeBusy={};
+function likeKey(a,i){return"t"+a+"q"+i}
+try{const r={apiKey:"AIzaSyCZYcmev92Nok-VgmDFcZBdcZl0JhSWIls",authDomain:"piksel-breyn-rinq.firebaseapp.com",databaseURL:"https://piksel-breyn-rinq-default-rtdb.firebaseio.com",projectId:"piksel-breyn-rinq",storageBucket:"piksel-breyn-rinq.firebasestorage.app",messagingSenderId:"284823608972",appId:"1:284823608972:web:58dfcbcbfde0119affa5a9"};firebase.apps.length||firebase.initializeApp(r);const s=firebase.database();countsRef=s.ref("likeCounts/"+PKG_ID),myRef=s.ref("userLikes/"+DEV+"/"+PKG_ID)}catch(a){countsRef=null,myRef=null}
+try{const u=JSON.parse(localStorage.getItem("piksel-likes-"+PKG_ID)||"null");u&&(likeCounts=u.counts||{},myLikes=u.mine||{})}catch(a){}
+function saveLikeCache(){try{localStorage.setItem("piksel-likes-"+PKG_ID,JSON.stringify({counts:likeCounts,mine:myLikes}))}catch(a){}}
+function updateLikeUI(){document.querySelectorAll(".like-btn").forEach(a=>{var i=a.dataset.k,i=!!myLikes[i];a.classList.toggle("liked",i),a.setAttribute("aria-pressed",i),a.setAttribute("aria-label",i?"Bəyənməni geri çək":"Bəyən")}),document.querySelectorAll(".like-count").forEach(a=>{a.textContent=Math.max(0,likeCounts[a.dataset.k]||0)})}
+async function toggleLike(a){if(!likeBusy[a]&&countsRef){likeBusy[a]=!0;const r=!!myLikes[a];var i={...myLikes},n={...likeCounts};myLikes[a]=!r,myLikes[a]||delete myLikes[a],likeCounts[a]=Math.max(0,(likeCounts[a]||0)+(r?-1:1)),updateLikeUI();try{(await myRef.child(a).transaction(a=>r?a?null:void 0:!a||void 0)).committed&&await countsRef.child(a).transaction(a=>Math.max(0,(a||0)+(r?-1:1)))}catch(a){myLikes=i,likeCounts=n,updateLikeUI()}finally{saveLikeCache(),likeBusy[a]=!1}}}
+function loadTour(n){removeZoom(),currentTour=n,allExpanded=!1,document.getElementById("globalToggleBtn").textContent="Bütün cavabları göstər",document.querySelectorAll(".tour-btn").forEach((a,i)=>{a.classList.toggle("active",i+1===n)}),renderQuestions(),window.scrollTo(0,0)}
+function renderQuestions(){const m=document.getElementById("questionsContainer");m.innerHTML="",toursData[currentTour].forEach((a,i)=>{var n=likeKey(currentTour,a.id);const r=document.createElement("div");r.className="q-card glow frame",r.id=`q-card-${i}`,r.style.setProperty("--i",(firstRender?4:0)+Math.min(i,8));var l=a.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${a.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"",e=a.handout?`<div class="mat-row"><b>Paylama materialı:</b>${a.handout}</div>`:"",t=a.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${a.criteria}</div>`:"",d=a.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${a.comment}</div>`:"",s=a.extraImage?`<div class="req-img-wrapper" style="margin-top:8px;margin-bottom:8px;"><img src="${a.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"",o=a.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${a.source}</div>`:"";r.innerHTML=`
+<div class="q-text rise" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${l||e?`<b>${a.id}.</b> ${l}${e}<div class="mat-after">${a.question}</div>`:`<b>${a.id}.</b> ${a.question}`}</div>
+<div class="ans-panel">
+<div class="ans-row"><span class="ans-label">Cavab:</span> ${a.answer}</div>
+${t}
+${d}
+${s}
+${o}
+<div class="ans-row author-row">
+<span><span class="ans-label">Müəllif:</span> ${a.author}</span>
+<div class="act-group">
+<div class="like-wrap">
+<button class="like-btn" type="button" data-k="${n}" aria-pressed="false" aria-label="Bəyən" onclick="toggleLike('${n}')">
+<svg class="like-icon" viewBox="0 0 24 24" aria-hidden="true">
+<path class="fill" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+<path class="outline" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+</svg>
+</button>
+<span class="like-count" data-k="${n}">0</span>
+</div>
+<button class="copy-btn" type="button" onclick="copyQuestion(${i},this)" aria-label="Sualı kopyala">
+<svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g class="clip-path">
+<rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/>
+<path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+</g>
+<path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+</button>
+</div>
+</div>
+</div>
+`,m.appendChild(r)}),firstRender=!1,updateLikeUI()}
+function toggleSingleCard(a){const i=document.getElementById(`q-card-${a}`);a=i.classList.toggle("active");i.querySelector(".q-text").setAttribute("aria-expanded",a)}
+function qTextClick(a,i){a.target.closest("a, .req-img")||window.getSelection&&window.getSelection().toString()||toggleSingleCard(i)}
+function qTextKey(a,i){"Enter"!==a.key&&" "!==a.key||(a.preventDefault(),toggleSingleCard(i))}
+function toggleAllAnswers(){allExpanded=!allExpanded,document.querySelectorAll(".q-card").forEach(a=>{a.classList.toggle("active",allExpanded),a.querySelector(".q-text").setAttribute("aria-expanded",allExpanded)}),document.getElementById("globalToggleBtn").textContent=allExpanded?"Bütün cavabları gizlə":"Bütün cavabları göstər"}
+function questionHtmlToText(a){return a.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"").trim()}
+function buildQuestionText(a){let i=`${a.id}. ${questionHtmlToText(a.question)}`;return a.handout&&(i+=`\n\nPaylama materialı:\n`+pairs.map(p=>p[0]+"\n"+p[1]).join("\n\n")),i+=`\n\nCavab: ${questionHtmlToText(a.answer)}`,a.criteria&&(i+=`\nSayılma meyarı: ${a.criteria}`),a.comment&&(i+=`\nŞərh: ${questionHtmlToText(a.comment)}`),a.source&&(i+=`\nMənbə: ${questionHtmlToText(a.source)}`),i+=`\nMüəllif: ${a.author}`,i}
+function copyQuestion(a,i){a=(toursData[currentTour]||[])[a];if(a){const r=buildQuestionText(a);function n(){i.classList.add("copied"),clearTimeout(i._copyTimer),i._copyTimer=setTimeout(()=>i.classList.remove("copied"),1600)}navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(r).then(n).catch(()=>fallbackCopy(r,n)):fallbackCopy(r,n)}}
+function fallbackCopy(a,i){const n=document.createElement("textarea");n.value=a,n.style.position="fixed",n.style.opacity="0",document.body.appendChild(n),n.select();try{document.execCommand("copy"),i()}catch(a){}document.body.removeChild(n)}
+function toggleZoom(a,i){if(i.stopPropagation(),activeZoomedImg!==a){removeZoom();var n=a.getBoundingClientRect();const l=a.cloneNode(!0);l.removeAttribute("onclick"),l.classList.remove("extra"),l.style.position="fixed",l.style.top=n.top+"px",l.style.left=n.left+"px",l.style.width=n.width+"px",l.style.height=n.height+"px",l.style.margin="0",l.style.maxWidth="none",l.style.maxHeight="none",l.style.zIndex="9999",l.style.transformOrigin="center center",l.style.transform="translate(0px,0px) scale(1)",l.style.transition="transform .55s cubic-bezier(.25,1,.5,1), box-shadow .55s ease",l.style.cursor="pointer",l._start={top:n.top,left:n.left},l.onclick=function(a){a.stopPropagation(),removeZoom()},document.body.appendChild(l),a.style.visibility="hidden",document.body.classList.add("img-zoomed");var r=window.innerWidth,i=window.innerHeight;const e=Math.min(.92*r/n.width,.86*i/n.height),t=r/2-(n.left+n.width/2),d=i/2-(n.top+n.height/2);requestAnimationFrame(()=>requestAnimationFrame(()=>{l.style.transform=`translate(${t}px,${d}px) scale(${e})`,l.style.boxShadow="0 10px 30px rgba(0,0,0,.3)"})),activeZoomedImg=a,activeClone=l}else removeZoom()}
+function removeZoom(){if(activeClone){const n=activeClone,r=activeZoomedImg;var a=r.getBoundingClientRect(),i=a.left-n._start.left,a=a.top-n._start.top;n.style.transform=`translate(${i}px,${a}px) scale(1)`,n.style.boxShadow="none",setTimeout(()=>{n.remove(),r&&(r.style.visibility="visible")},550),activeClone=null}activeZoomedImg=null,document.body.classList.remove("img-zoomed")}
+countsRef&&(countsRef.on("value",a=>{likeCounts=a.val()||{},saveLikeCache(),updateLikeUI()}),myRef.on("value",a=>{myLikes=a.val()||{},saveLikeCache(),updateLikeUI()})),document.addEventListener("click",function(a){activeZoomedImg&&a.target!==activeClone&&removeZoom()}),loadTour(1)
+</script>
+<script src="/footer.js"></script>
+</html>
