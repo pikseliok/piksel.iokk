@@ -3183,7 +3183,7 @@ V("Bernard Şou qeyd edirdi ki, BU insana özünü hər kəsdən üstün hiss et
 (function(){
 const V=(question,answer,comment,source,author,o)=>Object.assign({question,answer,comment,source,author},o||{});
 SUAL_DATA.push({
-title:'"Ağ Bayquş" kuboku',type:"nhn",date:"2025-05-24",link:"/ag_bayqus_kuboku",
+title:'"Ağ Bayquş" kuboku',type:"nhn",date:"2026-11-17",link:"/ag_bayqus_kuboku",
 tours:{
 1:[
 V("<i>(Aparıcı üçün qeyd: Sual nömrəsi vurğulansın. Diqqət sual 1)</i><br>Fotoda gördüyünüz küp Baloniya Universitetinin arxeoloqlarının Türkiyənin qədim Karkamış şəhərində apardığı araşdırmalar nəticəsində tapılmışdır. Universitet alimlərinin gəldiyi qənaətə görə X artıq 3700 ildir ki, mövcuddur. X-i iki sözlə cavab kartlarınıza yazın.","İlk emoji","Fotoya diqqət etsəniz küpün üzərində gülən üz görə bilərsiniz. Baloniya Universitetinin alimlərinin gəldiyi qənaətə görə ilk emoji artıq 3700 ildir ki, mövcuddur.","","Əlişirin Süleymanov",{"id":1,"criteria":"İlk smaylik","reqImg":"https://i.ibb.co/G4RV1t6h/Ekran-kli-2026-11-18-183831.png"}),
