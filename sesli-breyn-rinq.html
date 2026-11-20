@@ -563,7 +563,7 @@ function render(){
 
   const hb=(act,text,outline,disabled,extra)=>`<button class="hb${outline?" o":""}" data-act="${act}"${disabled?" disabled":""}${extra||""}>${text}</button>`;
   const goalRow=(act,text,dis)=>`<div class="goalrow hs">${hb("goal","3 XALLIQ",goal!==3,0,` data-t="3" aria-pressed="${goal===3}"`)}${hb("goal","5 XALLIQ",goal!==5,0,` data-t="5" aria-pressed="${goal===5}"`)}${hb(act,text,0,dis)}</div>`;
-  const lkOn=["running","answered","expired"].includes(l)&&!((T()[o]||{}).lk&&T()[o].lk.q===(R.q||1));
+  const lkOn=!((T()[o]||{}).lk&&T()[o].lk.q===(R.q||1));
   const f=(m,tid,opt)=>{
     opt=opt||{};
     const isPres=m.id===presserOf(tid);
@@ -908,8 +908,9 @@ const A={
   begin(){
     if(R.status!=="lobby")return;
     const t={status:"wait",q:1,val:1,ev:null,goal:R.goal===3?3:5};
-    Object.keys(T()).forEach(id=>{t["teams/"+id+"/score"]=0});
+    Object.keys(T()).forEach(id=>{t["teams/"+id+"/score"]=0;t["teams/"+id+"/lk"]=null});
     rf().update(t);
+
   },
   goal(g){
     if(R.status!=="lobby"&&R.status!=="finished")return;
