@@ -967,7 +967,20 @@ document.addEventListener("pointerdown",e=>{
   const b=e.target.closest('[data-act="buzz"]');
   if(b&&!b.disabled&&R)buzz(e);
 });
-
+/* Space düyməsi ilə BAS! */
+document.addEventListener("keydown",e=>{
+  if(e.code!=="Space"&&e.key!==" ")return;
+  const t=e.target&&e.target.tagName;
+  if(t==="INPUT"||t==="TEXTAREA")return;
+  const b=document.querySelector('[data-act="buzz"]');
+  if(!b)return;               // düyməsıxan deyilsə, space normal işləsin
+  e.preventDefault();         // səhifə aşağı sürüşməsin
+  if(e.repeat||b.disabled||!R)return;
+  buzz(e);                    // pointerdown ilə eyni funksiya
+});
+document.addEventListener("keyup",e=>{
+  if((e.code==="Space"||e.key===" ")&&document.querySelector('[data-act="buzz"]'))e.preventDefault();
+});
 let ICE=[{urls:"stun:stun.l.google.com:19302"}],relayOk=false;
 const iceReady=fetch("https://piksel-nhn.pikseliok.workers.dev/turn").then(r=>r.json()).then(j=>{
   if(j.iceServers&&j.iceServers.length){ICE=ICE.concat(j.iceServers);relayOk=true}
