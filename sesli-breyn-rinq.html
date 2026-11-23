@@ -121,6 +121,8 @@ body.dark{--grad:linear-gradient(135deg,var(--dark-light),var(--dark-bright) 50%
 .mr b{font-weight:700}
 .mr.pen{opacity:.6}
 .mr.off{opacity:.6}
+.mr{transition:box-shadow .18s ease}
+.mr.spk{box-shadow:inset 0 0 0 1.5px rgba(245,247,250,.9)}
 .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ic{display:flex;gap:5px;flex:none}
 .ib{width:28px;height:28px;border:0;border-radius:50%;padding:0;display:grid;place-items:center;background:rgba(255,255,255,.2);color:#f5f7fa;cursor:pointer;font-size:14px;flex:none}
@@ -323,6 +325,10 @@ document.addEventListener("pointermove",e=>{
 });
 document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{setMode(b.dataset.m);if(b.dataset.m==="host")start()});
 $("go").onclick=()=>start();
+/* Enter düyməsi ilə giriş */
+document.querySelectorAll("#form input").forEach(i=>i.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault();start()}
+}));
 
 async function start(){
   if(busy)return;
@@ -473,7 +479,13 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden&&room)last
 
 const T=()=>R.teams||{},P=()=>R.players||{},isH=()=>role==="host",isPen=id=>!!(P()[id]&&P()[id].pen),skip={},sk=k=>Date.now()<(skip[k]||0),
 TK=()=>!!R&&["lobby","wait","expired","finished"].includes(R.status);
-function remMs(){return R&&R.status==="running"&&R.timerEnd?Math.max(0,R.timerEnd-now()):0}
+/* Qalan vaxt heç vaxt start anından hesablanan 20.000-dən çox olmur */
+function remMs(){
+  if(!R||R.status!=="running"||!R.timerEnd)return 0;
+  let r=R.timerEnd-now();
+  if(R.startedAt)r=Math.min(r,R.timerEnd-R.startedAt);
+  return Math.max(0,r);
+}
 function tms(){
   if(!R)return 2e4;
   if(R.status==="running")return remMs();
@@ -506,8 +518,8 @@ function blockedTeams(){
     return !!pr&&isPen(pr)&&!(R.fs||{})[id];
   });
 }
-/* Taymer saniyədə 15 dəfə yenilənir */
-setInterval(paintTm,1000/15);
+/* Taymer saniyədə 20 dəfə yenilənir */
+setInterval(paintTm,1000/20);
 
 const MICSVG=slash=>`<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>${slash?'<path d="M3.5 3.5l17 17" stroke-width="2.6"/>':""}</svg>`,
 BTNSVG='<svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>';
@@ -580,7 +592,7 @@ function render(){
     const kickB=u&&opt.kick?`<button class="kick-btn" type="button" data-kick="player" data-id="${m.id}" aria-label="Çıxar">✕</button>`:"";
     const isBk=opt.ic&&m.id===(T()[tid]||{}).backup&&!m.cap;
     const nm=m.cap?`<b>${esc(m.name)} (K)${isPres?" (D)":""}</b>`:esc(m.name)+(isPres?" (D)":"");
-    return `<div class="mr ${d(tid)}${m.pen?" pen":""}${m.off?" off":""}"><span class="nm">${nm}${isBk?" (E.K)":""}</span>${icB}${restB}${kickB}</div>`;
+    return `<div class="mr ${d(tid)}${m.pen?" pen":""}${m.off?" off":""}" data-pid="${m.id}"><span class="nm">${nm}${isBk?" (E.K)":""}</span>${icB}${restB}${kickB}</div>`;
   };
   const tbox=(tid,opt)=>{
     if(!tid||!T()[tid])return '<div class="tbox n"><div class="oh n">Gözləyir...</div></div>';
@@ -722,6 +734,7 @@ function buzz(ev){
   const c=me.team,l=Math.round(evTime(ev)),rival=Object.keys(T()).find(x=>x!==c);
   if(R.status==="running"){
     if(!R.timerEnd||R.timerEnd-l<0)return;
+    if(R.startedAt&&l<R.startedAt)return;   // start anından əvvəl basmaq olmaz
     SND.buzz();skip.buzz=Date.now()+2500;
   }else if(R.status==="wait"){
     if(rival&&(R.fs||{})[rival])return;
@@ -1035,7 +1048,8 @@ function mkpc(peer){
     au.play().catch(()=>{});
     const ctx=mixer(),src=ctx.createMediaStreamSource(st),g=ctx.createGain();
     g.gain.value=0;src.connect(g);g.connect(ctx.destination);
-    auds[peer]={a:au,src:src,g:g};
+    const an=ctx.createAnalyser();an.fftSize=512;src.connect(an);
+    auds[peer]={a:au,src:src,g:g,an:an,buf:new Float32Array(an.fftSize)};
     applyMute();
   };
   pcs[peer]=pc;
@@ -1356,8 +1370,39 @@ function capReconcile(){
   }
 }
 const _r2=render;
-render=function(){_r2();try{capReconcile()}catch(e){}};
-setInterval(()=>{try{capReconcile()}catch(e){}},1000);
+render=function(){_r2();try{capReconcile()}catch(e){}try{applySpk()}catch(e){}};
+
+/* Danışanın adında nazik border (yalnız komanda yoldaşlarında görünür) */
+const SPK_ON=.02,SPK_OFF=.012,SPK_HOLD=250,spk={};
+function spkOk(id){
+  if(!R||role==="host"||id===pid||id===R.host)return false;
+  const a=P()[pid],b=P()[id];
+  return !!a&&!!b&&a.team===b.team&&!b.pen&&!b.off&&hear(id);
+}
+function applySpk(){
+  document.querySelectorAll(".mr[data-pid]").forEach(el=>{
+    const id=el.dataset.pid,s=spk[id];
+    el.classList.toggle("spk",!!(s&&s.on&&spkOk(id)));
+  });
+}
+setInterval(()=>{
+  if(!R)return;
+  const t=performance.now();
+  for(const id in auds){
+    const x=auds[id];
+    if(!x.an)continue;
+    x.an.getFloatTimeDomainData(x.buf);
+    let sum=0;for(let i=0;i<x.buf.length;i++)sum+=x.buf[i]*x.buf[i];
+    const rms=Math.sqrt(sum/x.buf.length),s=spk[id]||(spk[id]={on:false,last:0,n:0});
+    if(s.on){
+      if(rms>=SPK_OFF)s.last=t;
+      if(t-s.last>=SPK_HOLD){s.on=false;s.n=0}
+    }else if(rms>=SPK_ON){
+      if(++s.n>=3){s.on=true;s.last=t}   // ardıcıl ~150ms səs olmalıdır (tək klik/nəfəs sayılmır)
+    }else s.n=0;
+  }
+  applySpk();
+},50);
 
 /* Arxa planda işləmə */
 async function keepAwake(){
