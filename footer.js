@@ -1,349 +1,128 @@
-
 (function () {
   "use strict";
 
+  /* Kart açıqlamalarının ölçüləri: kompüter/planşet 15px,
+     telefon 9px, dar telefon (≤420px) 8px. */
   var css = `
-body{
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  min-height:100dvh;
-}
-
+body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
 footer.pk-footer{
-  position:relative;
-  width:100%;
-  max-width:none;
-  margin:30px 0 0;
-  padding:42px 24px 125px;
-  border-radius:0;
-  background:var(--c1);
-  color:var(--fg);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:24px;
-  font-family:Montserrat,system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  isolation:isolate;
+  --fc1:#001E6F;--fc2:#002E92;--ffg:#9DC3FF;--fglow:rgba(0,8,45,.30);
+:0;
+  background:linear-gradient(135deg,var(--fc1) 0%,var(--fc2) 50%,var(--fc1) 100%);color:var(--ffg);
+  padding:10px 14px calc(8px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center;
+  font-family:"Poppins",sans-serif;-webkit-font-smoothing:antialiased}
+footer.pk-footer.pk-dark{--fc1:#9DC3FF;--fc2:#6FA5FC;--ffg:#00072C;--fglow:rgba(255,255,255,.40)}
+footer.pk-footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--fglow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--fglow),transparent 72%)}
+@media (hover:hover){footer.pk-footer:hover::before{opacity:1}}
+footer.pk-footer>*{position:relative;z-index:1}
+footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.pk-title{font-size:18px;font-weight:700;letter-spacing:-.2px;line-height:1.45}
+.pk-social{display:flex;align-items:center;justify-content:center;gap:12px}
+.pk-social a{width:30px;height:30px;display:grid;place-items:center;transition:transform .2s ease,opacity .25s ease}
+.pk-social a:hover{opacity:.75}
+.pk-social a:active{transform:scale(.88)}
+.pk-social svg{width:100%;height:100%;display:block}
+.pk-legal{display:flex;align-items:center;justify-content:center;gap:16px}
+.pk-link{font-size:15px;font-weight:500;line-height:1.45;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
+.pk-link:hover{opacity:.72}
+.pk-link:active,.pk-link.go{transform:scale(.94);opacity:.6}
+.pk-line{width:100%;height:1px;border-radius:1px;background:currentColor;opacity:.2}
+.pk-text{font-size:15px;font-weight:500;line-height:1.45}
+.pk-note{font-size:15px;font-weight:700;line-height:1.45;opacity:.6}
+@media (max-width:700px){
+  footer.pk-footer{min-height:0;padding:10px 14px calc(8px + env(safe-area-inset-bottom,0px));gap:5px}
+  .pk-social a{width:22px;height:22px}
+  .pk-title{font-size:12px}
+  .pk-link,.pk-text,.pk-note{font-size:9px}
+  .pk-legal{gap:12px}
 }
+@media (max-width:420px){
+  .pk-title{font-size:11px}
+  .pk-link,.pk-text,.pk-note{font-size:8px}
+}`;
 
-footer.pk-footer::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  opacity:0;
-  background:radial-gradient(
-    ellipse 300px 200px at var(--mx,50%) var(--my,50%),
-    rgba(255,255,255,.13),
-    transparent 75%
-  );
-  transition:opacity .35s ease;
-}
-
-@media(hover:hover){
-  footer.pk-footer:hover::before{opacity:1}
-}
-
-footer.pk-footer>*{
-  position:relative;
-  z-index:1;
-}
-
-footer.pk-footer a{
-  color:inherit;
-  text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
-}
-
-/* BRAND */
-.pk-footer-brand{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  gap:7px;
-}
-
-.pk-footer-brand-name{
-  font-size:24px;
-  font-weight:800;
-  letter-spacing:-.8px;
-  line-height:1.3;
-}
-
-.pk-footer-subtitle{
-  font-size:13px;
-  font-weight:500;
-  opacity:.7;
-  line-height:1.5;
-}
-
-/* SOCIAL ICONS */
-.pk-footer-social{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-}
-
-.pk-footer-social a{
-  width:44px;
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:rgba(255,255,255,.13);
-  transition:transform .25s ease,background .25s ease;
-}
-
-.pk-footer-social a svg{
-  width:21px;
-  height:21px;
-  display:block;
-}
-
-.pk-footer-social a:hover{
-  transform:translateY(-3px);
-  background:rgba(255,255,255,.25);
-}
-
-.pk-footer-social a:active{
-  transform:scale(.92);
-}
-
-/* DIVIDER */
-.pk-footer-line{
-  width:min(100%,1180px);
-  height:1px;
-  background:currentColor;
-  opacity:.15;
-}
-
-/* LINKS */
-.pk-footer-links{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:26px;
-}
-
-.pk-footer-link{
-  font-size:13px;
-  font-weight:600;
-  line-height:1.5;
-  transition:opacity .2s ease,transform .2s ease;
-}
-
-.pk-footer-link:hover{
-  opacity:.65;
-  transform:translateY(-1px);
-}
-
-.pk-footer-link:active,
-.pk-footer-link.go{
-  transform:scale(.96);
-  opacity:.6;
-}
-
-/* BOTTOM */
-.pk-footer-bottom{
-  width:min(100%,1180px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-}
-
-.pk-footer-copy{
-  font-size:12px;
-  font-weight:500;
-  line-height:1.5;
-  opacity:.7;
-}
-
-.pk-footer-author{
-  font-size:12px;
-  font-weight:600;
-  line-height:1.5;
-  transition:opacity .2s ease;
-}
-
-.pk-footer-author:hover{
-  opacity:.65;
-}
-
-.pk-footer-note{
-  font-size:11px;
-  font-weight:500;
-  line-height:1.5;
-  text-align:center;
-  opacity:.45;
-}
-
-.pk-footer a:focus-visible{
-  outline:2px solid currentColor;
-  outline-offset:4px;
-  border-radius:6px;
-}
-
-/* MOBILE */
-@media(max-width:700px){
-  footer.pk-footer{
-    margin:20px 0 0;
-    padding:30px 18px 120px;
-    gap:20px;
-  }
-
-  .pk-footer-brand-name{
-    font-size:21px;
-  }
-
-  .pk-footer-subtitle{
-    font-size:11px;
-  }
-
-  .pk-footer-social{
-    gap:12px;
-  }
-
-  .pk-footer-social a{
-    width:40px;
-    height:40px;
-  }
-
-  .pk-footer-social a svg{
-    width:19px;
-    height:19px;
-  }
-
-  .pk-footer-links{
-    gap:18px;
-  }
-
-  .pk-footer-link{
-    font-size:11px;
-  }
-
-  .pk-footer-bottom{
-    flex-direction:column;
-    text-align:center;
-    gap:5px;
-  }
-
-  .pk-footer-copy,
-  .pk-footer-author{
-    font-size:10px;
-  }
-
-  .pk-footer-note{
-    font-size:9px;
-  }
-}
-
-@media(max-width:360px){
-  footer.pk-footer{
-    padding-left:14px;
-    padding-right:14px;
-    gap:18px;
-  }
-
-  .pk-footer-brand-name{
-    font-size:19px;
-  }
-
-  .pk-footer-links{
-    gap:13px;
-  }
-}
-`;
-
+  /* ---------- HTML ---------- */
   var html = `
-    <div class="pk-footer-brand">
-      <div class="pk-footer-brand-name">πksel</div>
-      <div class="pk-footer-subtitle">İntellektual Oyunlar Platforması</div>
-    </div>
+<div class="pk-title">Unikal İntellektual Oyunlar Platforması</div>
 
-    <div class="pk-footer-social">
-      <a href="https://instagram.com/peaksel.az" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
-        </svg>
-      </a>
+<div class="pk-social">
+  <a href="https://www.instagram.com/peaksel.az/?action=follow" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=61595695732155/" target="_blank" rel="noopener noreferrer" aria-label="Facebook-da Peaksel.az səhifəsini izlə">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5h-2A3.5 3.5 0 0 0 10 8v2H8v3h2v7h3v-7h2.5l.5-3h-3V8.5c0-.8.4-1 1-1h1.5z"/></svg>
+  </a>
+  <a href="https://chat.whatsapp.com/CggG0l29Hnu3oeMqI0pVSh" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 20.8l1.5-4.6A8.7 8.7 0 1 1 8 19.5z"/><path d="M9.2 8.2c-.4.5-.5 1.3 0 2.3.9 1.9 2.4 3.4 4.3 4.3 1 .5 1.8.4 2.3 0l.5-.8c.1-.2.1-.4-.1-.5l-1.4-.8c-.2-.1-.4-.1-.5.1l-.5.6c-.9-.4-1.7-1.1-2.1-2l.6-.5c.2-.1.2-.3.1-.5l-.8-1.4c-.1-.2-.3-.2-.5-.1z" fill="currentColor" stroke="none"/></svg>
+  </a>
+</div>
 
-      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.8-.1-1.7-.2-2.6-.2-2.6 0-4.2 1.6-4.2 4.5V10H7.5v3h2.5v8h3.5z"/>
-        </svg>
-      </a>
+<div class="pk-legal">
+  <a class="pk-link" href="/mexfilik_ve_istifade_sertleri">Məxfilik Siyasəti</a>
+  <a class="pk-link" href="/mexfilik_ve_istifade_sertleri">İstifadə Şərtləri</a>
+</div>
 
-      <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.5 3.5A11.7 11.7 0 0 0 2.2 17.6L.8 23l5.6-1.4A11.7 11.7 0 0 0 22 11.7a11.6 11.6 0 0 0-1.5-8.2zM12 20.1a8.3 8.3 0 0 1-4.2-1.1l-.3-.2-3.3.8.9-3.2-.2-.3A8.3 8.3 0 1 1 12 20.1zm4.6-6.2c-.3-.2-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.2s-.7.9-.9 1.1c-.1.2-.3.2-.6.1-.3-.2-1.1-.4-2.1-1.3-.8-.7-1.3-1.6-1.5-1.9-.2-.3 0-.4.1-.5l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1s-.6-1.5-.8-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1s.9 2.3 1 2.5c.1.2 1.8 2.7 4.3 3.7.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.3-.1-.1-.3-.2-.5-.3z"/>
-        </svg>
-      </a>
-    </div>
+<div class="pk-line"></div>
+<div class="pk-text">©2026 πksel İntellektual Oyunlar Klubu</div>
+<a class="pk-text pk-link" href="https://www.instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">©Onur Əlizadə</a>
 
-    <div class="pk-footer-line"></div>
+<div class="pk-line"></div>
+<div class="pk-note">Bu saytda layihələndirilmiş unikal funksiyaların hər biri Müəllif hüquqları ilə qorunur.</div>`;
 
-    <div class="pk-footer-links">
-      <a class="pk-footer-link" href="/privacy">Məxfilik siyasəti</a>
-      <a class="pk-footer-link" href="/terms">İstifadə şərtləri</a>
-    </div>
+  /* ---------- Rejim (gündüz/gecə) ---------- */
+  function isDark() {
+    if (document.body && document.body.classList.contains("dark")) return true;
+    try { return localStorage.getItem("piksel-theme") === "dark"; } catch (e) { return false; }
+  }
 
-    <div class="pk-footer-line"></div>
-
-    <div class="pk-footer-bottom">
-      <div class="pk-footer-copy">© πksel — Bütün hüquqlar qorunur</div>
-      <a class="pk-footer-author" href="https://instagram.com/onurelzh" target="_blank" rel="noopener noreferrer">
-        Müəllif: Onur Əlizadə
-      </a>
-    </div>
-
-    <div class="pk-footer-note">
-      İntellektual oyunlar sevənlər üçün yaradılıb.
-    </div>
-  `;
+  function syncTheme() {
+    var d = isDark();
+    document.querySelectorAll("footer.pk-footer").forEach(function (f) {
+      f.classList.toggle("pk-dark", d);
+    });
+  }
 
   function build() {
-    document.querySelectorAll("footer").forEach(function(f) {
-      f.remove();
-    });
+    /* köhnə footer-ləri sil */
+    document.querySelectorAll("footer").forEach(function (f) { f.remove(); });
 
+    /* CSS (bir dəfə) */
     if (!document.getElementById("pk-footer-css")) {
-      var style = document.createElement("style");
-      style.id = "pk-footer-css";
-      style.textContent = css;
-      document.head.appendChild(style);
+      var st = document.createElement("style");
+      st.id = "pk-footer-css";
+      st.textContent = css;
+      document.head.appendChild(st);
     }
 
+    /* yeni footer — həmişə body-nin ən sonunda */
     var ft = document.createElement("footer");
     ft.className = "pk-footer";
     ft.innerHTML = html;
     document.body.appendChild(ft);
 
-    ft.addEventListener("pointermove", function(e) {
-      var rect = ft.getBoundingClientRect();
-      ft.style.setProperty("--mx", (e.clientX - rect.left) + "px");
-      ft.style.setProperty("--my", (e.clientY - rect.top) + "px");
+    /* rejimə uyğun rəng: indi və hər dəyişəndə */
+    syncTheme();
+    new MutationObserver(syncTheme).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("storage", syncTheme);
+
+    /* maus işığı */
+    ft.addEventListener("pointermove", function (e) {
+      var r = ft.getBoundingClientRect();
+      ft.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      ft.style.setProperty("--my", (e.clientY - r.top) + "px");
     });
 
-    ft.querySelectorAll(".pk-footer-links a").forEach(function(a) {
-      a.addEventListener("click", function(e) {
-        var href = a.getAttribute("href");
-        if (!href || href.charAt(0) !== "/") return;
+    /* Məxfilik / İstifadə Şərtləri: kiçik animasiya ilə keçid */
+    ft.querySelectorAll(".pk-legal a").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) return;
         e.preventDefault();
         a.classList.add("go");
-        setTimeout(function() {
-          window.location.href = href;
-        }, 220);
+        setTimeout(function () { location.href = a.href; }, 250);
       });
     });
   }
@@ -354,3 +133,5 @@ footer.pk-footer a{
     build();
   }
 })();
+
+atdigim html dizaynindan istifade ederek footeri yeniden tasarla
