@@ -1,0 +1,36 @@
+.page {
+  width: min(95vw, 820px);
+}
+
+@media (min-width: 1101px) {
+  .page {
+    width: min(95vw, 1200px);
+  }
+
+  .blur-content {
+    display: grid;
+    grid-template-areas:
+      "questions sidebar";
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    align-items: start;
+  }
+
+  .package-sidebar {
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #questionsContainer {
+    grid-area: questions;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .blur-content {
+    display: flex;
+    flex-direction: column;
+  }
+}
