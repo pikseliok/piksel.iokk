@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "peaksel-admin-publisher",
+  "main": "src/index.js",
+  "compatibility_date": "2025-01-01",
+  "workers_dev": true,
+  "vars": {
+    "REPO_OWNER": "pikseliok",
+    "REPO_NAME": "piksel.iokk",
+    "REPO_BRANCH": "main",
+    "GOOGLE_CLIENT_ID": "",
+    "ALLOWED_ORIGINS": "https://peaksel.az,https://www.peaksel.az"
+  }
+}

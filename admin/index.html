@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>πksel — Admin paneli</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="/admin/config.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/admin/admin.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">πksel</a>
+      <span>Admin paneli</span>
+      <button id="signOut" class="button button-quiet" type="button" hidden>Çıxış</button>
+    </header>
+
+    <section id="loginPanel" class="panel login-panel">
+      <p class="eyebrow">Təhlükəsiz giriş</p>
+      <h1>Google hesabı ilə daxil olun</h1>
+      <p class="muted">Yalnız admin siyahısındakı təsdiqlənmiş hesablar paketləri idarə edə bilər.</p>
+      <div id="googleButton"></div>
+      <p id="configWarning" class="notice notice-warn" hidden></p>
+      <p id="loginStatus" class="status" role="status"></p>
+    </section>
+
+    <section id="cmsPanel" hidden>
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">GitHub-da saxlanılır</p>
+          <h1>Suallar paketləri</h1>
+          <p class="muted">Dəyişikliklər GitHub-a bir commit kimi göndərilir; ayrıca kontent bazası yoxdur.</p>
+        </div>
+        <button id="newPackage" class="button button-primary" type="button">+ Yeni paket</button>
+      </div>
+      <p id="cmsStatus" class="status" role="status"></p>
+      <div class="workspace">
+        <aside class="panel package-list">
+          <h2>Yayımlanmış paketlər</h2>
+          <div id="packageList"></div>
+        </aside>
+        <section class="panel editor">
+          <div class="editor-heading">
+            <div>
+              <p class="eyebrow">Paket redaktoru</p>
+              <h2 id="editorTitle">Yeni paket</h2>
+            </div>
+            <button id="deletePackage" class="button button-danger" type="button" hidden>Sil</button>
+          </div>
+          <form id="packageForm">
+            <div class="form-grid">
+              <label class="field">
+                <span>Paketin adı</span>
+                <input name="title" maxlength="200" required>
+              </label>
+              <label class="field">
+                <span>Slug (URL)</span>
+                <input name="id" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="numune-paketi" required>
+              </label>
+              <label class="field">
+                <span>Format</span>
+                <select name="type" required>
+                  <option value="nhn">Nə? Harada? Nə Zaman?</option>
+                  <option value="breyn">Breyn Rinq</option>
+                  <option value="xemse">Xəmsə</option>
+                  <option value="ferdi">Fərdi Oyun</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Tarix</span>
+                <input name="date" type="date" required>
+              </label>
+              <label class="field field-wide">
+                <span>Şəkil linki (istəyə görə)</span>
+                <input name="icon" type="text" placeholder="https://... və ya /images/...">
+              </label>
+            </div>
+            <div class="content-heading">
+              <div>
+                <h3>Sual məzmunu</h3>
+                <p class="muted">Xəmsə formatında hər mövzuda dəqiq 5 sual və müəllif tələb olunur.</p>
+              </div>
+              <button id="addSection" class="button button-secondary" type="button">+ Tur/bölmə</button>
+            </div>
+            <div id="sections"></div>
+            <div class="form-actions">
+              <button class="button button-primary" type="submit">GitHub-da yayımla</button>
+              <button id="resetForm" class="button button-quiet" type="button">Təmizlə</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

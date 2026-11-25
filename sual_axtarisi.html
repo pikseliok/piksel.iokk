@@ -387,6 +387,7 @@ $("goBtn").addEventListener("click",doSearch);
 $("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch()});
 
 function hl(html,on){
+  html=sanitizeRichText(html);
   if(!on||!terms.length)return html;
   const fold=S.eng?foldE:foldN;
   const box=document.createElement("div");box.innerHTML=html;
@@ -403,6 +404,44 @@ function hl(html,on){
     fr.append(txt.slice(last));n.replaceWith(fr);
   });
   return box.innerHTML;
+}
+
+function escapeHtmlText(value){
+  return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function sanitizeRichText(value){
+  const template=document.createElement("template");
+  template.innerHTML=String(value||"");
+  const safeTags=new Set(["A","B","BLOCKQUOTE","BR","CAPTION","CODE","DIV","EM","FONT","H1","H2","H3","HR","I","IMG","LI","OL","P","PRE","SMALL","SPAN","STRONG","SUB","SUP","TABLE","TBODY","TD","TH","THEAD","TR","U","UL"]);
+  const safeUrl=(value,image)=>{
+    try{
+      const url=new URL(value,location.href);
+      if(url.protocol==="https:"||(!image&&url.protocol==="mailto:"))return true;
+      return !/^[a-z][a-z0-9+.-]*:/i.test(value)&&url.origin===location.origin;
+    }catch{return false}
+  };
+  function clean(parent){
+    for(const child of [...parent.children]){
+      if(!safeTags.has(child.tagName)){
+        if(["SCRIPT","STYLE","IFRAME","OBJECT","EMBED","SVG","MATH"].includes(child.tagName))child.remove();
+        else child.replaceWith(document.createTextNode(child.textContent||""));
+        continue;
+      }
+      for(const attribute of [...child.attributes]){
+        const allowed=child.tagName==="A"&&["href","title"].includes(attribute.name)||child.tagName==="IMG"&&["src","alt","title","width","height"].includes(attribute.name);
+        if(!allowed)child.removeAttribute(attribute.name);
+      }
+      if(child.tagName==="A"){
+        if(!child.hasAttribute("href")||!safeUrl(child.getAttribute("href"),false))child.removeAttribute("href");
+        child.target="_blank";
+        child.rel="noopener noreferrer";
+      }
+      if(child.tagName==="IMG"&&(!child.hasAttribute("src")||!safeUrl(child.getAttribute("src"),true)))child.remove();
+      clean(child);
+    }
+  }
+  clean(template.content);
+  return template.innerHTML;
 }
 
 const ICON='<span aria-hidden="true" class="card-icon"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9.5C4 8.119 5.119 7 6.5 7H12L14.5 10H25.5C26.881 10 28 11.119 28 12.5V23.5C28 24.881 26.881 26 25.5 26H6.5C5.119 26 4 24.881 4 23.5V9.5Z" fill="currentColor"/></svg></span>';
@@ -437,7 +476,7 @@ function renderInner(anim,msg){
         if(anim)w.style.setProperty("--i",Math.min(i,8)+1);
         const tn=(x.p.topics&&x.p.topics[x.t])||"";
         const au=[...new Set((x.p.tours[x.t]||[]).map(z=>fixAuthor(z.author)).filter(Boolean))].join(", ");
-        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>${tn?`<div class="topic-line${rs}"><b>${x.t}.</b> ${hl(tn,S.fields.has("t"))}</div>`:""}<div class="group-inner"></div><div class="group-author${rs}"><span class="ans-label">Müəllif:</span> ${S.author?hl(au,true):au}</div>`;
+        w.innerHTML=`<a class="pkg-link${rs}" href="${x.p.link}">${ICON}<span class="pkg-name">${escapeHtmlText(x.p.title)}</span></a>${tn?`<div class="topic-line${rs}"><b>${x.t}.</b> ${hl(tn,S.fields.has("t"))}</div>`:""}<div class="group-inner"></div><div class="group-author${rs}"><span class="ans-label">Müəllif:</span> ${hl(au,S.author)}</div>`;
         qc.appendChild(w);
         grp={key,inner:w.querySelector(".group-inner")};
       }
@@ -446,7 +485,7 @@ function renderInner(anim,msg){
     card.className="q-card glow"+f2;card.id="q-card-"+i;
     if(anim&&!grouped)card.style.setProperty("--i",Math.min(i,8)+1);
     const req=q.reqImg?`<b>Rekvizit:</b><br><div class="req-img-wrapper"><img src="${q.reqImg}" class="req-img" alt="" onclick="toggleZoom(this,event)"></div>`:"";
-    const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${q.handout}</div>`:"";
+    const hand=q.handout?`<div class="mat-row"><b>Paylama materialı:</b> ${hl(q.handout,false)}</div>`:"";
     const qh=hl(q.question,S.fields.has("q"));
     /* Xəmsə / Fərdi: sual nömrəsi mövzu daxilində (1,2,3...) */
     const qn=grouped?((x.p.tours[x.t]||[]).indexOf(q)+1||i+1):g+1;
@@ -454,13 +493,13 @@ function renderInner(anim,msg){
     const crit=q.criteria?`<div class="ans-row"><span class="ans-label">Sayılma meyarı:</span> ${hl(q.criteria,S.fields.has("a"))}</div>`:"";
     const com=q.comment?`<div class="ans-row"><span class="ans-label">Şərh:</span> ${hl(q.comment,S.fields.has("c"))}</div>`:"";
     const ximg=q.extraImage?`<div class="req-img-wrapper" style="margin:8px 0"><img src="${q.extraImage}" class="req-img extra" alt="" onclick="toggleZoom(this,event)"></div>`:"";
-    const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${q.source}</div>`:"";
-    const auth=S.author?hl(q.author||"",true):(q.author||"");
+    const src=q.source?`<div class="ans-row"><span class="ans-label">Mənbə:</span> ${hl(q.source,false)}</div>`:"";
+    const auth=hl(q.author||"",S.author);
     const copyBtn=`<button class="copy-btn" type="button" onclick="copyQuestion(${g},this,${qn})" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>`;
     const authBlock=grouped
       ?`<div class="ans-row author-row"><span></span>${copyBtn}</div>`
       :`<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>${copyBtn}</div>`;
-    card.innerHTML=`${grouped?"":`<a class="pkg-link${r2}" href="${x.p.link}">${ICON}<span class="pkg-name">${x.p.title}</span></a>`}
+    card.innerHTML=`${grouped?"":`<a class="pkg-link${r2}" href="${x.p.link}">${ICON}<span class="pkg-name">${escapeHtmlText(x.p.title)}</span></a>`}
 <div class="q-text${r2}" role="button" tabindex="0" aria-expanded="false" onclick="qTextClick(event,${i})" onkeydown="qTextKey(event,${i})">${body}</div>
 <div class="ans-panel"><div class="ans-row"><span class="ans-label">Cavab:</span> ${hl(q.answer,S.fields.has("a"))}</div>${crit}${com}${ximg}${src}
 ${authBlock}</div>`;

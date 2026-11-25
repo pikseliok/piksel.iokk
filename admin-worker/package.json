@@ -1,0 +1,8 @@
+{
+  "name": "peaksel-admin-publisher",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
