@@ -3272,5 +3272,5 @@ V("Maykl Cordanın \"Çikaqo Bullz\"dan ayrıldığı mövsümündən bəhs edə
 }});
 })();
 /* CMS_PACKAGE:hahshshd:START */
-window.SUAL_DATA.push({"id":"hahshshd","title":"Salam","type":"nhn","date":"2026-11-25","link":"/hahshshd","tours":{"1":[{"question":"zhhshdhdhf","answer":"sbbdbdhdh","comment":"dndnjdjfj","source":"dbhdhfhf","criteria":"dnfjfjf","handout":"","reqImg":"","extraImage":"","author":""},{"question":"hjskekked","answer":"jjfskd","comment":"","source":"","criteria":"","handout":"","reqImg":"","extraImage":"","author":""}]}});
+window.SUAL_DATA.push({"id":"hahshshd","title":"Salam","type":"nhn","date":"2026-11-25","link":"/hahshshd","tours":{"1":[{"question":"zhhshdhdhf","answer":"sbbdbdhdh","comment":"dndnjdjfj","source":"dbhdhfhf","criteria":"dnfjfjf","handout":"","reqImg":"","extraImage":"","author":""}]}});
 /* CMS_PACKAGE:hahshshd:END */
