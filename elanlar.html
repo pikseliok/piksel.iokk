@@ -206,3 +206,10 @@ addEventListener("resize",fitFees);document.fonts&&document.fonts.ready.then(fit
 document.addEventListener("visibilitychange",()=>{clearTimeout(timer);if(document.hidden){autoOff=true;return}busy=false;go(items.length>1?idx+1:0,false)});
 addEventListener("blur",()=>{autoOff=true;clearTimeout(timer)});
 load(),setInterval(()=>{var e=activeOnly(items);e.length!==items.length&&(items=e,items.length?(build(),sched()):showMsg("Hələ kubok əlavə olunmayıb"))},6e4)</script><script src=/footer.js?v=d768381></script><script>(function(){document.querySelectorAll("a.nb").forEach(function(link){link.addEventListener("click",function(event){if(event.ctrlKey||event.metaKey||event.shiftKey)return;event.preventDefault();link.classList.remove("pop");void link.offsetWidth;link.classList.add("pop");setTimeout(function(){location.href=link.getAttribute("href")},500)})})})()</script>
+<style>
+:root{--t:24px;--b:15px;--c:15px}
+@media(min-width:701px){:root{--t:24px;--b:15px;--c:15px}}
+@media(max-width:700px){:root{--t:17px;--b:13px;--c:15px}}
+@media(max-width:420px){:root{--t:15px;--b:11px;--c:15px}}
+@media(max-width:700px){body{display:flex;flex-direction:column}.page{flex:1;min-height:100vh;min-height:100svh}}
+</style>
