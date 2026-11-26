@@ -27,7 +27,7 @@ a,button,input{font:inherit}
 a{color:inherit;text-decoration:none}
 .page{width:calc(100% - 32px);max-width:1180px;margin:0 auto;padding:16px 0 32px;flex:1 0 auto}
 .frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
-.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
+.rise{  animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;  animation-delay:calc(var(--d,0s) + .55s); }
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
 @keyframes riseIn{from{opacity:0;transform:translateY(26px)}}
 
@@ -166,6 +166,7 @@ footer a:hover{opacity:.72;transform:translateY(-1px)}
    <div class="frame box glow center" style="--i:2"><h2>Oyunçu sayı:</h2>
     <input class="in" id="pc" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="məs. 10">
     <div class="actions"><button class="btn" id="pNext" type="button">Davam</button></div>
+</div>
    </div>
   </section>
 
