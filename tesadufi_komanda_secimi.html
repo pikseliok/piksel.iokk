@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#9DC3FF">
+<meta name="theme-color" content="#b8d5ff">
+<script>!function(){try{var e=localStorage.getItem("piksel-theme");if("dark"===e||"light"!==e&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}}()</script>
 <title>  πksel - Təsadüfi komanda seçimi </title>
 <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{--page:#9DC3FF;--c1:#001E6F;--c2:#002E92;--fg:#9DC3FF;--accent:#001E6F;--glow:rgba(0,8,45,.30);--grad:linear-gradient(135deg,var(--c1) 0%,var(--c2) 50%,var(--c1) 100%)}
-body.dark{--page:#00072C;--c1:#9DC3FF;--c2:#6FA5FC;--fg:#00072C;--accent:#9DC3FF;--glow:rgba(255,255,255,.40)}
+body{--page:#b8d5ff;--c1:#00269C;--c2:#00269C;--fg:#b8d5ff;--accent:#00269C;--glow:rgba(0,20,110,.18);--grad:var(--c1);--nav:rgba(255,255,255,.35);--navb:rgba(17,92,251,.2);--glass:rgba(255,255,255,.38);--glass-border:rgba(255,255,255,.58)}
+body.dark{--page:#000521;--c1:#6ca2f9;--c2:#6ca2f9;--fg:#000521;--accent:#6ca2f9;--glow:rgba(108,162,249,.22);--grad:var(--c1);--nav:rgba(108,162,249,.2);--navb:rgba(108,162,249,.2);--glass:rgba(0,9,34,.5);--glass-border:rgba(108,162,249,.24)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 a,button{-webkit-touch-callout:none}
 a,button,input,div,span{outline:none}
 a:focus,a:focus-visible,button:focus,button:focus-visible,input:focus,input:focus-visible{outline:none!important}
 html{min-height:100%}
-body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--fg);font-family:Poppins,sans-serif;overflow-x:hidden;transition:background .65s ease;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--page);color:var(--accent);font-family:Montserrat,system-ui,sans-serif;overflow-x:hidden;transition:background .65s ease,color .65s ease;-webkit-font-smoothing:antialiased}
+html{background:#b8d5ff}
+html.dark{background:#000521}
+html.dark body{--page:#000521;--c1:#6ca2f9;--c2:#6ca2f9;--fg:#000521;--accent:#6ca2f9;--grad:var(--c1);--nav:rgba(108,162,249,.2);--navb:rgba(108,162,249,.2);--glass:rgba(0,9,34,.5);--glass-border:rgba(108,162,249,.24);background:var(--page);color:var(--accent)}
 a,button,input{font:inherit}
 a{color:inherit;text-decoration:none}
-.page{width:min(95vw,820px);margin:0 auto;padding:12px 0 32px;flex:1 0 auto}
+.page{width:calc(100% - 32px);max-width:1180px;margin:0 auto;padding:16px 0 32px;flex:1 0 auto}
 .frame{--d:calc(var(--i) * .1s);animation:frameIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:var(--d)}
 .rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--d) + .55s)}
 @keyframes frameIn{from{opacity:0;transform:translateY(28px)}}
@@ -85,7 +89,7 @@ h2{font-size:20px;line-height:1.2;font-weight:700;letter-spacing:-.5px;text-alig
 .tcard{background:var(--grad);color:var(--fg);border-radius:28px;padding:18px 18px 20px;box-shadow:0 10px 25px rgba(0,20,110,.07);min-width:0}
 .tcard h3{font-size:20px;font-weight:700;letter-spacing:-.4px;text-align:center}
 .chip{margin-top:8px;padding:8px 14px;border-radius:40px;text-align:center;font-weight:500;font-size:16px;overflow-wrap:anywhere;background:color-mix(in srgb,var(--fg) 14%,transparent);border:2px solid color-mix(in srgb,var(--fg) 28%,transparent)}
-.back{display:none;justify-content:center;margin-top:18px}
+.back{display:none;justify-content:center;align-items:center;gap:12px;margin-top:18px}
 
 @media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}}
 @media (max-width:700px){
@@ -112,6 +116,30 @@ h2{font-size:17px}
 .theme-icon{width:20px;height:20px}
 .card-title{font-size:15px}
 }
+
+.navbar{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:900;display:flex;gap:10px;padding:8px;border-radius:44px;background:var(--nav);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:0 10px 30px rgba(0,20,110,.18),inset 0 0 0 1px rgba(255,255,255,.25);animation:navIn .8s cubic-bezier(.18,.8,.24,1) .6s backwards}
+@keyframes navIn{from{opacity:0;transform:translate(-50%,60px)}}
+.nb{width:56px;height:56px;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--accent);background:var(--navb);transition:transform .25s ease,background .4s ease,color .4s ease}
+.nb:hover{transform:translateY(-3px)}.nb:active{transform:scale(.92)}
+.nb svg{width:28px;height:28px;fill:currentColor;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nb .search-i{fill:none;stroke-width:1.9}
+.navbar .theme-toggle{position:relative;inset:auto;transform:none;width:56px;height:56px;border:0;border-radius:50%;background:var(--navb);color:var(--accent)}
+.navbar .theme-toggle:hover{transform:translateY(-3px)}.navbar .theme-toggle:active{transform:scale(.92)}
+.navbar .theme-icon{width:28px;height:28px;animation:none}
+body.dark .navbar{background:rgba(0,9,34,.72)}
+body.dark .nb{background:var(--navb);color:var(--accent)}
+.pbtn#fast,.pbtn#skip,.pbtn#dl,.pbtn#restart,.pbtn#reroll{color:var(--accent);background:var(--glass);border:1px solid var(--glass-border);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 8px 22px rgba(0,20,110,.12),inset 0 0 0 1px rgba(255,255,255,.18)}
+.pbtn#fast:hover,.pbtn#skip:hover,.pbtn#dl:hover,.pbtn#restart:hover,.pbtn#reroll:hover{background:color-mix(in srgb,var(--glass) 80%,white);box-shadow:0 10px 26px rgba(0,20,110,.16),inset 0 0 0 1px rgba(255,255,255,.26)}
+body.dark .pbtn#fast:hover,body.dark .pbtn#skip:hover,body.dark .pbtn#dl:hover,body.dark .pbtn#restart:hover,body.dark .pbtn#reroll:hover{background:rgba(108,162,249,.24)}
+.glow::before{display:none!important}
+footer{min-height:110px;padding:20px 12px calc(96px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:var(--grad);color:var(--fg);font-size:15px;line-height:1.4;font-weight:500}
+footer a{transition:opacity .25s ease,transform .25s ease}
+footer a:hover{opacity:.72;transform:translateY(-1px)}
+@media(max-width:700px){.page{width:calc(100% - 24px);padding:10px 0 26px;min-height:calc(100vh + 80px);min-height:calc(100svh + 80px)}.navbar{gap:8px}.nb,.navbar .theme-toggle{width:52px;height:52px}.navbar .theme-icon,.nb svg{width:26px;height:26px}footer{min-height:96px;padding:16px 12px calc(88px + env(safe-area-inset-bottom,0px));font-size:13px}}
+@media(max-width:600px){.back{flex-direction:column-reverse}}
+@media(max-width:420px){.page{width:calc(100% - 24px)}.card-title{font-size:15px}.navbar{gap:7px}.nb,.navbar .theme-toggle{width:48px;height:48px}.navbar .theme-icon,.nb svg{width:24px;height:24px}footer{min-height:88px;font-size:11px}}
+@media(max-width:360px){.navbar{gap:6px;padding:7px}.nb,.navbar .theme-toggle{width:44px;height:44px}.navbar .theme-icon,.nb svg{width:22px;height:22px}#tools{gap:8px}#fast,#skip{min-width:0;padding:0 18px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -119,9 +147,11 @@ h2{font-size:17px}
 <!-- πksel loqosu: öz səhifənizdəki <svg><defs><symbol id="pkLogo">...</symbol></defs></svg> blokunu bura yapışdırın (endirilən şəkil üçün) -->
 
 <div class="page">
- <nav class="frame top-nav" style="--i:0" aria-label="Əsas naviqasiya">
-  <div class="rise nav-links"><a href="/" class="nav-link">Əsas Səhifə</a><a href="elaqe" class="nav-link">Bizimlə Əlaqə</a></div>
-  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Gecə rejiminə keç"><svg class="rise theme-icon" id="themeIcon" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg></button>
+ <nav class="navbar" aria-label="Əsas naviqasiya">
+  <a href="/" class="nb" aria-label="Əsas Səhifə" title="Əsas Səhifə"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.4l8 6.8V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19z" stroke-width="2.2"/></svg></a>
+  <a href="sual_axtarisi" class="nb" aria-label="Sual axtarışı" title="Sual axtarışı"><svg viewBox="0 0 24 24" class="search-i" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20.5 20.5 16 16"/></svg></a>
+  <a href="elaqe" class="nb" aria-label="Bizimlə əlaqə" title="Bizimlə əlaqə"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 3.6h2.5c.5 0 .9.3 1 .8l.5 2.7c.1.4-.1.8-.4 1l-1.5 1.2a11.5 11.5 0 0 0 5.2 5.2l1.2-1.5c.3-.3.7-.5 1-.4l2.7.5c.5.1.8.5.8 1v2.5c0 1-.8 1.8-1.8 1.8C10.6 18.4 5 12.8 5 5.4c0-1 .8-1.8 1.8-1.8z" stroke-width="1.4"/></svg></a>
+  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Gecə rejiminə keç"><svg class="theme-icon" id="themeIcon" viewBox="0 0 32 32" aria-hidden="true"><defs><mask id="biteMask" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/><circle class="bite" cx="21" cy="11" r="7.5" fill="#000"/></mask></defs><g class="rays"><g transform="rotate(0 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(45 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(90 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(135 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(180 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(225 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(270 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g><g transform="rotate(315 16 16)"><line class="ray" x1="16" y1="3.5" x2="16" y2="6.5"/></g></g><g mask="url(#biteMask)"><circle class="core" cx="16" cy="16" r="9" fill="currentColor"/></g></svg></button>
  </nav>
 
  <main>
@@ -161,10 +191,16 @@ h2{font-size:17px}
     <button class="pbtn" id="dl" type="button" title="Endir" aria-label="Endir"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg></button>
    </div>
    <div id="teams"></div>
-   <div class="back" id="backD"><button class="pbtn" id="restart" type="button">Yenidən başla</button></div>
+   <div class="back" id="backD"><button class="pbtn" id="restart" type="button">Yeni püşk</button><button class="pbtn" id="reroll" type="button">Püşkü yenidən at</button></div>
   </section>
  </main>
 </div>
+
+<footer>
+ <div>Unikal İntellektual Oyunlar Platforması</div>
+ <a href="https://www.instagram.com/piksel.iok" rel="noopener noreferrer" target="_blank">©πksel intellektual oyunlar klubu</a>
+ <a href="https://www.instagram.com/onurelzh" rel="noopener noreferrer" target="_blank">©Onur Əlizadə</a>
+</footer>
 
 <script src="footer.js?v=d768381"></script>
 
@@ -183,14 +219,11 @@ document.addEventListener('keydown',e=>{
 /* ===== TEMA ===== */
 const themeToggle=$('#themeToggle'),rays=[...document.querySelectorAll('.ray')];
 function animateRays(n){rays.forEach(e=>{e.getAnimations().forEach(a=>a.cancel());const t=e.animate(n?[{transform:'translateY(0)',opacity:1},{transform:'translateY(-14px)',opacity:0}]:[{transform:'translateY(11px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:n?520:620,delay:n?0:180,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});t.onfinish=()=>t.cancel()})}
-function setTheme(d,anim){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}themeToggle.setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');if(anim)animateRays(d)}
+function setTheme(d,anim){document.documentElement.classList.toggle('dark',d);document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}themeToggle.setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');if(anim)animateRays(d)}
 (function(){let v=null;try{v=localStorage.getItem('piksel-theme')}catch(e){}
  if(v==='dark')setTheme(true,false);else if(v==='light')setTheme(false,false);else setTheme(!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),false)})();
 themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark'),true));
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('ready')));
-
-/* ===== SİÇAN İŞIĞI ===== */
-document.addEventListener('pointermove',e=>{const n=e.target.closest&&e.target.closest('.glow');if(!n)return;const t=n.getBoundingClientRect();n.style.setProperty('--mx',e.clientX-t.left+'px');n.style.setProperty('--my',e.clientY-t.top+'px')});
 
 /* ===== EKRANLAR ===== */
 async function go(id){
@@ -219,7 +252,7 @@ $('#pNext').onclick=async()=>{
  await go('s-names');ins[0].focus();
 };
 $('#nBack').onclick=()=>go('s-pcount');
-$('#restart').onclick=()=>{$('#pc').value='';go('s-pcount')};
+$('#restart').onclick=()=>{players=[];T=[];st={};grid.innerHTML='';$('#pc').value='';$('#cnt').value='';go('s-pcount')};
 
 /* ===== OYUNÇU ADLARI ===== */
 let players=[];
@@ -260,6 +293,7 @@ function initDraw(n){
  o.forEach((p,i)=>T[i%n].m.push(p));
  runDraw();
 }
+$('#reroll').onclick=()=>initDraw(T.length);
 async function runDraw(){
  st={fast:false,skip:false};const M=$('#teams');let i=0;
  for(;i<T.length&&!st.skip;i++){
@@ -309,11 +343,11 @@ $('#dl').onclick=async()=>{
    const x=P+off+j*(CW+GAP),ch=h(t);
    const gr=g.createLinearGradient(x,y,x+CW,y+ch);gr.addColorStop(0,v('--c1'));gr.addColorStop(.5,v('--c2'));gr.addColorStop(1,v('--c1'));
    rr(x,y,CW,ch,26);g.fillStyle=gr;g.fill();
-   g.fillStyle=v('--fg');g.font='700 22px Poppins,sans-serif';g.fillText(t.n,x+CW/2,y+TH/2+4);
+   g.fillStyle=v('--fg');g.font='700 22px Montserrat,sans-serif';g.fillText(t.n,x+CW/2,y+TH/2+4);
    t.m.forEach((m,q)=>{
     const cy=y+TH+q*MH;
     g.globalAlpha=.16;rr(x+14,cy,CW-28,MH-8,(MH-8)/2);g.fillStyle=v('--fg');g.fill();g.globalAlpha=1;
-    g.fillStyle=v('--fg');g.font='500 17px Poppins,sans-serif';
+    g.fillStyle=v('--fg');g.font='500 17px Montserrat,sans-serif';
     let s=m;while(g.measureText(s).width>CW-60&&s.length>3)s=s.slice(0,-2);if(s!==m)s=s.trimEnd()+'…';
     g.fillText(s,x+CW/2,cy+(MH-8)/2+1);
    });
