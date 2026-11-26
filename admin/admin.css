@@ -4,6 +4,7 @@
   color: #172033;
   background: #f3f5f9;
   font-synthesis: none;
+  --anim-dur: 0.5s;
 }
 
 * { box-sizing: border-box; }
@@ -68,6 +69,20 @@ h3 { margin-bottom: 6px; font-size: 17px; }
 .button-quiet { border-color: #d0d5dd; color: #344054; background: #fff; }
 .button-danger { border-color: #fecdca; color: #b42318; background: #fff5f4; }
 .button-small { min-height: 32px; padding: 6px 9px; color: #475467; background: white; border-color: #d0d5dd; font-size: 12px; }
+
+/* Giriş/çıxış animasiyası (0.5 san) */
+.anim-panel {
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity var(--anim-dur) ease, transform var(--anim-dur) ease;
+}
+.anim-panel.is-open {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-panel { transition: none; }
+}
 
 @media (max-width: 850px) {
   .shell { padding: 14px 14px 40px; }
