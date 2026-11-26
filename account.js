@@ -535,7 +535,7 @@
       ".pa-score{display:inline-flex;max-width:100%;margin:6px 0!important;padding:6px 10px;border:1px solid var(--pa-frame-color);border-radius:12px;background:var(--pa-surface)}",
       ".pa-primary,.pa-secondary,.pa-signout,.pa-remove{border-color:var(--pa-frame-color);background:var(--pa-dialog-bg)}",
       ".pa-error{border:1px solid rgba(255,255,255,.38)}",
-      ".pa-menu:not([hidden]){animation-duration:.5s}.pa-menu button{animation-duration:.42s}.pa-menu button:nth-child(2){animation-delay:40ms}.pa-menu button:nth-child(3){animation-delay:80ms}.pa-menu.pa-closing{animation:pa-menu-in .5s cubic-bezier(.16,1,.3,1) reverse both;pointer-events:none}.pa-dialog[open]{animation-duration:.5s}.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]){animation-duration:.5s}.pa-dialog.pa-closing[open]{animation:pa-dialog-in .5s cubic-bezier(.16,1,.3,1) reverse both;pointer-events:none}.pa-dialog.pa-closing[open] .pa-panel:not([hidden]),.pa-dialog.pa-closing[open] .pa-section:not([hidden]){animation:pa-panel-in .5s ease reverse both}.pa-dialog.pa-closing::backdrop{animation:pa-backdrop-in .5s ease reverse both}",
+      ".pa-menu:not([hidden]){animation-duration:.5s}.pa-menu button{animation-duration:.42s}.pa-menu button:nth-child(2){animation-delay:40ms}.pa-menu button:nth-child(3){animation-delay:80ms}.pa-menu.pa-closing{animation:pa-menu-out .5s cubic-bezier(.16,1,.3,1) both;pointer-events:none}@keyframes pa-menu-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-8px) scale(.97)}}@keyframes pa-dialog-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(16px) scale(.97)}}@keyframes pa-panel-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}@keyframes pa-backdrop-out{from{opacity:1}to{opacity:0}}.pa-dialog[open]{animation-duration:.5s}.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]){animation-duration:.5s}.pa-dialog.pa-closing[open]{animation:pa-dialog-out .5s cubic-bezier(.16,1,.3,1) both;pointer-events:none}.pa-dialog.pa-closing[open] .pa-panel:not([hidden]),.pa-dialog.pa-closing[open] .pa-section:not([hidden]){animation:pa-panel-out .5s ease both}.pa-dialog.pa-closing::backdrop{animation:pa-backdrop-out .5s ease both}",
       // Saytın şrift və mətn ölçüsü dəyişənlərinə uyğunlaşdırma
       ".pa-dialog,.pa-menu,.pa-trigger,.pa-dialog button,.pa-dialog input{font-family:var(--font,'Poppins',system-ui,sans-serif)}",
       ".pa-dialog{font-size:calc(var(--ct,25px)*.62);line-height:1.5}",
@@ -545,8 +545,7 @@
       ".pa-profile-name{font-size:calc(var(--ct,25px)*.64)}",
       ".pa-stat strong{font-size:calc(var(--ct,25px)*.95)}",
       ".pa-primary,.pa-secondary,.pa-signout,.pa-remove{font-size:calc(var(--ct,25px)*.52)}",
-      ".pa-trigger{font-size:calc(var(--ct,25px)*.6);color:var(--fg,#b8d5ff)}",
-      ".pa-avatar{background:var(--c1,#00269C);color:var(--fg,#b8d5ff)}",
+      ".pa-trigger{font-size:calc(var(--ct,25px)*.6)}",
       "@media(prefers-reduced-motion:reduce){.pa-trigger-name[data-typing=true]::after,.pa-menu:not([hidden]),.pa-menu button,.pa-menu.pa-closing,.pa-dialog[open],.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]),.pa-dialog::backdrop{animation:none!important}}"
     ].join("");
     document.head.appendChild(style);
