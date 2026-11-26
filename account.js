@@ -3,19 +3,25 @@
 
   var API = "https://piksel-nhn.pikseliok.workers.dev";
   var SESSION_KEY = "piksel-account-session-v1";
-  var state = { clientId: "", session: null, profile: null, results: [], packages: [] };
+  var state = { clientId: "", session: null, profile: null, results: [] };
   var currentWelcomeText = null;
   var welcomeAnimationTimer = null;
   var menuCloseTimer = null;
   var dialogCloseTimer = null;
   var queue = window.PikselAccountQueue = window.PikselAccountQueue || [];
-  var expandedPackageIds = new Set();
   var activeView = "signin";
   var trigger, triggerName, triggerAvatar, menu, dialog, dialogTitle, statusNode, googleButton;
   var signInPanel, accountPanel, profilePanel, statsPanel, profileNameInput;
-  var profileInitial, profileDisplayName, profileEmail, profilePackagesList, packagesHeading, resultList;
+  var profileInitial, profileDisplayName, profileEmail, resultList;
   var saveProfileButton;
-  var statsGamesValue, statsPackagesValue, statsPointsValue;
+
+  // Statistika: hər oyun üçün ayrı blok
+  var statsValues = {};
+  var STAT_GAMES = [
+    { key: "nhn-voice", title: "Nə? Harada? Nə zaman?", fields: [["games", "Oyun sayı"], ["first", "1-ci yer sayı"]] },
+    { key: "breyn-voice", title: "Breyn Rinq", fields: [["games", "Oyun sayı"], ["first", "Qalibiyyət sayı"]] },
+    { key: "xemse-voice", title: "Xəmsə", fields: [["games", "Oyun sayı"], ["first", "1-ci yer sayı"], ["points", "Ümumi xal"]] }
+  ];
 
   function element(tag, className, text) {
     var node = document.createElement(tag);
@@ -107,33 +113,47 @@
     });
   }
 
-  function renderPackages() {
-    profilePackagesList.replaceChildren();
-    var hasPackages = state.packages.length > 0;
-    packagesHeading.style.display = hasPackages ? "" : "none";
-    profilePackagesList.style.display = hasPackages ? "" : "none";
-    if (!hasPackages) return;
-    state.packages.forEach(function (item) {
-      var card = element("article", "pa-item");
-      var title = element("strong", "", item.title || "Sual paketi");
-      var count = Array.isArray(item.questions) ? item.questions.length : 0;
-      var toggle = element("button", "pa-remove", expandedPackageIds.has(item.id) ? "Sualları gizlət" : "Sualları göstər");
-      toggle.type = "button";
-      toggle.addEventListener("click", function () {
-        if (expandedPackageIds.has(item.id)) expandedPackageIds.delete(item.id);
-        else expandedPackageIds.add(item.id);
-        renderPackages();
-      });
+  // Nəticənin hansı oyuna aid olduğunu müəyyən edir
+  function gameKeyOf(item) {
+    if (item.game) return item.game;
+    var id = String(item.id || "");
+    return id.slice(0, id.lastIndexOf("_"));
+  }
+
+  // Hesab sahibinin komandası: team.mine === true olarsa o, yoxdursa ən çox xal toplayan komanda
+  function ownTeamOf(item) {
+    var teams = item.teams || [];
+    var mine = teams.filter(function (t) { return t.mine === true; })[0];
+    if (mine) return mine;
+    return teams.reduce(function (best, t) {
+      return !best || (Number(t.score) || 0) > (Number(best.score) || 0) ? t : best;
+    }, null);
+  }
 
   function renderStats() {
-    var points = state.results.reduce(function (sum, result) {
-      return sum + (result.teams || []).reduce(function (teamSum, team) {
-        return teamSum + (Number(team.score) || 0);
-      }, 0);
-    }, 0);
-    statsGamesValue.textContent = String(state.results.length);
-    statsPackagesValue.textContent = String(state.packages.length);
-    statsPointsValue.textContent = String(points);
+    var totals = {};
+    STAT_GAMES.forEach(function (g) { totals[g.key] = { games: 0, first: 0, points: 0 }; });
+
+    state.results.forEach(function (item) {
+      var t = totals[gameKeyOf(item)];
+      if (!t) return;
+      var teams = item.teams || [];
+      var own = ownTeamOf(item);
+      if (!own) return;
+      var ownScore = Number(own.score) || 0;
+      var topScore = teams.reduce(function (m, x) { return Math.max(m, Number(x.score) || 0); }, 0);
+      t.games += 1;
+      if (ownScore === topScore) t.first += 1;
+      t.points += ownScore; // qalib də olsa, uduzsa da toplanır
+    });
+
+    STAT_GAMES.forEach(function (g) {
+      g.fields.forEach(function (f) {
+        if (statsValues[g.key] && statsValues[g.key][f[0]]) {
+          statsValues[g.key][f[0]].textContent = String(totals[g.key][f[0]]);
+        }
+      });
+    });
   }
 
   function reducedMotionRequested() {
@@ -249,7 +269,6 @@
         profileNameInput.value = state.profile.name;
       }
       renderResults();
-      renderPackages();
       renderStats();
       syncNameInputs();
     }
@@ -261,7 +280,6 @@
     state.profile = data.profile;
     state.session.profile = state.profile;
     state.results = Array.isArray(data.results) ? data.results : [];
-    state.packages = Array.isArray(data.packages) ? data.packages : [];
     storeSession();
     syncPanels();
   }
@@ -360,6 +378,7 @@
       });
       state.results = data.results;
       renderResults();
+      renderStats();
       return true;
     } catch (error) {
       console.error("Oyun nəticəsini saxlamaq mümkün olmadı.", error);
@@ -391,7 +410,8 @@
             : team.sc);
       return {
         name: String(team && (team.name || team.n || team.title) || "Komanda").slice(0, 80),
-        score: Number(score)
+        score: Number(score),
+        mine: !!(team && team.mine)
       };
     }).filter(function (team) {
       return Number.isInteger(team.score) && team.score >= 0;
@@ -501,8 +521,7 @@
       ".pa-label{display:block;margin:12px 0 6px;font-size:12px;font-weight:600}.pa-input{width:100%;min-height:42px;padding:9px 12px;border:1px solid color-mix(in srgb,var(--pa-dialog-fg) 28%,transparent);border-radius:13px;background:var(--pa-surface);color:var(--pa-dialog-fg);font:inherit;outline:none}.pa-input:focus{border-color:var(--accent,#001E6F);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#001E6F) 16%,transparent)}",
       ".pa-actions{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 18px}.pa-primary,.pa-secondary,.pa-signout,.pa-remove{border:1px solid color-mix(in srgb,var(--pa-dialog-fg) 24%,transparent);border-radius:999px;padding:9px 14px;background:var(--pa-dialog-bg);color:var(--pa-dialog-fg);font:inherit;font-size:12px;font-weight:600;line-height:1.3;cursor:pointer;transition:transform .18s ease,filter .18s ease}.pa-primary:hover,.pa-secondary:hover,.pa-signout:hover,.pa-remove:hover{transform:translateY(-1px);filter:brightness(1.06)}.pa-secondary,.pa-remove{background:transparent;color:var(--pa-dialog-fg)}.pa-primary:disabled,.pa-secondary:disabled{opacity:.55;cursor:wait;transform:none}",
       ".pa-subtitle{margin:18px 0 9px;font-size:14px;font-weight:700}.pa-list{display:grid;gap:10px;max-height:40vh;overflow:auto;padding:1px}.pa-item{min-width:0;padding:13px;border:1px solid color-mix(in srgb,var(--pa-dialog-fg) 16%,transparent);border-radius:17px;background:var(--pa-surface)}.pa-item p{margin:5px 0;overflow-wrap:anywhere}.pa-meta,.pa-empty{opacity:.9;font-size:12px}.pa-empty{padding:8px 2px}.pa-answer{opacity:.92}.pa-score{font-weight:600}.pa-remove{margin-top:7px;font-size:11px}",
-      ".pa-package-questions{margin-top:10px;border-top:1px solid color-mix(in srgb,var(--pa-dialog-fg) 14%,transparent)}.pa-package-question{padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--pa-dialog-fg) 12%,transparent)}.pa-package-question:last-child{border-bottom:0}.pa-package-question p{margin:4px 0 0;font-size:12px;opacity:.9}",
-      ".pa-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:19px}.pa-stat{padding:14px;border:1px solid color-mix(in srgb,var(--pa-dialog-fg) 16%,transparent);border-radius:17px;background:var(--pa-surface)}.pa-stat strong{display:block;font-size:23px;line-height:1.2}.pa-stat span{font-size:12px;opacity:.9}",
+      ".pa-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:19px}.pa-stat{padding:14px;border:1px solid color-mix(in srgb,var(--pa-dialog-fg) 16%,transparent);border-radius:17px;background:var(--pa-surface)}.pa-stat strong{display:block;font-size:23px;line-height:1.2}.pa-stat span{font-size:12px;opacity:.9}",
       ".pa-status{min-height:22px;margin:12px 2px 0;font-size:13px;opacity:1}.pa-error{display:inline-block;max-width:100%;padding:6px 10px;border-radius:8px;background:#8f172d;color:#fff!important;opacity:1}.pa-signout{margin-top:14px}.pa-menu button:focus-visible,.pa-trigger:focus-visible,.pa-dialog button:focus-visible{outline:2px solid currentColor;outline-offset:2px}",
       "@media(max-width:1000px){.pa-avatar{width:52px;height:52px;flex-basis:52px}}",
       "@media(max-width:700px){.pa-menu button{font-size:14px}}",
@@ -517,6 +536,17 @@
       ".pa-primary,.pa-secondary,.pa-signout,.pa-remove{border-color:var(--pa-frame-color);background:var(--pa-dialog-bg)}",
       ".pa-error{border:1px solid rgba(255,255,255,.38)}",
       ".pa-menu:not([hidden]){animation-duration:.5s}.pa-menu button{animation-duration:.42s}.pa-menu button:nth-child(2){animation-delay:40ms}.pa-menu button:nth-child(3){animation-delay:80ms}.pa-menu.pa-closing{animation:pa-menu-in .5s cubic-bezier(.16,1,.3,1) reverse both;pointer-events:none}.pa-dialog[open]{animation-duration:.5s}.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]){animation-duration:.5s}.pa-dialog.pa-closing[open]{animation:pa-dialog-in .5s cubic-bezier(.16,1,.3,1) reverse both;pointer-events:none}.pa-dialog.pa-closing[open] .pa-panel:not([hidden]),.pa-dialog.pa-closing[open] .pa-section:not([hidden]){animation:pa-panel-in .5s ease reverse both}.pa-dialog.pa-closing::backdrop{animation:pa-backdrop-in .5s ease reverse both}",
+      // Saytın şrift və mətn ölçüsü dəyişənlərinə uyğunlaşdırma
+      ".pa-dialog,.pa-menu,.pa-trigger,.pa-dialog button,.pa-dialog input{font-family:var(--font,'Poppins',system-ui,sans-serif)}",
+      ".pa-dialog{font-size:calc(var(--ct,25px)*.62);line-height:1.5}",
+      ".pa-head h2{font-size:calc(var(--ct,25px)*.8);font-weight:700}",
+      ".pa-subtitle{font-size:calc(var(--ct,25px)*.68)}",
+      ".pa-label,.pa-meta,.pa-empty,.pa-profile-email,.pa-stat span{font-size:calc(var(--ct,25px)*.5)}",
+      ".pa-profile-name{font-size:calc(var(--ct,25px)*.64)}",
+      ".pa-stat strong{font-size:calc(var(--ct,25px)*.95)}",
+      ".pa-primary,.pa-secondary,.pa-signout,.pa-remove{font-size:calc(var(--ct,25px)*.52)}",
+      ".pa-trigger{font-size:calc(var(--ct,25px)*.6);color:var(--fg,#b8d5ff)}",
+      ".pa-avatar{background:var(--c1,#00269C);color:var(--fg,#b8d5ff)}",
       "@media(prefers-reduced-motion:reduce){.pa-trigger-name[data-typing=true]::after,.pa-menu:not([hidden]),.pa-menu button,.pa-menu.pa-closing,.pa-dialog[open],.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]),.pa-dialog::backdrop{animation:none!important}}"
     ].join("");
     document.head.appendChild(style);
@@ -614,10 +644,6 @@
     var profileActions = element("div", "pa-actions");
     profileActions.appendChild(saveProfileButton);
     profilePanel.appendChild(profileActions);
-    packagesHeading = element("h3", "pa-subtitle", "Yaratdığım şəxsi paketlər");
-    profilePanel.appendChild(packagesHeading);
-    profilePackagesList = element("div", "pa-list");
-    profilePanel.appendChild(profilePackagesList);
     var signOut = element("button", "pa-signout", "Hesabdan çıx");
     signOut.type = "button";
     signOut.addEventListener("click", signOutUser);
@@ -625,18 +651,19 @@
 
     statsPanel = element("section", "pa-section");
     statsPanel.hidden = true;
-    var statsGrid = element("div", "pa-stat-grid");
-    function stat(label) {
-      var tile = element("div", "pa-stat");
-      var value = element("strong", "", "0");
-      tile.append(value, element("span", "", label));
-      statsGrid.appendChild(tile);
-      return value;
-    }
-    statsGamesValue = stat("Oyun nəticəsi");
-    statsPackagesValue = stat("Şəxsi paket");
-    statsPointsValue = stat("Toplam xal");
-    statsPanel.appendChild(statsGrid);
+    STAT_GAMES.forEach(function (g) {
+      statsPanel.appendChild(element("h3", "pa-subtitle", g.title));
+      var grid = element("div", "pa-stat-grid");
+      statsValues[g.key] = {};
+      g.fields.forEach(function (f) {
+        var tile = element("div", "pa-stat");
+        var value = element("strong", "", "0");
+        tile.append(value, element("span", "", f[1]));
+        grid.appendChild(tile);
+        statsValues[g.key][f[0]] = value;
+      });
+      statsPanel.appendChild(grid);
+    });
     statsPanel.appendChild(element("h3", "pa-subtitle", "Son oyun nəticələri"));
     resultList = element("div", "pa-list");
     statsPanel.appendChild(resultList);
@@ -671,7 +698,6 @@
     state.session = null;
     state.profile = null;
     state.results = [];
-    state.packages = [];
     storeSession();
     syncPanels();
     setStatus("Hesabdan çıxıldı.");
