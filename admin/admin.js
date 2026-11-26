@@ -11,10 +11,24 @@
   const editorTitle = document.getElementById("editorTitle");
   const deleteButton = document.getElementById("deletePackage");
   const googleButton = document.getElementById("googleButton");
+  const ANIM_MS = 500;
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   let token = "";
   let packages = [];
   let editingId = "";
   let draft = createDraft();
+
+  function showPanel(el) {
+    el.hidden = false;
+    void el.offsetWidth; // animasiya başlasın deyə reflow
+    el.classList.add("is-open");
+  }
+
+  async function hidePanel(el) {
+    el.classList.remove("is-open");
+    await wait(ANIM_MS);
+    el.hidden = true;
+  }
 
   function createDraft() {
     return {
@@ -248,10 +262,10 @@
     token = credential;
     try {
       await loadPackages();
-      loginPanel.hidden = true;
-      cmsPanel.hidden = false;
-      signOutButton.hidden = false;
+      await hidePanel(loginPanel);
       resetForm();
+      showPanel(cmsPanel);
+      signOutButton.hidden = false;
     } catch (error) {
       token = "";
       setStatus(loginStatus, error.message, "error");
@@ -305,17 +319,18 @@
       deleteButton.disabled = false;
     }
   });
-  signOutButton.addEventListener("click", () => {
+  signOutButton.addEventListener("click", async () => {
     token = "";
     packages = [];
-    cmsPanel.hidden = true;
-    loginPanel.hidden = false;
     signOutButton.hidden = true;
-    setStatus(loginStatus, "Hesabdan çıxış edildi.");
-    renderPackageList();
     window.google?.accounts?.id?.disableAutoSelect();
+    await hidePanel(cmsPanel);
+    renderPackageList();
+    setStatus(loginStatus, "Hesabdan çıxış edildi.");
+    showPanel(loginPanel);
   });
 
+  showPanel(loginPanel);
   renderSections();
   if (!config.googleClientId || !config.apiBaseUrl) {
     const warning = document.getElementById("configWarning");
