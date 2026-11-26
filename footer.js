@@ -103,7 +103,7 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
     if (!document.getElementById("piksel-account-script")) {
       var accountScript = document.createElement("script");
       accountScript.id = "piksel-account-script";
-      accountScript.src = "/account.js";
+      accountScript.src = "/account.js?v=684b56b";
       document.head.appendChild(accountScript);
     }
 
