@@ -426,9 +426,9 @@
       id: game.replace(/[^A-Za-z0-9_-]/g, "") + "_" + id,
       game: game,
       title: {
-        "nhn-voice": "Nə? Harada? Nə zaman? — səsli oyun",
-        "breyn-voice": "Breyn Rinq — səsli oyun",
-        "xemse-voice": "Xəmsə — səsli oyun"
+        "nhn-voice": "Nə? Harada? Nə zaman? - səsli oyun",
+        "breyn-voice": "Breyn Rinq - səsli oyun",
+        "xemse-voice": "Xəmsə - səsli oyun"
       }[game],
       teams: scores
     });
