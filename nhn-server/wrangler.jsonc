@@ -3,7 +3,16 @@
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
   "durable_objects": {
-    "bindings": [{ "name": "ROOMS", "class_name": "Room" }]
+    "bindings": [
+      { "name": "ROOMS", "class_name": "Room" },
+      { "name": "ACCOUNTS", "class_name": "Account" }
+    ]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }]
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Room"] },
+    { "tag": "v2", "new_sqlite_classes": ["Account"] }
+  ],
+  "vars": {
+    "GOOGLE_CLIENT_ID": "9359910762-u3e6kl632drv4cv7s9k9q021hufrla3u.apps.googleusercontent.com"
+  }
 }

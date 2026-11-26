@@ -1,20 +1,24 @@
 (function () {
   "use strict";
 
-  /* Əsas səhifə (index) dizaynı: düz rəngli footer, Montserrat şrifti,
-     aşağıda üzən navbar üçün boşluq. Mətn ölçüləri: kompüter/planşet 15px,
+  /* Kart açıqlamalarının ölçüləri: kompüter/planşet 15px,
      telefon 9px, dar telefon (≤420px) 8px. */
   var css = `
 body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
 footer.pk-footer{
-  --fc:#00269C;--ffg:#b8d5ff;
-  position:relative;margin:0;margin-top:auto;
-  background:var(--fc);color:var(--ffg);
-  padding:20px 20px 96px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;
-  font-family:"Montserrat",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
-  transition:background .6s ease,color .6s ease}
-footer.pk-footer.pk-dark{--fc:#6ca2f9;--ffg:#000521}
+  --fc1:#001E6F;--fc2:#002E92;--ffg:#9DC3FF;--fglow:rgba(0,8,45,.30);
+:0;
+  background:linear-gradient(135deg,var(--fc1) 0%,var(--fc2) 50%,var(--fc1) 100%);color:var(--ffg);
+  padding:10px 14px calc(8px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center;
+  font-family:"Poppins",sans-serif;-webkit-font-smoothing:antialiased}
+footer.pk-footer.pk-dark{--fc1:#9DC3FF;--fc2:#6FA5FC;--ffg:#00072C;--fglow:rgba(255,255,255,.40)}
+footer.pk-footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:
+    radial-gradient(ellipse 170px 120px at var(--mx,50%) var(--my,50%),var(--fglow),transparent 72%),
+    radial-gradient(ellipse 100px 150px at calc(var(--mx,50%) + 16px) calc(var(--my,50%) - 12px),var(--fglow),transparent 72%)}
+@media (hover:hover){footer.pk-footer:hover::before{opacity:1}}
+footer.pk-footer>*{position:relative;z-index:1}
 footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
 .pk-title{font-size:18px;font-weight:700;letter-spacing:-.2px;line-height:1.45}
 .pk-social{display:flex;align-items:center;justify-content:center;gap:12px}
@@ -24,13 +28,13 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
 .pk-social svg{width:100%;height:100%;display:block}
 .pk-legal{display:flex;align-items:center;justify-content:center;gap:16px}
 .pk-link{font-size:15px;font-weight:500;line-height:1.45;white-space:nowrap;transition:transform .25s ease,opacity .25s ease}
-.pk-link:hover{opacity:.72;transform:translateY(-1px)}
+.pk-link:hover{opacity:.72}
 .pk-link:active,.pk-link.go{transform:scale(.94);opacity:.6}
-.pk-line{width:100%;max-width:520px;height:2px;border-radius:2px;background:currentColor;opacity:.16}
+.pk-line{width:100%;height:1px;border-radius:1px;background:currentColor;opacity:.2}
 .pk-text{font-size:15px;font-weight:500;line-height:1.45}
 .pk-note{font-size:15px;font-weight:700;line-height:1.45;opacity:.6}
 @media (max-width:700px){
-  footer.pk-footer{padding:16px 14px 96px;gap:6px}
+  footer.pk-footer{min-height:0;padding:10px 14px calc(8px + env(safe-area-inset-bottom,0px));gap:5px}
   .pk-social a{width:22px;height:22px}
   .pk-title{font-size:12px}
   .pk-link,.pk-text,.pk-note{font-size:9px}
@@ -100,10 +104,24 @@ footer.pk-footer a{color:inherit;text-decoration:none;-webkit-tap-highlight-colo
     ft.innerHTML = html;
     document.body.appendChild(ft);
 
+    if (!document.getElementById("piksel-account-script")) {
+      var accountScript = document.createElement("script");
+      accountScript.id = "piksel-account-script";
+      accountScript.src = "/account.js";
+      document.head.appendChild(accountScript);
+    }
+
     /* rejimə uyğun rəng: indi və hər dəyişəndə */
     syncTheme();
     new MutationObserver(syncTheme).observe(document.body, { attributes: true, attributeFilter: ["class"] });
     window.addEventListener("storage", syncTheme);
+
+    /* maus işığı */
+    ft.addEventListener("pointermove", function (e) {
+      var r = ft.getBoundingClientRect();
+      ft.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      ft.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
 
     /* Məxfilik / İstifadə Şərtləri: kiçik animasiya ilə keçid */
     ft.querySelectorAll(".pk-legal a").forEach(function (a) {
