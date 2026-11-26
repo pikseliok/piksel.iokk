@@ -524,8 +524,7 @@ function renderInner(anim,msg){
     const auth=hl(q.author||"",S.author);
     const isFav=FAV.has(favKey(x));
     const copyBtn=`<button class="act-btn copy-btn" type="button" onclick="copyQuestion(${g},this,${qn})" aria-label="Sualı kopyala"><svg class="copy-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="clip-path"><rect x="6.5" y="6.5" width="10" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></g><path class="check-path" d="M4.5 10.3l3.4 3.4 7.6-7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>`;
-    const favBtn=`<button class="act-btn fav-btn${isFav?" on":""}" type="button" onclick="favQuestion(${g},this)" aria-label="Favorilə" aria-pressed="${isFav}">${STAR}</button>`;
-    const acts=`<span class="acts">${copyBtn}${favBtn}</span>`;
+    const acts=`<span class="acts">${copyBtn}</span>`;
     const authBlock=grouped
       ?`<div class="ans-row author-row"><span></span>${acts}</div>`
       :`<div class="ans-row author-row"><span><span class="ans-label">Müəllif:</span> ${auth}</span>${acts}</div>`;
