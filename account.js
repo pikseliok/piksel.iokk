@@ -202,8 +202,8 @@
   function showView(view) {
     if (!state.profile) view = "signin";
     activeView = view;
-    menu.hidden = true;
-    trigger.setAttribute("aria-expanded", "false");
+    if (menu) menu.hidden = true;
+    if (trigger) trigger.setAttribute("aria-expanded", "false");
     signInPanel.hidden = view !== "signin";
     accountPanel.hidden = view === "signin";
     profilePanel.hidden = view !== "profile";
@@ -220,10 +220,12 @@
 
   function syncPanels() {
     var signedIn = !!state.profile;
-    triggerName.textContent = signedIn ? state.profile.name : "Daxil ol";
-    triggerAvatar.textContent = signedIn ? initialOf(state.profile.name) : "π";
-    trigger.setAttribute("aria-label", signedIn ? "Hesab menyusu: " + state.profile.name : "Google ilə daxil ol");
-    trigger.title = signedIn ? state.profile.name : "Google ilə daxil ol";
+    if (triggerName) triggerName.textContent = signedIn ? "Xoş gəlmisiniz, " + state.profile.name + "!" : "Google ilə daxil ol";
+    if (triggerAvatar) triggerAvatar.textContent = signedIn ? initialOf(state.profile.name) : "π";
+    if (trigger) {
+      trigger.setAttribute("aria-label", signedIn ? "Hesab menyusu: " + state.profile.name : "Google ilə daxil ol");
+      trigger.title = signedIn ? state.profile.name : "Google ilə daxil ol";
+    }
     signInPanel.hidden = signedIn;
     accountPanel.hidden = !signedIn;
     if (signedIn) {
@@ -604,11 +606,11 @@
   function buildUi() {
     var style = element("style");
     style.textContent = [
-      ".pa-homebar{width:100%;min-height:42px;margin:0 auto 8px;display:flex;align-items:center;justify-content:flex-start;position:relative;z-index:20}",
-      ".pa-account-root{position:relative;z-index:10001;font-family:inherit;color:var(--fg,#9DC3FF)}.pa-floating-root{position:fixed;right:14px;bottom:14px}",
-      ".pa-trigger{display:flex;align-items:center;gap:10px;max-width:min(280px,80vw);padding:5px 7px 5px 14px;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 26%,transparent);border-radius:999px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));color:var(--fg,#9DC3FF);font:inherit;font-size:13px;font-weight:500;line-height:1.2;box-shadow:0 8px 22px rgba(0,20,100,.12);cursor:pointer;transition:transform .2s ease,filter .2s ease}",
-      ".pa-trigger:hover{transform:translateY(-1px);filter:brightness(1.05)}.pa-trigger-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px}",
-      ".pa-avatar{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:50%;background:var(--page,#9DC3FF);color:var(--accent,#001E6F);font-size:14px;font-weight:700}",
+      ".pa-homebar{width:100%;min-height:56px;margin:0 auto 10px;display:flex;align-items:center;justify-content:flex-start;position:relative;z-index:20}",
+      ".pa-account-root{position:relative;z-index:10001;font-family:inherit;color:var(--fg,#9DC3FF)}",
+      ".pa-trigger{display:flex;align-items:center;gap:12px;max-width:100%;padding:0;border:0;border-radius:0;background:transparent;color:var(--accent,#001E6F);font:inherit;font-size:15px;font-weight:700;line-height:1.3;box-shadow:none;cursor:pointer;transition:opacity .2s ease}",
+      ".pa-trigger:hover{opacity:.82}.pa-trigger-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(480px,calc(100vw - 100px))}",
+      ".pa-avatar{width:56px;height:56px;flex:0 0 56px;display:grid;place-items:center;border-radius:50%;background:var(--c1,#00269C);color:var(--fg,#b8d5ff);font-size:17px;font-weight:700}",
       ".pa-menu{position:absolute;top:calc(100% + 8px);left:0;width:220px;padding:7px;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 20%,transparent);border-radius:18px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));box-shadow:0 14px 35px rgba(0,10,60,.28)}.pa-menu[hidden]{display:none}",
       ".pa-menu button{display:block;width:100%;padding:11px 12px;border:0;border-radius:12px;background:transparent;color:var(--fg,#9DC3FF);text-align:left;font:inherit;font-size:13px;font-weight:500;line-height:1.3;cursor:pointer}.pa-menu button:hover,.pa-menu button:focus-visible{background:color-mix(in srgb,var(--fg,#9DC3FF) 13%,transparent);outline:none}",
       ".pa-dialog{--pa-surface:color-mix(in srgb,var(--c1,#001E6F) 84%,var(--page,#9DC3FF));width:min(590px,calc(100vw - 24px));max-height:min(86vh,780px);margin:auto;padding:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 24%,transparent);border-radius:26px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));color:var(--fg,#001E6F);box-shadow:0 22px 70px rgba(0,0,0,.4);font:14px/1.55 Poppins,system-ui,sans-serif}",
@@ -624,50 +626,59 @@
       ".pa-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:19px}.pa-stat{padding:14px;border:1px solid color-mix(in srgb,var(--fg,#001E6F) 16%,transparent);border-radius:17px;background:var(--pa-surface)}.pa-stat strong{display:block;font-size:23px;line-height:1.2}.pa-stat span{font-size:12px;opacity:.75}",
       ".pa-status{min-height:22px;margin:12px 2px 0;font-size:12px;opacity:.85}.pa-error{color:#a5162b!important;opacity:1}.pa-signout{margin-top:14px}.pa-menu button:focus-visible,.pa-trigger:focus-visible,.pa-dialog button:focus-visible{outline:2px solid currentColor;outline-offset:2px}",
       ".fav-btn[data-active=true]{background:#ffdf75;color:#624800;border-radius:10px}.fav-btn{cursor:pointer}",
-      "@media(max-width:600px){.pa-dialog{width:calc(100vw - 18px);max-height:90vh;border-radius:21px}.pa-body{padding:15px;max-height:calc(90vh - 60px)}.pa-head{padding:13px 16px}.pa-homebar{min-height:38px;margin-bottom:7px}.pa-trigger{gap:7px;padding-left:11px}.pa-trigger-name{max-width:170px}.pa-list{max-height:43vh}}"
+      "@media(max-width:1000px){.pa-avatar{width:52px;height:52px;flex-basis:52px}}",
+      "@media(max-width:600px){.pa-dialog{width:calc(100vw - 18px);max-height:90vh;border-radius:21px}.pa-body{padding:15px;max-height:calc(90vh - 60px)}.pa-head{padding:13px 16px}.pa-homebar{min-height:52px;margin-bottom:8px}.pa-trigger{gap:9px}.pa-trigger-name{max-width:calc(100vw - 100px)}.pa-list{max-height:43vh}}",
+      "@media(max-width:360px){.pa-avatar{width:46px;height:46px;flex-basis:46px}}"
     ].join("");
     document.head.appendChild(style);
 
     var homePage = document.querySelector(".page");
-    var home = homePage && homePage.querySelector(".top-nav") && homePage.querySelector(".hero");
-    var root = element("div", "pa-account-root " + (home ? "pa-home-root" : "pa-floating-root"));
-    trigger = element("button", "pa-trigger");
-    trigger.type = "button";
-    trigger.setAttribute("aria-haspopup", "menu");
-    trigger.setAttribute("aria-expanded", "false");
-    triggerName = element("span", "pa-trigger-name");
-    triggerAvatar = element("span", "pa-avatar");
-    triggerAvatar.setAttribute("aria-hidden", "true");
-    trigger.append(triggerName, triggerAvatar);
-    menu = element("div", "pa-menu");
-    menu.hidden = true;
-    menu.setAttribute("role", "menu");
-    [
-      ["profile", "Profil"],
-      ["stats", "Statistika"],
-      ["favorites", "Favori suallarım"]
-    ].forEach(function (item) {
-      var option = element("button", "", item[1]);
-      option.type = "button";
-      option.setAttribute("role", "menuitem");
-      option.addEventListener("click", function () { showView(item[0]); });
-      menu.appendChild(option);
-    });
-    trigger.addEventListener("click", function () {
-      if (!state.profile) {
-        showView("signin");
-        return;
-      }
-      menu.hidden = !menu.hidden;
-      trigger.setAttribute("aria-expanded", menu.hidden ? "false" : "true");
-    });
-    root.append(trigger, menu);
+    var path = location.pathname.replace(/\/+$/, "").toLowerCase();
+    var home = (path === "" || path === "/index.html") &&
+      homePage && homePage.querySelector(".hero") && homePage.querySelector(".dock");
     if (home) {
+      var root = element("div", "pa-account-root");
+      trigger = element("button", "pa-trigger");
+      trigger.type = "button";
+      trigger.setAttribute("aria-haspopup", "menu");
+      trigger.setAttribute("aria-expanded", "false");
+      triggerName = element("span", "pa-trigger-name");
+      triggerAvatar = element("span", "pa-avatar");
+      triggerAvatar.setAttribute("aria-hidden", "true");
+      trigger.append(triggerAvatar, triggerName);
+      menu = element("div", "pa-menu");
+      menu.hidden = true;
+      menu.setAttribute("role", "menu");
+      [
+        ["profile", "Profil"],
+        ["stats", "Statistika"],
+        ["favorites", "Favori suallarım"]
+      ].forEach(function (item) {
+        var option = element("button", "", item[1]);
+        option.type = "button";
+        option.setAttribute("role", "menuitem");
+        option.addEventListener("click", function () { showView(item[0]); });
+        menu.appendChild(option);
+      });
+      trigger.addEventListener("click", function () {
+        if (!state.profile) {
+          showView("signin");
+          return;
+        }
+        menu.hidden = !menu.hidden;
+        trigger.setAttribute("aria-expanded", menu.hidden ? "false" : "true");
+      });
+      root.append(trigger, menu);
       var homebar = element("div", "pa-homebar");
       homebar.appendChild(root);
-      homePage.insertBefore(homebar, homePage.querySelector(".top-nav"));
-    } else {
-      document.body.appendChild(root);
+      var main = homePage.querySelector("main");
+      homePage.insertBefore(homebar, main || homePage.firstChild);
+      document.addEventListener("click", function (event) {
+        if (!root.contains(event.target) && !menu.hidden) {
+          menu.hidden = true;
+          trigger.setAttribute("aria-expanded", "false");
+        }
+      });
     }
 
     dialog = element("dialog", "pa-dialog");
@@ -781,12 +792,6 @@
     document.body.appendChild(dialog);
     dialog.addEventListener("click", function (event) {
       if (event.target === dialog) dialog.close();
-    });
-    document.addEventListener("click", function (event) {
-      if (!root.contains(event.target) && !menu.hidden) {
-        menu.hidden = true;
-        trigger.setAttribute("aria-expanded", "false");
-      }
     });
   }
 
