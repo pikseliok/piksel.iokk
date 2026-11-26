@@ -4,6 +4,8 @@
   var API = "https://piksel-nhn.pikseliok.workers.dev";
   var SESSION_KEY = "piksel-account-session-v1";
   var state = { clientId: "", session: null, profile: null, favorites: [], results: [], packages: [] };
+  var currentWelcomeText = null;
+  var welcomeAnimationTimer = null;
   var queue = window.PikselAccountQueue = window.PikselAccountQueue || [];
   var favoriteItems = window.PikselQuestionFavoriteItems = window.PikselQuestionFavoriteItems || {};
   var selectedFavoriteIds = new Set();
@@ -218,9 +220,36 @@
     if (!dialog.open) dialog.showModal();
   }
 
+  function setWelcomeText(text, animate) {
+    if (!triggerName || currentWelcomeText === text) return;
+    currentWelcomeText = text;
+    if (welcomeAnimationTimer) window.clearTimeout(welcomeAnimationTimer);
+    welcomeAnimationTimer = null;
+    triggerName.dataset.typing = "false";
+    if (!animate || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      triggerName.textContent = text;
+      return;
+    }
+    var characters = Array.from(text);
+    var index = 0;
+    triggerName.textContent = "";
+    triggerName.dataset.typing = "true";
+    function typeNextCharacter() {
+      if (currentWelcomeText !== text) return;
+      if (index >= characters.length) {
+        triggerName.dataset.typing = "false";
+        welcomeAnimationTimer = null;
+        return;
+      }
+      triggerName.textContent += characters[index++];
+      welcomeAnimationTimer = window.setTimeout(typeNextCharacter, 32);
+    }
+    typeNextCharacter();
+  }
+
   function syncPanels() {
     var signedIn = !!state.profile;
-    if (triggerName) triggerName.textContent = signedIn ? "Xoş gəlmisiniz, " + state.profile.name + "!" : "Google ilə daxil ol";
+    if (triggerName) setWelcomeText(signedIn ? "Xoş gəlmisiniz, " + state.profile.name + "!" : "Google ilə daxil ol", signedIn);
     if (triggerAvatar) triggerAvatar.textContent = signedIn ? initialOf(state.profile.name) : "π";
     if (trigger) {
       trigger.setAttribute("aria-label", signedIn ? "Hesab menyusu: " + state.profile.name : "Google ilə daxil ol");
@@ -611,9 +640,12 @@
       ".pa-trigger{display:flex;align-items:center;gap:12px;max-width:100%;padding:0;border:0;border-radius:0;background:transparent;color:var(--accent,#001E6F);font:inherit;font-size:15px;font-weight:700;line-height:1.3;box-shadow:none;cursor:pointer;transition:opacity .2s ease}",
       ".pa-trigger:hover{opacity:.82}.pa-trigger-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(480px,calc(100vw - 100px))}",
       ".pa-avatar{width:56px;height:56px;flex:0 0 56px;display:grid;place-items:center;border-radius:50%;background:var(--c1,#00269C);color:var(--fg,#b8d5ff);font-size:17px;font-weight:700}",
-      ".pa-menu{position:absolute;top:calc(100% + 8px);left:0;width:220px;padding:7px;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 20%,transparent);border-radius:18px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));box-shadow:0 14px 35px rgba(0,10,60,.28)}.pa-menu[hidden]{display:none}",
-      ".pa-menu button{display:block;width:100%;padding:11px 12px;border:0;border-radius:12px;background:transparent;color:var(--fg,#9DC3FF);text-align:left;font:inherit;font-size:13px;font-weight:500;line-height:1.3;cursor:pointer}.pa-menu button:hover,.pa-menu button:focus-visible{background:color-mix(in srgb,var(--fg,#9DC3FF) 13%,transparent);outline:none}",
-      ".pa-dialog{--pa-surface:color-mix(in srgb,var(--c1,#001E6F) 84%,var(--page,#9DC3FF));width:min(590px,calc(100vw - 24px));max-height:min(86vh,780px);margin:auto;padding:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 24%,transparent);border-radius:26px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));color:var(--fg,#001E6F);box-shadow:0 22px 70px rgba(0,0,0,.4);font:14px/1.55 Poppins,system-ui,sans-serif}",
+      ".pa-trigger-name[data-typing=true]::after{content:\"\";display:inline-block;height:1em;margin-left:2px;border-left:2px solid currentColor;vertical-align:-.12em;animation:pa-caret .75s steps(2,start) infinite}",
+      "@keyframes pa-caret{to{visibility:hidden}}",
+      ".pa-menu{position:absolute;top:calc(100% + 8px);left:0;width:min(360px,calc(100vw - 32px));padding:8px;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 20%,transparent);border-radius:18px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));box-shadow:0 14px 35px rgba(0,10,60,.28);transform-origin:top left}.pa-menu[hidden]{display:none}.pa-menu:not([hidden]){animation:pa-menu-in .3s cubic-bezier(.16,1,.3,1) both}",
+      ".pa-menu button{display:block;width:100%;padding:12px 14px;border:0;border-radius:12px;background:transparent;color:var(--fg,#9DC3FF);text-align:left;font:inherit;font-size:var(--ct,25px);font-weight:600;line-height:1.15;cursor:pointer;animation:pa-menu-item-in .28s ease both}.pa-menu button:nth-child(2){animation-delay:35ms}.pa-menu button:nth-child(3){animation-delay:70ms}.pa-menu button:hover,.pa-menu button:focus-visible{background:color-mix(in srgb,var(--fg,#9DC3FF) 13%,transparent);outline:none}",
+      "@keyframes pa-menu-in{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}@keyframes pa-menu-item-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}",
+      ".pa-dialog{--pa-surface:color-mix(in srgb,var(--c1,#001E6F) 84%,var(--page,#9DC3FF));width:min(590px,calc(100vw - 24px));max-height:min(86vh,780px);margin:auto;padding:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--fg,#9DC3FF) 24%,transparent);border-radius:26px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));color:var(--fg,#001E6F);box-shadow:0 22px 70px rgba(0,0,0,.4);font:14px/1.55 Poppins,system-ui,sans-serif}.pa-dialog[open]{animation:pa-dialog-in .32s cubic-bezier(.16,1,.3,1) both}.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]){animation:pa-panel-in .3s ease both}@keyframes pa-dialog-in{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}@keyframes pa-panel-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}",
       ".pa-dialog::backdrop{background:rgba(0,7,44,.58);backdrop-filter:blur(5px)}.pa-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;background:var(--grad,linear-gradient(135deg,#001E6F,#002E92));color:var(--fg,#9DC3FF)}",
       ".pa-head h2{margin:0;font-size:18px;font-weight:700}.pa-close{width:34px;height:34px;border:0;border-radius:50%;background:color-mix(in srgb,var(--fg,#9DC3FF) 12%,transparent);color:inherit;font-size:24px;line-height:1;cursor:pointer}",
       ".pa-body{padding:19px 20px;overflow:auto;max-height:calc(86vh - 64px)}.pa-dialog button,.pa-dialog input{font-family:inherit}.pa-panel[hidden],.pa-section[hidden]{display:none}",
@@ -627,8 +659,10 @@
       ".pa-status{min-height:22px;margin:12px 2px 0;font-size:12px;opacity:.85}.pa-error{color:#a5162b!important;opacity:1}.pa-signout{margin-top:14px}.pa-menu button:focus-visible,.pa-trigger:focus-visible,.pa-dialog button:focus-visible{outline:2px solid currentColor;outline-offset:2px}",
       ".fav-btn[data-active=true]{background:#ffdf75;color:#624800;border-radius:10px}.fav-btn{cursor:pointer}",
       "@media(max-width:1000px){.pa-avatar{width:52px;height:52px;flex-basis:52px}}",
+      "@media(max-width:700px){.pa-menu button{font-size:14px}}",
       "@media(max-width:600px){.pa-dialog{width:calc(100vw - 18px);max-height:90vh;border-radius:21px}.pa-body{padding:15px;max-height:calc(90vh - 60px)}.pa-head{padding:13px 16px}.pa-homebar{min-height:52px;margin-bottom:8px}.pa-trigger{gap:9px}.pa-trigger-name{max-width:calc(100vw - 100px)}.pa-list{max-height:43vh}}",
-      "@media(max-width:360px){.pa-avatar{width:46px;height:46px;flex-basis:46px}}"
+      "@media(max-width:360px){.pa-avatar{width:46px;height:46px;flex-basis:46px}}",
+      "@media(prefers-reduced-motion:reduce){.pa-trigger-name[data-typing=true]::after,.pa-menu:not([hidden]),.pa-menu button,.pa-dialog[open],.pa-dialog[open] .pa-panel:not([hidden]),.pa-dialog[open] .pa-section:not([hidden]){animation:none!important}}"
     ].join("");
     document.head.appendChild(style);
 
