@@ -139,6 +139,8 @@ body.dark .search-wrap::before{background:radial-gradient(ellipse 72% 48% at 8% 
 body.dark .pg-btn{background:linear-gradient(135deg,rgba(108,162,249,.14),rgba(0,5,33,.28) 48%,rgba(108,162,249,.08));border-color:rgba(108,162,249,.46);box-shadow:inset 0 1px 0 rgba(108,162,249,.24),inset 0 -1px 0 rgba(108,162,249,.16)}
 .pg-btn.cur{background:var(--c1);color:var(--fg);border-color:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.68),inset 0 0 16px rgba(184,213,255,.42)}
 body.dark .pg-btn.cur{background:var(--c1);box-shadow:inset 0 0 0 1px rgba(108,162,249,.9),inset 0 0 18px rgba(108,162,249,.34)}
+.pg-arrow{width:42px;height:42px;border:1.5px solid var(--accent);background:var(--navb);color:var(--accent)}
+body.dark .pg-arrow{border-color:#6ca2f9;background:rgba(108,162,249,.2)}
 .navbar{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:900;display:flex;gap:10px;padding:8px;border-radius:44px;background:var(--nav);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:0 10px 30px rgba(0,20,110,.18),inset 0 0 0 1px rgba(255,255,255,.25);animation:navIn .8s cubic-bezier(.18,.8,.24,1) .6s backwards}
 @keyframes navIn{from{opacity:0;transform:translate(-50%,60px)}}
 .nb{position:relative;width:56px;height:56px;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--accent);background:var(--navb);transition:transform .25s ease,background .4s ease,color .4s ease}
@@ -165,6 +167,8 @@ body.dark .nb:hover,body.dark .nb.active{background:#6ca2f9;color:#000521}
 .questions-overlay{z-index:1050}
 .toast{bottom:calc(100px + var(--bx));z-index:1100}
 @media(max-width:700px){.page{width:calc(100% - 24px);padding:10px 0 26px}.search-wrap{height:52px;padding:0 16px;border-radius:26px}.navbar{gap:8px}.nb{width:52px;height:52px}.navbar .theme-toggle{width:52px;height:52px}.footer-line{font-size:13px}}
+@media(max-width:700px){.pg-arrow{width:36px;height:36px}}
+.pg-arrow svg{width:22px;height:22px}
 @media(max-width:420px){.nb{width:52px;height:52px}.navbar .theme-toggle{width:52px;height:52px}.footer-line{font-size:11px}}
 @media(max-width:360px){.nb,.navbar .theme-toggle{width:46px;height:46px}.nb svg{width:25px;height:25px}}
 </style>
@@ -195,7 +199,7 @@ body.dark .nb:hover,body.dark .nb.active{background:#6ca2f9;color:#000521}
 </section>
 </div>
 <div class="toast" id="toast" role="status"></div>
-<script src="/suallar-data.js"></script>
+<script>document.write('<script src="'+(location.protocol==="file:"?"./suallar-data.js":"/suallar-data.js")+'" onerror="window.SUAL_DATA_LOAD_ERROR=true"><\/script>');</script>
 <script>
 document.addEventListener("contextmenu",function(e){e.preventDefault(),e.stopPropagation()},!0),document.addEventListener("keydown",function(e){var a=e.key.toLowerCase();("F12"===e.key||e.ctrlKey&&e.shiftKey&&("i"===a||"j"===a)||e.ctrlKey&&"u"===a||e.ctrlKey&&"s"===a)&&(e.preventDefault(),e.stopPropagation())},!0);
 const themeToggle=document.getElementById("themeToggle"),rays=[...document.querySelectorAll(".ray")];
@@ -384,12 +388,16 @@ function questionsForAuthor(author){
 function renderAuthorQuestions(author){
   const questions=questionsForAuthor(author);
   questionsTitle.textContent=author.name+" — suallar";
-  questionsSubtitle.textContent=questions.length+" sual · yenidən köhnəyə";
+  questionsSubtitle.textContent=Array.isArray(window.SUAL_DATA)
+    ?questions.length+" sual · yenidən köhnəyə"
+    :"Sual bazası yüklənməyib";
   questionsList.replaceChildren();
   if(!questions.length){
     const empty=document.createElement("div");
     empty.className="questions-empty";
-    empty.textContent="Bu müəllif üçün sual tapılmadı.";
+    empty.textContent=window.SUAL_DATA_LOAD_ERROR||!Array.isArray(window.SUAL_DATA)
+      ?"Sual bazası yüklənməyib. `suallar-data.js` faylı səhifə ilə eyni qovluqda olmalıdır."
+      :"Bu müəllif üçün sual tapılmadı.";
     questionsList.appendChild(empty);
     return;
   }
@@ -416,3 +424,60 @@ function renderAuthorQuestions(author){
 }
 
 function openQuestions(index,trigger){
+  const author=authors[index];
+  if(!author)return;
+  questionsReturnFocus=trigger;
+  renderAuthorQuestions(author);
+  questionsOverlay.classList.add("open");
+  questionsOverlay.setAttribute("aria-hidden","false");
+  document.body.classList.add("questions-open");
+  questionsClose.focus();
+}
+
+function closeQuestions(){
+  if(!questionsOverlay.classList.contains("open"))return;
+  questionsOverlay.classList.remove("open");
+  questionsOverlay.setAttribute("aria-hidden","true");
+  document.body.classList.remove("questions-open");
+  if(questionsReturnFocus&&questionsReturnFocus.isConnected)questionsReturnFocus.focus();
+}
+
+function addQuestionsButtons(){
+  cardsList.querySelectorAll(".author-card").forEach(card=>{
+    const share=card.querySelector(".share-btn");
+    if(!share||card.querySelector(".questions-btn"))return;
+    const button=document.createElement("button");
+    button.className=share.className.replace("share-btn","questions-btn");
+    button.type="button";
+    button.dataset.i=share.dataset.i;
+    button.setAttribute("aria-label","Müəllifin suallarını göstər");
+    button.title="Müəllifin sualları";
+    button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.1 1.9c-1 .8-1.7 1.2-1.7 2.6M12 17h.01" stroke-linecap="round"/></svg>';
+    share.before(button);
+  });
+}
+
+const renderAuthors=render;
+render=function(){renderAuthors.apply(this,arguments);addQuestionsButtons()};
+addQuestionsButtons();
+cardsList.addEventListener("click",event=>{
+  const button=event.target.closest(".questions-btn");
+  if(!button)return;
+  event.preventDefault();
+  event.stopPropagation();
+  openQuestions(Number(button.dataset.i),button);
+},true);
+questionsClose.addEventListener("click",closeQuestions);
+questionsOverlay.addEventListener("click",event=>{if(event.target===questionsOverlay)closeQuestions()});
+document.addEventListener("keydown",event=>{if(event.key==="Escape")closeQuestions()});
+document.querySelectorAll("a.nb").forEach(link=>link.addEventListener("click",event=>{
+  if(event.ctrlKey||event.metaKey||event.shiftKey)return;
+  event.preventDefault();
+  link.classList.remove("pop");
+  void link.offsetWidth;
+  link.classList.add("pop");
+  setTimeout(()=>{location.href=link.getAttribute("href")},500);
+}));
+window.addEventListener("pageshow",event=>{if(event.persisted)initTheme()});
+</script>
+<script src="/footer.js?v=d768381"></script>
