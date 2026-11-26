@@ -124,20 +124,6 @@
         else expandedPackageIds.add(item.id);
         renderPackages();
       });
-      card.append(title, element("p", "pa-meta", count + " sual · Şəxsi paket"), toggle);
-      if (expandedPackageIds.has(item.id)) {
-        var questions = element("div", "pa-package-questions");
-        (item.questions || []).forEach(function (question, index) {
-          var row = element("div", "pa-package-question");
-          row.appendChild(element("strong", "", (index + 1) + ". " + (question.question || "")));
-          if (question.answer) row.appendChild(element("p", "", "Cavab: " + question.answer));
-          questions.appendChild(row);
-        });
-        card.appendChild(questions);
-      }
-      profilePackagesList.appendChild(card);
-    });
-  }
 
   function renderStats() {
     var points = state.results.reduce(function (sum, result) {
