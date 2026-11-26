@@ -253,11 +253,11 @@
 
   function syncPanels() {
     var signedIn = !!state.profile;
-    if (triggerName) setWelcomeText(signedIn ? "Xoş gəlmisiniz, " + state.profile.name + "!" : "Google ilə daxil ol", signedIn);
+    if (triggerName) setWelcomeText(signedIn ? "Xoş gəlmisiniz, " + state.profile.name + "!" : "Daxil ol", signedIn);
     if (triggerAvatar) triggerAvatar.textContent = signedIn ? initialOf(state.profile.name) : "π";
     if (trigger) {
-      trigger.setAttribute("aria-label", signedIn ? "Hesab menyusu: " + state.profile.name : "Google ilə daxil ol");
-      trigger.title = signedIn ? state.profile.name : "Google ilə daxil ol";
+      trigger.setAttribute("aria-label", signedIn ? "Hesab menyusu: " + state.profile.name : "Daxil ol");
+      trigger.title = signedIn ? state.profile.name : "Daxil ol";
     }
     signInPanel.hidden = signedIn;
     accountPanel.hidden = !signedIn;
