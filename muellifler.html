@@ -50,7 +50,7 @@ body.ready .bite,body.ready .core{transition:transform .6s cubic-bezier(.4,0,.2,
 .col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:14px}
 .author-card{position:relative;border-radius:28px;background:var(--grad);color:var(--fg);padding:14px 20px;display:flex;align-items:center;gap:14px;height:104px;overflow:hidden;box-shadow:0 10px 25px rgba(0,20,110,.07);cursor:pointer;transition:transform .35s cubic-bezier(.18,.8,.22,1),box-shadow .35s ease}
 .author-card>*{position:relative;z-index:1}
-@media (hover:hover){.author-card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}.author-card:hover::before{opacity:1}}
+@media (hover:hover){.author-card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 14px 30px rgba(0,20,110,.14);z-index:5}}
 .author-icon{width:64px;height:64px;flex:0 0 64px;border-radius:16px;overflow:hidden}
 .author-icon svg{width:100%;height:100%;display:block}
 .author-right{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}
@@ -278,7 +278,7 @@ n.appendChild(i),n.appendChild(r),m[t].appendChild(n);
 const s=i.querySelector(".author-name");
 requestAnimationFrame(()=>{let e=parseFloat(getComputedStyle(s).fontSize);for(;s.scrollWidth>s.clientWidth&&8<e;)e=Math.max(8,e-1),s.style.fontSize=e+"px"})
 }),fitCounts(),renderPager(n,u,c)}
-searchInput.addEventListener("input",()=>{query=normalize(searchInput.value.trim()),page=1,render()}),wide.addEventListener("change",()=>render()),
+searchInput.addEventListener("input",()=>{query=normalize(searchInput.value.trim()),page=1,render()}),wide.addEventListener("change",()=>render());
 const ARW=e=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${e}"/></svg>`;
 function renderPager(t,e,a){if(pager.className="pager"+(e?" frame":a?" enter":""),pager.style.setProperty("--i",6),pager.style.setProperty("--e",3),t<2)pager.innerHTML="";else{let a="";1<page&&(a+=`<button class="pg-btn pg-arrow" type="button" data-p="${page-1}" aria-label="Əvvəlki səhifə">${ARW("M15 5l-7 7 7 7")}</button>`);for(let e=1;e<=t;e++)a+=`<button class="pg-btn${e===page?" cur":""}" type="button" data-p="${e}"${e===page?' aria-current="page"':""}>${e}</button>`;page<t&&(a+=`<button class="pg-btn pg-arrow" type="button" data-p="${page+1}" aria-label="Növbəti səhifə">${ARW("M9 5l7 7-7 7")}</button>`),pager.innerHTML=a}}
 function scrollTopSmooth(n,i){const r=document.documentElement,l=window.scrollY;if(!l||matchMedia("(prefers-reduced-motion:reduce)").matches)return window.scrollTo(0,0),void(i&&i());r.style.scrollBehavior="auto";const o=performance.now();!function e(a){var t=Math.min(1,(a-o)/n),a=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;window.scrollTo(0,l*(1-a)),t<1?requestAnimationFrame(e):(r.style.scrollBehavior="",i&&i())}(o)}
