@@ -388,4 +388,4 @@ document.addEventListener("keydown",function(e){"Escape"===e.key&&closeAll()})})
 if(!("IntersectionObserver" in window)){els.forEach(function(e){e.classList.add("go")});return}
 var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;var e=en.target;if(performance.now()-t0>800)e.classList.add("late");e.classList.add("go");io.unobserve(e)})},{threshold:.15,rootMargin:"0px 0px -6% 0px"});
 els.forEach(function(e){io.observe(e)})})();</script>
-<script src=/gravity.js></script><script src=/footer.js></script>
+<script src=/gravity.js></script><script src=/footer.js?v=d768381></script>

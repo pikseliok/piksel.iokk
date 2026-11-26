@@ -250,5 +250,5 @@ function toggleZoom(a,i){if(i.stopPropagation(),activeZoomedImg!==a){removeZoom(
 function removeZoom(){if(activeClone){const n=activeClone,r=activeZoomedImg;var a=r.getBoundingClientRect(),i=a.left-n._start.left,a=a.top-n._start.top;n.style.transform=`translate(${i}px,${a}px) scale(1)`,n.style.boxShadow="none",setTimeout(()=>{n.remove(),r&&(r.style.visibility="visible")},550),activeClone=null}activeZoomedImg=null,document.body.classList.remove("img-zoomed")}
 countsRef&&(countsRef.on("value",a=>{likeCounts=a.val()||{},saveLikeCache(),updateLikeUI()}),myRef.on("value",a=>{myLikes=a.val()||{},saveLikeCache(),updateLikeUI()})),document.addEventListener("click",function(a){activeZoomedImg&&a.target!==activeClone&&removeZoom()}),loadTour(1)
 </script>
-<script src="/footer.js"></script>
+<script src="/footer.js?v=d768381"></script>
 </html>

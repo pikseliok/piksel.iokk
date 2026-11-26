@@ -146,4 +146,4 @@ addEventListener("resize",fitFees);document.fonts&&document.fonts.ready.then(fit
 /* tab dəyişəndə / pəncərə fokusu itəndə avtomatik keçid dayanır, qayıdanda slayd yerində qalır */
 document.addEventListener("visibilitychange",()=>{clearTimeout(timer);if(document.hidden){autoOff=true;return}busy=false;go(items.length>1?idx+1:0,false)});
 addEventListener("blur",()=>{autoOff=true;clearTimeout(timer)});
-load(),setInterval(()=>{var e=activeOnly(items);e.length!==items.length&&(items=e,items.length?(build(),sched()):showMsg("Hələ kubok əlavə olunmayıb"))},6e4)</script><script src=/footer.js></script>
+load(),setInterval(()=>{var e=activeOnly(items);e.length!==items.length&&(items=e,items.length?(build(),sched()):showMsg("Hələ kubok əlavə olunmayıb"))},6e4)</script><script src=/footer.js?v=d768381></script>

@@ -247,4 +247,4 @@ function downloadFile(e){const a=URL.createObjectURL(e),t=document.createElement
 async function doShare(e){var a;null!==shareIdx&&(a=authors[shareIdx],"copy"===e?(await copyText(authorLink(a)),toast("Link kopyalandı")):(a=shareFile||await sharePromise)?(downloadFile(a),toast("Afişa yükləndi")):toast("Afişa hazırlana bilmədi"),closeShare())}
 overlay.addEventListener("click",e=>{e.target===overlay&&closeShare()}),document.addEventListener("keydown",e=>{"Escape"===e.key&&closeShare()}),overlay.querySelectorAll(".sheet-opt").forEach(e=>{e.addEventListener("click",()=>doShare(e.dataset.mode))})
 </script>
-<script src="/footer.js"></script>
+<script src="/footer.js?v=d768381"></script>

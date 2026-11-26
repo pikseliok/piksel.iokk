@@ -667,6 +667,6 @@ document.addEventListener("click",e=>{if(activeZoomedImg&&e.target!==activeClone
 (function(){const e=document.documentElement,t=document.getElementById("consentBar"),n=document.getElementById("consentOverlay"),r=document.getElementById("consentYes"),o=document.getElementById("consentNo"),a=new Set([t,n]),i=[];if(window.pikselConsent.has())return e.classList.remove("need-consent"),t.remove(),n.remove();[...document.body.children].forEach(e=>{a.has(e)||"SCRIPT"===e.tagName||(e.setAttribute("inert",""),i.push(e))}),r.addEventListener("click",()=>{window.pikselConsent.save(),t.classList.add("hide"),n.classList.add("hide"),i.forEach(e=>e.removeAttribute("inert")),setTimeout(()=>{e.classList.remove("need-consent","consent-rejected"),t.remove(),n.remove()},500)}),o.addEventListener("click",()=>{t.classList.add("out"),setTimeout(()=>{e.classList.add("consent-rejected"),1<history.length&&history.back(),setTimeout(()=>{try{window.close()}catch(e){}},450)},800)}),window.addEventListener("pageshow",e=>{e.persisted&&location.reload()})})();
 </script>
 <script src="/gravity.js"></script>
-<script src="/footer.js"></script>
+<script src="/footer.js?v=d768381"></script>
 </body>
 </html>

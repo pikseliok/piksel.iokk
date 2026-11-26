@@ -350,4 +350,4 @@ p.addEventListener("click",function(e){if(p.classList.contains("selected"))retur
 window.addEventListener("resize",function(){var v=gV();v!==V&&(V=v,p.classList.toggle("noarr",N<=V),R(0));p._L()})});
 var tabs=[].slice.call(document.querySelectorAll(".dock-tab"));function selectPanel(id){var target=document.getElementById(id);if(!target)return;P.forEach(function(p){var active=p===target;p.classList.toggle("selected",active);setOpen(p,active)});tabs.forEach(function(tab){var active=tab.dataset.panel===id;tab.classList.toggle("active",active);tab.setAttribute("aria-selected",active?"true":"false")})}tabs.forEach(function(tab){tab.addEventListener("click",function(){selectPanel(tab.dataset.panel)})});
 document.addEventListener("click",function(e){e.target.closest(".dock")||closeAll()});
-document.addEventListener("keydown",function(e){"Escape"===e.key&&closeAll()})})()</script><script src=/gravity.js></script><script src=/footer.js></script></document_content>
+document.addEventListener("keydown",function(e){"Escape"===e.key&&closeAll()})})()</script><script src=/gravity.js></script><script src=/footer.js?v=d768381></script></document_content>
