@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#b8d5ff">
+<script>!function(){try{var e=localStorage.getItem("piksel-theme");if("dark"===e||"light"!==e&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}}()</script>
 <title>πksel - Xal sayacı</title>
 <link rel="icon" type="image/png" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
 <link rel="apple-touch-icon" href="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png">
@@ -161,6 +162,53 @@ h2{font-size:17px}
 }
 @media (max-width:420px){.card-title{font-size:17px}.footer-line{font-size:13px}}
 @media (max-width:360px){.nb{width:46px;height:46px}.nb svg{width:25px;height:25px}}
+
+body{--score-glass-border:rgba(255,255,255,.68)}
+body.dark{--score-glass-border:rgba(255,255,255,.42)}
+html{background:#b8d5ff}
+html.dark{background:#000521}
+html.dark body{background:#000521;color:#6ca2f9}
+.page{max-width:1180px}
+.glass{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:28px}
+.glass::before{display:none}
+body.dark .glass{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.dark .glass::before{display:none}
+body.playing{height:auto;min-height:100vh;min-height:100dvh;overflow-x:hidden;overflow-y:auto}
+body.playing footer{display:flex}
+body.playing .page{height:auto}
+.in{background:var(--fg);color:var(--c1);border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.slot{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.slot .in{background:var(--fg);color:var(--c1)}
+.btn{background:var(--fg);color:var(--c1);border:1px solid var(--fg);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pts{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0}
+.dd-btn,#minusBtn,#plusBtn,.val-btn{color:var(--fg);background:var(--c1);border:1px solid var(--score-glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 4px 14px rgba(0,20,110,.1);-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .25s ease,box-shadow .3s ease}
+.dd-btn:hover,#minusBtn:hover,#plusBtn:hover,.val-btn:hover{transform:translateY(-2px);background:var(--c1);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 16px rgba(0,20,110,.14)}
+.val-btn.on{color:var(--fg);background:var(--c1);border-color:var(--score-glass-border);box-shadow:inset 0 0 0 1px var(--score-glass-border),0 4px 14px rgba(0,20,110,.1)}
+#ddMenu{background:var(--c1);color:var(--fg);border:1px solid var(--score-glass-border);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 12px 28px rgba(0,20,110,.16)}
+#ddMenu .dd-item.on,#ddMenu .dd-item:hover{background:color-mix(in srgb,var(--fg) 18%,transparent)}
+.card-title{font-size:24px}
+.brand-tagline,.subtitle{font-size:15px}
+.val-btn b{font-size:clamp(14px,4.4vw,17px)}
+.val-btn span{font-size:clamp(9px,2.4vw,12px)}
+footer{background:var(--c1);color:var(--fg);padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.rise{animation:riseIn .6s cubic-bezier(.18,.8,.24,1) backwards;animation-delay:calc(var(--i,0)*.1s + .25s)}
+@keyframes riseIn{from{opacity:0;transform:translateY(18px)}}
+#setupScreen{flex-direction:column;gap:12px}
+#setupScreen .title-card,#setupScreen .setup-card{width:100%}
+#setupScreen .title-card{margin-top:0}
+#setupScreen .setup-content{display:flex;flex-direction:column;align-items:stretch}
+#setupScreen .in{max-width:none}
+#setupScreen .in::placeholder{color:var(--c1);opacity:.5}
+#setupScreen .brand-tagline{text-align:center;margin:0 0 10px}
+#setupScreen .subtitle{margin:4px 0 10px}
+#setupScreen .setup-content .spacer{flex:1 0 14px}
+#names{  display:flex;  flex-direction:column;  gap:8px;  margin-top:10px; }
+.screen.active#gameScreen .toprow{animation:riseIn .55s cubic-bezier(.18,.8,.24,1) .05s backwards}
+.screen.active#gameScreen .tile{animation:riseIn .48s cubic-bezier(.18,.8,.24,1) .12s backwards}
+.screen.active#gameScreen .pts{animation:riseIn .55s cubic-bezier(.18,.8,.24,1) .32s backwards}
+@media(max-width:700px){.page{width:calc(100% - 24px);min-height:calc(100vh + 16px);min-height:calc(100dvh + 16px)}body.playing .page{min-height:calc(100vh + 16px);min-height:calc(100dvh + 16px)}body.playing .glass{padding-bottom:calc(136px + env(safe-area-inset-bottom,0px))}.card-title{font-size:17px}.brand-tagline,.subtitle{font-size:13px}.footer-line{font-size:13px}}
+@media(max-width:420px){.card-title{font-size:15px}.brand-tagline,.subtitle{font-size:11px}.footer-line{font-size:11px}}
+@media(max-width:700px) and (max-height:700px){#setupScreen .box{padding-top:14px;padding-bottom:14px}#setupScreen #names{gap:6px}#setupScreen #names .in{height:42px}#setupScreen .brand-tagline{margin-bottom:6px}#setupScreen .subtitle{margin:2px 0 6px}#setupScreen .setup-content .spacer{flex-basis:6px}#setupScreen .setup-content .btn{margin-top:4px}}
 </style>
 </head>
 <body>
@@ -168,19 +216,20 @@ h2{font-size:17px}
  <main class="frame glass" style="--i:1">
   <div id="app">
    <div class="screen active" id="setupScreen">
-    <div class="card">
-     <div class="brand">
-      <div class="brand-badge"><img alt="πksel" src="https://cdn.phototourl.com/member/2026-10-03-7c990532-b6d4-4529-87ea-f322379e1f97.png"></div>
-      <div class="brand-title">Xal sayacı</div>
+    <section class="frame box title-card" style="--i:1">
+     <h1 class="card-title rise" style="--i:1">Xal sayacı</h1>
+    </section>
+    <section class="frame box setup-card" style="--i:2">
+     <div class="setup-content rise" style="--i:2">
       <div class="brand-tagline">İntellektual oyunlar üçün</div>
+      <div class="subtitle">İŞTİRAKÇI SAYI (1-6)</div>
+      <input class="in" id="cnt" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" placeholder="məs. 4">
+      <div id="names"></div>
+      <div class="spacer"></div>
+      <button class="btn" id="startBtn" type="button" disabled>BAŞLA</button>
+      <div class="error" id="setupError"></div>
      </div>
-     <div class="subtitle">İŞTİRAKÇI SAYI (1-6)</div>
-     <input class="in" id="cnt" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" placeholder="məs. 4">
-     <div id="names"></div>
-     <div class="spacer"></div>
-     <button class="btn" id="startBtn" type="button" disabled>BAŞLA</button>
-     <div class="error" id="setupError"></div>
-    </div>
+    </section>
    </div>
    <div class="screen" id="gameScreen">
     <div class="card game">
@@ -224,7 +273,7 @@ document.addEventListener('keydown',e=>{
 /* ===== TEMA ===== */
 const themeToggle=$('#themeToggle'),rays=[...document.querySelectorAll('.ray')];
 function animateRays(n){rays.forEach(e=>{e.getAnimations().forEach(a=>a.cancel());const t=e.animate(n?[{transform:'translateY(0)',opacity:1},{transform:'translateY(-14px)',opacity:0}]:[{transform:'translateY(11px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:n?520:620,delay:n?0:180,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});t.onfinish=()=>t.cancel()})}
-function setTheme(d,anim){document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}themeToggle.setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');const m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?'#010033':'#b8d5ff';if(anim)animateRays(d)}
+function setTheme(d,anim){document.documentElement.classList.toggle('dark',d);document.body.classList.toggle('dark',d);try{localStorage.setItem('piksel-theme',d?'dark':'light')}catch(e){}themeToggle.setAttribute('aria-label',d?'Gündüz rejiminə keç':'Gecə rejiminə keç');const m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?'#000521':'#b8d5ff';if(anim)animateRays(d)}
 (function(){let v=null;try{v=localStorage.getItem('piksel-theme')}catch(e){}
  if(v==='dark')setTheme(true,false);else if(v==='light')setTheme(false,false);else setTheme(!!(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches),false)})();
 themeToggle.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark'),true));
@@ -250,7 +299,7 @@ function buildNames(n){
   g('startBtn').disabled=true;return;
  }
  for(let i=0;i<n;i++){
-  const row=document.createElement('div');row.className='name-row';
+  const row=document.createElement('div');row.className='name-row rise';row.style.setProperty('--i',i+1);
   const dot=document.createElement('span');dot.className='dot c'+i;
   const inp=document.createElement('input');
   inp.type='text';inp.className='in';inp.maxLength=24;inp.autocomplete='off';
@@ -292,6 +341,7 @@ function buildTiles(){
  teams.forEach((t,i)=>{
   const d=document.createElement('div');
   d.className='tile c'+i;
+  d.style.animationDelay=(.12+i*.06)+'s';
   d.style.gridColumn='span '+SPANS[teams.length][i];
   const n=document.createElement('div');n.className='t-name';n.textContent=t.name;
   const s=document.createElement('div');s.className='t-score';s.textContent=t.score;
